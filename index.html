@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen3.8-27B — O poder da fronteira, local</title>
+<meta name="description" content="Qwen3.8-27B: dense 27B open-weight com desempenho quase-frontier, 262K de contexto nativo (1M com RoPE), multimodal, Apache 2.0. Benchmarks, hardware e reações da comunidade.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+:root{
+  --bg:#0a0e14;--bg2:#0d1220;--panel:#111827;--panel2:#151d2e;
+  --border:#1f2a3d;--border2:#2a3650;
+  --txt:#e8edf5;--txt2:#9aa7bd;--txt3:#64748b;
+  --qwen:#6c5ce7;--qwen2:#a29bfe;--accent:#22d3ee;--green:#34d399;--red:#f87171;--amber:#fbbf24;
+  --grad:linear-gradient(135deg,#6c5ce7 0%,#22d3ee 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== HERO ===== */
+.hero{position:relative;padding:88px 0 72px;background:
+  radial-gradient(ellipse 80% 50% at 50% -10%,rgba(108,92,231,.28),transparent),
+  radial-gradient(ellipse 50% 40% at 85% 20%,rgba(34,211,238,.12),transparent),
+  var(--bg);}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,92,231,.12);border:1px solid rgba(108,92,231,.4);color:var(--qwen2);font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-bottom:22px}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-size:clamp(38px,6vw,64px);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin-bottom:18px}
+h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:clamp(17px,2.2vw,21px);color:var(--txt2);max-width:760px;margin-bottom:34px}
+.sub strong{color:var(--txt)}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:12px;font-weight:700;font-size:15px;transition:all .2s}
+.btn-primary{background:var(--grad);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(108,92,231,.35);text-decoration:none}
+.btn-ghost{border:1px solid var(--border2);color:var(--txt);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:var(--qwen);text-decoration:none;background:rgba(108,92,231,.08)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.kpi .v{font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi .l{font-size:12px;color:var(--txt2);margin-top:2px}
+
+/* ===== SECTIONS ===== */
+section{padding:64px 0}
+.sec-head{margin-bottom:36px}
+.sec-tag{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h2{font-size:clamp(26px,4vw,36px);font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+.sec-sub{color:var(--txt2);font-size:16px;max-width:760px}
+.note{font-size:12.5px;color:var(--txt2);margin-top:14px;display:flex;gap:6px;align-items:flex-start}
+.note::before{content:"ⓘ";color:var(--amber)}
+
+/* ===== MODEL CARDS ===== */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:26px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card h3{font-size:18px;font-weight:700;margin-bottom:14px}
+.spec-list{display:grid;gap:0}
+.spec{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.spec:last-child{border-bottom:none}
+.spec .k{color:var(--txt2);font-size:13.5px}
+.spec .v{font-weight:600;font-size:14px;text-align:right}
+.spec .v.hl{color:var(--accent)}
+.spec .v.g{color:var(--green)}
+
+/* ===== BENCHMARK CHARTS ===== */
+.chart-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
+.chart-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.chart-desc{font-size:12.5px;color:var(--txt2);margin-bottom:22px}
+.rows{display:grid;gap:14px}
+.row{display:grid;grid-template-columns:210px 1fr 110px;align-items:center;gap:12px}
+.row .name{font-size:13px;font-weight:600;color:var(--txt2);text-align:right}
+.row .name small{display:block;font-weight:400;color:var(--txt3);font-size:11px}
+.row .name.me{color:var(--qwen2)}
+.bar-track{height:22px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden;position:relative}
+.bar{height:100%;border-radius:6px;animation:grow 1.2s cubic-bezier(.25,.8,.3,1) both}
+@keyframes grow{from{width:0}}
+.bar.qwen{background:var(--grad);box-shadow:0 0 18px rgba(108,92,231,.4)}
+.bar.base{background:#2a3650}
+.bar.base.g1{background:#22364d}.bar.base.g2{background:#234052}.bar.base.g3{background:#25455a}
+.bar.base.fr{background:#3d2f5c}.bar.base.fr2{background:#4a3a6e}
+.row .val{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .val.up{color:var(--green)}
+.row .val.dn{color:var(--red)}
+.chart-gap{height:22px;display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+
+/* ===== TABLE ===== */
+.table-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+th{background:var(--panel2);padding:12px 14px;text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt2);font-weight:700;border-bottom:1px solid var(--border2)}
+td{padding:11px 14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:rgba(108,92,231,.05)}
+td.num{font-variant-numeric:tabular-nums;font-weight:700}
+td.qw{color:var(--qwen2)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;padding:14px 16px;font-size:12px;color:var(--txt2);border-top:1px solid var(--border)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+
+/* ===== COMMUNITY ===== */
+.quote{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--qwen);border-radius:12px;padding:18px 20px}
+.quote p{font-size:14px;color:var(--txt);font-style:italic}
+.quote .who{margin-top:10px;font-size:12px;color:var(--txt2);font-style:normal}
+.quote .who b{color:var(--accent)}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;margin-right:8px;text-transform:uppercase;letter-spacing:.05em;vertical-align:middle}
+.tag.hype{background:rgba(52,211,153,.12);color:var(--green)}
+.tag.mixed{background:rgba(251,191,36,.12);color:var(--amber)}
+.tag.skew{background:rgba(248,113,113,.12);color:var(--red)}
+
+/* ===== HARDWARE ===== */
+.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.hw{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px}
+.hw .tier{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.hw .ram{font-size:24px;font-weight:800;margin-bottom:4px}
+.hw .desc{font-size:13px;color:var(--txt2)}
+.hw .spd{margin-top:12px;font-size:12.5px;color:var(--green);font-weight:700}
+.t1{color:var(--green)}.t2{color:var(--accent)}.t3{color:var(--amber)}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--qwen),var(--accent))}
+.tl-item{position:relative;margin-bottom:22px}
+.tl-item::before{content:"";position:absolute;left:-24px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--qwen2)}
+.tl-date{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.05em}
+.tl-txt{font-size:14px}
+.tl-src{font-size:12px;color:var(--txt2)}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--border);padding:36px 0;margin-top:40px;font-size:13px;color:var(--txt2)}
+footer .srcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:14px 0}
+@media(max-width:720px){
+  .row{grid-template-columns:120px 1fr 84px}
+  .row .name small{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="badge"><span class="dot"></span> Pesos abertos desde 14/08/2026 · Apache 2.0</div>
+    <h1>Qwen3.8-27B<br><span class="grad">O poder da fronteira.<br>No seu hardware.</span></h1>
+    <p class="sub">A Alibaba abriu os pesos do membro local da família Qwen3.8 — <strong>27B denso</strong> que compete com modelos de fronteira em agentic coding, uso de computador e trabalho profissional longo. Roda em ~17GB com quantização 4-bit. Sem nuvem. Sem API. Sem limite.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#benchmarks">⚡ Ver benchmarks</a>
+      <a class="btn btn-ghost" href="#comunidade">O que a internet está dizendo</a>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="v">27B</div><div class="l">denso · híbrido-linear</div></div>
+      <div class="kpi"><div class="v">262K</div><div class="l">contexto nativo → 1M</div></div>
+      <div class="kpi"><div class="v">~17GB</div><div class="l">VRAM 4-bit (Unsloth)</div></div>
+      <div class="kpi"><div class="v">90.3</div><div class="l">LiveCodeBench v6</div></div>
+      <div class="kpi"><div class="v">84.3</div><div class="l">OSWorld-Verified</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= SPECS ================= -->
+<section id="specs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Especificações</div>
+      <h2>Denso, híbrido e multimodal</h2>
+      <p class="sec-sub">O 27B usa a mesma espinha dorsal do flagship 2.4T — atenção híbrida linear em 48 das 64 camadas, vision tower e cabeça de decodificação MTP integrados.</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>🧠 Arquitetura</h3>
+        <div class="spec-list">
+          <div class="spec"><span class="k">Parâmetros</span><span class="v hl">27B densos</span></div>
+          <div class="spec"><span class="k">Atenção</span><span class="v">Híbrida · linear em 48/64 camadas</span></div>
+          <div class="spec"><span class="k">Vision tower + MTP draft head</span><span class="v">Nativo</span></div>
+          <div class="spec"><span class="k">Multimodal</span><span class="v">Imagens, vídeo, docs, STEM</span></div>
+          <div class="spec"><span class="k">Base arquitetural</span><span class="v">Backbone Qwen3.5</span></div>
+          <div class="spec"><span class="k">Licença</span><span class="v g">Apache 2.0</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚙️ Raciocínio &amp; Contexto</h3>
+        <div class="spec-list">
+          <div class="spec"><span class="k">Contexto nativo</span><span class="v hl">262.144 tokens</span></div>
+          <div class="spec"><span class="k">Extensível</span><span class="v hl">até 1M com RoPE scaling</span></div>
+          <div class="spec"><span class="k">Raciocínio</span><span class="v">xhigh / medium / low / off</span></div>
+          <div class="spec"><span class="k">Thinking preservado</span><span class="v">Sim (multi-step)</span></div>
+          <div class="spec"><span class="k">Sampling recomendado</span><span class="v">temp 1.0 · top_p .95 · top_k 20</span></div>
+          <div class="spec"><span class="k">Protocolos</span><span class="v">OpenAI + Anthropic</span></div>
+          <div class="spec"><span class="k">Repositório</span><span class="v"><a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Qwen/Qwen3.8-27B ↗</a></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>💾 Memória por precisão</h3>
+        <div class="spec-list">
+          <div class="spec"><span class="k">BF16</span><span class="v">~54GB VRAM</span></div>
+          <div class="spec"><span class="k">FP8</span><span class="v">~27GB VRAM</span></div>
+          <div class="spec"><span class="k">4-bit (GGUF)</span><span class="v g">~14–17GB · day-zero Unsloth</span></div>
+          <div class="spec"><span class="k">NVFP4 (Blackwell)</span><span class="v">24.6 GiB · 6.6M KV tokens @1M</span></div>
+          <div class="spec"><span class="k">vLLM</span><span class="v">0.27.2+ requerido</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>👥 Família Qwen3.8</h3>
+        <div class="spec-list">
+          <div class="spec"><span class="k">Qwen3.8-27B</span><span class="v hl">27B denso · este modelo</span></div>
+          <div class="spec"><span class="k">Qwen3.8-2.4T-A95B</span><span class="v">2.4T MoE · 95B ativos</span></div>
+          <div class="spec"><span class="k">Qwen3.8-Max</span><span class="v">Flagship · pesos prometidos</span></div>
+          <div class="spec"><span class="k">Contexto da família</span><span class="v">256K nativo → 1M</span></div>
+          <div class="spec"><span class="k">Anúncio → pesos</span><span class="v">03/08 → 14/08/2026</span></div>
+          <div class="spec"><span class="k">API (Max)</span><span class="v">$2/$6/$0.25 cache por Mtok</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BENCHMARKS ================= -->
+<section id="benchmarks" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Benchmarks oficiais</div>
+      <h2>Números contra a geração anterior — e contra a fronteira</h2>
+      <p class="sec-sub">Scores do model card oficial (Qwen). Em agentic e computer-use, o salto sobre o 3.6-27B chega a <strong style="color:var(--green)">+29.7 pontos</strong>.</p>
+    </div>
+
+    <!-- CHART 1: vs 3.6 (coding) -->
+    <div class="chart-card">
+      <div class="chart-title">📈 Coding — Qwen3.8-27B vs Qwen3.6-27B</div>
+      <div class="chart-desc">Scores 0–100 do model card. LiveCodeBench v6 e Terminal-Bench 2.1.</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:90.3%"></div></div><div class="val">90.3</div></div>
+        <div class="row"><div class="name">Qwen3.6-27B <small>LiveCodeBench v6</small></div><div class="bar-track"><div class="bar base g1" style="width:83.9%"></div></div><div class="val dn">83.9</div></div>
+      </div>
+      <div class="chart-gap">· · ·</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:73%"></div></div><div class="val">73.0</div></div>
+        <div class="row"><div class="name">Qwen3.6-27B <small>Terminal-Bench 2.1</small></div><div class="bar-track"><div class="bar base g1" style="width:63.4%"></div></div><div class="val dn">63.4</div></div>
+      </div>
+    </div>
+
+    <!-- CHART 2: Agentic / computer use -->
+    <div class="chart-card">
+      <div class="chart-title">🤖 Agentic &amp; Computer Use — salto geracional</div>
+      <div class="chart-desc">Onde a geração mais avançou: agentes. Ganho em pontos sobre o 3.6-27B.</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:79%"></div></div><div class="val">79.0</div></div>
+        <div class="row"><div class="name">Qwen3.6-27B <small>QwenSWEBench</small></div><div class="bar-track"><div class="bar base g1" style="width:49.3%"></div></div><div class="val up">+29.7</div></div>
+      </div>
+      <div class="chart-gap">· · ·</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:42.2%"></div></div><div class="val">42.2</div></div>
+        <div class="row"><div class="name">Qwen3.6-27B <small>DeepSWE 1.1</small></div><div class="bar-track"><div class="bar base g2" style="width:13.3%"></div></div><div class="val up">+28.9</div></div>
+      </div>
+      <div class="chart-gap">· · ·</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:84.3%"></div></div><div class="val">84.3</div></div>
+        <div class="row"><div class="name">Qwen3.6-27B <small>OSWorld-Verified</small></div><div class="bar-track"><div class="bar base g3" style="width:63.9%"></div></div><div class="val up">+20.4</div></div>
+      </div>
+      <div class="chart-gap">· · ·</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:64.8%"></div></div><div class="val">64.8</div></div>
+        <div class="row"><div class="name">Qwen3.6-27B <small>WebArena-Verified</small></div><div class="bar-track"><div class="bar base g1" style="width:48.8%"></div></div><div class="val up">+16.0</div></div>
+      </div>
+    </div>
+
+    <!-- CHART 3: vs frontier -->
+    <div class="chart-card">
+      <div class="chart-title">🌐 27B contra os gigantes</div>
+      <div class="chart-desc">Fontes: model cards e lançamentos oficiais. Sem harness compartilhado — leitura categórica: impressionantemente próximo para o tamanho.</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:89.2%"></div></div><div class="val">89.2</div></div>
+        <div class="row"><div class="name">Claude Opus 4.8</div><div class="bar-track"><div class="bar base fr" style="width:92%"></div></div><div class="val">92.0</div></div>
+        <div class="row"><div class="name">GPT-5.6 Sol <small>GPQA Diamond</small></div><div class="bar-track"><div class="bar base fr2" style="width:94.6%"></div></div><div class="val">94.6</div></div>
+      </div>
+      <div class="chart-gap">· · ·</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:73%"></div></div><div class="val">73.0</div></div>
+        <div class="row"><div class="name">Claude Opus 4.8</div><div class="bar-track"><div class="bar base fr" style="width:78.9%"></div></div><div class="val">78.9</div></div>
+        <div class="row"><div class="name">DeepSeek V4 Flash</div><div class="bar-track"><div class="bar base fr" style="width:82.7%"></div></div><div class="val">82.7</div></div>
+        <div class="row"><div class="name">GPT-5.6 Sol <small>Terminal-Bench 2.1</small></div><div class="bar-track"><div class="bar base fr2" style="width:88.8%"></div></div><div class="val">88.8</div></div>
+      </div>
+      <div class="chart-gap">· · ·</div>
+      <div class="rows">
+        <div class="row"><div class="name me">Qwen3.8-27B</div><div class="bar-track"><div class="bar qwen" style="width:61.7%"></div></div><div class="val">61.7</div></div>
+        <div class="row"><div class="name">GPT-5.6 Sol</div><div class="bar-track"><div class="bar base fr2" style="width:64.6%"></div></div><div class="val">64.6</div></div>
+        <div class="row"><div class="name">Claude Opus 5 <small>SWE-bench Pro</small></div><div class="bar-track"><div class="bar base fr" style="width:79.2%"></div></div><div class="val">79.2</div></div>
+      </div>
+    </div>
+
+    <!-- FULL TABLE -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referência fronteira</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>LiveCodeBench v6</td><td class="num qw">90.3</td><td class="num">83.9</td><td class="num" style="color:var(--green)">+6.4</td><td>GPT-5.6 Sol ~91+</td></tr>
+          <tr><td>Terminal-Bench 2.1</td><td class="num qw">73.0</td><td class="num">63.4</td><td class="num" style="color:var(--green)">+9.6</td><td>GPT-5.6 Sol 88.8 · Opus 4.8 78.9</td></tr>
+          <tr><td>SWE-bench Pro</td><td class="num qw">61.7</td><td class="num">53.5</td><td class="num" style="color:var(--green)">+8.2</td><td>GPT-5.6 Sol 64.6 · Opus 5 79.2</td></tr>
+          <tr><td>DeepSWE 1.1</td><td class="num qw">42.2</td><td class="num">13.3</td><td class="num" style="color:var(--green)">+28.9</td><td>Opus 4.8 59.0 · GPT-5.6 Sol 72.7</td></tr>
+          <tr><td>QwenSWEBench</td><td class="num qw">79.0</td><td class="num">49.3</td><td class="num" style="color:var(--green)">+29.7</td><td>in-house</td></tr>
+          <tr><td>CoWorkBench</td><td class="num qw">70.7</td><td class="num">61.0</td><td class="num" style="color:var(--green)">+9.7</td><td>Max: 74.8</td></tr>
+          <tr><td>OSWorld-Verified</td><td class="num qw">84.3</td><td class="num">63.9</td><td class="num" style="color:var(--green)">+20.4</td><td>Qwen3.8-Max 86.1</td></tr>
+          <tr><td>WebArena-Verified</td><td class="num qw">64.8</td><td class="num">48.8</td><td class="num" style="color:var(--green)">+16.0</td><td>—</td></tr>
+          <tr><td>SWE-MM (multimodal)</td><td class="num qw">38.6</td><td class="num">25.7</td><td class="num" style="color:var(--green)">+12.9</td><td>—</td></tr>
+          <tr><td>GPQA Diamond</td><td class="num qw">89.2</td><td class="num">—</td><td class="num">—</td><td>GPT-5.6 Sol 94.6 · Opus 4.8 92.0</td></tr>
+          <tr><td>IFBench</td><td class="num qw">↑</td><td class="num">ref.</td><td class="num" style="color:var(--green)">+10.4</td><td>instruction following</td></tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span><i style="background:linear-gradient(135deg,#6c5ce7,#22d3ee)"></i>Qwen3.8-27B</span>
+        <span><i style="background:#22364d"></i>Qwen3.6-27B</span>
+        <span><i style="background:#3d2f5c"></i>Fronteira</span>
+        <span style="color:var(--amber)">ⓘ Scores Qwen-reportados; SWE-bench Pro usa task set refinado próprio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOCAL ================= -->
+<section id="local">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">100% Local</div>
+      <h2>Hardware para rodar hoje</h2>
+      <p class="sec-sub">Denso 27B quanta bem: 4-bit cabe em uma GPU consumer. Valores de VRAM antes de KV-cache, exceto NVFP4.</p>
+    </div>
+    <div class="hw-grid">
+      <div class="hw"><div class="tier t1">Sweet spot</div><div class="ram">~17GB</div><div class="desc">4-bit quant (Unsloth day-zero). RTX 4090/5090, Strix Halo 128GB, Mac M3/M4 32GB+.</div><div class="spd">Strix Halo: ~700 TPS prefill / ~30 TPS decode</div></div>
+      <div class="hw"><div class="tier t1">Conforto</div><div class="ram">~27GB</div><div class="desc">FP8. RTX 5090 32GB, dual 3090, Strix Halo com contexto largo.</div><div class="spd">Headroom p/ 256K+ de contexto</div></div>
+      <div class="hw"><div class="tier t2">Datacenter</div><div class="ram">~54GB</div><div class="desc">BF16 completo. A100/H100 80GB, ou 2×RTX 6000 Pro 96GB.</div><div class="spd">Qualidade máxima, sem quant</div></div>
+      <div class="hw"><div class="tier t3">Blackwell</div><div class="ram">24.6 GiB</div><div class="desc">NVFP4: 6.6M tokens KV a 1M de contexto (vLLM 0.27.2+). Uma GPU Blackwell em qualquer precisão.</div><div class="spd">1M de contexto real</div></div>
+    </div>
+    <div class="note">Qwen3.8 open é thinking-only (o Max é híbrido). Sampling: temp 1.0, top_p 0.95, top_k 20. Strix Halo = a classe de hardware do relato de 700/30 TPS no HN.</div>
+  </div>
+</section>
+
+<!-- ================= COMMUNITY ================= -->
+<section id="comunidade" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">A internet falando</div>
+      <h2>Primeiras reações da comunidade</h2>
+      <p class="sec-sub">Coletado em 14/08/2026 — Hacker News, X/Twitter, r/LocalLLaMA e LinkedIn, nas primeiras horas após o drop dos pesos.</p>
+    </div>
+    <div class="grid2">
+      <div class="quote"><p>"This is one of the most important model releases since most use cases don't need SOTA/Frontier."</p><div class="who"><span class="tag hype">hype</span><b>erdaltoprak</b> · Hacker News (submitter)</div></div>
+      <div class="quote"><p>"If the benchmarks don't lie, this is getting very close to Opus 4.6 capability… by mid 2028 we'll have local models that are almost always as good as Opus 4.6 was."</p><div class="who"><span class="tag hype">hype</span><b>onlyrealcuzzo</b> · Hacker News</div></div>
+      <div class="quote"><p>"3.7 27B was probably the best compromise between size and intelligence to run on consumer hardware. Really excited to see what people do with this."</p><div class="who"><span class="tag hype">hype</span><b>TomGarden</b> · Hacker News</div></div>
+      <div class="quote"><p>"Significant jump! A compact open-weight multimodal model that reportedly competes with much larger frontier systems… beating Claude Opus 4.6 Max on several benchmarks." — 90.5K views.</p><div class="who"><span class="tag hype">hype</span><b>Chubby @kimmonismus</b> · X</div></div>
+      <div class="quote"><p>"Frontier-level agent capabilities are becoming smaller, cheaper, and openly deployable. The benchmark results are Qwen's own and still need independent verification."</p><div class="who"><span class="tag mixed">comedida</span><b>@kimmonismus</b> · X (follow-up)</div></div>
+      <div class="quote"><p>"Qwen3.8-27B will run locally on 17GB RAM/VRAM setups and is expected to be the best performing model for its size. We can't wait to support it."</p><div class="who"><span class="tag hype">day-zero</span><b>Daniel Han</b> · Co-founder, Unsloth AI</div></div>
+      <div class="quote"><p>"Qwen3.6 27b outperforms Gemma 4 31b, so Qwen 3.8 will be even better. 27b will be a 'pretty significant improvement' over 3.6 27b."</p><div class="who"><span class="tag hype">hype</span><b>r/LocalLLaMA</b> · pré-lançamento</div></div>
+      <div class="quote"><p>"Qwen 3.6 27b is the first locally hostable model that actually felt on par and useful when compared against cloud models. The 3.8 has me extra hopeful for another step forward."</p><div class="who"><span class="tag hype">hype</span><b>Martin Seifert</b> · LinkedIn</div></div>
+      <div class="quote"><p>"Qwen 3.6 27b has been the sweet spot for me in terms of local models." / "I've been running Qwen3.6-27B-IQ4 locally… the quantized version only uses 18GB." (4090)</p><div class="who"><span class="tag hype">hype</span><b>mathieudombrock &amp; HN</b></div></div>
+      <div class="quote"><p>"I use it with a Strix Halo server. 27B is about 700 TPS prefill and 30 TPS token generation — which is about what Kimi K3 gives me depending on provider."</p><div class="who"><span class="tag hype">hype</span><b>syntaxing</b> · Hacker News</div></div>
+      <div class="quote"><p>"Kinda was expecting to see Gemma 4 26B in benchmark comparisons :("</p><div class="who"><span class="tag skew">crítica</span><b>expedited123</b> · Hacker News</div></div>
+      <div class="quote"><p>"Would love a MoE variant for the sake of speed… have they just dropped MoE?"</p><div class="who"><span class="tag skew">crítica</span><b>Casteil</b> · Hacker News</div></div>
+      <div class="quote"><p>"Open source is 'very close' but not actually there yet on top-end agentic coding." — cepticismo saudável de partes da comunidade.</p><div class="who"><span class="tag skew">crítica</span><b>scaling01</b> · via Latent.Space</div></div>
+      <div class="quote"><p>"Name one model that has ever been a regression from what came before (at the same size). Very unlikely."</p><div class="who"><span class="tag mixed">análise</span><b>RepulsiveRaisin7</b> · r/LocalLLaMA</div></div>
+      <div class="quote"><p>"27B é o produto; o Max é a prova de que o treinamento da geração aconteceu." (tradução livre)</p><div class="who"><span class="tag mixed">análise</span><b>orcarouter.ai</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Linha do tempo</div>
+      <h2>Como chegamos aqui</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-date">03 AGO 2026</div><div class="tl-txt">Qwen3.8-Max anunciado (2.4T MoE, ~95B ativos) com promessa de pesos abertos + um irmão 27B na semana seguinte.</div><div class="tl-src">Qwen oficial · DataCamp</div></div>
+      <div class="tl-item"><div class="tl-date">04 AGO</div><div class="tl-txt">API do Max ao vivo ($2/$6/$0.25 p/ Mtok). Unsloth antecipa: o 27B rodará em ~17GB quantizado.</div><div class="tl-src">yottalabs · Unsloth/Daniel Han</div></div>
+      <div class="tl-item"><div class="tl-date">10–11 AGO</div><div class="tl-txt">Expectativa cresce na comunidade: "pretty significant improvement". HN discute se há espaço para 54B/70B MoE locais.</div><div class="tl-src">r/LocalLLaMA · Hacker News</div></div>
+      <div class="tl-item"><div class="tl-date">13 AGO</div><div class="tl-txt">vLLM recipes publicadas; LM Studio prepara catálogo. Comunidade enumera os gaps: contexto local vs 1M da nuvem.</div><div class="tl-src">vLLM · LM Studio</div></div>
+      <div class="tl-item"><div class="tl-date">14 AGO 2026</div><div class="tl-txt">⭐ <b>Pesos abertos no Hugging Face</b> — Apache 2.0, benchmarks publicados, quants Unsloth day-zero. A internet reage (esta página).</div><div class="tl-src">Hugging Face · toda a comunidade</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <p><b>Fontes:</b> model card oficial Qwen (via LM Studio / kingy.ai), Latent.Space AINews, Hacker News, r/LocalLLaMA, Unsloth, vLLM Recipes, yottalabs, orcarouter, DataCamp, X/@kimmonismus. Página informativa não-oficial — benchmarks são Qwen-reportados salvo indicação. Atualizada em 14/08/2026.</p>
+    <div class="srcs">
+      <a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">HuggingFace · Qwen3.8-27B</a>
+      <a href="https://qwen.ai/blog?id=qwen3.8" target="_blank" rel="noopener">Blog oficial Qwen3.8</a>
+      <a href="https://unsloth.ai/docs/models/qwen3.8" target="_blank" rel="noopener">Guia local Unsloth</a>
+      <a href="https://recipes.vllm.ai/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">vLLM Recipes</a>
+      <a href="https://lmstudio.ai/models/qwen3.8" target="_blank" rel="noopener">LM Studio</a>
+      <a href="https://news.ycombinator.com/item?id=49299605" target="_blank" rel="noopener">Hacker News</a>
+      <a href="https://www.reddit.com/r/LocalLLaMA/" target="_blank" rel="noopener">r/LocalLLaMA</a>
+      <a href="https://kingy.ai/blog/qwen3-8-27b-specs-benchmarks-local-hardware" target="_blank" rel="noopener">Kingy.ai — análise</a>
+    </div>
+    <p style="margin-top:10px">Feito com ⚡ local-first · Hermes Agent · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>
