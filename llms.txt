@@ -37,6 +37,7 @@ Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo f
 - SWE-bench Pro: 61,7 (+8,2)
 - DeepSWE 1.1: 42,2 (+28,9 — o maior salto relativo da geração)
 - QwenSWEBench: 79,0 (+29,7)
+- NL2Repo-Bench: 42,3
 
 ### Agentes e uso de computador
 - OSWorld-Verified: 84,3 (+20,4) — encosta no Qwen3.8-Max (86,1)
@@ -44,6 +45,9 @@ Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo f
 - WebArena-Verified: 64,8 (+16,0)
 - CoWorkBench: 70,7 (+9,7) — supera Opus 4.6 Max (68,2)
 - JobBench: 33,4 (+11,6)
+- Agents' Last Exam — Pass@1: 20,4
+- Agents' Last Exam — Score: 42,9
+- RecreationBench: 47,1
 
 ### Conhecimento
 - GPQA Diamond: 89,2
@@ -55,6 +59,11 @@ Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo f
 - OmniDocBench 1.5: 91,1
 - CharXiv (com CI): 90,2
 - RealWorldQA: 85,9
+- BabyVision (com CI): 85,6
+- ERQA: 65,5
+- Vision2Web: 62,9
+- ClawEval-MM (Pass@3): 57,4
+- SWE-MM (bugs multimodais): 38,6 (+12,9)
 
 ## Como rodar localmente
 
