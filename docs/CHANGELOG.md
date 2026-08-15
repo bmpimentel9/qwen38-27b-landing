@@ -11,43 +11,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ## [2026-08-15] — Atualização diária
 
-
 ### Added
-- [Correção R1] Performance Lighthouse + a11y — Portal 30B (QA FAIL) (seo-tech)
-- [Correção R2] JS quebrado na home (querySelector('/guia')) + meta desc + README — Portal 30B (seo-tech)
-- Escrever 2 artigos do dia: Muse Glimmer 30B + tabela de quantização GGUF ≤30B (seo-content)
-- Correção [QA FAIL]: re-target Qwen3.8-27B + integrar/publishar artigos no portal (seo-content)
-- Correção QA: remover aggregateRating fabricado + completar 9 benchmarks no llms.txt (seo)
-- Auto-cura: corrigir 4 customização(ões) perdida(s) pós-update (programadora)
-- [Correção R1] Publicar entrega nav cleanUrls: merge + deploy (trabalho validado, fora de produção) — QA t_1d974fab FAIL (seo-tech)
-- [QA] Validar: Content Strategy & Artigos — Portal 30B (qa)
-- [QA] Validar: Tech SEO & Performance — Portal 30B (qa)
-- [QA] Validar: [Correção R1] Performance Lighthouse + a11y — Portal 30B (QA (qa)
-- [QA] Validar: Correção [QA FAIL]: re-target Qwen3.8-27B + integrar/publish (qa)
-- [QA] Validar: SEO Audit & Schema — Qwen3.8-27B Landing (qa)
-- [QA] Validar: [Correção R2] JS quebrado na home (querySelector('/guia')) + (qa)
-- [QA] Validar: Correção QA: remover aggregateRating fabricado + completar 9 (qa)
-- [PO] Nav consistente: eliminar .html e linkar os 5 artigos do /guia em todas as páginas (seo-tech)
-- [QA] Validar: [PO] Nav consistente: eliminar .html e linkar os 5 artigos d (qa)
-- SEO Audit & Schema — Qwen3.8-27B Landing (seo)
-- Content Strategy & Artigos — Portal 30B (seo-content)
-- Tech SEO & Performance — Portal 30B (seo-tech)
-- 📊 GA4: Analytics & Dashboard — Qwen3.8 Landing (atlas)
-- 🌅 Daily Content 15/08 — modelos locais ≤30B (discovery)
-- 📚 Estruturar documentação inicial do projeto — Arquivista (arquivista)
-- Provisionamento padrão da frota para perfis novos (config glm-5.3 + mem0 + .env) (programadora)
+- `docs/team/PLAYBOOK.md` — metodologia de operação do time Hermes
+  (`f14a0e0`, arquivista).
+- Compilação do board `seo-local-models-30b`: 24 tasks concluídas em
+  2026-08-15 — correções R1/R2 (performance, a11y, SEO), 2 artigos do dia,
+  nav consistente com cleanUrls, GSC e as respectivas validações QA.
+  Detalhes nas entradas "[2026-08-15]" acima; registro completo no board.
 
-### Changed
-- corrige QA R1 (task t_2e42bec9) — ADR-007 GA4 real, raiz consolidada em docs/ com stubs, CHANGELOG completado, ROADMAP sem itens stale
-- PLAYBOOK — metodologia de operação do time Hermes [arquivista]
-- pull request #6 from bmpimentel9/seo-local-models-30b/t_72542ef7-po-nav-consistente-eliminar-.html-e-link
-- aria-expanded + aria-label + type no nav-toggle das 4 páginas portal
-- pull request #5 from bmpimentel9/feat/muse-glimmer-30b-e-tabela-gguf
-- 2 artigos do dia — Muse Glimmer 30B + tabela real de quantização GGUF ≤30B
-- pull request #4 from bmpimentel9/seo-local-models-30b/t_65295f98-po-search-console-verificar-dom-nio-subm
-- adicionar links internos para modelos, hardware, benchmarks e guia
-- hamburguer menu mobile <900px nas páginas portal
-- cleanUrls em todas as páginas + linkar 5 artigos do /guia na home
+*(Entry gerada automaticamente pelo job das 20h e curada pelo Arquivista.)*
 
 ---
 
