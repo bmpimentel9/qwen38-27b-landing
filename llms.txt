@@ -8,6 +8,8 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 
 - [Landing page principal](https://qwen38-27b-landing.vercel.app/) — especificações, gráficos de benchmark, throughput medido, timeline
 - [Guia completo](https://qwen38-27b-landing.vercel.app/guia/) — pillar page com visão geral do Qwen3.8-27B
+- [Meta Muse Glimmer 30B](https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local) — análise do 30B agêntico da Meta: benchmarks oficiais, cruzamento com Qwen3.8-27B, VRAM
+- [Quantização GGUF ≤30B](https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu) — tabela real com GB medidos por quantização (Qwen3.8-27B vs Muse Glimmer 30B)
 - [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e modelos de fronteira
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
 - [Como rodar localmente](https://qwen38-27b-landing.vercel.app/guia/como-rodar) — Ollama, llama.cpp, vLLM, HuggingFace, MLX
@@ -94,6 +96,27 @@ from transformers import AutoProcessor, AutoModelForMultimodalLM
 processor = AutoProcessor.from_pretrained("Qwen/Qwen3.8-27B")
 model = AutoModelForMultimodalLM.from_pretrained("Qwen/Qwen3.8-27B", device_map="auto", torch_dtype="auto")
 ```
+
+## Muse Glimmer 30B (Meta, 10/08/2026)
+
+Segundo modelo de ~30B coberto pelo portal: 29,6B denso (inclui encoder de visão ViT-G/14 ~1,8B), Apache 2.0 sem gate, multimodal, destilado do Muse Spark via logit distillation. Primeiro modelo grande propósito-construído para agentes locais always-on (tool calling MCP, LLM-as-a-judge). Atenção híbrida [Local×3, Global] com sliding window 2048. Reasoning configurável low/medium/high/xhigh. Drafter DFlash (speculative decoding): RTX 5090 de 74,9 para 233,4 tok/s (3,1x).
+
+Benchmarks oficiais (Muse Glimmer High Reasoning vs Qwen3.6-27B / Gemma4-31B): MCP Atlas 75,5 (vs 62,5/54,2) · DeepSearch QA 74,6 · SWE-Bench Pro 51,2 · AIME 2026 94,7 · OSWorld-Verified 65,9 (Qwen3.6: 75,6). Nota de honestidade: o benchmark oficial da Meta compara com Qwen3.6-27B, não com o Qwen3.8-27B; não há head-to-head oficial entre Muse Glimmer e Qwen3.8-27B. Nos 4 benchmarks comuns aos dois model cards, o Qwen3.8-27B leva (SWE-Bench Pro 61,7 vs 51,2; OSWorld 84,3 vs 65,9; GPQA 89,2 vs 83,5; IFBench 79,5 vs 77,0).
+
+## Tabela GGUF real (GB medidos via HF API, 15/08/2026)
+
+| Quant | Qwen3.8-27B | Muse Glimmer 30B |
+|---|---|---|
+| UD-IQ2_M | 10,32 GB | 12,26 GB |
+| UD-Q3_K_XL | 13,44 GB | 13,36 GB |
+| UD-Q4_K_XL | 17,92 GB | 15,88 GB |
+| Q5_K_M | 19,83 GB | 19,19 GB (UD-Q5_K_M) |
+| Q6_K | 22,88 GB | 26,27 GB (UD-Q6_K_XL) |
+| Q8_0 | 29,05 GB | 29,61 GB |
+| mmproj (visão) | 0,93 GB | 1,4-3,85 GB |
+| drafter DFlash | — | 1,63 GB |
+
+Setup completo Muse Q4_K_XL + mmproj + drafter ≈ 18,9 GB → GPU 24GB com folga. Qwen3.8 Q4_K_M (17,11 GB) + mmproj ≈ 18 GB.
 
 ## Throughput medido
 

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantização GGUF ≤30B: quanto cabe na sua GPU? (tabela real)</title>
+    <meta name="description" content="Tabela real de quantização GGUF (Qwen3.8-27B vs Muse Glimmer 30B) com GB medidos no HF: Q2 a Q8, mmproj, drafter e qual GPU roda cada nível.">
+    <meta name="keywords" content="quantização GGUF, tabela GGUF, Q4_K_M vs Q4_K_XL, quanto de VRAM para 30B, rodar LLM em GPU 16GB, rodar LLM em 24GB, Qwen3.8-27B GGUF, Muse Glimmer GGUF, mmproj, llama.cpp quantização, IQ2_M, Q3_K_XL, Q5_K_M, Q8_0">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Quantização GGUF: quanto cabe na sua GPU? Tabela real de 30B">
+    <meta property="og:description" content="GB medidos um a um via Hugging Face API: Qwen3.8-27B vs Muse Glimmer 30B, de IQ2 a Q8, com mmproj e drafter. Descubra sua GPU roda.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-15T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="quantização GGUF">
+    <meta property="article:tag" content="hardware local">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quantização GGUF ≤30B: quanto cabe na sua GPU?">
+    <meta name="twitter:description" content="Tabela real com GB medidos: Qwen3.8-27B vs Muse Glimmer 30B, de Q2 a Q8 + mmproj + drafter.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Quantização GGUF ≤30B: quanto cabe na sua GPU? Tabela real com GB medidos",
+          "description": "Tabela real de quantização GGUF para modelos de 30B (Qwen3.8-27B e Muse Glimmer 30B) com tamanhos em GB medidos arquivo por arquivo via Hugging Face API: IQ2 a Q8, mmproj e drafter DFlash, com recomendação de GPU por nível.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-15",
+          "dateModified": "2026-08-15",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu",
+          "proficiencyLevel": "Beginner"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Quanto de VRAM preciso para rodar um modelo de 30B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Depende da quantização: IQ2_M (~10-12 GB) cabe em GPU de 12-16GB; Q3_K_XL (~13 GB) em 16GB; Q4_K_XL/Q4_K_M (~16-18 GB) em 24GB; Q6/Q8 (~23-30 GB) exige 32-40GB+ (Strix Halo ou 2×24GB). Some 2-6 GB de overhead de contexto/KV cache ao tamanho do arquivo."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual quantização escolher: Q4_K_M, Q4_K_XL ou Q5_K_M?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O sweet spot atual é o Q4_K_XL da Unsloth: mantém quase toda a qualidade do Q5 com o tamanho do Q4 (~16-18 GB para um 30B, cabe em GPU de 24GB). Q5_K_M se você tem 27GB+ e quer mais fidelidade; Q3_K_XL se está limitado a 16GB."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que é o arquivo mmproj e preciso dele?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "mmproj é o projetor multimodal que carrega o encoder de visão do modelo. Se você vai passar imagens/screenshots para o modelo (Qwen3.8-27B e Muse Glimmer 30B são multimodais), precisa dele além do GGUF principal: ~0,93 GB no Qwen, 1,4-3,85 GB no Muse Glimmer. Sem imagens, pode ignorar."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Quantização GGUF", "item": "https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .gpu-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
+        .gpu-card { flex: 1; min-width: 200px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+        .gpu-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+        .gpu-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Quantização GGUF ≤30B: quanto cabe na sua GPU? A tabela real</h1>
+        <p class="lead">GB medidos um a um, arquivo por arquivo, via Hugging Face API — Qwen3.8-27B vs Muse Glimmer 30B, de IQ2 a Q8, incluindo mmproj e drafter. Chegou aqui com uma GPU e uma pergunta; sai com a resposta.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
+            <li><a href="#tabela-real">A tabela real: GB medidos por quantização</a></li>
+            <li><a href="#gpu-por-tier">Qual GPU roda o quê</a></li>
+            <li><a href="#setup-completo">O setup completo pesa mais que o modelo</a></li>
+            <li><a href="#ler-quant">Como ler os nomes das quantizações</a></li>
+            <li><a href="#baixar">Como baixar e rodar</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resposta-rapida">A resposta rápida</h2>
+    <p><strong>Quanto de VRAM preciso para rodar um modelo de ~30B?</strong> Depende da quantização — some 2 a 6 GB de overhead (contexto + KV cache) ao tamanho do arquivo:</p>
+    <table>
+        <tr><th>Quantização (30B)</th><th>Tamanho típico</th><th>GPU mínima confortável</th></tr>
+        <tr><td>IQ2_M</td><td>10–12 GB</td><td>12–16 GB</td></tr>
+        <tr><td>Q3_K_XL</td><td>~13,4 GB</td><td>16 GB</td></tr>
+        <tr class="highlight"><td><strong>Q4_K_XL / Q4_K_M</strong></td><td><strong>~16–18 GB</strong></td><td><strong>24 GB</strong></td></tr>
+        <tr><td>Q5_K_M</td><td>~20 GB</td><td>24 GB (apertado) / 27 GB+</td></tr>
+        <tr><td>Q6_K / Q8_0</td><td>23–30 GB</td><td>40 GB+ (Strix Halo, 2×24GB)</td></tr>
+    </table>
+
+    <h2 id="tabela-real">A tabela real: GB medidos por quantização</h2>
+    <p>Nada de estimativa por regra de polegar: os números abaixo foram <strong>medidos arquivo por arquivo</strong> via Hugging Face API (tree endpoint) nos repositórios GGUF da Unsloth, em 15/08/2026. São os dois modelos de ~30B do momento — o <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer 30B</a> da Meta (lançado 10/08) e o <a href="/guia/benchmarks-comparativos">Qwen3.8-27B</a> da Alibaba (14/08).</p>
+    <table>
+        <tr><th>Quantização</th><th>Qwen3.8-27B</th><th>Muse Glimmer 30B</th></tr>
+        <tr><td>UD-IQ2_M</td><td>10,32 GB</td><td>12,26 GB</td></tr>
+        <tr><td>UD-Q3_K_XL</td><td>13,44 GB</td><td>13,36 GB</td></tr>
+        <tr class="highlight"><td><strong>UD-Q4_K_XL</strong></td><td><strong>17,92 GB</strong></td><td><strong>15,88 GB</strong></td></tr>
+        <tr><td>Q5_K_M / UD-Q5_K_M</td><td>19,83 GB</td><td>19,19 GB</td></tr>
+        <tr><td>Q6_K / UD-Q6_K_XL</td><td>22,88 GB</td><td>26,27 GB</td></tr>
+        <tr><td>Q8_0</td><td>29,05 GB</td><td>29,61 GB</td></tr>
+        <tr><td>mmproj (encoder de visão)</td><td>0,93 GB</td><td>1,4–3,85 GB</td></tr>
+        <tr><td>drafter DFlash (spec. decoding)</td><td>—</td><td>1,63 GB</td></tr>
+    </table>
+    <p><em>Fonte: Hugging Face API — <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF">unsloth/Muse-Glimmer-30B-GGUF</a>, coletados em 15/08/2026. UD- = Dynamic Unsupervised Quantization da Unsloth.</em></p>
+    <div class="callout">
+        <strong>Três leituras que a tabela entrega:</strong> (1) no sweet spot Q4_K_XL, o Muse Glimmer é <strong>2 GB menor</strong> que o Qwen3.8 (15,88 vs 17,92) — diferença que vira contexto extra na mesma GPU; (2) em Q8_0 os dois convergem para ~29-30 GB, como esperado; (3) o Qwen3.8 publica Q5_K_M e Q6_K clássicos, enquanto o Muse Glimmer cobre a faixa alta com UD-Q5/Q6.
+    </div>
+
+    <h2 id="gpu-por-tier">Qual GPU roda o quê</h2>
+    <div class="gpu-row">
+        <div class="gpu-card">
+            <h3>12–16 GB</h3>
+            <p>RTX 4070 Ti Super/5070 Ti 16GB, ou Mac 24-32GB unificada. <strong>IQ2_M e Q3_K_XL</strong> dos dois modelos (10–13,4 GB). Espere perda de qualidade perceptível vs Q4, mas roda.</p>
+        </div>
+        <div class="gpu-card">
+            <h3>24 GB</h3>
+            <p>RTX 3090/4090/5090. O <strong>sweet spot</strong>: Q4_K_XL de ambos + mmproj com folga (Muse ≈ 17,3 GB total; Qwen ≈ 18,9 GB). Q5 apertado sem contexto longo.</p>
+        </div>
+        <div class="gpu-card">
+            <h3>40 GB+ (unificada ou 2×24)</h3>
+            <p>Strix Halo (Radeon 8060S, 40GB), 2×RTX 24GB, Mac 48-64GB. <strong>Q6/Q8</strong> dos dois modelos (23–30 GB) com contexto longo e o drafter DFlash do Muse.</p>
+        </div>
+    </div>
+    <p>Para a tabela completa de setups por tier (incluindo CPU e Mac), veja o <a href="/guia/hardware-local">guia de hardware local</a>.</p>
+
+    <h2 id="setup-completo">O setup completo pesa mais que o modelo</h2>
+    <p>O erro clássico do primeiro download: olhar só o GGUF principal. Um modelo multimodal rodando como agente carrega até três arquivos. Exemplo real com o Muse Glimmer 30B em Q4_K_XL numa GPU de 24GB:</p>
+    <table>
+        <tr><th>Componente</th><th>GB</th><th>O que é</th></tr>
+        <tr><td>UD-Q4_K_XL (modelo)</td><td>15,88</td><td>O LLM em si</td></tr>
+        <tr><td>mmproj (visão)</td><td>~1,4</td><td>Encoder ViT-G/14 — obrigatório para ler imagens/screenshots</td></tr>
+        <tr><td>Drafter DFlash</td><td>1,63</td><td>Speculative decoding — até 3,1× mais rápido (233 tok/s na RTX 5090)</td></tr>
+        <tr class="highlight"><td><strong>Total</strong></td><td><strong>≈ 18,9 GB</strong></td><td><strong>Contexto/KV cache usa o resto da VRAM</strong></td></tr>
+    </table>
+    <p>O mesmo raciocínio vale para o Qwen3.8-27B: Q4_K_M (17,11 GB) + mmproj (0,93 GB) ≈ 18 GB. Nos dois casos, uma GPU de 24GB comporta o setup completo — sobra memória para 32K+ de contexto.</p>
+
+    <h2 id="ler-quant">Como ler os nomes das quantizações</h2>
+    <ul>
+        <li><strong>Q{n}_K_{M/L/XL}</strong> — bits por peso (2 a 8) + layout de quantização; M/L/XL indicam mistura de precisões dentro do modelo (importância por camada). XL &gt; L &gt; M em qualidade e tamanho.</li>
+        <li><strong>IQ{n}</strong> — importância matrix quantization: melhor qualidade por bit em níveis baixos (IQ2_M ~ Q3 de qualidade com tamanho de Q2).</li>
+        <li><strong>UD-</strong> — <em>Unsloth Dynamic</em>: aloca mais bits nas camadas que mais importam. Na prática, UD-Q4_K_XL ≈ qualidade de Q5 com tamanho de Q4 — por isso é o sweet spot recomendado.</li>
+        <li><strong>Q8_0</strong> — 8 bits praticamente sem perda; o "custo" é ~30 GB para um 30B.</li>
+        <li><strong>Regra prática:</strong> em 2026, comece no Q4_K_XL. Desça para Q3/IQ2 só se a VRAM mandar; suba para Q6/Q8 só se sobrar memória e o caso de uso for sensível a qualidade (código, matemática).</li>
+    </ul>
+
+    <h2 id="baixar">Como baixar e rodar</h2>
+    <p>O caminho mais curto com llama.cpp (baixa direto do Hugging Face):</p>
+    <pre><code># Muse Glimmer 30B — Q4_K_XL (sweet spot para GPU 24GB)
+llama-server -hf unsloth/Muse-Glimmer-30B-GGUF:UD-Q4_K_XL \
+  --ctx-size 32768 --temp 1.0 --top-p 0.95 --top-k 64
+
+# Qwen3.8-27B — Q4_K_XL
+llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL \
+  --ctx-size 32768 --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    <p>Prefere Ollama? O <a href="/guia/como-rodar">guia completo de execução</a> cobre Ollama, llama.cpp, vLLM, HuggingFace e MLX, com troubleshooting.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Quanto de VRAM preciso para rodar um modelo de 30B?</h3>
+        <p>Depende da quantização: IQ2_M (10–12 GB) cabe em 12–16GB; Q3_K_XL (~13,4 GB) em 16GB; Q4_K_XL/Q4_K_M (16–18 GB) em 24GB; Q6/Q8 (23–30 GB) pede 40GB+. Some 2–6 GB de overhead de contexto/KV cache ao tamanho do arquivo.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual quantização escolher: Q4_K_M, Q4_K_XL ou Q5_K_M?</h3>
+        <p>O sweet spot atual é o Q4_K_XL da Unsloth: quase toda a qualidade do Q5 com o tamanho do Q4. Q5_K_M se você tem 27GB+; Q3_K_XL se está limitado a 16GB.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O que é o arquivo mmproj e preciso dele?</h3>
+        <p>É o projetor multimodal que carrega o encoder de visão. Se você vai passar imagens ou screenshots (os dois modelos são multimodais), precisa dele além do GGUF principal: ~0,93 GB no Qwen3.8, 1,4–3,85 GB no Muse Glimmer. Só texto? Ignore.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual cabe na minha GPU de 24GB?</h3>
+        <p>Os dois modelos em Q4_K_XL com visão e (no Muse) drafter: Muse ≈ 18,9 GB, Qwen ≈ 18,9 GB — sobra folga para 32K de contexto. Q5 apertado; Q6/Q8 só com 40GB+.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Esses GB são de VRAM ou de disco?</h3>
+        <p>São o tamanho do arquivo (disco). Com <code>--n-gpu-layers 99</code> o modelo inteiro vai para VRAM, então o número é também o piso de VRAM. Contexto/KV cache consomem VRAM adicional dinâmica.</p>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — tabela de quantização GGUF | Tamanhos medidos via Hugging Face API em 15/08/2026 (repositórios Unsloth).</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer 30B</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a></p>
+    </footer>
+</body>
+</html>

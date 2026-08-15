@@ -63,3 +63,11 @@
 - fix(nav): menu responsivo com hamburguer + corrige links para cleanUrls
 - fix(seo): remover aggregateRating fabricado do JSON-LD + completar 26 benchmarks no llms.txt (QA t_251e9f6c)
 - fix(R2): scrollspy SyntaxError (/guia nao-hash), meta desc 152 chars, README GA4
+## [2026-08-15 — artigos do dia] — 2026-08-15
+
+### Added
+- Artigo: Meta Muse Glimmer 30B (/guia/muse-glimmer-30b-agente-local) — 29,6B denso Apache 2.0 multimodal para agentes locais 24/7; benchmarks oficiais vs Gemma4-31B/Qwen3.6-27B + cruzamento honesto com Qwen3.8-27B nos 4 benchmarks comuns (seo-content, discovery t_7ab9d2fd)
+- Artigo: tabela real de quantização GGUF ≤30B (/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu) — GB medidos via HF API (Qwen3.8-27B vs Muse Glimmer), IQ2 a Q8, mmproj, drafter, GPU por tier (seo-content)
+- GA4 (G-016TVX8LEE) + scroll_depth nas 2 novas páginas
+- JSON-LD: TechArticle + SoftwareApplication + BreadcrumbList (artigo 1) e TechArticle + FAQPage + BreadcrumbList (artigo 2)
+- 2 cards novos no índice do /guia; 2 URLs no sitemap.xml; seções Muse Glimmer + tabela GGUF no llms.txt

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Muse Glimmer 30B: o modelo de agentes 24/7 no seu PC</title>
+    <meta name="description" content="Muse Glimmer 30B (Meta): 29,6B denso, Apache 2.0, multimodal e pronto para agentes locais 24/7. Benchmarks, VRAM e como rodar.">
+    <meta name="keywords" content="Muse Glimmer 30B, Meta Muse Glimmer, modelo agêntico local, agente de IA local, LLM 30B, Apache 2.0, multimodal, llama.cpp, GGUF, DFlash, MCP, modelo local 24/7">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Meta Muse Glimmer 30B: o modelo de 30B feito para rodar agentes 24/7 no seu PC">
+    <meta property="og:description" content="29,6B denso, Apache 2.0, multimodal, foco em agentes always-on. Benchmarks oficiais, cruzamento com o Qwen3.8-27B e o que precisa de hardware.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-15T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="Muse Glimmer">
+    <meta property="article:tag" content="modelo agêntico local">
+    <meta property="article:tag" content="LLM 30B">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Meta Muse Glimmer 30B: agentes de IA 24/7 no seu PC">
+    <meta name="twitter:description" content="29,6B denso, Apache 2.0, multimodal. Benchmarks oficiais, cruzamento com Qwen3.8-27B e requisitos de hardware.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Meta Muse Glimmer 30B: o modelo de 30B feito para rodar agentes 24/7 no seu PC",
+          "description": "Análise do Muse Glimmer 30B da Meta: 29,6B denso, Apache 2.0, multimodal, propósito-construído para agentes locais always-on. Benchmarks oficiais, cruzamento com o Qwen3.8-27B e requisitos de VRAM.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-15",
+          "dateModified": "2026-08-15",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local",
+          "about": { "@id": "https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local#software" },
+          "proficiencyLevel": "Intermediate"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local#software",
+          "name": "Muse Glimmer 30B",
+          "applicationCategory": "AIModel",
+          "applicationSubCategory": "Large Language Model",
+          "operatingSystem": "Linux, macOS, Windows",
+          "softwareVersion": "30B",
+          "datePublished": "2026-08-10",
+          "downloadUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+          "license": "https://www.apache.org/licenses/LICENSE-2.0",
+          "author": { "@type": "Organization", "name": "Meta" },
+          "isAccessibleForFree": true,
+          "inLanguage": ["pt-BR", "en", "multilíngue (100+ idiomas)"]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Muse Glimmer 30B", "item": "https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Meta Muse Glimmer 30B: o modelo de 30B feito para rodar agentes 24/7 no seu PC</h1>
+        <p class="lead">A Meta lançou em 10/08 o primeiro modelo grande propósito-construído para agentes locais sempre ligados: 29,6B denso, Apache 2.0, multimodal. Aqui estão os benchmarks oficiais, o cruzamento honesto com o Qwen3.8-27B e o que sua GPU aguenta.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>29,6B</strong> denso</span>
+            <span class="badge"><strong>Apache 2.0</strong> sem gate</span>
+            <span class="badge"><strong>Multimodal</strong> visão embutida</span>
+            <span class="badge"><strong>Q4_K_XL</strong> 15,88 GB → GPU 24GB</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-que-e">O que é o Muse Glimmer 30B</a></li>
+            <li><a href="#especificacoes">Especificações técnicas</a></li>
+            <li><a href="#arquitetura">Arquitetura: atenção híbrida e visão embutida</a></li>
+            <li><a href="#benchmarks">Benchmarks oficiais da Meta</a></li>
+            <li><a href="#vs-qwen38">Muse Glimmer vs Qwen3.8-27B: o cruzamento honesto</a></li>
+            <li><a href="#como-rodar">Como rodar no seu PC (VRAM e GGUF)</a></li>
+            <li><a href="#velocidade">Velocidade: o drafter DFlash (3,1× mais rápido)</a></li>
+            <li><a href="#comunidade">Reações da comunidade</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-que-e">O que é o Muse Glimmer 30B</h2>
+    <p>O <strong>Muse Glimmer 30B</strong> é um modelo de linguagem de pesos abertos lançado pela Meta em 10 de agosto de 2026, apresentado como um <em>open agentic model that runs on your device</em> — um modelo agêntico aberto que roda no seu dispositivo. A definição importa: não é um chatbot tradicional comprimido para caber em memória, e sim um modelo <strong>propósito-construído para agentes locais sempre ligados</strong> (always-on), com chamada de ferramentas, navegação e capacidade de atuar como juiz de outros modelos (LLM-as-a-judge).</p>
+    <p>É, em resumo, a tese deste portal virando produto de big tech: modelos de ~30B densos, com licença permissiva, rodando 24/7 em hardware de consumidor. A diferença é que agora quem assina embaixo é a Meta — com destilação a partir do <strong>Muse Spark</strong> (o modelo maior da família) via logit distillation, suporte a 100+ idiomas e visão embutida sem componentes externos.</p>
+    <p>O sinal de demanda veio rápido: em 5 dias, o repositório oficial somou <strong>246 mil downloads e 1.574 likes</strong> no Hugging Face, a quantização GGUF da Unsloth passou de <strong>682 mil downloads</strong>, e a thread do Hacker News acumulou <strong>1.203 pontos e 638 comentários</strong> — mais que o dobro da repercussão do lançamento do Qwen3.8-27B quatro dias depois.</p>
+
+    <h2 id="especificacoes">Especificações técnicas</h2>
+    <table>
+        <tr><th>Especificação</th><th>Muse Glimmer 30B</th></tr>
+        <tr><td>Parâmetros</td><td><strong>29,6B denso</strong> (inclui o encoder de visão)</td></tr>
+        <tr><td>Camadas / hidden</td><td>52 camadas · hidden size 6.566</td></tr>
+        <tr><td>Atenção</td><td>GQA (32 query / 2 KV) · SwiGLU · RoPE θ=500k</td></tr>
+        <tr><td>Padrão de atenção</td><td>Híbrido <strong>[Local×3, Global]</strong> repetido · sliding window 2.048</td></tr>
+        <tr><td>Encoder de visão</td><td><strong>ViT-G/14 com ~1,8B</strong> (50 camadas, width 1.536)</td></tr>
+        <tr><td>Licença</td><td><strong>Apache 2.0</strong> — sem gate, uso comercial liberado</td></tr>
+        <tr><td>Origem</td><td>Destilado do Muse Spark via logit distillation</td></tr>
+        <tr><td>Idiomas</td><td>100+</td></tr>
+        <tr><td>Raciocínio configurável</td><td>low / medium / high / <strong>xhigh</strong> (via system prompt)</td></tr>
+        <tr><td>Sampling recomendado</td><td>temp 1,0 · top_p 0,95 · top_k 64</td></tr>
+        <tr><td>Lançamento</td><td>10 de agosto de 2026</td></tr>
+    </table>
+    <p>Ficha completa no <a href="https://huggingface.co/meta-models/Muse-Glimmer-30B">model card oficial</a> e no <a href="https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model">anúncio no blog da Meta</a>.</p>
+
+    <h2 id="arquitetura">Arquitetura: atenção híbrida e visão embutida</h2>
+    <p>Duas decisões de arquitetura explicam o posicionamento agêntico do modelo:</p>
+    <ul>
+        <li><strong>Atenção híbrida [Local×3, Global].</strong> A cada bloco, três camadas de atenção local (sliding window de 2.048 tokens) são seguidas por uma camada global. Agentes que rodam o dia inteiro acumulam contexto de tool calls, logs e resultados — o padrão híbrido mantém esse histórico longo barato de processar sem estourar a memória.</li>
+        <li><strong>Visão embutida (ViT-G/14, ~1,8B).</strong> O encoder de percepção faz parte do modelo, não é um acoplamento posterior. Um agente local com o Muse Glimmer lê screenshots, documentos e interfaces gráficas nativamente — requisito básico para uso de computador e automação.</li>
+    </ul>
+    <p>O paralelo com o <a href="/guia/benchmarks-comparativos">Qwen3.8-27B</a> é direto: lá a atenção híbrida intercala 3× Gated DeltaNet com 1× Gated Attention; aqui, 3× atenção local com 1× global. Duas grandes fabricantes chegaram à mesma conclusão para a faixa de ~30B: contexto longo eficiente é requisito de agente, não luxo.</p>
+
+    <h2 id="benchmarks">Benchmarks oficiais da Meta</h2>
+    <p>A tabela abaixo foi publicada pela Meta no lançamento, com o Muse Glimmer em modo <strong>High Reasoning</strong>, contra o Gemma4-31B e o <strong>Qwen3.6-27B</strong> (negrito = melhor da linha):</p>
+    <table>
+        <tr><th>Benchmark</th><th>Muse Glimmer 30B</th><th>Gemma4-31B</th><th>Qwen3.6-27B</th></tr>
+        <tr class="highlight"><td>MCP Atlas (Public)</td><td><strong>75,5</strong></td><td>54,2</td><td>62,5</td></tr>
+        <tr><td>DeepSearch QA</td><td><strong>74,6</strong></td><td>61,7</td><td>71,1</td></tr>
+        <tr><td>𝛕3-Banking</td><td><strong>23,5</strong></td><td>15,1</td><td>16,7</td></tr>
+        <tr><td>WildClawBench</td><td><strong>47,6</strong></td><td>37,6</td><td>43,2</td></tr>
+        <tr><td>Gaia2</td><td><strong>43,3</strong></td><td>36,4</td><td>40,0</td></tr>
+        <tr><td>OSWorld-Verified</td><td>65,9</td><td>58,5</td><td><strong>75,6</strong></td></tr>
+        <tr><td>SWE-Bench Pro</td><td><strong>51,2</strong></td><td>36,9</td><td>50,2</td></tr>
+        <tr><td>SWE-Bench Verified</td><td>76,0</td><td>66,6</td><td><strong>77,2</strong></td></tr>
+        <tr><td>AIME 2026</td><td><strong>94,7</strong></td><td>89,2</td><td>94,1</td></tr>
+        <tr><td>GPQA Diamond (AA)</td><td>83,5</td><td><strong>85,7</strong></td><td>84,2</td></tr>
+        <tr><td>IFBench</td><td><strong>77,0</strong></td><td>76,0</td><td>70,8</td></tr>
+        <tr><td>Beam128K</td><td><strong>65,1</strong></td><td>58,2</td><td>63,0</td></tr>
+    </table>
+    <p>A leitura estratégica: o Muse Glimmer domina justamente os benchmarks <strong>agênticos nativos</strong> — MCP Atlas (chamada de ferramentas via Model Context Protocol) com 75,5 contra 62,5 do Qwen3.6, DeepSearch QA, 𝛕3-Banking e Gaia2. Onde ele perde (OSWorld-Verified, SWE-Bench Verified por margem mínima), o adversário é o próprio Qwen3.6.</p>
+    <div class="callout-warn">
+        <strong>Transparência:</strong> esta tabela é da Meta e compara com o <strong>Qwen3.6-27B — a geração anterior</strong>, não com o Qwen3.8-27B lançado pela Alibaba em 14/08, quatro dias depois do Muse Glimmer. Não existe head-to-head oficial entre Muse Glimmer e Qwen3.8-27B. O cruzamento abaixo é nosso, montado a partir dos dois model cards oficiais.
+    </div>
+
+    <h2 id="vs-qwen38">Muse Glimmer vs Qwen3.8-27B: o cruzamento honesto</h2>
+    <p>O leitor deste portal já conhece o Qwen3.8-27B a fundo (landing, <a href="/guia/benchmarks-comparativos">26 benchmarks publicados</a>, hardware, como rodar). A pergunta óbvia: o novato da Meta aguenta contra o 3.8? Nos quatro benchmarks que aparecem nos dois model cards, o quadro é este:</p>
+    <table>
+        <tr><th>Benchmark</th><th>Muse Glimmer 30B</th><th>Qwen3.8-27B</th><th>Vantagem</th></tr>
+        <tr><td>SWE-Bench Pro</td><td>51,2</td><td><strong>61,7</strong></td><td>Qwen3.8 (+10,5)</td></tr>
+        <tr><td>OSWorld-Verified</td><td>65,9</td><td><strong>84,3</strong></td><td>Qwen3.8 (+18,4)</td></tr>
+        <tr><td>GPQA Diamond</td><td>83,5</td><td><strong>89,2</strong></td><td>Qwen3.8 (+5,7)</td></tr>
+        <tr><td>IFBench</td><td>77,0</td><td><strong>79,5</strong></td><td>Qwen3.8 (+2,5)</td></tr>
+    </table>
+    <div class="callout">
+        <strong>Como ler esta tabela sem se enganar:</strong> os números vêm de model cards de fabricantes diferentes, medidos com harness próprios e configs distintas (Muse em High Reasoning). Serve como ordem de grandeza, não como comparação controlada. Onde o Muse brilha — MCP Atlas 75,5, DeepSearch QA 74,6, 𝛕3-Banking 23,5 — o Qwen3.8-27B simplesmente não publicou resultado: não dá para afirmar quem ganharia.
+    </div>
+    <p>Nossa conclusão editorial para quem vai rodar um dos dois localmente:</p>
+    <ul>
+        <li><strong>Agente always-on com tool calling (MCP), busca profunda e custo por token baixo:</strong> Muse Glimmer 30B. É o perfil para o qual ele foi destilado, e o benchmark de ferramentas (MCP Atlas) mostra isso.</li>
+        <li><strong>Uso de computador, programação agêntica e conhecimento denso:</strong> Qwen3.8-27B. OSWorld-Verified 84,3 e SWE-Bench Pro 61,7 são outro patamar na faixa de 30B.</li>
+        <li><strong>Os dois cabem na mesma máquina</strong> — a tabela de quantização que publicamos mostra os dois em Q4 dentro de uma GPU de 24GB. Agente de ferramentas + agente de código, cada um no seu horário, é setup viável.</li>
+    </ul>
+
+    <h2 id="como-rodar">Como rodar no seu PC (VRAM e GGUF)</h2>
+    <p>O caminho local é o GGUF da <a href="https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF">Unsloth</a> com llama.cpp (o padrão do nosso <a href="/guia/como-rodar">guia de execução local</a>). Tamanhos medidos no repositório:</p>
+    <table>
+        <tr><th>Setup</th><th>GB em disco/VRAM</th><th>GPU confortável</th></tr>
+        <tr><td>UD-Q3_K_XL</td><td>13,36 GB</td><td>16 GB</td></tr>
+        <tr class="highlight"><td><strong>UD-Q4_K_XL</strong> (sweet spot)</td><td><strong>15,88 GB</strong></td><td><strong>24 GB</strong></td></tr>
+        <tr><td>UD-Q4_K_XL + mmproj (visão, ~1,4 GB) + drafter (1,63 GB)</td><td>≈ 18,9 GB</td><td>24 GB com folga</td></tr>
+        <tr><td>UD-Q6_K_XL / Q8_0</td><td>26,27 / 29,61 GB</td><td>40 GB+ (Strix Halo, 2×24GB)</td></tr>
+    </table>
+    <pre><code># llama.cpp — baixa direto do Hugging Face (padrão do guia)
+llama-server -hf unsloth/Muse-Glimmer-30B-GGUF:UD-Q4_K_XL \
+  --ctx-size 32768 \
+  --temp 1.0 --top-p 0.95 --top-k 64</code></pre>
+    <p>Três observações práticas:</p>
+    <ul>
+        <li><strong>Visão:</strong> para usar o encoder ViT-G/14, carregue também o arquivo <code>mmproj</code> do repositório GGUF (de ~1,4 GB na versão leve a 3,85 GB na completa) — a instrução está no README do repo.</li>
+        <li><strong>Contexto consome VRAM além do modelo:</strong> comece com 16–32K de contexto e suba conforme a folga. A tabela completa de GB por quantização — incluindo a comparação direta com o Qwen3.8-27B — está no artigo <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">quanto cabe na sua GPU</a>.</li>
+        <li><strong>Hardware:</strong> para escolher GPU por tier, use o <a href="/guia/hardware-local">guia de hardware local</a>.</li>
+    </ul>
+
+    <h2 id="velocidade">Velocidade: o drafter DFlash (3,1× mais rápido)</h2>
+    <p>O detalhe técnico mais interessante para agentes 24/7 é o <strong>DFlash</strong>, um <em>drafter</em> de speculative decoding por blocos que acompanha o modelo (1,63 GB). A Meta reporta:</p>
+    <table>
+        <tr><th>Hardware</th><th>Sem drafter</th><th>Com DFlash</th><th>Ganho</th></tr>
+        <tr class="highlight"><td>RTX 5090</td><td>74,9 tok/s</td><td><strong>233,4 tok/s</strong></td><td><strong>3,1×</strong></td></tr>
+        <tr><td>Apple M4 Max</td><td>—</td><td>—</td><td>1,5×</td></tr>
+        <tr><td>Apple M5 Max</td><td>—</td><td>—</td><td>1,8×</td></tr>
+    </table>
+    <p>Para um agente rodando pipelines longos, triplicar o throughput muda a matemática do que é viável deixar rodando sozinho durante a noite.</p>
+
+    <h2 id="comunidade">Reações da comunidade</h2>
+    <ul>
+        <li><strong>Hacker News:</strong> <a href="https://news.ycombinator.com/item?id=49241679">1.203 pontos e 638 comentários</a> em 5 dias — a maior repercussão de um modelo da faixa 30B nesta janela.</li>
+        <li><strong>Hugging Face (oficial):</strong> 246.454 downloads · 1.574 likes.</li>
+        <li><strong>Hugging Face (GGUF Unsloth):</strong> 682.188 downloads · 434 likes — a comunidade está baixando para rodar, não para ler.</li>
+        <li><strong>Licença:</strong> Apache 2.0 sem formulário de acesso — downloads no primeiro dia sem fricção, diferente dos modelos gated.</li>
+    </ul>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O Muse Glimmer 30B roda em GPU de 16GB?</h3>
+        <p>Roda. A quantização UD-Q3_K_XL ocupa 13,36 GB — cabe em 16 GB com contexto moderado. Para Q4_K_XL (15,88 GB) com visão e drafter, o confortável é 24 GB. Tabela completa em <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">quantização GGUF: quanto cabe na sua GPU</a>.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual é a licença? Posso usar comercialmente?</h3>
+        <p>Apache 2.0, sem gate nem formulário de acesso. Uso comercial, fine-tuning e redistribuição permitidos.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Muse Glimmer 30B ou Qwen3.8-27B?</h3>
+        <p>Depende do agente: para tool calling (MCP) e busca profunda em loop 24/7, o Muse Glimmer foi propósito-construído (MCP Atlas 75,5). Para uso de computador e programação agêntica, o Qwen3.8-27B publica números superiores (OSWorld 84,3; SWE-Bench Pro 61,7). Não há comparação oficial entre os dois — os números vêm de model cards de fabricantes diferentes.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Precisa de internet para usar?</h3>
+        <p>Não. Uma vez baixado o GGUF, o modelo roda 100% local via llama.cpp, incluindo a visão (arquivo mmproj). Nenhum dado sai da sua máquina.</p>
+    </div>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model">Anúncio oficial no blog da Meta</a></li>
+        <li><a href="https://huggingface.co/meta-models/Muse-Glimmer-30B">Model card oficial (meta-models/Muse-Glimmer-30B)</a></li>
+        <li><a href="https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF">GGUF Unsloth (quantizações e mmproj)</a></li>
+        <li><a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Tabela real de quantização GGUF: Qwen3.8-27B vs Muse Glimmer</a></li>
+        <li><a href="/guia/benchmarks-comparativos">26 benchmarks do Qwen3.8-27B (comparativo completo)</a></li>
+        <li><a href="/guia/hardware-local">Guia de hardware local</a> · <a href="/guia/como-rodar">Como rodar localmente</a> · <a href="/guia/faq">FAQ do portal</a></li>
+    </ul>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — análise do Muse Glimmer 30B | Dados: model card oficial da Meta, Hugging Face API e Hacker News (verificados em 15/08/2026).</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
