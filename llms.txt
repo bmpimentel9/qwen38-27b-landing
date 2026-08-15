@@ -7,6 +7,10 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 ## Páginas do portal
 
 - [Landing page principal](https://qwen38-27b-landing.vercel.app/) — especificações, gráficos de benchmark, throughput medido, timeline
+- [Catálogo de modelos](https://qwen38-27b-landing.vercel.app/modelos) — modelos locais de até 30B: parâmetros, contexto, quantização, hardware
+- [Hardware local](https://qwen38-27b-landing.vercel.app/hardware) — guia de hardware para rodar modelos 30B: GPU, RAM, setups
+- [Benchmarks](https://qwen38-27b-landing.vercel.app/benchmarks) — benchmarks e velocidade de inferência em hardware real
+- [Guia rápido](https://qwen38-27b-landing.vercel.app/guia-rapido) — rode um modelo 30B em 5 minutos (Ollama)
 - [Guia completo](https://qwen38-27b-landing.vercel.app/guia/) — pillar page com visão geral do Qwen3.8-27B
 - [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e modelos de fronteira
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
