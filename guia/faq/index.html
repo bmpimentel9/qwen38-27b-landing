@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — Perguntas Frequentes sobre o Qwen3.8-27B</title>
+    <meta name="description" content="Perguntas frequentes sobre o Qwen3.8-27B. Respostas diretas sobre hardware, performance, quantização, thinking mode, multimodalidade, licença e mais.">
+    <meta name="keywords" content="faq qwen3.8 27b, dúvidas qwen3.8, perguntas frequentes llm local, qwen3.8 ollama dúvidas, quantização llm explicação, thinking mode qwen3.8">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/faq">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="FAQ — Perguntas Frequentes sobre o Qwen3.8-27B">
+    <meta property="og:description" content="Respostas diretas sobre o Qwen3.8-27B: hardware, performance, quantização, thinking mode, multimodalidade, licença e mais.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/faq">
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.15rem; margin: 20px 0 8px; color: var(--accent-2); cursor: pointer; }
+        h3:hover { color: var(--accent); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; cursor: default; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 15px 0; }
+        .faq-item h3 { margin-top: 0; cursor: default; }
+        .faq-item h3:hover { color: var(--accent-2); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia/">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq" class="active">FAQ</a>
+        </nav>
+        <h1>FAQ — Perguntas Frequentes sobre o Qwen3.8-27B</h1>
+        <p class="lead">Respostas diretas sobre o Qwen3.8-27B: o que é, hardware necessário, como rodar, thinking mode, multimodalidade, licença e mais.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-que-e">O que é o Qwen3.8-27B?</a></li>
+            <li><a href="#hardware">Hardware e VRAM</a></li>
+            <li><a href="#performance">Performance e Velocidade</a></li>
+            <li><a href="#instalacao">Instalação e Uso</a></li>
+            <li><a href="#modelo">Sobre o Modelo</a></li>
+            <li><a href="#comparacoes">Comparações</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-que-e">O que é o Qwen3.8-27B?</h2>
+
+    <div class="faq-item">
+        <h3>O que é o Qwen3.8-27B?</h3>
+        <p>O Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) desenvolvido pela equipe Qwen (Alibaba Cloud). É um modelo <strong>denso de 27 bilhões de parâmetros</strong> — todos ativos a cada token, ao contrário de MoE. Tem atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Foi lançado em 14 de agosto de 2026.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qual a diferença entre denso e MoE?</h3>
+        <p>Modelo <strong>denso</strong> ativa todos os parâmetros a cada token (maior qualidade por parâmetro, menor velocidade). Modelo <strong>MoE</strong> (Mixture of Experts) ativa apenas uma fração dos parâmetros (menor qualidade por token, maior velocidade). O Qwen3.8-27B é denso; o Qwen3.6-35B da geração anterior é MoE (ativa ~3B de 35B). No mesmo hardware, o MoE entrega 5,3× mais tokens/s.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>O que é atenção híbrida?</h3>
+        <p>O Qwen3.8-27B usa um padrão que intercala 3 camadas de Gated DeltaNet linear (eficiente para contexto longo) com 1 camada de Gated Attention (raciocínio completo), repetido 16 vezes ao longo de 64 camadas. Isso permite processar 262K tokens sem estourar a memória com KV cache.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>O que é multimodalidade nativa?</h3>
+        <p>A torre de visão é <strong>nativa</strong>, não um adaptador adicionado depois. O modelo entende imagens, vídeos e documentos sem componentes adicionais. Benchmarks confirmam: MathVision 94,6 (matemática a partir de imagens), OmniDocBench 91,1 (leitura de documentos), CharXiv 90,2 (gráficos científicos).</p>
+    </div>
+
+    <h2 id="hardware">Hardware e VRAM</h2>
+
+    <div class="faq-item">
+        <h3>Quanto de VRAM o Qwen3.8-27B precisa?</h3>
+        <p>Depende da quantização:</p>
+        <ul>
+            <li><strong>GGUF 4 bits (Q4_K_M):</strong> ~14–17 GB — RTX 4090/5090, Strix Halo, Mac 32GB+</li>
+            <li><strong>GGUF 5 bits (Q5_K_M):</strong> ~18–19 GB</li>
+            <li><strong>GGUF 8 bits / FP8:</strong> ~27 GB — RTX 5090 32GB, 2× 3090</li>
+            <li><strong>BF16 (sem perdas):</strong> ~54 GB — A100/H100 80GB</li>
+            <li><strong>NVFP4 (Blackwell):</strong> 24,6 GiB — 1M de contexto em GPU única</li>
+        </ul>
+        <p>Para detalhes completos, veja nosso <a href="/guia/hardware-local" style="color:var(--accent)">guia de hardware</a>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B roda em RTX 3090?</h3>
+        <p>Sim. A RTX 3090 tem 24GB de VRAM, suficiente para Q4_K_M (~17GB) com folga para KV cache. É o melhor custo-benefício para LLMs locais em 2026 — usada por ~R$ 3.500–4.500.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B roda no Mac?</h3>
+        <p>Sim. Macs com Apple Silicon e 32GB+ de memória unificada rodam o Qwen3.8-27B via Ollama MLX (<code>ollama run qwen3.8:27b-mlx</code>) ou mlx-lm. MacBook Pro M4 Max (36/48GB), Mac Studio M2 Max (64GB) e Mac Studio M2 Ultra (128GB) são os recomendados.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Consigo rodar sem placa de vídeo (CPU only)?</h3>
+        <p>Tecnicamente sim via llama.cpp, mas o throughput é de ~1–3 tokens/s — inviável para uso interativo. Considere apenas para testes ou com um servidor com 64GB+ de RAM.</p>
+    </div>
+
+    <h2 id="performance">Performance e Velocidade</h2>
+
+    <div class="faq-item">
+        <h3>Qual a velocidade do Qwen3.8-27B localmente?</h3>
+        <p>Depende do hardware e quantização. Em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan, Q5_K_M: <strong>10,6 tok/s de decode</strong>. Um relato no Hacker News cita ~700 tok/s de prefill e ~30 tok/s de decode em hardware semelhante.</p>
+        <p>Modelo denso é mais lento que MoE: o Qwen3.6-35B MoE entrega 56,6 tok/s no mesmo hardware — 5,3× mais rápido. O 27B denso é melhor como especialista chamado sob demanda.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>O que é thinking mode?</h3>
+        <p>O Qwen3.8-27B tem dois modos: <strong>Thinking</strong> (padrão, com raciocínio passo a passo visível) e <strong>Instruct</strong> (resposta direta sem raciocínio explícito). O thinking mode é controlado por <code>reasoning_effort</code> (xhigh, medium, low) e <code>preserve_thinking</code> (mantém contexto de raciocínio entre mensagens, ativo por padrão).</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Como configurar sampling corretamente?</h3>
+        <ul>
+            <li><strong>Thinking:</strong> temp 1.0, top_p 0.95, top_k 20</li>
+            <li><strong>Instruct:</strong> temp 0.7, top_p 0.80, repetition_penalty 1.5</li>
+        </ul>
+        <div class="callout" style="margin-top:10px"><strong>NUNCA use temperature=0 no thinking mode.</strong> O modelo entra em loop repetitivo.</div>
+    </div>
+
+    <h2 id="instalacao">Instalação e Uso</h2>
+
+    <div class="faq-item">
+        <h3>Como instalar o Qwen3.8-27B via Ollama?</h3>
+        <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>ollama run qwen3.8:27b</code></pre>
+        <p>Um comando puxa o modelo quantizado (18GB, 256K contexto, texto + imagem). Para o guia completo, veja <a href="/guia/como-rodar" style="color:var(--accent)">como rodar o Qwen3.8-27B</a>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Como rodar via llama.cpp?</h3>
+        <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL \
+  --ctx-size 262144 \
+  --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    </div>
+
+    <div class="faq-item">
+        <h3>Como rodar via vLLM?</h3>
+        <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>vllm serve Qwen/Qwen3.8-27B \
+  --max-model-len 262144 \
+  --reasoning-parser qwen3</code></pre>
+        <p>Requer vLLM ≥ 0.27.2.</p>
+    </div>
+
+    <h2 id="modelo">Sobre o Modelo</h2>
+
+    <div class="faq-item">
+        <h3>Qual a licença do Qwen3.8-27B?</h3>
+        <p><strong>Apache 2.0</strong> — permite uso comercial e modificação sem restrições. É uma das licenças mais permissivas do ecossistema de LLMs.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Quando o Qwen3.8-27B foi lançado?</h3>
+        <p>Os pesos foram liberados em <strong>14 de agosto de 2026</strong> no Hugging Face (Qwen/Qwen3.8-27B). O anúncio da família Qwen3.8 ocorreu em 3 de agosto (Qwen3.8-Max via API); 11 dias depois os pesos do 27B foram publicados. Quantizações GGUF da Unsloth estavam disponíveis no mesmo dia.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qual a família Qwen3.8?</h3>
+        <ul>
+            <li><strong>Qwen3.8-27B</strong> — 27B denso · este modelo (pesos abertos, Apache 2.0)</li>
+            <li><strong>Qwen3.8-2.4T-A95B</strong> — 2,4T MoE, ~95B ativos</li>
+            <li><strong>Qwen3.8-Max</strong> — Flagship (API apenas, $2/$6/$0,25 cache)</li>
+        </ul>
+    </div>
+
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B fala português?</h3>
+        <p>Sim. Como modelo multilíngue treinado pela Qwen, o Qwen3.8-27B compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. A qualidade em português é boa para conversação, programação e análise de documentos.</p>
+    </div>
+
+    <h2 id="comparacoes">Comparações</h2>
+
+    <div class="faq-item">
+        <h3>Qwen3.8-27B vs Qwen3.6-35B (MoE): qual escolher?</h3>
+        <p><strong>Qwen3.8-27B (denso):</strong> melhor qualidade por parâmetro, melhor em agentes (OSWorld 84,3 vs 63,9). Escolha para raciocínio agêntico de horizonte longo.</p>
+        <p><strong>Qwen3.6-35B (MoE):</strong> 5,3× mais rápido no mesmo hardware (56,6 vs 10,6 tok/s). Escolha para conversa contínua e uso interativo fluido.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qwen3.8-27B vs GPT-OSS-20B?</h3>
+        <p>O Qwen3.8-27B tem contexto nativo 2× maior (262K vs 128K), multimodalidade nativa, thinking mode e 26 benchmarks publicados. O GPT-OSS-20B é menor e mais rápido (20B total, ~3,6B ativos). Para raciocínio agêntico e contexto longo, o Qwen3.8-27B é superior.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qwen3.8-27B vs ChatGPT: qual é melhor?</h3>
+        <p>Em benchmarks agênticos, o Qwen3.8-27B (modelo local de 27B) chega perto de modelos de fronteira: OSWorld 84,3 (vs Qwen3.8-Max 86,1), CoWorkBench 70,7 (supera Opus 4.6 Max 68,2). Mas em conhecimento geral amplo, modelos de fronteira como GPT-5.6 ainda têm vantagem (GPQA 94,6 vs 89,2). A vantagem do Qwen3.8-27B é rodar localmente, com privacidade total e sem custo de API.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Os benchmarks são verificados independentemente?</h3>
+        <p><strong>Não.</strong> Todos os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. As colunas de fronteira vêm de model cards de terceiros, medidos com harness próprios — servem como ordem de grandeza, não como comparação controlada.</p>
+    </div>
+
+    <div class="callout">
+        <strong>Não encontrou sua resposta?</strong> Confira nosso <a href="/guia/como-rodar" style="color:var(--accent)">guia de instalação passo a passo</a> ou a <a href="/guia/comunidade-casos-uso" style="color:var(--accent)">seção de casos de uso da comunidade</a>. Para dúvidas técnicas específicas, a comunidade <a href="https://reddit.com/r/LocalLLaMA" style="color:var(--accent)">r/LocalLLaMA</a> é muito ativa.
+    </div>
+
+    <footer>
+        <p>Guia Qwen3.8-27B — FAQ | Baseado em perguntas frequentes da comunidade (Hacker News, r/LocalLLaMA, X) e documentação oficial.</p>
+        <p>Última atualização: agosto 2026 | <a href="/guia/">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a></p>
+    </footer>
+</body>
+</html>
