@@ -13,6 +13,13 @@ comunidade.
   (a única requisição externa é a fonte Inter/JetBrains Mono no Google Fonts).
 - `vercel.json` — deploy estático na Vercel.
 
+## Deploy
+
+O projeto na Vercel está conectado a este repositório, com `main` como branch de
+produção: todo push na `main` publica sozinho, e cada PR ganha um deploy de
+pré-visualização. Antes disso o deploy era feito por upload de arquivo, o que
+deixava o site e o repositório divergirem em silêncio.
+
 ## Design
 
 O layout é modelado no **Geist**, o design system open-source da Vercel:
