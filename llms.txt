@@ -1,0 +1,81 @@
+# Qwen3.8-27B Portal
+
+> Portal sobre o modelo de linguagem Qwen3.8-27B (27B denso, Apache 2.0) — especificações, benchmarks, requisitos de hardware e como rodar localmente.
+
+Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lançado pela Alibaba/Qwen em 14 de agosto de 2026. É um modelo denso de 27 bilhões de parâmetros com atenção híbrida, 262K tokens de contexto nativo (1M com RoPE) e multimodalidade nativa. Compete com modelos de fronteira em programação agêntica e uso de computador, e pode rodar em GPU de consumidor com quantização de 4 bits.
+
+## Especificações
+
+- **Parâmetros:** 27B (denso, não MoE)
+- **Licença:** Apache 2.0
+- **Contexto:** 262K nativo, 1M com RoPE scaling
+- **Atenção:** Híbrida (GQA + sliding window)
+- **Multimodalidade:** Nativa (texto + imagem)
+- **Vocabulário:** 151K tokens
+- **Treinamento:** 18T tokens
+
+## Benchmarks (26 no total)
+
+Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo fabricante.
+
+### Código e raciocínio
+- HumanEval: 92.1%
+- MBPP: 89.4%
+- LiveCodeBench: 58.3%
+- SWE-Bench Verified: 41.2%
+
+### Matemática
+- GSM8K: 94.7%
+- MATH: 78.3%
+- AIME 2024: 36.2%
+
+### Conhecimento geral
+- MMLU: 84.6%
+- MMLU-Pro: 67.8%
+- C-Eval: 88.9%
+- AGIEval: 72.1%
+
+### Uso de ferramentas e agentes
+- BFCL v3: 68.4%
+- τ-bench: 52.7%
+
+## Como rodar localmente
+
+### Requisitos de hardware
+- **Mínimo (4-bit quantized):** 16GB VRAM (RTX 4080, RX 7900 XTX)
+- **Recomendado (8-bit):** 32GB VRAM (RTX 4090, ou 2x RTX 3090)
+- **Full precision (16-bit):** 54GB VRAM (A100 80GB, ou 2x RTX 4090 com offload)
+
+### Via Ollama
+```bash
+ollama run qwen3.8:27b
+```
+
+### Via llama.cpp
+```bash
+llama-server -m Qwen3.8-27B-Q4_K_M.gguf -c 32768 --n-gpu-layers 99
+```
+
+### Via Hugging Face Transformers
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model = AutoModelForCausalLM.from_pretrained(
+    "Qwen/Qwen3.8-27B",
+    torch_dtype="auto",
+    device_map="auto"
+)
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3.8-27B")
+```
+
+## Throughput medido
+
+Medições próprias em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan:
+- **Decode:** ~28 tokens/s (Q4_K_M)
+- **Prefill:** ~420 tokens/s
+
+## Links
+
+- [Model card no Hugging Face](https://huggingface.co/Qwen/Qwen3.8-27B)
+- [Portal completo](https://qwen38-27b-landing.vercel.app/)
+- [Código-fonte](https://github.com/bmpimentel9/qwen38-27b-landing)

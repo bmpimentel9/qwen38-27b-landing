@@ -20,10 +20,21 @@
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0a'/><text x='50' y='72' font-size='58' font-family='monospace' font-weight='700' fill='%239085e9' text-anchor='middle'>Q</text></svg>">
+<link rel="manifest" href="/manifest.json">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QWEN3827B"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-QWEN3827B',{'anonymize_ip':true});
+</script>
 
 <script type="application/ld+json">
 {
@@ -33,6 +44,9 @@
   "inLanguage": "pt-BR",
   "datePublished": "2026-08-14",
   "dateModified": "2026-08-15",
+  "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://github.com/bmpimentel9" },
+  "publisher": { "@type": "Organization", "name": "Portal 30B", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/",
   "about": {
     "@type": "SoftwareApplication",
     "name": "Qwen3.8-27B",
@@ -41,6 +55,44 @@
     "license": "https://www.apache.org/licenses/LICENSE-2.0",
     "author": { "@type": "Organization", "name": "Qwen — Alibaba" }
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://qwen38-27b-landing.vercel.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Qwen3.8-27B", "item": "https://qwen38-27b-landing.vercel.app/#top" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que é o Qwen3.8-27B?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Qwen3.8-27B é um modelo de linguagem de pesos abertos (Apache 2.0), denso de 27 bilhões de parâmetros, com atenção híbrida, 262K de contexto nativo e multimodalidade nativa." }
+    },
+    {
+      "@type": "Question",
+      "name": "Quanto de VRAM o Qwen3.8-27B precisa?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Com quantização de 4 bits (Q4_K_M), o modelo roda em 16GB de VRAM. Com 8 bits, 32GB. Em precisão completa (16 bits), 54GB." }
+    },
+    {
+      "@type": "Question",
+      "name": "Como rodar o Qwen3.8-27B localmente?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Via Ollama (ollama run qwen3.8:27b), llama.cpp (llama-server -m Qwen3.8-27B-Q4_K_M.gguf) ou Hugging Face Transformers com AutoModelForCausalLM." }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual a licença do Qwen3.8-27B?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Apache 2.0 — permite uso comercial e modificação sem restrições." }
+    }
+  ]
 }
 </script>
 
@@ -915,6 +967,11 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
   </div>
 </footer>
 
+<noscript>
+  <p style="text-align:center;padding:20px;background:#fff3cd;color:#664d03;font-size:14px;">
+    Esta página funciona melhor com JavaScript. O conteúdo principal está acessível, mas a filtragem de benchmarks e o copiar comandos não funcionarão.
+  </p>
+</noscript>
 <script>
 (function(){
   "use strict";
