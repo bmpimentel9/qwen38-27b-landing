@@ -9,8 +9,11 @@ comunidade.
 
 ## Arquitetura
 
-- `index.html` — página estática única, sem build e sem dependências de runtime
-  (a única requisição externa é a fonte Inter/JetBrains Mono no Google Fonts).
+- `index.html` — página estática única, sem build e sem dependências de runtime.
+  Zero requisições externas: fontes trocadas por font stack de sistema (antes Google
+  Fonts, que era render-blocking e segurava o LCP em 4.8s). GA4 removido (ID
+  placeholder não coletava dados reais; reativar apenas com ID válido).
+- `og-image.png` — Open Graph/Twitter Card 1200×630, gerado do `og-image.svg`.
 - `vercel.json` — deploy estático na Vercel.
 
 ## Deploy
@@ -23,8 +26,8 @@ deixava o site e o repositório divergirem em silêncio.
 ## Design
 
 O layout é modelado no **Geist**, o design system open-source da Vercel:
-superfícies neutras quase monocromáticas, hairlines de 1px, tipografia Inter com
-JetBrains Mono para números e código, raio de 8/12px e densidade de documentação
+superfícies neutras quase monocromáticas, hairlines de 1px, font stack de sistema
+(system-ui) com ui-monospace para números e código, raio de 8/12px e densidade de documentação
 técnica. Tema claro e escuro com alternância manual (a preferência fica no
 `localStorage`; o padrão segue o sistema).
 

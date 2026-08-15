@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#171717"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9085e9"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#accent)"/>
+  <!-- Q logo -->
+  <rect x="80" y="180" width="120" height="120" rx="26" fill="#0d0d0d" stroke="#333" stroke-width="1"/>
+  <text x="140" y="265" font-family="ui-monospace, monospace" font-size="72" font-weight="700" fill="#9085e9" text-anchor="middle">Q</text>
+  <!-- Title -->
+  <text x="240" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="800" fill="#ededed" letter-spacing="-1">Qwen3.8-27B</text>
+  <text x="240" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="500" fill="#8b8b8b">pesos abertos · desempenho de fronteira · hardware local</text>
+  <!-- KPIs -->
+  <g font-family="ui-monospace, monospace" font-size="36" font-weight="700">
+    <text x="80" y="400" fill="url(#accent)">27B</text>
+    <text x="80" y="440" font-size="16" font-weight="500" fill="#6f6f6f">parâmetros densos</text>
+    <text x="280" y="400" fill="url(#accent)">262K</text>
+    <text x="280" y="440" font-size="16" font-weight="500" fill="#6f6f6f">contexto nativo</text>
+    <text x="520" y="400" fill="url(#accent)">Apache 2.0</text>
+    <text x="520" y="440" font-size="16" font-weight="500" fill="#6f6f6f">licença aberta</text>
+    <text x="780" y="400" fill="url(#accent)">26</text>
+    <text x="780" y="440" font-size="16" font-weight="500" fill="#6f6f6f">benchmarks oficiais</text>
+  </g>
+  <!-- URL -->
+  <text x="80" y="540" font-family="ui-monospace, monospace" font-size="20" font-weight="500" fill="#6f6f6f">qwen38-27b-landing.vercel.app</text>
+</svg>
