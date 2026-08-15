@@ -49,8 +49,37 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0a'/><text x='50' y='72' font-size='58' font-family='monospace' font-weight='700' fill='%239085e9' text-anchor='middle'>Q</text></svg>">
 <link rel="manifest" href="/manifest.json">
 
-<!-- Google Analytics 4 removido: ID placeholder (G-QWEN3827B) não coleta dados reais.
-     Para reativar, inserir ID válido e re-adicionar o script gtag. Ver README. -->
+<!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691)
+     Measurement ID real criado em 15/08/2026. Enhanced measurement ativo no stream
+     (page_view, scroll, click_outbound, file_download, site_search, video_start).
+     Eventos custom abaixo: scroll_depth (25/50/75/100) e search (busca do portal). -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+
+/* scroll_depth: dispara uma vez por limiar (25/50/75/100%) */
+(function(){
+  var fired={};
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    if(max<=0)return;
+    var pct=Math.round((h.scrollTop||document.body.scrollTop)/max*100);
+    [25,50,75,100].forEach(function(t){
+      if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+    });
+    if(fired[100])window.removeEventListener('scroll',onScroll);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
+
+/* search: expõe qwenTrackSearch(termo) para o campo de busca do portal */
+window.qwenTrackSearch=function(termo){
+  if(termo&&termo.trim().length>1){gtag('event','search',{search_term:termo.trim().slice(0,100)});}
+};
+</script>
 <!-- Fontes: removido Google Fonts (render-blocking, LCP 4.8s).
      Trocado para font stack de sistema — zero requests externos, LCP melhora ~700ms. -->
 
