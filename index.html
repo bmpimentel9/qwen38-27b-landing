@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Qwen3.8-27B — Portal de Modelos Locais de 30B</title>
-<meta name="description" content="Qwen3.8-27B: 27B denso de pesos abertos (Apache 2.0) com atenção híbrida, 262K de contexto nativo (1M com RoPE) e multimodalidade nativa. Os 26 benchmarks do model card, requisitos de hardware, throughput medido e as reações da comunidade.">
+<meta name="description" content="Qwen3.8-27B: 27B denso, Apache 2.0, 262K de contexto (1M c/ RoPE). 26 benchmarks do model card, hardware necessário e throughput medido em máquina real.">
 <meta name="keywords" content="Qwen3.8-27B, Qwen3.8, Qwen, LLM, modelo de linguagem, pesos abertos, open weights, Apache 2.0, 27B, modelo local, local LLM, multimodal, 262K contexto, vLLM, ollama, llama.cpp, GGUF, Strix Halo, RTX 4090, inference local, modelos locais de 30B">
 <meta name="author" content="Bruno Pimentel">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -1134,7 +1134,7 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
 
   /* ---- destaque da seção atual na navegação ---- */
   var links = Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));
-  var sections = links.map(function(a){ return document.querySelector(a.getAttribute("href")); }).filter(Boolean);
+  var sections = links.map(function(a){ var h=a.getAttribute("href"); return h && h[0]==="#" ? document.querySelector(h) : null; }).filter(Boolean);
   if ("IntersectionObserver" in window && sections.length){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){

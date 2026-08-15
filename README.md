@@ -11,8 +11,8 @@ comunidade.
 
 - `index.html` — página estática única, sem build e sem dependências de runtime.
   Zero requisições externas: fontes trocadas por font stack de sistema (antes Google
-  Fonts, que era render-blocking e segurava o LCP em 4.8s). GA4 removido (ID
-  placeholder não coletava dados reais; reativar apenas com ID válido).
+  Fonts, que era render-blocking e segurava o LCP em 4.8s). GA4 ativo com ID
+  válido G-016TVX8LEE (propriedade QWEN38-27B-LANDING 549987691).
 - `og-image.png` — Open Graph/Twitter Card 1200×630, gerado do `og-image.svg`.
 - `vercel.json` — deploy estático na Vercel.
 
