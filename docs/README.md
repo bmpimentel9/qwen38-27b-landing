@@ -39,8 +39,10 @@ depois.
 ## Manutenção
 
 A documentação é mantida pelo **Arquivista**, o agente de documentação do
-Hermes. Um cron job diário (20h) verifica tasks concluídas e atualiza o
-CHANGELOG; decisões e roadmap são atualizadas conforme eventos acontecem.
+Hermes. Um job do agendador do Hermes (diário, 20h, perfil `arquivista`)
+executa `~/.hermes/scripts/daily_doc.py`, que compila as tasks concluídas
+no CHANGELOG e faz commit + push quando há mudanças; decisões e roadmap são
+atualizadas conforme eventos acontecem.
 
 Para sugerir mudanças, abra uma issue ou edite diretamente — todo documento é
 texto plano versionado junto com o código.

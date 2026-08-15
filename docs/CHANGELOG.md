@@ -1,18 +1,105 @@
 # Changelog
 
-Registro de mudanças do projeto **Qwen3.8-27B landing page**.
+Registro de mudanças do projeto **Qwen3.8-27B landing page / Portal de
+Modelos Locais de 30B**.
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
-## [Não publicado]
+## [2026-08-15] — Artigos do dia: Muse Glimmer 30B + tabela GGUF, e navegação consistente
+
+### Added
+- **2 artigos do dia** (`188ba96`, task `t_7ab9d2fd` — seo-content + discovery):
+  - *Muse Glimmer 30B* (`/guia/muse-glimmer-30b-agente-local`) — 29,6B denso
+    Apache 2.0 multimodal para agentes locais 24/7; benchmarks oficiais vs
+    Gemma4-31B/Qwen3.6-27B + cruzamento honesto com o Qwen3.8-27B nos 4
+    benchmarks comuns.
+  - *Tabela real de quantização GGUF ≤30B*
+    (`/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu`) — GB medidos via
+    HF API (Qwen3.8-27B vs Muse Glimmer), IQ2 a Q8, mmproj, drafter, GPU
+    por tier.
+  - GA4 (`G-016TVX8LEE`) + `scroll_depth` nas 2 novas páginas; JSON-LD
+    (TechArticle + SoftwareApplication/FAQPage + BreadcrumbList); 2 cards
+    no índice do `/guia`; 2 URLs no sitemap; seções novas no `llms.txt`.
+- **Links dos 5 artigos do `/guia` na home** (`40cef50`).
+- **Página 404 com links internos** para modelos, hardware, benchmarks e
+  guia (`5b462e7`).
+
+### Fixed
+- **Navegação consistente em todo o portal** — cleanUrls em todas as páginas
+  do portal e menu hambúrguer mobile (<900px) nas 4 páginas do portal
+  (`40cef50`, `da6a636`; PRs #5 e #6, task `t_72542ef7`).
+- **Acessibilidade do menu hambúrguer** — `aria-expanded`, `aria-label` e
+  `type="button"` no `nav-toggle` das 4 páginas do portal (`0f2fa61`).
+
+---
+
+## [2026-08-15] — Consolidação da documentação em `docs/`
+
+### Changed
+- Documentação consolidada em `docs/`: os `CHANGELOG.md`, `HISTORICO.md` e
+  `ROADMAP.md` da raiz foram mesclados para cá (conteúdo único preservado) e
+  substituídos na raiz por stubs de redirecionamento. ADR-004 marcado como
+  superado pelo ADR-007 (GA4 real). CHANGELOG completado com os commits que
+  faltavam de 2026-08-15. A versão `0.1.0` que vivia na raiz foi absorvida
+  pelas entradas por data.
+  *(Arquivista — task kanban `t_2e42bec9`)*
+
+---
+
+## [2026-08-15] — Correções R1/R2, GA4 real, portal e Search Console
+
+### Added
+- **GA4 real instalado** — Measurement ID `G-016TVX8LEE` (propriedade
+  QWEN38-27B-LANDING, ID 549987691), substituindo o ID placeholder
+  `G-QWEN3827B` que tinha sido removido no `d554f7c`. Tag async com
+  `anonymize_ip:true`; enhanced measurement do stream (page_view, scroll,
+  click_outbound, file_download, site_search, video_*) + eventos custom
+  `scroll_depth` (25/50/75/100%) e helper `qwenTrackSearch()`.
+  (`7afed08` — task "GA4: Analytics & Dashboard", agente atlas)
+- **Verificação do Google Search Console** — meta tag
+  `google-site-verification` em todas as páginas + `GSC_SETUP.md` com o
+  passo a passo; sitemap expandido com as 6 URLs do guia como entradas
+  individuais. (`d256ec3`, PR #4 — task kanban `t_65295f98`)
+- **Portal de modelos locais** — seções Modelos, Hardware, Benchmarks e
+  Guia Rápido; CSS compartilhado em `assets/css/portal.css`; template de
+  artigo em `templates/template-artigo.md`. (`45dcb1a`)
+- **Menu responsivo com hambúrguer** para telas <900px. (`0bbb4a8`)
+- Agente **Arquivista** (Hermes) responsável pela documentação contínua, e
+  rotina `~/.hermes/scripts/daily_doc.py` que compila tasks concluídas no
+  CHANGELOG (agendada diariamente às 20h no perfil do Arquivista).
+
+### Fixed
+- **Scrollspy `SyntaxError` na home** — `document.querySelector('/guia')`
+  usava seletor inválido (href com barra); navegação destacava seção errada
+  e gerava erro no console. (`ffb0c3c`)
+- **`aggregateRating` fabricado removido do JSON-LD** — reviewCount 397 e
+  ratingValue 4,8 não correspondiam a fonte real (risco de penalização
+  manual do Google por rich snippet enganoso). `llms.txt` completado com os
+  26 benchmarks do model card. (`4f4dbb5` — QA `t_251e9f6c`)
+- **Menu sumia em telas <900px** — o CSS escondia o nav sem alternativa;
+  adicionado botão ☰ com dropdown flutuante, e links corrigidos para
+  cleanUrls (`/modelos` em vez de `modelos.html`, que sofria redirect 308).
+  (`0bbb4a8`)
+- Meta description da home encurtada para 152 caracteres (limite 155 do
+  Google). (`ffb0c3c`)
+
+### Changed
+- Título da home atualizado para "Portal de Modelos Locais de 30B";
+  `vercel.json` com `cleanUrls: true` e headers de segurança/cache.
+  (`45dcb1a`, `0bbb4a8`)
+
+---
+
+## [2026-08-15] — Estrutura de documentação inicial
 
 ### Added
 - Pasta `docs/` com documentação estruturada do projeto: `README.md`,
   `CHANGELOG.md`, `HISTORICO.md`, `DECISIONS.md`, `ROADMAP.md`.
-  *(Arquivista — task kanban `t_f56140db`)*
+  `README.md` da raiz atualizado com seção "Documentação" apontando para
+  `docs/`. *(Arquivista — task kanban `t_f56140db`, commit `17d8439`)*
 
 ---
 
@@ -41,7 +128,6 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
   8 redirects.
 - JSON-LD enriquecido: `TechArticle` + `BreadcrumbList` + `FAQPage` (4 Q&As).
 - `noscript` — fallback acessível para usuários sem JS.
-- `preconnect` para `googletagmanager.com`.
 
 ### Fixed
 - Mojibake corrigido no relatório anexado.
@@ -55,8 +141,9 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
   herdando `padding:76px` e desalinhando colunas. Renomeada para `n lead`.
 
 ### Removed
-- **GA4** removido (ID placeholder `G-QWEN3827B` era falso, não coletava dados;
-  reativar apenas com ID válido).
+- **GA4 placeholder removido** (ID `G-QWEN3827B` era falso, não coletava
+  dados). *Reinstalado horas depois com ID real — ver a entrada
+  "[2026-08-15] — Correções R1/R2..." acima e o ADR-007.* (`d554f7c`)
 
 ---
 
