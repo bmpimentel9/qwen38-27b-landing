@@ -2,7 +2,7 @@
 
 > Este documento é o **manual vivo** de como times de agentes autônomos operam.
 > Criado a partir do projeto piloto `seo-local-models-30b` (Qwen3.8-27B Landing).
-> Versão: 0.1.0 | Data: 2026-08-15
+> Versão: 0.2.0 | Data: 2026-08-15 (revisão semanal do Arquivista)
 
 ---
 
@@ -26,18 +26,22 @@ O time Hermes opera em **camadas de autonomia progressiva**:
 
 | Perfil | Tipo | Função | Acionado por |
 |---|---|---|---|
-| **Product Owner** | Headless | Sugere melhorias SEO/GEO, analisa concorrência, cria cards | Cron 6h |
-| **Arquivista** | Headless | Documenta tasks, mantém CHANGELOG, organiza repo | Cron 20h + Kanban |
-| **Daily Research** | Script | Coleta modelos, papers, concorrentes | Cron 7h |
-| **Discovery** | Headless | Valida temas de pesquisa, curadoria | Kanban dispatcher |
-| **SEO Content** | Headless | Escreve artigos PT-BR | Kanban dispatcher |
-| **Redator** | Headless | Revisa tom e clareza | Kanban dispatcher |
-| **SEO Tech** | Headless | Publica, configura infra, SEO técnico | Kanban dispatcher |
-| **SEO** | Headless | Estratégia de busca, GEO, Search Console | Kanban dispatcher |
-| **Atlas** | Headless | Métricas, GA4, dashboards | Kanban dispatcher |
-| **QA** | Headless | Valida qualidade de entregas | Kanban dispatcher (automático) |
-| **Programadora** | Headless | Correções técnicas, auto-cura | Kanban dispatcher |
-| **Dani** | Conversacional | Interface única com Bruno, orquestradora | Mensagem do Bruno |
+| **Product Owner** (`product-owner`) | Headless | Sugere melhorias SEO/GEO, analisa concorrência, cria cards | Cron `product-owner-morning` 06:00 |
+| **Arquivista** (`arquivista`) | Headless | Documenta tasks, mantém CHANGELOG, organiza repo | Cron `arquivista-daily-doc` 20:00 + Kanban |
+| **Daily Research** (script) | Script | Coleta modelos, papers, concorrentes | Cron `daily-research-30b` 07:00 |
+| **Discovery** (`discovery`) | Headless | Valida temas de pesquisa, curadoria | Kanban dispatcher |
+| **SEO Content** (`seo-content`) | Headless | Escreve artigos PT-BR | Kanban dispatcher |
+| **Redator** (`redator`) | Headless | Revisa tom e clareza | Kanban dispatcher |
+| **SEO Tech** (`seo-tech`) | Headless | Publica, configura infra, SEO técnico | Kanban dispatcher |
+| **SEO** (`seo`) | Headless | Estratégia de busca, GEO, Search Console | Kanban dispatcher |
+| **Atlas** (`atlas`) | Headless | Métricas, GA4, dashboards | Kanban dispatcher |
+| **QA** (`qa`) | Headless | Valida qualidade de entregas | Kanban dispatcher (automático) |
+| **Programadora** (`programadora`) | Headless | Correções técnicas, auto-cura | Kanban dispatcher + Cron `auto-cura-hermes` |
+| **Sentinela** (`sentinela`) | Headless | Radar 24/7: monitora logs, gateway, crons, hardware; ao detectar anomalia cria task para a Programadora com diagnóstico | Cron `sentinel-audit` 07:00 + eventos |
+| **Dani** (`default`) | Conversacional | Interface única com Bruno, orquestradora; roda crons globais (briefings, radares, triagem) | Mensagem do Bruno |
+
+> Perfis de suporte ao ecossistema (fora do squad do projeto): `devops`
+> (manutenção preventiva), `security` (auditoria de segurança).
 
 ### 2.2 Como criar um novo agente
 
@@ -54,8 +58,9 @@ hermes profile create <nome> --clone-from seo --description "<propósito>"
 # 2. Escrever SOUL.md (personalidade, sistema de trabalho, regras)
 #    Local: ~/.hermes/profiles/<nome>/SOUL.md
 
-# 3. Profile.yaml com description (essencial pro dispatcher rotear)
-#    Local: ~/.hermes/profiles/<nome>/profile.yaml
+# 3. Definir a description (essencial pro dispatcher rotear)
+hermes profile describe <nome> --text "<propósito em 1-2 frases>"
+#    (equivale a editar ~/.hermes/profiles/<nome>/profile.yaml)
 
 # 4. Testar:
 hermes -p <nome> chat -q "Teste de fumaça"
@@ -72,7 +77,7 @@ hermes -p <nome> chat -q "Teste de fumaça"
 # 1. Criar projeto Hermes
 hermes project create <nome-projeto> --description "<descrição>"
 
-# 2. Clonar/clonar repositório
+# 2. Clonar repositório
 gh repo clone <org>/<repo> ~/<repo>
 
 # 3. Adicionar pasta ao projeto
@@ -86,8 +91,8 @@ hermes project bind-board <nome-projeto> <nome-projeto>
 #    Criar CHANGELOG.md, HISTORICO.md, ROADMAP.md, DECISIONS.md
 
 # 6. Configurar time padrão:
-#    - Product Owner (cron 6h) — se aplicável
-#    - Arquivista (cron 20h)
+#    - Product Owner (cron `product-owner-morning` 06:00) — se aplicável
+#    - Arquivista (cron `arquivista-daily-doc` 20:00)
 #    - Tasks iniciais no kanban
 
 # 7. Verificar:
@@ -130,6 +135,10 @@ hermes project bind-board <nome-projeto> <nome-projeto>
          ─────────────────────────────────────────────────────────
 ```
 
+> Outros crons do ecossistema (perfil `default`/Dani e Programadora):
+> `kanban-briefing` 07:05, `visao-matinal` 07:30, `clis-update` 05:45,
+> `auto-cura-hermes` 07:00/13:00/20:00, `sentinel-audit` 07:00.
+
 ### 3.2 Fluxo de uma task
 
 ```
@@ -137,7 +146,7 @@ hermes project bind-board <nome-projeto> <nome-projeto>
 │  Bruno   │───>│    Kanban    │───>│Dispatcher│───>│Profile│───>│    QA     │
 │ (card)   │    │  (ready)     │    │          │    │(worker)│    │(validação)│
 └──────────┘    └──────────────┘    └──────────┘    └──────────┘    └─────┬─────┘
-                                                                         │
+                                                                        │
                                                ┌─────────────────────────┤
                                                │                         │
                                           ┌────▼────┐             ┌─────▼──────┐
@@ -157,9 +166,9 @@ hermes project bind-board <nome-projeto> <nome-projeto>
 
 | Gatilho | O que acontece | Autonomia |
 |---|---|---|
-| Cron 6h | PO analisa e cria cards | Autônomo (se não houver nada, 0 cards) |
-| Cron 7h | Research coleta dados | Autônomo |
-| Task criada no kanban | Dispatcher pega no próximo tick | Autônomo |
+| Cron 06:00 (`product-owner-morning`) | PO analisa e cria cards | Autônomo (se não houver nada, 0 cards) |
+| Cron 07:00 (`daily-research-30b`) | Research coleta dados | Autônomo |
+| Dispatcher `*/30 * * * *` | Task criada no kanban é pega no próximo tick | Autônomo |
 | QA FAIL | Card de correção automático | Autônomo (até 3 rounds) |
 | QA PASS 3º FAIL | Task vai pra Bruno decidir | **Gate humano** |
 | Publicação de conteúdo | Vercel deploy automático | Autônomo |
@@ -179,7 +188,7 @@ hermes project bind-board <nome-projeto> <nome-projeto>
 | `HISTORICO.md` | Narrativa de decisões e contexto | Arquivista | Por evento |
 | `ROADMAP.md` | Próximos passos e metas | PO + Arquivista | Semanal |
 | `DECISIONS.md` | ADRs (Architecture Decision Records) | Arquivista | Por decisão |
-| `docs/TEAM-PLAYBOOK.md` | Este documento — metodologia de operação | Dani | Contínuo |
+| `docs/team/PLAYBOOK.md` | Este documento — metodologia de operação | Arquivista | Semanal |
 
 ### 4.2 Template de ADR (DECISIONS.md)
 
@@ -216,18 +225,18 @@ hermes profile create <nome> --clone-from seo --description "<propósito>"
 
 # 4. Conectar ao kanban (tasks com assignee = <nome>)
 
-# 5. Se precisar de cron:
+# 5. Se precisar de cron (schedule e prompt são POSICIONAIS):
 hermes cron create \
   --name "<squad>-<funcao>" \
-  --schedule "0 6 * * *" \
-  --script "<script>" \
-  --prompt "<missão>"
+  "0 6 * * *" \
+  "<missão autocontida>" \
+  --script "<script em ~/.hermes/scripts/>"
 ```
 
 ### 5.2 Regras para convidar novos agentes
 
 1. **Sempre headless primeiro** — sem Telegram, sem gateway. Só kanban.
-2. **Profile.yaml com description** — sem isso o dispatcher não acha.
+2. **Description no profile.yaml** — sem isso o dispatcher não acha (`hermes profile describe <nome> --text "..."`).
 3. **SOUL.md obrigatório** — sem personalidade o agente age genérico.
 4. **Teste de fumaça** — `hermes -p <nome> chat -q "teste"` antes de colocar em produção.
 5. **QA obrigatório** — toda entrega de agente novo passa pelo QA antes de virar task.
@@ -255,6 +264,17 @@ hermes cron create \
 ---
 
 ## 7. Métricas de Saúde do Time
+
+### 7.1 Snapshot real — 2026-08-15 (fonte: `hermes kanban stats`)
+
+| Métrica | Valor | Leitura |
+|---|---|---|
+| Tasks concluídas no dia | 24 | ✅ Dia 1 do projeto em operação contínua |
+| Tasks de correção (retrabalho QA) | 9/24 = 37,5% | ⚠️ Acima do alerta de 30% — esperado no dia 1 (calibração de prompts/QA); observar na semana |
+| Validações QA executadas | 8 | ✅ Fluxo QA ativo em série com as entregas |
+| Cards bloqueados | 2 (ambos <24h) | ✅ Ambos aguardando ação humana (credencial GA4, verificação de domínio GSC) |
+
+### 7.2 Métricas e thresholds
 
 | Métrica | Como medir | Alerta |
 |---|---|---|

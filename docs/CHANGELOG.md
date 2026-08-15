@@ -138,6 +138,19 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ## [2026-08-15] — Estrutura de documentação inicial
 
+### Changed
+- **PLAYBOOK.md 0.1.0 → 0.2.0** (revisão semanal do Arquivista, com base em
+  dados reais do sistema): seção 2.1 agora lista `Sentinela` e nomeia os perfis
+  reais (`product-owner`, `qa`, …) com os crons que os acionam
+  (`product-owner-morning` 06:00, `daily-research-30b` 07:00,
+  `arquivista-daily-doc` 20:00, `sentinel-audit`, `auto-cura-hermes`);
+  seção 4.1 corrige o caminho do playbook (`docs/team/PLAYBOOK.md`, não
+  `docs/TEAM-PLAYBOOK.md`) e o mantenedor (Arquivista, semanal); seção 5.1
+  corrige a sintaxe do `hermes cron create` (schedule e prompt são posicionais);
+  seção 7 ganha snapshot real de 2026-08-15 (24 tasks/dia, retrabalho QA 37,5%,
+  2 cards bloqueados <24h).
+  *(Arquivista — task kanban `t_158f6aba`)*
+
 ### Added
 - Pasta `docs/` com documentação estruturada do projeto: `README.md`,
   `CHANGELOG.md`, `HISTORICO.md`, `DECISIONS.md`, `ROADMAP.md`.
