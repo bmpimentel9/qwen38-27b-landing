@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Hardware para Rodar o Qwen3.8-27B Localmente</title>
+    <meta name="description" content="Requisitos de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B localmente. Tabela por nível de quantização, setups recomendados e dicas de configuração.">
+    <meta name="keywords" content="hardware para llm local, vram qwen3.8 27b, gpu para ia, requisitos qwen3.8, rodar qwen3.8 local, rtx 4090 llm, quanto vram para 27b">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/hardware-local">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Guia de Hardware para Rodar o Qwen3.8-27B Localmente">
+    <meta property="og:description" content="Requisitos de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B. Tabela por quantização e setups recomendados.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/hardware-local">
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; }
+        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); }
+        td { padding: 12px 15px; border-top: 1px solid var(--border); }
+        tr:hover { background: var(--code-bg); }
+        .highlight { background: rgba(88,166,255,0.1); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local" class="active">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Guia de Hardware para Rodar o Qwen3.8-27B Localmente</h1>
+        <p class="lead">Requisitos mínimos e recomendados de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B em cada nível de quantização. Tabelas, setups recomendados e dicas de configuração.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resumo">Resumo Rápido de Requisitos</a></li>
+            <li><a href="#vram">Tabela de VRAM por Quantização</a></li>
+            <li><a href="#setups">Setups Recomendados por Tier</a></li>
+            <li><a href="#gpu">GPUs Recomendadas</a></li>
+            <li><a href="#mac">Rodando no Mac (Apple Silicon)</a></li>
+            <li><a href="#cpu">Rodando em CPU (não recomendado)</a></li>
+            <li><a href="#dicas">Dicas de Configuração</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resumo">Resumo Rápido de Requisitos</h2>
+    <div class="callout">
+        <strong>Recomendado:</strong> RTX 4090/5090 (24GB) ou Mac com 32GB+ de memória unificada — roda GGUF 4 bits a ~17GB de VRAM. É o melhor custo-benefício para rodar o Qwen3.8-27B localmente.
+    </div>
+    <p>O Qwen3.8-27B é um modelo <strong>denso de 27B</strong>. Ao contrário de modelos MoE, todos os 27 bilhões de parâmetros são carregados na memória. Com quantização de 4 bits (Q4_K_M), o modelo cabe em uma GPU de consumidor com 24GB de VRAM.</p>
+
+    <h2 id="vram">Tabela de VRAM por Quantização</h2>
+    <table>
+        <tr><th>Precisão</th><th>VRAM (pesos)</th><th>KV Cache (262K ctx)</th><th>Hardware mínimo</th><th>Qualidade</th></tr>
+        <tr class="highlight"><td><strong>GGUF 4 bits (Q4_K_M)</strong></td><td>~14–17 GB</td><td>+2–4 GB</td><td>RTX 4090 (24GB), Strix Halo</td><td><span style="color:var(--accent-2)">Boa — recomendada</span></td></tr>
+        <tr><td>GGUF 5 bits (Q5_K_M)</td><td>~18–19 GB</td><td>+2–4 GB</td><td>RTX 4090 (24GB), Mac 32GB+</td><td><span style="color:var(--accent-2)">Muito boa</span></td></tr>
+        <tr><td>GGUF 6 bits (Q6_K)</td><td>~21–22 GB</td><td>+2–4 GB</td><td>RTX 4090 (24GB, apertado)</td><td><span style="color:var(--accent-2)">Excelente</span></td></tr>
+        <tr><td>GGUF 8 bits (Q8_0)</td><td>~27–28 GB</td><td>+3–5 GB</td><td>RTX 5090 (32GB), 2× 3090</td><td>Excelente (próxima a FP8)</td></tr>
+        <tr><td>FP8</td><td>~27 GB</td><td>+3–5 GB</td><td>RTX 5090 (32GB), 2× 3090</td><td>Excelente</td></tr>
+        <tr><td>BF16 (sem perdas)</td><td>~54 GB</td><td>+5–8 GB</td><td>A100/H100 80GB, 2× RTX 6000 Pro</td><td>Máxima (referência)</td></tr>
+        <tr><td>NVFP4 (Blackwell)</td><td>24,6 GiB</td><td>6,6M tokens de KV</td><td>Blackwell + vLLM 0.27.2+</td><td>Otimizada para 1M de contexto</td></tr>
+    </table>
+
+    <div class="callout">
+        <strong>Atenção ao KV cache:</strong> Os valores acima são apenas dos pesos. A 262K de contexto, o KV cache pode consumir tantos GB quanto o modelo. Planeje 4–8GB extras de VRAM para o cache.
+    </div>
+
+    <h2 id="setups">Setups Recomendados por Tier</h2>
+
+    <h3>Tier Mínimo — GGUF 4 bits (~17GB VRAM)</h3>
+    <ul>
+        <li>GPU: RTX 4090 24GB, RTX 5090 32GB, ou Strix Halo (128GB unificados)</li>
+        <li>RAM: 32GB de sistema</li>
+        <li>Armazenamento: 20GB livres (modelo + cache)</li>
+        <li>Contexto: 32K–64K prático (com folga para KV cache)</li>
+        <li>Throughput esperado: 10–30 tok/s (depende do hardware)</li>
+        <li>Custo: ~R$ 12.000–18.000 (GPU nova)</li>
+    </ul>
+
+    <h3>Tier Recomendado — GGUF 5 bits ou FP8 (~27GB VRAM)</h3>
+    <ul>
+        <li>GPU: RTX 5090 32GB, ou 2× RTX 3090 (48GB combinados)</li>
+        <li>RAM: 64GB de sistema</li>
+        <li>Contexto: 128K–262K (com folga para KV cache largo)</li>
+        <li>Throughput esperado: 15–40 tok/s</li>
+        <li>Custo: ~R$ 15.000–25.000 (GPU usada) ou ~R$ 35.000+ (nova)</li>
+    </ul>
+
+    <h3>Tier Entusiasta — BF16 (~54GB VRAM)</h3>
+    <ul>
+        <li>GPU: A100/H100 80GB, ou 2× RTX 6000 Pro</li>
+        <li>RAM: 128GB de sistema</li>
+        <li>Contexto: 262K nativo completo</li>
+        <li>Qualidade: máxima, sem perdas de quantização</li>
+        <li>Custo: ~R$ 50.000–150.000+</li>
+    </ul>
+
+    <h3>Tier Blackwell — NVFP4 (24,6 GiB)</h3>
+    <ul>
+        <li>GPU: Blackwell (RTX 5090 ou superior)</li>
+        <li>Contexto: 1M completo com 6,6M tokens de KV</li>
+        <li>Requer vLLM 0.27.2 ou superior</li>
+        <li>Otimizado para contexto máximo em GPU única</li>
+    </ul>
+
+    <h2 id="gpu">GPUs Recomendadas</h2>
+    <table>
+        <tr><th>GPU</th><th>VRAM</th><th>Quantização viável</th><th>Contexto prático</th><th>Custo (aprox.)</th></tr>
+        <tr class="highlight"><td>RTX 4090</td><td>24 GB</td><td>Q4_K_M, Q5_K_M, Q6_K</td><td>32K–64K</td><td>R$ 12.000–15.000</td></tr>
+        <tr><td>RTX 5090</td><td>32 GB</td><td>Q8_0, FP8</td><td>128K–262K</td><td>R$ 20.000–28.000</td></tr>
+        <tr><td>RTX 3090 (usada)</td><td>24 GB</td><td>Q4_K_M, Q5_K_M</td><td>32K–64K</td><td>R$ 3.500–4.500</td></tr>
+        <tr><td>2× RTX 3090</td><td>48 GB</td><td>FP8, Q8_0</td><td>128K–262K</td><td>R$ 7.000–9.000</td></tr>
+        <tr><td>RTX 6000 Pro</td><td>48 GB</td><td>FP8, BF16 parcial</td><td>262K</td><td>R$ 30.000+</td></tr>
+        <tr><td>A100 80GB</td><td>80 GB</td><td>BF16 completo</td><td>262K + folga</td><td>R$ 80.000+</td></tr>
+    </table>
+
+    <div class="callout">
+        <strong>Dica de ouro:</strong> A RTX 3090 usada é o melhor custo-benefício para LLMs locais em 2026. 24GB de VRAM por ~R$ 3.500–4.500, suficiente para Q4_K_M. A comunidade no Hacker News e r/LocalLLaMA consistentemente recomenda este setup.
+    </div>
+
+    <h2 id="mac">Rodando no Mac (Apple Silicon)</h2>
+    <p>O Qwen3.8-27B roda bem em Macs com Apple Silicon, graças à memória unificada e ao suporte MLX. A Ollama oferece <code>qwen3.8:27b-mlx</code> otimizado para Apple Silicon.</p>
+
+    <table>
+        <tr><th>Mac</th><th>Memória</th><th>Quantização viável</th><th>Contexto prático</th><th>Custo (aprox.)</th></tr>
+        <tr><td>MacBook Pro M4 Pro</td><td>24 GB</td><td>Q4_K_M (apertado)</td><td>16K–32K</td><td>R$ 18.000–25.000</td></tr>
+        <tr class="highlight"><td>MacBook Pro M4 Max</td><td>36/48 GB</td><td>Q4_K_M, Q5_K_M</td><td>64K–128K</td><td>R$ 30.000–45.000</td></tr>
+        <tr><td>Mac Studio M2 Max</td><td>64 GB</td><td>Q8_0, FP8</td><td>128K–262K</td><td>R$ 15.000–20.000</td></tr>
+        <tr><td>Mac Studio M2 Ultra</td><td>128 GB</td><td>BF16 parcial</td><td>262K completo</td><td>R$ 30.000–40.000</td></tr>
+    </table>
+
+    <div class="callout">
+        <strong>Vantagem do Mac:</strong> Zero configuração de driver, MLX otimizado, silêncio absoluto. Desvantagem: custo por GB de memória mais alto que GPU usada.
+    </div>
+
+    <h2 id="cpu">Rodando em CPU (não recomendado)</h2>
+    <p>É tecnicamente possível rodar o Qwen3.8-27B em CPU com llama.cpp, mas o throughput é de ~1–3 tokens/s — inviável para uso interativo. Considere apenas para testes ou se você tem um servidor com RAM abundante (64GB+) e muita paciência.</p>
+
+    <h2 id="dicas">Dicas de Configuração</h2>
+    <h3>Contexto e KV Cache</h3>
+    <p>O Qwen3.8-27B tem 262K de contexto nativo, mas o KV cache a esse tamanho consome tanta VRAM quanto o modelo. Para uso interativo, comece com <code>--ctx-size 32768</code> e aumente conforme a VRAM disponível.</p>
+
+    <h3>Offload de Camadas</h3>
+    <p>No llama.cpp, <code>--n-gpu-layers 99</code> carrega todas as camadas na GPU. Se VRAM for insuficiente, reduza este valor para fazer offload parcial para CPU/RAM.</p>
+
+    <h3>Sampling</h3>
+    <p>No modo thinking, use: <code>temp 1.0, top_p 0.95, top_k 20</code>. No modo instruct: <code>temp 0.7, top_p 0.80, repetition_penalty 1.5</code>. NUNCA use temperature=0 no modo thinking.</p>
+
+    <h3>Throughput Medido</h3>
+    <p>Em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan, Q5_K_M: <strong>10,6 tok/s de decode</strong>. Um relato no Hacker News cita ~700 tok/s de prefill e ~30 tok/s de decode em hardware semelhante.</p>
+
+    <p>Para o guia completo de instalação e comandos, veja <a href="/guia/como-rodar" style="color:var(--accent)">como rodar o Qwen3.8-27B localmente</a>. Para dúvidas, confira o <a href="/guia/faq" style="color:var(--accent)">FAQ completo</a>.</p>
+
+    <footer>
+        <p>Guia Qwen3.8-27B — Hardware | Dados baseados em especificações oficiais (Hugging Face, Qwen Blog, Ollama) e medições próprias.</p>
+        <p>Última atualização: agosto 2026 | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
