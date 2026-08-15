@@ -19,7 +19,7 @@
     <a href="/guia-rapido" class="active">Guia Rápido</a>
     <a href="/guia">Guia Completo</a>
   </div>
-  <button class="nav-toggle" onclick="document.querySelector('.links').classList.toggle('open')">☰</button>
+  <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" onclick="var l=document.querySelector('.links');l.classList.toggle('open');this.setAttribute('aria-expanded',l.classList.contains('open'))">☰</button>
 </nav>
 
 <main>
