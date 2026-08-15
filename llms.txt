@@ -1,50 +1,81 @@
 # Qwen3.8-27B Portal
 
-> Portal sobre o modelo de linguagem Qwen3.8-27B (27B denso, Apache 2.0) — especificações, benchmarks, requisitos de hardware e como rodar localmente.
+> Portal sobre o modelo de linguagem Qwen3.8-27B (27B denso, Apache 2.0) — especificações, 26 benchmarks do model card, requisitos de hardware, throughput medido e como rodar localmente.
 
-Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lançado pela Alibaba/Qwen em 14 de agosto de 2026. É um modelo denso de 27 bilhões de parâmetros com atenção híbrida, 262K tokens de contexto nativo (1M com RoPE) e multimodalidade nativa. Compete com modelos de fronteira em programação agêntica e uso de computador, e pode rodar em GPU de consumidor com quantização de 4 bits.
+Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lançado pela Alibaba/Qwen em 14 de agosto de 2026. É um modelo denso de 27 bilhões de parâmetros com atenção híbrida (Gated DeltaNet + Gated Attention em 64 camadas), 262.144 tokens de contexto nativo (extensível a 1.000.000 com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo e documentos). Compete com modelos de fronteira em programação agêntica e uso de computador, e pode rodar em GPU de consumidor com quantização de 4 bits.
 
 ## Especificações
 
 - **Parâmetros:** 27B (denso, não MoE)
+- **Camadas:** 64
 - **Licença:** Apache 2.0
-- **Contexto:** 262K nativo, 1M com RoPE scaling
-- **Atenção:** Híbrida (GQA + sliding window)
-- **Multimodalidade:** Nativa (texto + imagem)
-- **Vocabulário:** 151K tokens
-- **Treinamento:** 18T tokens
+- **Contexto:** 262.144 tokens nativo, 1.000.000 com RoPE scaling
+- **Atenção:** Híbrida — Gated DeltaNet (48 heads V, 16 QK, dim 128) + Gated Attention (24 heads Q, 4 KV, dim 256), padrão 16×(3×DeltaNet → 1×Gated Attn)
+- **Multimodalidade:** Nativa (texto, imagem, vídeo, documentos)
+- **Modos:** Thinking (padrão) + instruct
+- **Esforço de raciocínio:** xhigh, medium, low
+- **Sampling — thinking:** temp 1.0, top_p 0.95, top_k 20
+- **Sampling — instruct:** temp 0.7, top_p 0.80, pres 1.5
+- **vLLM:** >= 0.27.2
 
 ## Benchmarks (26 no total)
 
 Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo fabricante.
 
-### Código e raciocínio
-- HumanEval: 92.1%
-- MBPP: 89.4%
-- LiveCodeBench: 58.3%
-- SWE-Bench Verified: 41.2%
+### Programação
+- LiveCodeBench v6: 90,3
+- Terminal-Bench 2.1 (Terminus): 73,0
+- SWE-bench Pro: 61,7
+- DeepSWE 1.1: 42,2
+- QwenSWEBench: 79,0
+- NL2Repo-Bench: 42,3
 
-### Matemática
-- GSM8K: 94.7%
-- MATH: 78.3%
-- AIME 2024: 36.2%
+### Agentes e uso de computador
+- OSWorld-Verified: 84,3
+- AndroidWorld: 81,9
+- WebArena-Verified: 64,8
+- CoWorkBench: 70,7
+- JobBench: 33,4
+- Agents' Last Exam — Pass@1: 20,4
+- Agents' Last Exam — Score: 42,9
+- RecreationBench: 47,1
 
-### Conhecimento geral
-- MMLU: 84.6%
-- MMLU-Pro: 67.8%
-- C-Eval: 88.9%
-- AGIEval: 72.1%
+### Conhecimento
+- GPQA Diamond: 89,2
+- Humanity's Last Exam: 30,8
+- IFBench: 79,5
 
-### Uso de ferramentas e agentes
-- BFCL v3: 68.4%
-- τ-bench: 52.7%
+### Multimodal / visão
+- MathVision (com CI): 94,6
+- OmniDocBench 1.5: 91,1
+- CharXiv (com CI): 90,2
+- RealWorldQA: 85,9
+- BabyVision (com CI): 85,6
+- ERQA: 65,5
+- Vision2Web: 62,9
+- ClawEval-MM (Pass@3): 57,4
+- SWE-MM: 38,6
+
+### Ganho sobre a geração anterior (Qwen3.6-27B)
+- LiveCodeBench v6: +6,4
+- Terminal-Bench 2.1: +9,6
+- SWE-bench Pro: +8,2
+- DeepSWE 1.1: +28,9
+- QwenSWEBench: +29,7
+- OSWorld-Verified: +20,4
+- WebArena-Verified: +16,0
+- CoWorkBench: +9,7
+- JobBench: +11,6
+- IFBench: +10,4
+- SWE-MM: +12,9
 
 ## Como rodar localmente
 
 ### Requisitos de hardware
-- **Mínimo (4-bit quantized):** 16GB VRAM (RTX 4080, RX 7900 XTX)
-- **Recomendado (8-bit):** 32GB VRAM (RTX 4090, ou 2x RTX 3090)
-- **Full precision (16-bit):** 54GB VRAM (A100 80GB, ou 2x RTX 4090 com offload)
+- **Recomendado (4-bit GGUF):** ~17 GB VRAM — RTX 4090/5090, Strix Halo, Mac com 32 GB+
+- **Folga (FP8):** ~27 GB VRAM — RTX 5090 32 GB, duas 3090, Strix Halo com contexto largo
+- **Precisão máxima (BF16):** ~54 GB VRAM — A100/H100 80 GB, 2× RTX 6000 Pro
+- **Blackwell (NVFP4):** 24,6 GiB — 6,6M tokens de KV a 1M de contexto, vLLM 0.27.2+
 
 ### Via Ollama
 ```bash
@@ -53,29 +84,37 @@ ollama run qwen3.8:27b
 
 ### Via llama.cpp
 ```bash
-llama-server -m Qwen3.8-27B-Q4_K_M.gguf -c 32768 --n-gpu-layers 99
+llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144 --temp 1.0 --top-p 0.95 --top-k 20
 ```
 
-### Via Hugging Face Transformers
-```python
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-model = AutoModelForCausalLM.from_pretrained(
-    "Qwen/Qwen3.8-27B",
-    torch_dtype="auto",
-    device_map="auto"
-)
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3.8-27B")
+### Via vLLM (servidor OpenAI-compatible)
+```bash
+vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3
 ```
 
 ## Throughput medido
 
-Medições próprias em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan:
-- **Decode:** ~28 tokens/s (Q4_K_M)
-- **Prefill:** ~420 tokens/s
+Medições próprias em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128 GB unificados) com Ollama sobre Vulkan:
+- **Qwen3.8-27B (denso, Q5_K_M):** ~10,6 tok/s decode
+- **Qwen3.6-35B (MoE, ~3B ativos):** ~56,6 tok/s decode
+- Relato da comunidade (Strix Halo, backend diferente): ~700 tok/s prefill, ~30 tok/s decode
+
+## Família Qwen3.8
+
+- **Qwen3.8-27B:** 27B denso — este modelo
+- **Qwen3.8-2.4T-A95B:** 2,4T MoE, ~95B ativos
+- **Qwen3.8-Max:** Flagship (API, $2/$6/$0,25 cache por Mtok)
+- **Anúncio → pesos:** 03 ago → 14 ago 2026
 
 ## Links
 
 - [Model card no Hugging Face](https://huggingface.co/Qwen/Qwen3.8-27B)
+- [Blog oficial da Qwen](https://qwen.ai/blog?id=qwen3.8)
+- [Guia da Unsloth](https://unsloth.ai/docs/models/qwen3.8)
+- [Receitas do vLLM](https://recipes.vllm.ai/Qwen/Qwen3.8-27B)
+- [LM Studio](https://lmstudio.ai/models/qwen3.8)
+- [Biblioteca do Ollama](https://ollama.com/library/qwen3.8)
+- [Hacker News](https://news.ycombinator.com/item?id=49299605)
+- [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/)
 - [Portal completo](https://qwen38-27b-landing.vercel.app/)
 - [Código-fonte](https://github.com/bmpimentel9/qwen38-27b-landing)

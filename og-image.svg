@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#171717"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9085e9"/>
+      <stop offset="100%" stop-color="#4a3aa7"/>
+    </linearGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M 56 0 L 0 0 0 56" fill="none" stroke="#242424" stroke-width="1"/>
+    </pattern>
+    <mask id="gridMask">
+      <rect width="1200" height="630" fill="url(#bg)"/>
+      <ellipse cx="600" cy="0" rx="840" ry="400" fill="white"/>
+    </mask>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)" mask="url(#gridMask)" opacity="0.5"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="80" width="56" height="56" rx="12" fill="url(#accent)"/>
+  <text x="108" y="118" font-family="'JetBrains Mono', monospace" font-size="32" font-weight="700" fill="#0a0a0a" text-anchor="middle">Q</text>
+
+  <!-- Site name -->
+  <text x="150" y="115" font-family="Inter, sans-serif" font-size="14" fill="#6f6f6f" font-weight="500">Qwen3.8-27B — Portal de modelos locais de 30B</text>
+
+  <!-- Badge -->
+  <rect x="80" y="165" width="280" height="32" rx="99" fill="#111111" stroke="#333333" stroke-width="1"/>
+  <circle cx="98" cy="181" r="5" fill="#0ca30c"/>
+  <text x="112" y="186" font-family="Inter, sans-serif" font-size="12.5" fill="#a1a1a1" font-weight="500">Pesos abertos desde 14 ago 2026 · Apache 2.0</text>
+
+  <!-- Headline -->
+  <text x="80" y="280" font-family="Inter, sans-serif" font-size="52" font-weight="800" fill="#ededed" letter-spacing="-1.5">
+    <tspan x="80" dy="0">Fronteira em 27 bilhões</tspan>
+    <tspan x="80" dy="62" fill="#6f6f6f">de parâmetros.</tspan>
+  </text>
+
+  <!-- KPIs -->
+  <g font-family="'JetBrains Mono', monospace" font-variant-numeric="tabular-nums">
+    <text x="80" y="430" font-size="36" font-weight="700" fill="url(#accent)">27B</text>
+    <text x="80" y="455" font-family="Inter, sans-serif" font-size="13" fill="#6f6f6f" font-weight="500">denso · 64 camadas</text>
+
+    <text x="340" y="430" font-size="36" font-weight="700" fill="url(#accent)">262K</text>
+    <text x="340" y="455" font-family="Inter, sans-serif" font-size="13" fill="#6f6f6f" font-weight="500">contexto nativo → 1M</text>
+
+    <text x="600" y="430" font-size="36" font-weight="700" fill="url(#accent)">~17GB</text>
+    <text x="600" y="455" font-family="Inter, sans-serif" font-size="13" fill="#6f6f6f" font-weight="500">VRAM em 4 bits</text>
+
+    <text x="860" y="430" font-size="36" font-weight="700" fill="url(#accent)">90,3</text>
+    <text x="860" y="455" font-family="Inter, sans-serif" font-size="13" fill="#6f6f6f" font-weight="500">LiveCodeBench v6</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="80" y1="500" x2="1120" y2="500" stroke="#242424" stroke-width="1"/>
+
+  <!-- Footer -->
+  <text x="80" y="535" font-family="Inter, sans-serif" font-size="14" fill="#6f6f6f">
+    26 benchmarks · hardware local · throughput medido · reações da comunidade
+  </text>
+  <text x="80" y="565" font-family="'JetBrains Mono', monospace" font-size="12" fill="#6f6f6f">
+    qwen38-27b-landing.vercel.app
+  </text>
+
+  <!-- Decorative bars -->
+  <rect x="80" y="595" width="280" height="4" rx="2" fill="url(#accent)"/>
+  <rect x="370" y="595" width="180" height="4" rx="2" fill="#333333"/>
+  <rect x="560" y="595" width="120" height="4" rx="2" fill="#333333"/>
+  <rect x="690" y="595" width="80" height="4" rx="2" fill="#333333"/>
+</svg>

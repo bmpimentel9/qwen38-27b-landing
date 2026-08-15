@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelos Locais ≤30B — Portal de Modelos</title>
+<meta name="description" content="Catálogo de modelos locais de até 30B de parâmetros: Qwen3.8-27B, Llama 3.x, Gemma 3, Mistral e mais. Parâmetros, contexto, quantizações, licença e hardware mínimo.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://qwen38-27b-landing.vercel.app/modelos.html">
+<link rel="stylesheet" href="/assets/css/portal.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="/">Qwen3.8<span>-27B</span> · Portal</a>
+  <div class="links">
+    <a href="/modelos.html" class="active">Modelos</a>
+    <a href="/hardware.html">Hardware</a>
+    <a href="/benchmarks.html">Benchmarks</a>
+    <a href="/guia-rapido.html">Guia Rápido</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Modelos Locais ≤30B</h1>
+  <p class="subtitle">O catálogo dos modelos que cabem numa máquina pessoal — com pesos abertos e licença livre.</p>
+
+  <h2>Destaque: Qwen3.8-27B</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="tag">⭐ 9.7k likes HF</span>
+      <h3>Qwen3.8-27B</h3>
+      <p>27B denso, Apache 2.0, atenção híbrida, 262K de contexto nativo (1M com RoPE) e multimodalidade nativa.</p>
+      <div class="meta"><span>Licença: Apache 2.0</span><span>Contexto: 262K</span></div>
+      <div class="meta"><span>Hardware: 16GB+ VRAM</span><span>GGUF disponível</span></div>
+    </div>
+  </div>
+
+  <h2>Outros modelos da categoria</h2>
+  <table>
+    <thead>
+      <tr><th>Modelo</th><th>Parâmetros</th><th>Contexto</th><th>Licença</th><th>Quantização</th><th>Hardware mín.</th></tr>
+    </thead>
+    <tbody id="modelos-list">
+      <tr><td colspan="6">Carregando catálogo…</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:.9rem;">Catálogo alimentado automaticamente pelo radar diário — novos modelos ≤30B aparecem aqui conforme são detectados.</p>
+</main>
+
+<footer>Portal 30B · Mantido pelo Time Hermes · <a href="/">Voltar ao início</a></footer>
+
+<script>
+const modelos = [
+  { nome: "Qwen3.8-27B", params: "27B", ctx: "262K", lic: "Apache 2.0", quant: "GGUF/AWQ", hw: "16GB VRAM", badge: "green" },
+  { nome: "Llama 3.3 70B*", params: "70B*", ctx: "128K", lic: "Llama", quant: "GGUF/AWQ", hw: "48GB RAM", badge: "" },
+  { nome: "Gemma 3 27B", params: "27B", ctx: "128K", lic: "Gemma", quant: "GGUF", hw: "16GB VRAM", badge: "" },
+  { nome: "Mistral Small 3.2 24B", params: "24B", ctx: "128K", lic: "Apache 2.0", quant: "GGUF", hw: "12GB VRAM", badge: "" },
+  { nome: "Qwen3 32B", params: "32B", ctx: "32K", lic: "Apache 2.0", quant: "GGUF", hw: "16GB VRAM", badge: "" },
+  { nome: "Phi-4 14B", params: "14B", ctx: "16K", lic: "MIT", quant: "GGUF", hw: "8GB VRAM", badge: "green" },
+  { nome: "Dolphin 3.0 Mistral 24B", params: "24B", ctx: "32K", lic: "Apache 2.0", quant: "GGUF", hw: "12GB VRAM", badge: "" }
+];
+document.addEventListener("DOMContentLoaded", () => {
+  const tbody = document.getElementById("modelos-list");
+  tbody.innerHTML = modelos.map(m => `
+    <tr>
+      <td><strong>${m.nome}</strong> ${m.badge ? `<span class="badge ${m.badge}">local</span>` : ""}</td>
+      <td>${m.params}</td><td>${m.ctx}</td><td>${m.lic}</td><td>${m.quant}</td><td>${m.hw}</td>
+    </tr>`).join("");
+});
+</script>
+</body>
+</html>

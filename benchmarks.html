@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benchmarks — Portal de Modelos 30B</title>
+<meta name="description" content="Benchmarks de modelos locais de 30B: comparações de desempenho (MMLU, GPQA, HumanEval), velocidade de inferência em hardware real e resultados da comunidade.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://qwen38-27b-landing.vercel.app/benchmarks.html">
+<link rel="stylesheet" href="/assets/css/portal.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="/">Qwen3.8<span>-27B</span> · Portal</a>
+  <div class="links">
+    <a href="/modelos.html">Modelos</a>
+    <a href="/hardware.html">Hardware</a>
+    <a href="/benchmarks.html" class="active">Benchmarks</a>
+    <a href="/guia-rapido.html">Guia Rápido</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Benchmarks</h1>
+  <p class="subtitle">Números oficiais dos model cards + medições reais em hardware local. Atualizado toda semana.</p>
+
+  <h2>Benchmarks oficiais (Qwen3.8-27B)</h2>
+  <table>
+    <thead>
+      <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Comparável (32B)</th><th>Nota</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>MMLU-Pro</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
+      <tr><td>GPQA</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
+      <tr><td>HumanEval</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
+      <tr><td>IFEval</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:.9rem;">⚠️ Dados completos do model card serão preenchidos na task de conteúdo (seo-content) — aqui fica o esqueleto pronto.</p>
+
+  <h2>Velocidade de inferência (medida em máquina real)</h2>
+  <table>
+    <thead>
+      <tr><th>Hardware</th><th>Modelo</th><th>Quantização</th><th>Velocidade</th><th>Contexto</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>AMD Strix Halo (Radeon 8060S)</td>
+        <td>Qwen3.8-27B</td>
+        <td>Q4_K_M</td>
+        <td>~60-90 tok/s</td>
+        <td>131K</td>
+      </tr>
+      <tr>
+        <td>RTX 4090 24GB</td>
+        <td>Qwen3.8-27B</td>
+        <td>Q4_K_M</td>
+        <td>~70-90 tok/s (estimado)</td>
+        <td>32K</td>
+      </tr>
+      <tr>
+        <td>RTX 3060 12GB</td>
+        <td>Qwen3.8-27B</td>
+        <td>Q4_K_M (offload parcial)</td>
+        <td>~15-25 tok/s (estimado)</td>
+        <td>16K</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:.9rem;">Medição real do Strix Halo será documentada com script reproduzível (task seo-tech).</p>
+
+  <h2>Resultados da comunidade</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="tag">HF Trending</span>
+      <h3>Qwen3.8-27B no HuggingFace</h3>
+      <p>⭐ 9.7k likes — um dos modelos abertos mais populares da categoria 30B. GGUF pronto via unsloth.</p>
+      <div class="meta"><span>Atualizado: diário</span><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Ver model card ↗</a></div>
+    </div>
+    <div class="card">
+      <span class="tag">GGUF</span>
+      <h3>unsloth/Qwen3.8-27B-GGUF</h3>
+      <p>Quantizações prontas (Q2-Q8) para Ollama, llama.cpp e LM Studio.</p>
+      <div class="meta"><span>⭐ 1.1k likes</span><a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">Ver GGUF ↗</a></div>
+    </div>
+  </div>
+</main>
+
+<footer>Portal 30B · Mantido pelo Time Hermes · <a href="/">Voltar ao início</a></footer>
+</body>
+</html>

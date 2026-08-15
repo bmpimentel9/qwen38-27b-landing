@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hardware Local — Portal de Modelos 30B</title>
+<meta name="description" content="Guia de hardware para rodar modelos locais de 30B: requisitos de RAM/VRAM, placas AMD e NVIDIA recomendadas, Apple Silicon, e expectativa de performance.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://qwen38-27b-landing.vercel.app/hardware.html">
+<link rel="stylesheet" href="/assets/css/portal.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="/">Qwen3.8<span>-27B</span> · Portal</a>
+  <div class="links">
+    <a href="/modelos.html">Modelos</a>
+    <a href="/hardware.html" class="active">Hardware</a>
+    <a href="/benchmarks.html">Benchmarks</a>
+    <a href="/guia-rapido.html">Guia Rápido</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Hardware Local</h1>
+  <p class="subtitle">O que você precisa para rodar um modelo de 30B na sua máquina — do mínimo viável ao topo de linha.</p>
+
+  <h2>Regra de ouro (quantização GGUF Q4)</h2>
+  <p>Um modelo de ~27B em Q4_K_M ocupa <strong>~16-17 GB</strong> de memória. Para rodar confortável:</p>
+  <table>
+    <thead>
+      <tr><th>Nível</th><th>Hardware</th><th>Velocidade estimada</th><th>Modelos suportados</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="badge green">Mínimo</span></td><td>32GB RAM (CPU-only, llama.cpp)</td><td>2-5 tok/s</td><td>Até 14B confortável, 27B lento</td></tr>
+      <tr><td><span class="badge blue">Recomendado</span></td><td>RTX 4060/4070 12-16GB</td><td>20-40 tok/s</td><td>Qwen3.8-27B Q4</td></tr>
+      <tr><td><span class="badge blue">Recomendado+</span></td><td>RTX 3090/4090 24GB</td><td>40-70 tok/s</td><td>27B Q6/Q8, 32B Q4</td></tr>
+      <tr><td><span class="badge amber">Topo</span></td><td>AMD Strix Halo (Radeon 8060S, 40GB)</td><td>60-90 tok/s</td><td>27B/32B folgado + contexto longo</td></tr>
+      <tr><td><span class="badge amber">Mac</span></td><td>Apple Silicon M-series 48-64GB</td><td>30-60 tok/s</td><td>27B Q4/Q6 via MLX</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Referência: AMD Strix Halo (a máquina deste portal)</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="tag amber">Setup real</span>
+      <h3>Ryzen AI MAX+ 395 · Radeon 8060S</h3>
+      <p>122GB RAM unificada, 40GB VRAM dedicados à iGPU. Roda Qwen3.8-27B inteiro na VRAM com contexto de 131K+, deixando RAM sobrando.</p>
+      <div class="meta"><span>GPU: Radeon 8060S</span><span>VRAM: 40GB</span></div>
+      <div class="meta"><span>Runtime: Ollama + Vulkan</span><span>~60-90 tok/s</span></div>
+    </div>
+  </div>
+
+  <h2>Dicas rápidas</h2>
+  <ul style="color:var(--muted);margin-left:1.2rem;">
+    <li>GPU com <strong>16GB VRAM</strong> é o ponto de corte para 27B Q4 sem offload.</li>
+    <li>Sem GPU dedicada? <strong>32GB RAM</strong> dá pra rodar 27B em CPU, mas espere 2-5 tok/s.</li>
+    <li>Contexto longo (262K) consome mais memória: reduza para 32K se faltar VRAM.</li>
+    <li>Use <strong>GGUF Q4_K_M</strong> como ponto de partida — melhor custo/benefício.</li>
+    <li>NVIDIA + CUDA ainda é o caminho mais simples; AMD via Vulkan (Ollama) funciona bem no Linux.</li>
+  </ul>
+</main>
+
+<footer>Portal 30B · Mantido pelo Time Hermes · <a href="/">Voltar ao início</a></footer>
+</body>
+</html>
