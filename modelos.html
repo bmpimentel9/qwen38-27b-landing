@@ -19,6 +19,7 @@
     <a href="/guia-rapido">Guia Rápido</a>
     <a href="/guia">Guia Completo</a>
   </div>
+  <button class="nav-toggle" onclick="document.querySelector('.links').classList.toggle('open')">☰</button>
 </nav>
 
 <main>
@@ -67,6 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
       <td><strong>${m.nome}</strong> ${m.badge ? `<span class="badge ${m.badge}">local</span>` : ""}</td>
       <td>${m.params}</td><td>${m.ctx}</td><td>${m.lic}</td><td>${m.quant}</td><td>${m.hw}</td>
     </tr>`).join("");
+});
+</script>
+<script>
+document.querySelectorAll('.nav .links a').forEach(function(a){
+  a.addEventListener('click',function(){document.querySelector('.nav .links').classList.remove('open');});
 });
 </script>
 </body>

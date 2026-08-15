@@ -19,6 +19,7 @@
     <a href="/guia-rapido">Guia Rápido</a>
     <a href="/guia">Guia Completo</a>
   </div>
+  <button class="nav-toggle" onclick="document.querySelector('.links').classList.toggle('open')">☰</button>
 </nav>
 
 <main>
@@ -62,5 +63,10 @@
 </main>
 
 <footer>Portal 30B · Mantido pelo Time Hermes · <a href="/">Voltar ao início</a></footer>
+<script>
+document.querySelectorAll('.nav .links a').forEach(function(a){
+  a.addEventListener('click',function(){document.querySelector('.nav .links').classList.remove('open');});
+});
+</script>
 </body>
 </html>
