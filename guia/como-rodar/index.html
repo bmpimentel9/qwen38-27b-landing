@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</title>
+    <meta name="description" content="Guia passo a passo para rodar o Qwen3.8-27B localmente via Ollama, llama.cpp, vLLM e HuggingFace. Comandos, configurações, dicas de performance e troubleshooting.">
+    <meta name="keywords" content="como rodar qwen3.8 27b local, ollama qwen3.8, llama.cpp qwen3.8, vllm qwen3.8, huggingface qwen3.8, instalar qwen3.8 localmente">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/como-rodar">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace">
+    <meta property="og:description" content="Guia passo a passo para rodar o Qwen3.8-27B localmente. Comandos, configs, dicas de performance e troubleshooting.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/como-rodar">
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .step h3 { margin-top: 0; color: var(--accent); }
+        .step-number { display: inline-block; background: var(--accent); color: var(--bg); width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-weight: 700; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia/">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar" class="active">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h1>
+        <p class="lead">Guia passo a passo para rodar o Qwen3.8-27B na sua máquina. Cobrimos Ollama (mais fácil), llama.cpp (mais flexível), vLLM (produção) e HuggingFace Transformers (desenvolvimento).</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#pre-requisitos">Pré-requisitos</a></li>
+            <li><a href="#ollama">Método 1: Ollama (recomendado)</a></li>
+            <li><a href="#llama-cpp">Método 2: llama.cpp (GGUF)</a></li>
+            <li><a href="#vllm">Método 3: vLLM (servidor OpenAI)</a></li>
+            <li><a href="#huggingface">Método 4: HuggingFace Transformers</a></li>
+            <li><a href="#mlx">Método 5: MLX (Apple Silicon)</a></li>
+            <li><a href="#config">Configurações de Sampling</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ul>
+    </div>
+
+    <h2 id="pre-requisitos">Pré-requisitos</h2>
+    <p>Antes de começar, verifique seu hardware. O Qwen3.8-27B é um modelo denso de 27B — todos os parâmetros são carregados na memória. Consulte nosso <a href="/guia/hardware-local" style="color:var(--accent)">guia de hardware</a> para detalhes completos.</p>
+    <ul>
+        <li><strong>GPU:</strong> 16–24GB VRAM mínimo (Q4_K_M), 27–32GB para Q8/FP8, 54GB+ para BF16</li>
+        <li><strong>RAM:</strong> 32GB de sistema (64GB recomendado)</li>
+        <li><strong>Armazenamento:</strong> 20GB livres</li>
+        <li><strong>Software:</strong> Docker (opcional), Python 3.10+ (para HF/vLLM), CUDA 12+ (para GPU NVIDIA)</li>
+    </ul>
+
+    <h2 id="ollama">Método 1: Ollama (recomendado)</h2>
+    <p>Ollama é o caminho mais curto. Um comando puxa o modelo quantizado e inicia o chat.</p>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Instalar o Ollama</h3>
+        <pre><code># Linux/macOS
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows: baixar de https://ollama.com/download</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Rodar o Qwen3.8-27B</h3>
+        <pre><code># Puxa o modelo quantizado (18GB) e inicia o chat
+ollama run qwen3.8:27b</code></pre>
+        <p>O modelo é baixado automaticamente (18GB, 256K de contexto, texto + imagem). O primeiro download leva alguns minutos.</p>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Versão MLX (Apple Silicon)</h3>
+        <pre><code># Otimizada para Mac com Apple Silicon
+ollama run qwen3.8:27b-mlx</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">4</span>API local (servidor OpenAI-compatible)</h3>
+        <pre><code># Ollama expõe uma API em localhost:11434
+curl http://localhost:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3.8:27b",
+    "messages": [{"role": "user", "content": "Explique atenção híbrida em 3 frases."}]
+  }'</code></pre>
+    </div>
+
+    <div class="callout">
+        <strong>Integrações:</strong> O Qwen3.8 no Ollama já suporta Claude Code (<code>ollama launch claude --model qwen3.8</code>), OpenCode, Hermes Agent e OpenClaw.
+    </div>
+
+    <h2 id="llama-cpp">Método 2: llama.cpp (GGUF)</h2>
+    <p>llama.cpp oferece mais controle sobre a configuração. Ideal para ajustar contexto, quantização e offload de camadas.</p>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Instalar llama.cpp</h3>
+        <pre><code># Clonar e compilar (GPU NVIDIA)
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+make GGML_CUDA=1
+
+# Ou via Homebrew (macOS)
+brew install llama.cpp</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Baixar o GGUF (Unsloth)</h3>
+        <pre><code># Quantização Q4_K_XL da Unsloth (lançada no dia 14/ago/2026)
+# Disponível em https://huggingface.co/unsloth/Qwen3.8-27B-GGUF</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Iniciar o servidor</h3>
+        <pre><code># Caminho mais curto (puxa do HuggingFace diretamente)
+llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL \
+  --ctx-size 262144 \
+  --temp 1.0 --top-p 0.95 --top-k 20
+
+# Ou com arquivo local
+llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
+  --ctx-size 32768 \
+  --n-gpu-layers 99 \
+  --port 8080</code></pre>
+        <p>O servidor expõe uma API OpenAI-compatible em <code>http://localhost:8080</code>.</p>
+    </div>
+
+    <div class="callout">
+        <strong>Parâmetros-chave:</strong> <code>--ctx-size</code> define o contexto máximo (comece com 32768, aumente conforme VRAM). <code>--n-gpu-layers 99</code> carrega tudo na GPU; reduza se faltar VRAM.
+    </div>
+
+    <h2 id="vllm">Método 3: vLLM (servidor OpenAI)</h2>
+    <p>vLLM é a melhor opção para produção: alto throughput, suporte a NVFP4 em Blackwell e API OpenAI-compatible nativa.</p>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Instalar vLLM (requer ≥ 0.27.2)</h3>
+        <pre><code>pip install vllm>=0.27.2</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Iniciar o servidor</h3>
+        <pre><code># Servidor OpenAI-compatible
+vllm serve Qwen/Qwen3.8-27B \
+  --max-model-len 262144 \
+  --reasoning-parser qwen3</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Chamar a API</h3>
+        <pre><code>curl -X POST "http://localhost:8000/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen/Qwen3.8-27B",
+    "messages": [
+      {"role": "user", "content": "Escreva uma função Python de bubble sort."}
+    ]
+  }'</code></pre>
+    </div>
+
+    <div class="callout">
+        <strong>NVFP4 em Blackwell:</strong> Em GPUs Blackwell, vLLM suporta NVFP4 com 24,6 GiB e 6,6M tokens de KV — permite rodar 1M de contexto em uma única GPU. Requer vLLM 0.27.2+.
+    </div>
+
+    <h2 id="huggingface">Método 4: HuggingFace Transformers</h2>
+    <p>Para desenvolvimento e fine-tuning, HuggingFace Transformers oferece controle total.</p>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Instalar dependências</h3>
+        <pre><code>pip install transformers torch accelerate</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Carregar o modelo</h3>
+        <pre><code>from transformers import AutoProcessor, AutoModelForMultimodalLM
+
+processor = AutoProcessor.from_pretrained("Qwen/Qwen3.8-27B")
+model = AutoModelForMultimodalLM.from_pretrained(
+    "Qwen/Qwen3.8-27B",
+    device_map="auto",
+    torch_dtype="auto"
+)</code></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Inferência (texto + imagem)</h3>
+        <pre><code>messages = [
+    {
+        "role": "user",
+        "content": [
+            {"type": "image", "url": "https://example.com/image.jpg"},
+            {"type": "text", "text": "Descreva esta imagem."}
+        ]
+    }
+]
+
+inputs = processor.apply_chat_template(
+    messages, add_generation_prompt=True,
+    tokenize=True, return_dict=True, return_tensors="pt"
+).to(model.device)
+
+outputs = model.generate(**inputs, max_new_tokens=512)
+print(processor.decode(outputs[0][inputs["input_ids"].shape[-1]:]))</code></pre>
+    </div>
+
+    <div class="callout-warn">
+        <strong>Atenção:</strong> O Qwen3.8-27B é multimodal (image-text-to-text). Use <code>AutoModelForMultimodalLM</code> e <code>AutoProcessor</code>, não <code>AutoModelForCausalLM</code>.
+    </div>
+
+    <h2 id="mlx">Método 5: MLX (Apple Silicon)</h2>
+    <p>Para Macs com Apple Silicon, MLX é a opção mais eficiente.</p>
+    <pre><code># Via Ollama (recomendado)
+ollama run qwen3.8:27b-mlx
+
+# Via mlx-lm diretamente
+pip install mlx-lm
+mlx_lm.generate \
+  --model Qwen/Qwen3.8-27B-mlx-4bit \
+  --prompt "Explique atenção híbrida."</code></pre>
+
+    <h2 id="config">Configurações de Sampling</h2>
+    <p>O Qwen3.8-27B tem dois modos com sampling otimizado:</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden;">
+        <tr><th style="padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg);">Parâmetro</th><th style="padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg);">Thinking (padrão)</th><th style="padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg);">Instruct</th></tr>
+        <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">Temperature</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">1.0</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">0.7</td></tr>
+        <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">top_p</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">0.95</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">0.80</td></tr>
+        <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">top_k</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">20</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">—</td></tr>
+        <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">repetition_penalty</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">—</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">1.5</td></tr>
+    </table>
+
+    <div class="callout-warn">
+        <strong>Nunca use temperature=0 no modo thinking.</strong> O modelo entra em loop repetitivo. Sempre use temp ≥ 0.6.
+    </div>
+
+    <h3>reasoning_effort</h3>
+    <p>Controle a profundidade do raciocínio: <code>xhigh</code> (máximo), <code>medium</code>, <code>low</code>. O <code>preserve_thinking</code> mantém o contexto de raciocínio entre mensagens — ativo por padrão.</p>
+
+    <h2 id="troubleshooting">Troubleshooting</h2>
+
+    <h3>Erro: "CUDA out of memory"</h3>
+    <p>Reduza o contexto: <code>--ctx-size 16384</code>. Se persistir, reduza <code>--n-gpu-layers</code> para fazer offload parcial para CPU. Considere Q4_K_M se estiver usando Q8 ou superior.</p>
+
+    <h3>Erro: "model not found" no Ollama</h3>
+    <p>Verifique: <code>ollama list</code> para ver modelos instalados, <code>ollama show qwen3.8:27b</code> para detalhes.</p>
+
+    <h3>Resposta repetitiva ou degradada</h3>
+    <p>No modo thinking, NUNCA use greedy decoding (temperature=0). Use sempre temperature=1.0, top_p=0.95, top_k=20.</p>
+
+    <h3>Lentidão extrema (1–5 tokens/s)</h3>
+    <p>Provavelmente rodando em CPU. Verifique com <code>nvidia-smi</code> se a GPU está sendo usada. No llama.cpp, aumente <code>-ngl</code> para carregar mais camadas na GPU.</p>
+
+    <h3>Erro: KeyError no HuggingFace</h3>
+    <p>Atualize transformers: <code>pip install --upgrade transformers</code>. O Qwen3.8 usa arquitetura <code>qwen3_5</code> — versões antigas não reconhecem.</p>
+
+    <h3>Contexto truncado</h3>
+    <p>O modelo tem 262K nativo, mas Ollama/llama.cpp podem limitar por padrão. Use <code>--ctx-size 262144</code> (llama.cpp) ou <code>OLLAMA_CONTEXT_LENGTH=262144</code> (Ollama).</p>
+
+    <p>Para mais dúvidas, confira nosso <a href="/guia/faq" style="color:var(--accent)">FAQ completo</a> ou os <a href="/guia/comunidade-casos-uso" style="color:var(--accent)">casos de uso da comunidade</a>. Para requisitos de hardware, veja o <a href="/guia/hardware-local" style="color:var(--accent)">guia de hardware</a>.</p>
+
+    <footer>
+        <p>Guia Qwen3.8-27B — Como Rodar | Comandos baseados na documentação oficial (Ollama, llama.cpp, vLLM, HuggingFace, Qwen Blog).</p>
+        <p>Última atualização: agosto 2026 | <a href="/guia/">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
