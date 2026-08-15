@@ -53,3 +53,9 @@ térmico, 400 tokens por rodada, 9 rodadas, em um ASUS ROG Flow Z13 (Strix Halo,
 Radeon 8060S, 128 GB unificados) com Ollama sobre Vulkan.
 
 Fontes completas no rodapé da página.
+
+## Documentação
+
+A documentação contínua do projeto — changelog, histórico de decisões, ADRs
+e roadmap — fica em [`docs/`](docs/). Veja [`docs/README.md`](docs/README.md)
+para entender como a documentação funciona.
