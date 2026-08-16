@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Memory Leaderboard: os primeiros resultados</title>
+    <meta name="description" content="65 sistemas de memória avaliados, MemoraX lidera com 58/100. O que o primeiro benchmark padronizado de memória de agentes muda para LLMs locais.">
+    <meta name="keywords" content="agent memory leaderboard, benchmark memória agentes IA, MemoraX, melhor sistema memória LLM local, memória de agente, MemOS, Mem0, LLM local">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Agent Memory Leaderboard: os primeiros resultados do benchmark de memória de agentes">
+    <meta property="og:description" content="136 times, 65 sistemas ranqueados em Text Memory. MemoraX lidera com 58,02 — ninguém chega a 60. O que isso muda para quem roda agente local.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-16T08:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="agent memory">
+    <meta property="article:tag" content="benchmark">
+    <meta property="article:tag" content="agentes de IA">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Agent Memory Leaderboard: primeiros resultados de memória de agentes">
+    <meta name="twitter:description" content="MemoraX lidera com 58,02; baseline SQLite FTS bate metade do campo. O benchmark que faltava para agentes de IA.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Agent Memory Leaderboard: os primeiros resultados do benchmark de memória de agentes",
+          "description": "Análise dos resultados inaugurais do Agent Memory Leaderboard (15/08/2026): 136 times registrados, 65 sistemas ranqueados em Text Memory, MemoraX na frente com 58,02. Metodologia Add→Search / Answer→Eval e o que muda para agentes locais.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-16",
+          "dateModified": "2026-08-16",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados",
+          "about": { "@id": "https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados#leaderboard" },
+          "proficiencyLevel": "Intermediate"
+        },
+        {
+          "@type": "Dataset",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados#leaderboard",
+          "name": "Agent Memory Leaderboard (AML)",
+          "description": "Benchmark público aberto para comparar sistemas de memória de agentes de IA (textual e coding) sob fluxo de avaliação consistente: sistema Add→Search, benchmark Answer→Eval.",
+          "url": "https://agentmemoryleaderboard.ai",
+          "creator": { "@type": "Organization", "name": "Agent Memory Leaderboard" },
+          "datePublished": "2026-08-15",
+          "isAccessibleForFree": true,
+          "keywords": "agent memory, benchmark, LLM memory, agent memory leaderboard"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O que é memória de agente em IA?",
+              "acceptedAnswer": { "@type": "Answer", "text": "É a camada que permite a um agente de IA persistir e recuperar informação entre sessões e além da janela de contexto do modelo: fatos sobre o usuário, histórico de conversas, resultados de ferramentas. O modelo esquece tudo ao fechar o terminal; a memória é o que sobrevive." }
+            },
+            {
+              "@type": "Question",
+              "name": "Quem lidera o Agent Memory Leaderboard?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Na track Commercial Products de Text Memory, o topo é: MemoraX com 58,02, MemOS com 45,89 e NTES-MEMORY-SMART com 44,21. Na track Open-source Methods, lideram InvMem (45,06), Refind (44,97) e ActiveMemoryIndex (44,84). Nenhum sistema passa de 60 em 100." }
+            },
+            {
+              "@type": "Question",
+              "name": "Como o Agent Memory Leaderboard avalia os sistemas?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O sistema de memória expõe duas operações padronizadas — Add (gravar) e Search (recuperar). O benchmark injeta conteúdo, faz perguntas e avalia as respostas (Answer→Eval), gerando um score de 0 a 100. Sistemas comerciais participam via API hospedada; métodos open-source via repositório GitHub com Docker." }
+            },
+            {
+              "@type": "Question",
+              "name": "O benchmark de memória serve para LLM local?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Serve como referência. A fronteira Add→Search desacopla memória do modelo: você pode acoplar qualquer sistema de memória ao seu modelo local. E o resultado dos baselines mostra que uma pilha local simples — SQLite FTS ou BM25 sobre bons chunks — já é competitiva com boa parte dos frameworks." }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Agent Memory Leaderboard", "item": "https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Agent Memory Leaderboard: os primeiros resultados do benchmark que faltava</h1>
+        <p class="lead">Seu modelo local de 30B raciocina bem, chama ferramentas, lê tela — e esquece tudo quando você fecha o terminal. Em 15/08 saíram os primeiros resultados públicos do Agent Memory Leaderboard: 136 times registrados, 65 sistemas ranqueados em Text Memory e um vencedor que mal passa da metade da nota.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>136</strong> times registrados</span>
+            <span class="badge"><strong>65</strong> sistemas em Text Memory</span>
+            <span class="badge"><strong>2</strong> tracks (open-source e comercial)</span>
+            <span class="badge"><strong>58,02</strong> é o melhor score</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-que-e">O que é o Agent Memory Leaderboard</a></li>
+            <li><a href="#metodologia">Como funciona: Add→Search e Answer→Eval</a></li>
+            <li><a href="#resultados-comercial">Resultados: track Commercial Products</a></li>
+            <li><a href="#resultados-opensource">Resultados: track Open-source Methods</a></li>
+            <li><a href="#leituras">O que os números revelam (4 leituras)</a></li>
+            <li><a href="#local">O que muda para quem roda agente local</a></li>
+            <li><a href="#caveats">Caveats: leia antes de citar os números</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-que-e">O que é o Agent Memory Leaderboard</h2>
+    <p>O <strong>Agent Memory Leaderboard (AML)</strong> é um benchmark público e aberto para comparar <strong>sistemas de memória de agentes de IA</strong> — não modelos, mas a camada que grava e recupera o que o agente aprende: fatos sobre o usuário, histórico de conversas, resultados de ferramentas. Os <a href="https://news.ycombinator.com/item?id=49281370">primeiros resultados públicos saíram em 15/08</a>, no Hacker News, e o ranking completo está no <a href="https://agentmemoryleaderboard.ai">site oficial</a> e na <a href="https://huggingface.co/agent-memory-leaderboard">organização do Hugging Face</a>.</p>
+    <p>A escala da primeira rodada: <strong>136 times registrados</strong> e <strong>69 frameworks</strong> completaram a avaliação inicial, segundo o anúncio oficial. Nas tabelas de <em>Text Memory</em> publicadas até agora estão 65 sistemas: <strong>15 na track Commercial Products</strong> (produtos com API hospedada) e <strong>50 na track Open-source Methods</strong> (métodos com repositório público). Uma segunda frente, <em>Coding Agent Memory</em>, avalia memória para tarefas de programação e recall de contexto de repositório.</p>
+    <p>O problema que o AML ataca é conhecido de quem roda agentes locais: comparar sistemas de memória era impossível porque cada um expõe uma API diferente, roda sobre um LLM diferente e se avalia com datasets diferentes. O AML padroniza as duas pontas — a interface do sistema e o protocolo de avaliação.</p>
+
+    <h2 id="metodologia">Como funciona: Add→Search e Answer→Eval</h2>
+    <p>A metodologia desenha uma <strong>fronteira de sistema</strong> deliberadamente mínima:</p>
+    <ul>
+        <li><strong>Sistema de memória: Add → Search.</strong> O participante expõe só duas operações — <code>Add</code> para gravar conteúdo e <code>Search</code> para recuperar o que é relevante. Nada de "o sistema também responde": quem responde é o harness do benchmark, sempre o mesmo.</li>
+        <li><strong>Benchmark: Answer → Eval.</strong> O harness injeta conteúdo via Add, faz perguntas que exigem o que foi gravado, gera a resposta com o fluxo controlado e avalia com um juiz padronizado (o avaliador oficial é o pipeline <code>official-benchmark-pipelines-v3</code>, score de 0 a 100).</li>
+    </ul>
+    <p>Há duas rotas de participação: <strong>industry</strong> (APIs Add/Search hospedadas, com chave emitida e smoke test antes da avaliação formal) e <strong>academic</strong> (repositório GitHub público com Docker e instruções, deploy feito pelos mantenedores). A suíte pública v3 usada na avaliação referencia benchmarks conhecidos de memória conversacional — a documentação cita <strong>LongMemEval, LoCoMo, PersonaMem, BEAM e CL-Bench</strong> entre os datasets.</p>
+    <p>O detalhe mais importante para quem compara números: o score final é desdobrado em <strong>categorias por capacidade</strong> (grupos A a H no board público). É aí que aparece a variação real de cada sistema — o líder MemoraX, por exemplo, oscila de 93,5 na melhor categoria folha a 9,0 na pior.</p>
+
+    <h2 id="resultados-comercial">Resultados: track Commercial Products</h2>
+    <p>Ranking completo de Text Memory da track comercial (15 sistemas, scores verificados na API oficial do leaderboard em 16/08/2026):</p>
+    <table>
+        <tr><th>#</th><th>Sistema</th><th>Score (0-100)</th></tr>
+        <tr class="highlight"><td>1</td><td><strong>MemoraX</strong></td><td><strong>58,02</strong></td></tr>
+        <tr><td>2</td><td>MemOS</td><td>45,89</td></tr>
+        <tr><td>3</td><td>NTES-MEMORY-SMART</td><td>44,21</td></tr>
+        <tr><td>4</td><td>AML-Eval-FLASH</td><td>43,65</td></tr>
+        <tr><td>5</td><td>Cognee</td><td>42,61</td></tr>
+        <tr><td>6</td><td>NTES-MEMORY-MQ-LAYER</td><td>42,11</td></tr>
+        <tr><td>7</td><td>TencentDB</td><td>41,48</td></tr>
+        <tr><td>8</td><td>Mem0</td><td>41,40</td></tr>
+        <tr><td>9</td><td>MemPalace</td><td>39,48</td></tr>
+        <tr><td>10</td><td>Vectorize Hindsight Cloud</td><td>38,54</td></tr>
+        <tr><td>11</td><td>memory-dense</td><td>37,65</td></tr>
+        <tr><td>12</td><td>星际罗盘</td><td>35,64</td></tr>
+        <tr><td>13</td><td>memory-8000</td><td>34,22</td></tr>
+        <tr><td>14</td><td>SuperMemory</td><td>29,63</td></tr>
+        <tr><td>15</td><td>NTES-MEMORY-TDAM</td><td>26,30</td></tr>
+    </table>
+    <p>O destaque é o <strong>MemoraX</strong>: 58,02, com 12,1 pontos de vantagem sobre o segundo colocado — o maior gap entre posições consecutivas de toda a tabela. O <strong>Mem0</strong>, provavelmente o framework de memória mais citado do ecossistema open-source, aparece em 8º com 41,40, atrás de Cognee e de três entradas da NetEase (NTES).</p>
+
+    <h2 id="resultados-opensource">Resultados: track Open-source Methods</h2>
+    <p>Na track acadêmica/open-source, 50 métodos avaliados via repositório GitHub. O top 5:</p>
+    <table>
+        <tr><th>#</th><th>Sistema</th><th>Score (0-100)</th></tr>
+        <tr class="highlight"><td>1</td><td><strong>InvMem</strong></td><td><strong>45,06</strong></td></tr>
+        <tr><td>2</td><td>Refind</td><td>44,97</td></tr>
+        <tr><td>3</td><td>ActiveMemoryIndex</td><td>44,84</td></tr>
+        <tr><td>4</td><td>Hybrid Search v2.0</td><td>44,57</td></tr>
+        <tr><td>5</td><td>ChronoHybridMem</td><td>44,33</td></tr>
+    </table>
+    <p>Três observações sobre o resto da tabela: o topo é <strong>compacto</strong> (menos de 0,8 ponto entre 1º e 3º); o <strong>Mem0</strong> também participou aqui e aparece em 19º (42,07); e um tal de <strong>SQLite-FTS-Baseline</strong> — um baseline de full-text search do SQLite, sem nenhuma IA — está em 22º com 41,79, à frente de 28 métodos "de memória" dedicados. Um <em>just-a-BM25</em> literal também compete: 38,47, em 35º.</p>
+
+    <h2 id="leituras">O que os números revelam (4 leituras)</h2>
+    <ul>
+        <li><strong>1. Memória de agente está longe de resolvida.</strong> O melhor sistema do mundo, na primeira rodada padronizada, fez 58 em 100. Para calibrar: é o tipo de número que um modelo de código faz em benchmark difícil na estreia da geração. A camada de memória é o próximo gargalo dos agentes — não o modelo.</li>
+        <li><strong>2. Baselines simples continuam difíceis de bater.</strong> SQLite FTS em 22º e BM25 em 35º, ambos acima de dezenas de frameworks sofisticados. Antes de empilhar grafos de conhecimento e rerankers em cima do seu agente, meça o que uma busca textual bem afinada já entrega.</li>
+        <li><strong>3. Ninguém domina todas as capacidades.</strong> O MemoraX varia de 93,5 a 9,0 entre categorias folha (e de 89,9 a 30,0 entre os grupos principais A-H). Score agregado esconde buracos: um sistema excelente em fatos persistentes pode ser ruim em raciocínio temporal.</li>
+        <li><strong>4. O gap entre produto e método sumiu.</strong> O melhor método open-source (45,06) está colado no melhor produto comercial depois do MemoraX (45,89). Na faixa de 41-45 pontuam Cognee, Mem0, TencentDB e meia dúzia de métodos acadêmicos — a diferenciação real ainda não aconteceu.</li>
+    </ul>
+
+    <h2 id="local">O que muda para quem roda agente local</h2>
+    <p>Para o público deste portal — <a href="/guia/muse-glimmer-30b-agente-local">agentes always-on como o Muse Glimmer 30B</a> ou o <a href="/guia/benchmarks-comparativos">Qwen3.8-27B</a> servindo localmente — o AML traz três implicações práticas:</p>
+    <ul>
+        <li><strong>A fronteira Add→Search desacopla memória do modelo.</strong> Se o seu sistema de memória expõe Add e Search (via API local ou MCP), você pode trocar o modelo por baixo sem tocar na memória — e vice-versa. É a mesma separação que o <a href="/guia/como-rodar">stack local</a> já usa entre servidor de inferência e aplicação.</li>
+        <li><strong>Comece simples e meça.</strong> A lição do SQLite-FTS-Baseline vale dobrada localmente: um banco SQLite com FTS5 sobre bons chunks, servido ao lado do llama.cpp, é um ponto de partida honesto — e agora existem suítes públicas (LongMemEval, LoCoMo) para comparar a sua pilha com os números do leaderboard.</li>
+        <li><strong>Agente 24/7 exige memória 24/7.</strong> Um modelo feito para rodar sempre só entrega valor se lembrar de ontem. O benchmark cria a linguagem comum para escolher (ou construir) essa camada — antes era marketing; agora é score.</li>
+    </ul>
+
+    <h2 id="caveats">Caveats: leia antes de citar os números</h2>
+    <div class="callout-warn">
+        <strong>Primeira rodada, metodologia em consolidação.</strong> Estes são os resultados inaugurais do AML e o protocolo ainda está sendo documentado publicamente. Perguntas em aberto levantadas na thread do Hacker News: os scores são de execução única ou média de múltiplas execuções? Qual LLM (e qual versão) atua como juiz na etapa Eval — e o quão sensível é o ranking a essa escolha? Além disso, a track comercial avalia o produto como submetido (versão, configuração e modo de retorno variam por entrada), não o melhor esforço do fornecedor. Trate a tabela como fotografia da primeira rodada, não como veredicto final.
+    </div>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O que é memória de agente em IA?</h3>
+        <p>É a camada que permite a um agente persistir e recuperar informação entre sessões e além da janela de contexto: fatos sobre o usuário, histórico de conversas, resultados de ferramentas. O modelo esquece tudo ao fechar o terminal; a memória é o que sobrevive.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quem lidera o Agent Memory Leaderboard?</h3>
+        <p>Na track Commercial Products de Text Memory: MemoraX (58,02), MemOS (45,89) e NTES-MEMORY-SMART (44,21). Na track Open-source Methods: InvMem (45,06), Refind (44,97) e ActiveMemoryIndex (44,84). Nenhum sistema passa de 60 em 100.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Como o AML avalia os sistemas?</h3>
+        <p>O sistema expõe duas operações padronizadas — Add (gravar) e Search (recuperar). O benchmark injeta conteúdo, faz perguntas e avalia as respostas (Answer→Eval) com um juiz padronizado, gerando score de 0 a 100. Comerciais participam via API hospedada; open-source via repositório GitHub com Docker.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O benchmark serve para LLM local?</h3>
+        <p>Serve como referência. A fronteira Add→Search desacopla memória do modelo — dá para acoplar qualquer sistema de memória ao seu modelo local. E o desempenho dos baselines mostra que uma pilha local simples (SQLite FTS ou BM25 sobre bons chunks) já é competitiva com boa parte dos frameworks.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Posso confiar no ranking já?</h3>
+        <p>Com cautela. É a primeira rodada, com perguntas metodológicas em aberto (execução única vs média, qual LLM julga). Use como fotografia do estado da arte em 15/08/2026, não como compra casada.</p>
+    </div>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="https://agentmemoryleaderboard.ai">Agent Memory Leaderboard — site oficial</a></li>
+        <li><a href="https://news.ycombinator.com/item?id=49281370">Show HN: first public results (thread oficial)</a></li>
+        <li><a href="https://huggingface.co/agent-memory-leaderboard">Organização no Hugging Face</a></li>
+        <li><a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer 30B: o modelo de agentes 24/7</a> — o porquê de agente always-on precisar de memória</li>
+        <li><a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF: quanto cabe na sua GPU</a></li>
+        <li><a href="/guia/como-rodar">Como rodar modelos 30B localmente</a> · <a href="/guia/faq">FAQ do portal</a></li>
+    </ul>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — análise do Agent Memory Leaderboard | Dados: API oficial do agentmemoryleaderboard.ai, thread HN 49281370 e anúncio de 15/08/2026 (verificados em 16/08/2026).</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>

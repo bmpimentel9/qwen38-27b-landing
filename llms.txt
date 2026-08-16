@@ -14,6 +14,8 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Guia completo](https://qwen38-27b-landing.vercel.app/guia/) — pillar page com visão geral do Qwen3.8-27B
 - [Meta Muse Glimmer 30B](https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local) — análise do 30B agêntico da Meta: benchmarks oficiais, cruzamento com Qwen3.8-27B, VRAM
 - [Quantização GGUF ≤30B](https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu) — tabela real com GB medidos por quantização (Qwen3.8-27B vs Muse Glimmer 30B)
+- [Agent Memory Leaderboard](https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados) — primeiros resultados (15/08/2026): 65 sistemas em Text Memory, MemoraX lidera com 58,02; metodologia Add→Search / Answer→Eval
+- [Lemonade SDK v11.6](https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd) — serving de LLM local GPU+NPU com suporte AMD (ROCm, Radeon, Ryzen) e MCP server embutido; release 14/08/2026
 - [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e referências do model card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max)
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
 - [Como rodar localmente](https://qwen38-27b-landing.vercel.app/guia/como-rodar) — Ollama, llama.cpp, vLLM, HuggingFace, MLX
@@ -106,6 +108,25 @@ model = AutoModelForMultimodalLM.from_pretrained("Qwen/Qwen3.8-27B", device_map=
 Segundo modelo de ~30B coberto pelo portal: 29,6B denso (inclui encoder de visão ViT-G/14 ~1,8B), Apache 2.0 sem gate, multimodal, destilado do Muse Spark via logit distillation. Primeiro modelo grande propósito-construído para agentes locais always-on (tool calling MCP, LLM-as-a-judge). Atenção híbrida [Local×3, Global] com sliding window 2048. Reasoning configurável low/medium/high/xhigh. Drafter DFlash (speculative decoding): RTX 5090 de 74,9 para 233,4 tok/s (3,1x).
 
 Benchmarks oficiais (Muse Glimmer High Reasoning vs Qwen3.6-27B / Gemma4-31B): MCP Atlas 75,5 (vs 62,5/54,2) · DeepSearch QA 74,6 · SWE-Bench Pro 51,2 · AIME 2026 94,7 · OSWorld-Verified 65,9 (Qwen3.6: 75,6). Nota de honestidade: o benchmark oficial da Meta compara com Qwen3.6-27B, não com o Qwen3.8-27B; não há head-to-head oficial entre Muse Glimmer e Qwen3.8-27B. Nos 4 benchmarks comuns aos dois model cards, o Qwen3.8-27B leva (SWE-Bench Pro 61,7 vs 51,2; OSWorld 84,3 vs 65,9; GPQA 89,2 vs 83,5; IFBench 79,5 vs 77,0).
+
+## Agent Memory Leaderboard — primeiros resultados (15/08/2026)
+
+Benchmark público e aberto para sistemas de memória de agentes de IA (não modelos — a camada que grava e recupera o que o agente aprende). Primeira rodada: 136 times registrados, 69 frameworks avaliados, 65 sistemas nas tabelas públicas de Text Memory — 15 na track Commercial Products (API hospedada) e 50 na track Open-source Methods (repo GitHub + Docker). Segunda frente: Coding Agent Memory.
+
+Metodologia: fronteira de sistema Add→Search (o participante expõe apenas gravar e recuperar); benchmark Answer→Eval (harness injeta conteúdo, pergunta, gera resposta e avalia com juiz padronizado; score 0-100; categorias por capacidade A-H). Suíte pública v3 referencia LongMemEval, LoCoMo, PersonaMem, BEAM e CL-Bench.
+
+Text Memory — Commercial Products (top 5 de 15): MemoraX 58,02 · MemOS 45,89 · NTES-MEMORY-SMART 44,21 · AML-Eval-FLASH 43,65 · Cognee 42,61. Mem0 em 8º (41,40); SuperMemory em 14º (29,63).
+Text Memory — Open-source Methods (top 5 de 50): InvMem 45,06 · Refind 44,97 · ActiveMemoryIndex 44,84 · Hybrid Search v2.0 44,57 · ChronoHybridMem 44,33. Mem0 em 19º (42,07); SQLite-FTS-Baseline em 22º (41,79) — um baseline de full-text search do SQLite sem IA à frente de 28 frameworks dedicados; "just-a-BM25" em 35º (38,47).
+
+Leituras: (1) melhor score do mundo é 58/100 — memória é o próximo gargalo dos agentes; (2) baselines simples são difíceis de bater; (3) nenhum sistema domina todas as capacidades (MemoraX varia de 93,5 a 9,0 entre categorias folha); (4) gap entre produto comercial e método open-source sumiu (45,89 vs 45,06). Caveat: primeira rodada, metodologia em consolidação (execução única vs média, qual LLM julga) — perguntas em aberto na thread HN.
+
+## Lemonade SDK v11.6.0 (14/08/2026)
+
+Servidor local open-source (5.374 stars, C++) para serving de LLM com API compatível com OpenAI, orquestrando runtimes ONNX Runtime e llama.cpp sobre GPU e NPU. Foco explícito em hardware AMD: topics rocm, radeon, ryzen, npu. Alternativa ao Ollama quando o hardware é AMD e se quer GPU+NPU no mesmo serving, MCP server embutido (Model Context Protocol) ou rotação de backends.
+
+Release v11.6.0 (14/08): Muse Glimmer 30B GGUF entra no catálogo embutido do llama.cpp (com draft decoding, visão e tool-calling); backend ROCm do llama.cpp para AMD Instinct MI100/MI200/MI210/MI250 no Linux; backend experimental TheNoise (ROCm) de geração de imagem (Anima, Krea-2) para iGPUs Strix Halo e Strix Point; `lemonade alias` (apelidos de modelos com /v1/models ciente de alias); `lemonade bench` com cenários de visão opt-in. Breaking changes: /v1/audio/speech não-PCM retorna 400; quants GGUF em subpastas viram entradas individuais em /v1/models; layout MSI do Windows mudou.
+
+Nota de honestidade: suporte AMD é tema central do projeto, mas o release valida explicitamente Instinct MI100-MI250 (Linux) para LLM e Strix Halo/Point apenas para o backend experimental de imagem — nenhuma GPU específica foi testada localmente para esta publicação.
 
 ## Tabela GGUF real (GB medidos via HF API, 15/08/2026)
 
