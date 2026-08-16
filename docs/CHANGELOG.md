@@ -9,6 +9,37 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-16] — Artigos do dia: Agent Memory Leaderboard + Lemonade v11.6
+
+### Added
+- **2 artigos do dia** (`t_0e2b5d33` — seo-content, consumindo discovery `t_f9946513`):
+  - `guia/agent-memory-leaderboard-resultados/` — análise dos resultados
+    inaugurais do Agent Memory Leaderboard (15/08): 136 times, 69 frameworks
+    avaliados, 65 sistemas nas tabelas públicas de Text Memory (15 Commercial +
+    50 Open-source). Rankings completos verificados ao vivo na API oficial do
+    agentmemoryleaderboard.ai (`/leaderboard?track=industry|academic`):
+    MemoraX 58,02 lidera a comercial; InvMem 45,06 a open-source; baselines
+    SQLite-FTS (22º) e BM25 (35º) à frente de dezenas de frameworks. Caveat de
+    primeira rodada/metodologia em consolidação incluído no artigo e no FAQ.
+    JSON-LD: TechArticle + Dataset + FAQPage (5 perguntas) + Breadcrumb.
+  - `guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd/` — release v11.6.0 (14/08)
+    do Lemonade SDK: Muse Glimmer 30B GGUF no catálogo embutido, ROCm no
+    llama.cpp para Instinct MI100-MI250, TheNoise experimental (imagem) em
+    Strix Halo/Point, `lemonade alias`, bench de visão e breaking changes.
+    Comparativo vs Ollama/llama.cpp. Nota de honestidade: nenhuma GPU testada
+    localmente — suporte AMD afirmado apenas como tema do projeto.
+    JSON-LD: TechArticle + SoftwareApplication + Breadcrumb.
+- Ambos com snippet GA4 (gtag + scroll_depth) conforme padrão 15/08, canonical,
+  OG/Twitter e nav completa com cleanUrls.
+- `sitemap.xml`: +2 URLs (priorities 0.9/0.8, lastmod 2026-08-16).
+- `llms.txt`: +2 páginas na lista + 2 seções citáveis (AML com rankings
+  completos e 4 leituras; Lemonade com release notes e caveat).
+- `guia/index.html` e `index.html` (home): +2 cards cada (tags tag-bench e
+  tag-hw), com marcador "Novo 16/08".
+
+---
+
+
 ## [2026-08-15] — Atualização diária
 
 ### Added

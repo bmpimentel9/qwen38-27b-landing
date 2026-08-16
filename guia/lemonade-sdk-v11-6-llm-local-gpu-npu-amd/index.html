@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemonade v11.6: LLM local com GPU e NPU (e AMD)</title>
+    <meta name="description" content="Lemonade SDK v11.6 (14/08): serving de LLM local com GPU+NPU, suporte AMD ROCm e MCP server embutido. Alternativa ao Ollama para GPU AMD.">
+    <meta name="keywords" content="lemonade LLM AMD, rodar LLM local GPU AMD ROCm, alternativa ollama AMD, lemonade SDK, MCP server LLM local, NPU LLM local, Radeon LLM">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Lemonade v11.6: serving de LLM local com GPU+NPU — a alternativa AMD ao Ollama">
+    <meta property="og:description" content="Release de 14/08 traz ROCm para Instinct MI100-MI250 no llama.cpp, geração de imagem em iGPUs Strix e MCP server embutido. O que muda para quem roda 30B local.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-16T08:30:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="Lemonade">
+    <meta property="article:tag" content="AMD">
+    <meta property="article:tag" content="LLM local">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lemonade v11.6: LLM local com GPU+NPU e suporte AMD">
+    <meta name="twitter:description" content="ROCm no llama.cpp para Instinct, imagem em iGPU Strix e MCP server embutido. Alternativa ao Ollama para GPU AMD.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Lemonade SDK v11.6: serving de LLM local com GPU+NPU — a alternativa AMD ao Ollama",
+          "description": "Análise da release v11.6.0 do Lemonade SDK (14/08/2026): backend ROCm do llama.cpp para GPUs AMD Instinct, geração de imagem experimental em iGPUs Strix, Muse Glimmer 30B no catálogo embutido e MCP server. Alternativa ao Ollama/llama.cpp para hardware AMD.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-16",
+          "dateModified": "2026-08-16",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd",
+          "about": { "@id": "https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd#software" },
+          "proficiencyLevel": "Intermediate"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd#software",
+          "name": "Lemonade SDK",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Windows, Linux",
+          "softwareVersion": "11.6.0",
+          "releaseNotes": "https://github.com/lemonade-sdk/lemonade/releases/tag/v11.6.0",
+          "datePublished": "2026-08-14",
+          "downloadUrl": "https://github.com/lemonade-sdk/lemonade/releases/latest",
+          "isAccessibleForFree": true,
+          "featureList": "Serving local de LLM com OpenAI API, backends ONNX Runtime/llama.cpp com GPU e NPU, suporte AMD (ROCm, Radeon, Ryzen), MCP server embutido, alias de modelos, benchmark de visão"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Lemonade v11.6", "item": "https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Lemonade v11.6: serving de LLM local com GPU e NPU — a alternativa AMD ao Ollama</h1>
+        <p class="lead">Enquanto o Ollama domina a conversa sobre LLM local, o Lemonade SDK segue um caminho próprio: um servidor local que orquestra GPU <em>e</em> NPU, com foco explícito em hardware AMD. A release v11.6.0 saiu em 14/08 — e traz o Muse Glimmer 30B direto no catálogo.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>v11.6.0</strong> lançada 14/08/2026</span>
+            <span class="badge"><strong>5.374</strong> stars no GitHub</span>
+            <span class="badge"><strong>AMD</strong> ROCm · Radeon · Ryzen</span>
+            <span class="badge"><strong>MCP</strong> server embutido</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-que-e">O que é o Lemonade</a></li>
+            <li><a href="#v11-6">O que chegou na v11.6</a></li>
+            <li><a href="#amd">O caso AMD: por que isso importa</a></li>
+            <li><a href="#vs-ollama">Lemonade vs Ollama/llama.cpp</a></li>
+            <li><a href="#como-instalar">Como instalar</a></li>
+            <li><a href="#caveats">Caveats</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-que-e">O que é o Lemonade</h2>
+    <p>O <a href="https://github.com/lemonade-sdk/lemonade">Lemonade SDK</a> é um projeto open-source (C++/Python) que serve modelos de linguagem localmente com <strong>API compatível com OpenAI</strong>, orquestrando diferentes runtimes de inferência — ONNX Runtime e llama.cpp — sobre <strong>GPU e NPU</strong>. Os tópicos do repositório contam a história por si: <code>amd</code>, <code>rocm</code>, <code>radeon</code>, <code>ryzen</code>, <code>npu</code>, <code>llm-inference</code>, <code>mcp-server</code>, <code>openai-api</code>.</p>
+    <p>A premissa é diferente do Ollama: em vez de ser "o Docker dos LLMs locais" com um runtime único, o Lemonade atua como <strong>camada de serving e roteamento</strong> — escolhe o backend certo (ONNX Runtime DirectML/Vulkan/ROCm, llama.cpp, NPU) conforme o modelo e o hardware, expõe endpoint OpenAI padronizado e ainda inclui um <strong>MCP server embutido</strong> para plugar o servidor diretamente em clientes e agentes que falam Model Context Protocol. O projeto tem 5.374 stars, commits no dia 16/08 e binários oficiais para Windows, Ubuntu, Debian, Fedora e macOS.</p>
+
+    <h2 id="v11-6">O que chegou na v11.6</h2>
+    <p>A release <a href="https://github.com/lemonade-sdk/lemonade/releases/tag/v11.6.0">v11.6.0, publicada em 14/08/2026</a>, traz como destaques do changelog oficial:</p>
+    <ul>
+        <li><strong>Muse Glimmer 30B GGUF no catálogo embutido</strong> do llama.cpp, com draft decoding (speculative decoding via drafter), visão e tool-calling — o modelo de agentes always-on da Meta que <a href="/guia/muse-glimmer-30b-agente-local">analisamos ontem</a>, agora a um comando de distância no Lemonade.</li>
+        <li><strong>Backend ROCm do llama.cpp para GPUs AMD Instinct MI100, MI200, MI210 e MI250 no Linux</strong> — a lista de data centers da AMD ganhando caminho oficial de inferência local via llama.cpp.</li>
+        <li><strong>Backend experimental TheNoise (ROCm) de geração de imagem</strong>, levando os modelos Anima e Krea-2 para as iGPUs <strong>Strix Halo e Strix Point</strong> — o mesmo segmento de hardware da máquina de referência deste portal.</li>
+        <li><strong><code>lemonade alias</code></strong>: apelidos próprios para modelos, com listagem em <code>/v1/models</code> ciente de alias e endpoints de administração.</li>
+        <li><strong><code>lemonade bench</code> com cenários de visão opt-in</strong> para modelos multimodais.</li>
+    </ul>
+    <p>Há também breaking changes relevantes para quem já rodava versões anteriores: <code>/v1/audio/speech</code> com formato não-PCM (ex.: mp3) no Kokoro agora retorna HTTP 400 em vez de devolver PCM silenciosamente; quants GGUF em subpastas de <code>extra_models_dir</code> passam a aparecer como entradas individuais em <code>/v1/models</code>; e o layout dos MSI do Windows mudou (automação que lia <code>lemonade.msi</code> do artifact antigo precisa ser repontada).</p>
+
+    <h2 id="amd">O caso AMD: por que isso importa</h2>
+    <p>Quem roda LLM local em GPU AMD conhece o terreno: CUDA é cidadã de primeira classe em quase todo stack; ROCm historicamente exige paciência; e a rota pragmática costuma ser Vulkan via llama.cpp. O Lemonade nasceu do lado AMD da força — a origem do projeto está ligada ao ecossistema Ryzen AI/Radeon — e a v11.6 empurra a fronteira em duas direções:</p>
+    <ul>
+        <li><strong>Data center (Instinct):</strong> MI100 a MI250 no Linux agora têm backend ROCm oficial dentro do llama.cpp distribuído pelo Lemonade.</li>
+        <li><strong>Consumidor (iGPU Strix):</strong> geração de imagem experimental nas iGPUs Strix Halo e Strix Point — o terreno do Ryzen AI Max e da memória unificada que os modelos de <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">30B quantizados</a> tanto gostam.</li>
+    </ul>
+    <div class="callout-warn">
+        <strong>Nota de honestidade:</strong> o release cita explicitamente Instinct MI100/MI200/MI210/MI250 (Linux) para LLM e Strix Halo/Strix Point para o backend <em>experimental</em> de imagem. Suporte AMD existe e é tema central do projeto, mas <strong>não validamos nesta publicação o comportamento em nenhuma GPU específica</strong> — para o seu hardware, a referência é a documentação oficial de instalação e a matriz de compatibilidade do repositório.
+    </div>
+
+    <h2 id="vs-ollama">Lemonade vs Ollama/llama.cpp</h2>
+    <table>
+        <tr><th></th><th>Lemonade</th><th>Ollama</th><th>llama.cpp puro</th></tr>
+        <tr><td>API</td><td>OpenAI-compatível</td><td>Própria + compatibilidade</td><td>OpenAI-compatível (llama-server)</td></tr>
+        <tr><td>Backends</td><td>Multi: ONNX RT, llama.cpp, NPU</td><td>Runtime próprio (llama.cpp derivado)</td><td>llama.cpp (CUDA/Vulkan/ROCm/Metal)</td></tr>
+        <tr><td>Foco de hardware</td><td><strong>GPU+NPU, AMD (ROCm/Radeon/Ryzen)</strong></td><td>Agnóstico</td><td>Agnóstico</td></tr>
+        <tr><td>MCP server</td><td><strong>Embutido</strong></td><td>Não (via integrações)</td><td>Não</td></tr>
+        <tr><td>Alias e admin de modelos</td><td>Sim (novo na v11.6)</td><td>Modelfile</td><td>—</td></tr>
+        <tr><td>Geração de imagem</td><td>Experimental (TheNoise/ROCm)</td><td>Não</td><td>Estável (diffusion.cpp integrado)</td></tr>
+    </table>
+    <p>A leitura prática: o Ollama continua sendo o caminho de menor atrito para começar; o llama.cpp puro dá o controle fino (e é o que usamos no <a href="/guia/como-rodar">guia de execução local</a>); o Lemonade se destaca quando o seu hardware é AMD e você quer <strong>GPU+NPU no mesmo serving</strong>, <strong>MCP sem cola manual</strong> ou <strong>rotação de backends</strong> sem trocar de cliente.</p>
+
+    <h2 id="como-instalar">Como instalar</h2>
+    <p>Binários oficiais da v11.6.0 por plataforma (links no <a href="https://github.com/lemonade-sdk/lemonade/releases/tag/v11.6.0">release notes</a>):</p>
+    <pre><code># Windows
+lemonade.msi (instalador desktop)
+
+# Ubuntu 24.04+
+# Launchpad PPA: ppa:lemonade-team/stable
+
+# Debian 13 / Fedora 43-44
+lemonade-server_11.6.0-debian13_amd64.deb
+lemonade-server-11.6.0-fc43.x86_64.rpm
+
+# macOS
+Lemonade-11.6.0-Darwin.pkg</code></pre>
+    <p>Docker, Snap e demais opções estão na <a href="https://lemonade-server.ai/docs/guide/install/">documentação oficial de instalação</a>. Depois de instalado, o serving segue o padrão OpenAI (<code>/v1/models</code>, <code>/v1/chat/completions</code>) — qualquer cliente que fala com Ollama-compat ou OpenAI aponta para o Lemonade.</p>
+
+    <h2 id="caveats">Caveats</h2>
+    <ul>
+        <li><strong>Não comparamos throughput nesta publicação.</strong> Sem benchmark local no seu hardware, "mais rápido que X" seria chute — o <code>lemonade bench</code> existe justamente para você medir no seu setup.</li>
+        <li><strong>Imagem via TheNoise é experimental</strong> e o suporte LLM ROCm citado cobre as Instinct no Linux; iGPUs Strix aparecem na nota para imagem, não como stack LLM validado.</li>
+        <li><strong>Breaking changes da v11.6</strong> afetam automação existente (audio/speech, listagem de quants, layout MSI) — leia o changelog antes de atualizar.</li>
+    </ul>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="https://github.com/lemonade-sdk/lemonade">Repositório oficial (lemonade-sdk/lemonade)</a></li>
+        <li><a href="https://github.com/lemonade-sdk/lemonade/releases/tag/v11.6.0">Release notes v11.6.0</a></li>
+        <li><a href="https://lemonade-server.ai/docs/guide/install/">Documentação de instalação</a></li>
+        <li><a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer 30B</a> — o modelo que entrou no catálogo da v11.6</li>
+        <li><a href="/guia/como-rodar">Como rodar modelos 30B localmente</a> (Ollama, llama.cpp, vLLM)</li>
+        <li><a href="/guia/agent-memory-leaderboard-resultados">Agent Memory Leaderboard: primeiros resultados</a> — o outro lado do stack de agentes locais</li>
+        <li><a href="/guia/hardware-local">Guia de hardware local</a> · <a href="/guia/faq">FAQ do portal</a></li>
+    </ul>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — análise do Lemonade SDK v11.6 | Dados: release notes oficiais v11.6.0 e GitHub API (verificados em 16/08/2026).</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
