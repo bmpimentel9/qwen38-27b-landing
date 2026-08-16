@@ -49,6 +49,195 @@
         footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
         footer a { color: var(--accent); text-decoration: none; }
     </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "@id": "https://qwen38-27b-landing.vercel.app/guia/faq#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "O que é o Qwen3.8-27B?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Um modelo de linguagem de pesos abertos (licença Apache 2.0) desenvolvido pela equipe Qwen (Alibaba Cloud). É um modelo denso de 27 bilhões de parâmetros — todos ativos a cada token. Tem atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Foi lançado em 14 de agosto de 2026."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual a diferença entre denso e MoE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Modelo denso ativa todos os parâmetros a cada token (maior qualidade por parâmetro, menor velocidade). Modelo MoE (Mixture of Experts) ativa apenas uma fração dos parâmetros. O Qwen3.8-27B é denso; o Qwen3.6-35B da geração anterior é MoE (ativa ~3B de 35B). No mesmo hardware, o MoE entrega 5,3× mais tokens/s."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O que é atenção híbrida?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Um padrão que intercala 3 camadas de Gated DeltaNet linear (eficiente para contexto longo) com 1 camada de Gated Attention (raciocínio completo), repetido 16 vezes ao longo de 64 camadas. Isso permite processar 262K tokens sem estourar a memória com KV cache."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O que é multimodalidade nativa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A torre de visão é nativa, não um adaptador adicionado depois. O modelo entende imagens, vídeos e documentos sem componentes adicionais. Benchmarks confirmam: MathVision 94,6 (matemática a partir de imagens), OmniDocBench 91,1 (leitura de documentos), CharXiv 90,2 (gráficos científicos)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto de VRAM o Qwen3.8-27B precisa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depende da quantização: GGUF 4 bits (Q4_K_M) ~14–17 GB — RTX 4090/5090, Strix Halo, Mac 32GB+; GGUF 5 bits (Q5_K_M) ~18–19 GB; GGUF 8 bits / FP8 ~27 GB — RTX 5090 32GB, 2× 3090; BF16 (sem perdas) ~54 GB — A100/H100 80GB; NVFP4 (Blackwell) 24,6 GiB — 1M de contexto em GPU única."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Qwen3.8-27B roda em RTX 3090?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim. A RTX 3090 tem 24GB de VRAM, suficiente para Q4_K_M (~17GB) com folga para KV cache. É o melhor custo-benefício para LLMs locais em 2026 — usada por ~R$ 3.500–4.500."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Qwen3.8-27B roda no Mac?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim. Macs com Apple Silicon e 32GB+ de memória unificada rodam o Qwen3.8-27B via Ollama MLX (ollama run qwen3.8:27b-mlx) ou mlx-lm. MacBook Pro M4 Max (36/48GB), Mac Studio M2 Max (64GB) e Mac Studio M2 Ultra (128GB) são os recomendados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Consigo rodar sem placa de vídeo (CPU only)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tecnicamente sim via llama.cpp, mas o throughput é de ~1–3 tokens/s — inviável para uso interativo. Considere apenas para testes ou com um servidor com 64GB+ de RAM."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual a velocidade do Qwen3.8-27B localmente?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depende do hardware e quantização. Em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan, Q5_K_M: 10,6 tok/s de decode. Um relato no Hacker News cita ~700 tok/s de prefill e ~30 tok/s de decode em hardware semelhante. Modelo denso é mais lento que MoE: o Qwen3.6-35B MoE entrega 56,6 tok/s no mesmo hardware — 5,3× mais rápido."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O que é thinking mode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O Qwen3.8-27B tem dois modos: Thinking (padrão, com raciocínio passo a passo visível) e Instruct (resposta direta sem raciocínio explícito). O thinking mode é controlado por reasoning_effort (xhigh, medium, low) e preserve_thinking (mantém contexto de raciocínio entre mensagens, ativo por padrão)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como configurar sampling corretamente?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Thinking: temp 1.0, top_p 0.95, top_k 20. Instruct: temp 0.7, top_p 0.80, repetition_penalty 1.5. Nunca use temperature=0 no thinking mode — o modelo entra em loop repetitivo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como instalar o Qwen3.8-27B via Ollama?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Um comando puxa o modelo quantizado (18GB, 256K contexto, texto + imagem): ollama run qwen3.8:27b."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como rodar via llama.cpp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144 --temp 1.0 --top-p 0.95 --top-k 20."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como rodar via vLLM?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3. Requer vLLM ≥ 0.27.2."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual a licença do Qwen3.8-27B?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Apache 2.0 — permite uso comercial e modificação sem restrições. É uma das licenças mais permissivas do ecossistema de LLMs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quando o Qwen3.8-27B foi lançado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Os pesos foram liberados em 14 de agosto de 2026 no Hugging Face (Qwen/Qwen3.8-27B). O anúncio da família Qwen3.8 ocorreu em 3 de agosto (Qwen3.8-Max via API); 11 dias depois os pesos do 27B foram publicados. Quantizações GGUF da Unsloth estavam disponíveis no mesmo dia."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual a família Qwen3.8?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Qwen3.8-27B — 27B denso, este modelo (pesos abertos, Apache 2.0); Qwen3.8-2.4T-A95B — 2,4T MoE, ~95B ativos; Qwen3.8-Max — flagship, API apenas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Qwen3.8-27B fala português?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim. Como modelo multilíngue treinado pela Qwen, o Qwen3.8-27B compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. A qualidade em português é boa para conversação, programação e análise de documentos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qwen3.8-27B vs Qwen3.6-35B (MoE): qual escolher?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Qwen3.8-27B (denso): melhor qualidade por parâmetro, melhor em agentes (OSWorld 84,3 vs 63,9) — escolha para raciocínio agêntico de horizonte longo. Qwen3.6-35B (MoE): 5,3× mais rápido no mesmo hardware (56,6 vs 10,6 tok/s) — escolha para conversa contínua e uso interativo fluido."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qwen3.8-27B vs GPT-OSS-20B?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O Qwen3.8-27B tem contexto nativo 2× maior (262K vs 128K), multimodalidade nativa, thinking mode e 26 benchmarks publicados. O GPT-OSS-20B é menor e mais rápido (20B total, ~3,6B ativos). Para raciocínio agêntico e contexto longo, o Qwen3.8-27B é superior."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qwen3.8-27B vs ChatGPT: qual é melhor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Em benchmarks agênticos, o Qwen3.8-27B supera as referências do próprio model card: OSWorld 84,3 (vs Opus 4.6 Max 72,7 e Qwen3.7-Plus 73,3), CoWorkBench 70,7 (vs 68,2). Em conhecimento geral, fica a poucos pontos da fronteira (GPQA 89,2 vs 91,3). A vantagem do Qwen3.8-27B é rodar localmente, com privacidade total e sem custo de API."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Os benchmarks são verificados independentemente?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. Todos os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card da Qwen — servem como ordem de grandeza, não como comparação controlada."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
     <header>
