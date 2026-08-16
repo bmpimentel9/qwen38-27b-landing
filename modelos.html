@@ -81,6 +81,26 @@
   ]
 }
 </script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+(function(){
+  var fired={};
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    if(max<=0)return;
+    var pct=Math.round((h.scrollTop||document.body.scrollTop)/max*100);
+    [25,50,75,100].forEach(function(t){
+      if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+    });
+    if(fired[100])window.removeEventListener('scroll',onScroll);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
+</script>
 </head>
 <body>
 <nav class="nav">

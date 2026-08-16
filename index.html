@@ -76,10 +76,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   window.addEventListener('scroll',onScroll,{passive:true});
 })();
 
-/* search: expõe qwenTrackSearch(termo) para o campo de busca do portal */
-window.qwenTrackSearch=function(termo){
-  if(termo&&termo.trim().length>1){gtag('event','search',{search_term:termo.trim().slice(0,100)});}
-};
+
 </script>
 <!-- Fontes: removido Google Fonts (render-blocking, LCP 4.8s).
      Trocado para font stack de sistema — zero requests externos, LCP melhora ~700ms. -->
