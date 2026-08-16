@@ -2,7 +2,7 @@
 
 > Portal sobre o modelo de linguagem Qwen3.8-27B (27B denso, Apache 2.0) — especificações, benchmarks, requisitos de hardware, como rodar localmente, comunidade e FAQ.
 
-Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lançado pela Alibaba/Qwen em 14 de agosto de 2026. É um modelo denso de 27 bilhões de parâmetros com atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Encosta em modelos de fronteira em programação agêntica e uso de computador, e pode rodar em GPU de consumidor com quantização de 4 bits.
+Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lançado pela Alibaba/Qwen em 14 de agosto de 2026. É um modelo denso de 27 bilhões de parâmetros com atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Supera as colunas de referência do próprio model card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) na maioria dos benchmarks agênticos, e pode rodar em GPU de consumidor com quantização de 4 bits.
 
 ## Páginas do portal
 
@@ -14,7 +14,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Guia completo](https://qwen38-27b-landing.vercel.app/guia/) — pillar page com visão geral do Qwen3.8-27B
 - [Meta Muse Glimmer 30B](https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local) — análise do 30B agêntico da Meta: benchmarks oficiais, cruzamento com Qwen3.8-27B, VRAM
 - [Quantização GGUF ≤30B](https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu) — tabela real com GB medidos por quantização (Qwen3.8-27B vs Muse Glimmer 30B)
-- [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e modelos de fronteira
+- [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e referências do model card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max)
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
 - [Como rodar localmente](https://qwen38-27b-landing.vercel.app/guia/como-rodar) — Ollama, llama.cpp, vLLM, HuggingFace, MLX
 - [Comunidade e casos de uso](https://qwen38-27b-landing.vercel.app/guia/comunidade-casos-uso) — reações do Hacker News, r/LocalLLaMA e X
@@ -46,7 +46,7 @@ Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo f
 - NL2Repo-Bench: 42,3
 
 ### Agentes e uso de computador
-- OSWorld-Verified: 84,3 (+20,4) — encosta no Qwen3.8-Max (86,1)
+- OSWorld-Verified: 84,3 (+20,4) — supera Qwen3.7-Plus (73,3), Opus 4.6 Max (72,7) e Muse 65,9
 - AndroidWorld: 81,9
 - WebArena-Verified: 64,8 (+16,0)
 - CoWorkBench: 70,7 (+9,7) — supera Opus 4.6 Max (68,2)

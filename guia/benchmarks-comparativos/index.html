@@ -108,7 +108,7 @@
         </div>
     </div>
 
-    <p>A diferença fundamental em relação à geração anterior (Qwen3.6-27B) não está em conhecimento bruto — está em <strong>tarefas agênticas de horizonte longo</strong>, onde o avanço chega a +29,7 pontos (QwenSWEBench) e +28,9 pontos (DeepSWE 1.1). O modelo encosta em modelos de fronteira em programação agêntica e uso de computador.</p>
+    <p>A diferença fundamental em relação à geração anterior (Qwen3.6-27B) não está em conhecimento bruto — está em <strong>tarefas agênticas de horizonte longo</strong>, onde o avanço chega a +29,7 pontos (QwenSWEBench) e +28,9 pontos (DeepSWE 1.1). O modelo supera as colunas de referência do próprio model card na maioria dos benchmarks agênticos (SWE-bench Pro, OSWorld, CoWorkBench, AndroidWorld).</p>
 
     <h2 id="arquitetura">Arquitetura: Denso vs MoE</h2>
     <p>O Qwen3.8-27B é um modelo <strong>denso</strong> — todos os 27 bilhões de parâmetros são computados a cada token. Isso é diferente de modelos MoE como o Qwen3.8-2.4T-A95B (que ativa apenas ~95B de 2,4T) ou o Qwen3.6-35B (que ativa ~3B de 35B). A vantagem do denso é qualidade por parâmetro; a desvantagem é velocidade — no mesmo hardware, um MoE entrega mais tokens por segundo.</p>
@@ -118,13 +118,13 @@
     <p>Os benchmarks de código mostram o salto da geração. O Qwen3.8-27B publica 90,3 no LiveCodeBench v6 — +6,4 pontos em relação ao Qwen3.6-27B (83,9). Em SWE-bench Pro, o avanço é de +8,2 pontos (61,7 vs 53,5).</p>
 
     <table>
-        <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referência de fronteira</th></tr>
-        <tr class="highlight"><td>LiveCodeBench v6</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--accent-2)">+6,4</td><td>—</td></tr>
-        <tr><td>Terminal-Bench 2.1 (Terminus)</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--accent-2)">+9,6</td><td>GPT-5.6 Sol 88,8 · Opus 4.8 78,9</td></tr>
-        <tr><td>SWE-bench Pro</td><td><strong>61,7</strong></td><td>53,5</td><td style="color:var(--accent-2)">+8,2</td><td>GPT-5.6 Sol 64,6 · Opus 5 79,2</td></tr>
-        <tr><td>DeepSWE 1.1</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--accent-2)">+28,9</td><td>Opus 4.8 59,0</td></tr>
-        <tr><td>QwenSWEBench</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--accent-2)">+29,7</td><td>benchmark interno</td></tr>
-        <tr><td>NL2Repo-Bench</td><td><strong>42,3</strong></td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referências do model card</th></tr>
+        <tr class="highlight"><td>LiveCodeBench v6</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--accent-2)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus 4.6 Max 88,8</td></tr>
+        <tr><td>Terminal-Bench 2.1 (Terminus)</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--accent-2)">+9,6</td><td>Opus 4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
+        <tr><td>SWE-bench Pro</td><td><strong>61,7</strong></td><td>53,5</td><td style="color:var(--accent-2)">+8,2</td><td>Qwen3.7-Plus 57,6 · Muse 51,2 · Opus 4.6 Max 53,4</td></tr>
+        <tr><td>DeepSWE 1.1</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--accent-2)">+28,9</td><td>Qwen3.7-Plus 14,2 (única referência do card)</td></tr>
+        <tr><td>QwenSWEBench</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--accent-2)">+29,7</td><td>Qwen3.7-Plus 59,2 · Opus 4.6 Max 63,8</td></tr>
+        <tr><td>NL2Repo-Bench</td><td><strong>42,3</strong></td><td>36,2</td><td style="color:var(--accent-2)">+6,1</td><td>Qwen3.7-Plus 41,1 · Opus 4.6 Max 47,6</td></tr>
     </table>
 
     <div class="callout">
@@ -132,81 +132,81 @@
     </div>
 
     <h2 id="agentes">Agentes e Uso de Computador</h2>
-    <p>É aqui que o Qwen3.8-27B mais brilha. OSWorld-Verified (uso de computador agêntico) subiu de 63,9 para 84,3 — +20,4 pontos. O modelo encosta no Qwen3.8-Max (86,1), o flagship da família via API.</p>
+    <p>É aqui que o Qwen3.8-27B mais brilha. OSWorld-Verified (uso de computador agêntico) subiu de 63,9 para 84,3 — +20,4 pontos. O modelo supera as duas referências do próprio card: Qwen3.7-Plus (73,3) e Claude Opus 4.6 Max (72,7).</p>
 
     <table>
         <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referência</th></tr>
-        <tr class="highlight"><td>OSWorld-Verified</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--accent-2)">+20,4</td><td>Qwen3.8-Max 86,1</td></tr>
-        <tr><td>AndroidWorld</td><td><strong>81,9</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>WebArena-Verified</td><td><strong>64,8</strong></td><td>48,8</td><td style="color:var(--accent-2)">+16,0</td><td>—</td></tr>
-        <tr><td>CoWorkBench</td><td><strong>70,7</strong></td><td>61,0</td><td style="color:var(--accent-2)">+9,7</td><td>Opus 4.6 Max 68,2 · Qwen3.8-Max 74,8</td></tr>
-        <tr><td>JobBench</td><td><strong>33,4</strong></td><td>21,8</td><td style="color:var(--accent-2)">+11,6</td><td>—</td></tr>
-        <tr><td>Agents' Last Exam — Pass@1</td><td><strong>20,4</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>Agents' Last Exam — Score</td><td><strong>42,9</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>RecreationBench</td><td><strong>47,1</strong></td><td>—</td><td>—</td><td>—</td></tr>
+        <tr class="highlight"><td>OSWorld-Verified</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--accent-2)">+20,4</td><td>Qwen3.7-Plus 73,3 · Opus 4.6 Max 72,7 · Muse 65,9</td></tr>
+        <tr><td>AndroidWorld</td><td><strong>81,9</strong></td><td>70,3</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 81,0 · Opus 4.6 Max 62,0</td></tr>
+        <tr><td>WebArena-Verified</td><td><strong>64,8</strong></td><td>48,8</td><td style="color:var(--accent-2)">+16,0</td><td>Qwen3.7-Plus 55,3 (única referência do card)</td></tr>
+        <tr><td>CoWorkBench</td><td><strong>70,7</strong></td><td>61,0</td><td style="color:var(--accent-2)">+9,7</td><td>Opus 4.6 Max 68,2 · Qwen3.7-Plus 65,1</td></tr>
+        <tr><td>JobBench</td><td><strong>33,4</strong></td><td>21,8</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 27,6 (única referência do card)</td></tr>
+        <tr><td>Agents' Last Exam — Pass@1</td><td><strong>20,4</strong></td><td>10,6</td><td style="color:var(--accent-2)">+9,8</td><td>Qwen3.7-Plus 13,2 (única referência do card)</td></tr>
+        <tr><td>Agents' Last Exam — Score</td><td><strong>42,9</strong></td><td>27,3</td><td style="color:var(--accent-2)">+15,6</td><td>Qwen3.7-Plus 33,6 (única referência do card)</td></tr>
+        <tr><td>RecreationBench</td><td><strong>47,1</strong></td><td>29,8</td><td style="color:var(--accent-2)">+17,3</td><td>Qwen3.7-Plus 30,2 (única referência do card)</td></tr>
     </table>
 
-    <p>Em CoWorkBench, o Qwen3.8-27B (70,7) <strong>supera o Claude Opus 4.6 Max</strong> (68,2) — um modelo de fronteira proprietário. Apenas o Qwen3.8-Max (74,8) fica à frente.</p>
+    <p>Em CoWorkBench, o Qwen3.8-27B (70,7) <strong>supera o Claude Opus 4.6 Max</strong> (68,2) — um modelo de fronteira proprietário. Entre as colunas de referência do card, nenhuma fica à frente.</p>
 
     <h2 id="conhecimento">Conhecimento e Raciocínio</h2>
     <table>
-        <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Referência de fronteira</th></tr>
-        <tr class="highlight"><td>GPQA Diamond</td><td><strong>89,2</strong></td><td>GPT-5.6 Sol 94,6 · Opus 4.8 92,0</td></tr>
-        <tr><td>Humanity's Last Exam</td><td><strong>30,8</strong></td><td>—</td></tr>
-        <tr><td>IFBench (seguir instruções)</td><td><strong>79,5</strong></td><td>+10,4 vs 3.6</td></tr>
+        <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Referências do model card</th></tr>
+        <tr class="highlight"><td>GPQA Diamond</td><td><strong>89,2</strong></td><td>Opus 4.6 Max 91,3 · Qwen3.7-Plus 90,3 · Muse 83,5</td></tr>
+        <tr><td>Humanity's Last Exam</td><td><strong>30,8</strong></td><td>Opus 4.6 Max 40,0 · Qwen3.7-Plus 34,7 · Muse 22,0</td></tr>
+        <tr><td>IFBench (seguir instruções)</td><td><strong>79,5</strong></td><td>Qwen3.7-Plus 79,1 · Muse 77,0 · Opus 4.6 Max 62,5</td></tr>
     </table>
 
-    <p>GPQA Diamond (graduate-level Q&A) em 89,2 está notavelmente próximo de modelos de fronteira (GPT-5.6 Sol 94,6, Opus 4.8 92,0). IFBench (seguir instruções) subiu +10,4 pontos.</p>
+    <p>GPQA Diamond (graduate-level Q&A) em 89,2 fica a 1,1 ponto do Qwen3.7-Plus (90,3) e a 2,1 do Claude Opus 4.6 Max (91,3) nas colunas do próprio card. IFBench (seguir instruções) subiu +10,4 pontos e supera o Qwen3.7-Plus (79,1).</p>
 
     <h2 id="multimodal">Multimodalidade</h2>
     <p>A torre de visão é nativa e os benchmarks confirmam: MathVision (matemática a partir de imagens) em 94,6, OmniDocBench 1.5 (leitura de documentos) em 91,1, CharXiv (gráficos científicos) em 90,2. O modelo entende imagens, vídeos e documentos sem componentes adicionais.</p>
 
     <table>
         <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th></tr>
-        <tr class="highlight"><td>MathVision (com CI)</td><td><strong>94,6</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>OmniDocBench 1.5</td><td><strong>91,1</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>CharXiv (com CI)</td><td><strong>90,2</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>RealWorldQA</td><td><strong>85,9</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>BabyVision (com CI)</td><td><strong>85,6</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>ERQA</td><td><strong>65,5</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>Vision2Web</td><td><strong>62,9</strong></td><td>—</td><td>—</td></tr>
-        <tr><td>ClawEval-MM (Pass@3)</td><td><strong>57,4</strong></td><td>—</td><td>—</td></tr>
+        <tr class="highlight"><td>MathVision (com CI)</td><td><strong>94,6</strong></td><td>85,1</td><td style="color:var(--accent-2)">+9,5</td></tr>
+        <tr><td>OmniDocBench 1.5</td><td><strong>91,1</strong></td><td>89,4</td><td style="color:var(--accent-2)">+1,7</td></tr>
+        <tr><td>CharXiv (com CI)</td><td><strong>90,2</strong></td><td>78,4</td><td style="color:var(--accent-2)">+11,8</td></tr>
+        <tr><td>RealWorldQA</td><td><strong>85,9</strong></td><td>84,1</td><td style="color:var(--accent-2)">+1,8</td></tr>
+        <tr><td>BabyVision (com CI)</td><td><strong>85,6</strong></td><td>28,9</td><td style="color:var(--accent-2)">+56,7</td></tr>
+        <tr><td>ERQA</td><td><strong>65,5</strong></td><td>62,5</td><td style="color:var(--accent-2)">+3,0</td></tr>
+        <tr><td>Vision2Web</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--accent-2)">+17,9</td></tr>
+        <tr><td>ClawEval-MM (Pass@3)</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--accent-2)">+14,8</td></tr>
         <tr><td>SWE-MM (bugs multimodais)</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--accent-2)">+12,9</td></tr>
     </table>
 
     <h2 id="comparison">Tabela Comparativa Completa (26 benchmarks)</h2>
     <table>
-        <tr><th>Benchmark</th><th>Categoria</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referência de fronteira</th></tr>
-        <tr class="highlight"><td>LiveCodeBench v6</td><td>código</td><td><strong>90,3</strong></td><td>83,9</td><td>+6,4</td><td>—</td></tr>
-        <tr><td>Terminal-Bench 2.1 (Terminus)</td><td>código</td><td><strong>73,0</strong></td><td>63,4</td><td>+9,6</td><td>GPT-5.6 Sol 88,8 · Opus 4.8 78,9</td></tr>
-        <tr><td>SWE-bench Pro</td><td>código</td><td><strong>61,7</strong></td><td>53,5</td><td>+8,2</td><td>GPT-5.6 Sol 64,6 · Opus 5 79,2</td></tr>
-        <tr><td>DeepSWE 1.1</td><td>código</td><td><strong>42,2</strong></td><td>13,3</td><td>+28,9</td><td>Opus 4.8 59,0</td></tr>
-        <tr><td>QwenSWEBench</td><td>código</td><td><strong>79,0</strong></td><td>49,3</td><td>+29,7</td><td>benchmark interno</td></tr>
-        <tr><td>NL2Repo-Bench</td><td>código</td><td><strong>42,3</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>OSWorld-Verified</td><td>agente</td><td><strong>84,3</strong></td><td>63,9</td><td>+20,4</td><td>Qwen3.8-Max 86,1</td></tr>
-        <tr><td>AndroidWorld</td><td>agente</td><td><strong>81,9</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>WebArena-Verified</td><td>agente</td><td><strong>64,8</strong></td><td>48,8</td><td>+16,0</td><td>—</td></tr>
-        <tr><td>CoWorkBench</td><td>agente</td><td><strong>70,7</strong></td><td>61,0</td><td>+9,7</td><td>Opus 4.6 Max 68,2 · Qwen3.8-Max 74,8</td></tr>
-        <tr><td>JobBench</td><td>agente</td><td><strong>33,4</strong></td><td>21,8</td><td>+11,6</td><td>—</td></tr>
-        <tr><td>Agents' Last Exam — Pass@1</td><td>agente</td><td><strong>20,4</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>Agents' Last Exam — Score</td><td>agente</td><td><strong>42,9</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>RecreationBench</td><td>agente</td><td><strong>47,1</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>GPQA Diamond</td><td>conhec.</td><td><strong>89,2</strong></td><td>—</td><td>—</td><td>GPT-5.6 Sol 94,6 · Opus 4.8 92,0</td></tr>
-        <tr><td>Humanity's Last Exam</td><td>conhec.</td><td><strong>30,8</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>IFBench (seguir instruções)</td><td>conhec.</td><td><strong>79,5</strong></td><td>—</td><td>+10,4</td><td>—</td></tr>
-        <tr><td>MathVision (com CI)</td><td>visão</td><td><strong>94,6</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>OmniDocBench 1.5</td><td>visão</td><td><strong>91,1</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>CharXiv (com CI)</td><td>visão</td><td><strong>90,2</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>RealWorldQA</td><td>visão</td><td><strong>85,9</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>BabyVision (com CI)</td><td>visão</td><td><strong>85,6</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>ERQA</td><td>visão</td><td><strong>65,5</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>Vision2Web</td><td>visão</td><td><strong>62,9</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>ClawEval-MM (Pass@3)</td><td>visão</td><td><strong>57,4</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>SWE-MM (bugs multimodais)</td><td>visão</td><td><strong>38,6</strong></td><td>25,7</td><td>+12,9</td><td>—</td></tr>
+        <tr><th>Benchmark</th><th>Categoria</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referências do model card</th></tr>
+        <tr class="highlight"><td>LiveCodeBench v6</td><td>código</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--accent-2)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus 4.6 Max 88,8</td></tr>
+        <tr><td>Terminal-Bench 2.1 (Terminus)</td><td>código</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--accent-2)">+9,6</td><td>Opus 4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
+        <tr><td>SWE-bench Pro</td><td>código</td><td><strong>61,7</strong></td><td>53,5</td><td style="color:var(--accent-2)">+8,2</td><td>Qwen3.7-Plus 57,6 · Muse 51,2 · Opus 4.6 Max 53,4</td></tr>
+        <tr><td>DeepSWE 1.1</td><td>código</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--accent-2)">+28,9</td><td>Qwen3.7-Plus 14,2 (única referência do card)</td></tr>
+        <tr><td>QwenSWEBench</td><td>código</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--accent-2)">+29,7</td><td>Qwen3.7-Plus 59,2 · Opus 4.6 Max 63,8</td></tr>
+        <tr><td>NL2Repo-Bench</td><td>código</td><td><strong>42,3</strong></td><td>36,2</td><td style="color:var(--accent-2)">+6,1</td><td>Qwen3.7-Plus 41,1 · Opus 4.6 Max 47,6</td></tr>
+        <tr><td>OSWorld-Verified</td><td>agente</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--accent-2)">+20,4</td><td>Qwen3.7-Plus 73,3 · Opus 4.6 Max 72,7 · Muse 65,9</td></tr>
+        <tr><td>AndroidWorld</td><td>agente</td><td><strong>81,9</strong></td><td>70,3</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 81,0 · Opus 4.6 Max 62,0</td></tr>
+        <tr><td>WebArena-Verified</td><td>agente</td><td><strong>64,8</strong></td><td>48,8</td><td style="color:var(--accent-2)">+16,0</td><td>Qwen3.7-Plus 55,3 (única referência do card)</td></tr>
+        <tr><td>CoWorkBench</td><td>agente</td><td><strong>70,7</strong></td><td>61,0</td><td style="color:var(--accent-2)">+9,7</td><td>Opus 4.6 Max 68,2 · Qwen3.7-Plus 65,1</td></tr>
+        <tr><td>JobBench</td><td>agente</td><td><strong>33,4</strong></td><td>21,8</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 27,6 (única referência do card)</td></tr>
+        <tr><td>Agents' Last Exam — Pass@1</td><td>agente</td><td><strong>20,4</strong></td><td>10,6</td><td style="color:var(--accent-2)">+9,8</td><td>Qwen3.7-Plus 13,2 (única referência do card)</td></tr>
+        <tr><td>Agents' Last Exam — Score</td><td>agente</td><td><strong>42,9</strong></td><td>27,3</td><td style="color:var(--accent-2)">+15,6</td><td>Qwen3.7-Plus 33,6 (única referência do card)</td></tr>
+        <tr><td>RecreationBench</td><td>agente</td><td><strong>47,1</strong></td><td>29,8</td><td style="color:var(--accent-2)">+17,3</td><td>Qwen3.7-Plus 30,2 (única referência do card)</td></tr>
+        <tr><td>GPQA Diamond</td><td>conhec.</td><td><strong>89,2</strong></td><td>87,8</td><td style="color:var(--accent-2)">+1,4</td><td>Opus 4.6 Max 91,3 · Qwen3.7-Plus 90,3 · Muse 83,5</td></tr>
+        <tr><td>Humanity's Last Exam</td><td>conhec.</td><td><strong>30,8</strong></td><td>24,0</td><td style="color:var(--accent-2)">+6,8</td><td>Opus 4.6 Max 40,0 · Qwen3.7-Plus 34,7 · Muse 22,0</td></tr>
+        <tr><td>IFBench (seguir instruções)</td><td>conhec.</td><td><strong>79,5</strong></td><td>69,1</td><td style="color:var(--accent-2)">+10,4</td><td>Qwen3.7-Plus 79,1 · Muse 77,0 · Opus 4.6 Max 62,5</td></tr>
+        <tr><td>MathVision (com CI)</td><td>visão</td><td><strong>94,6</strong></td><td>85,1</td><td style="color:var(--accent-2)">+9,5</td><td>Qwen3.7-Plus 90,3 (s/ CI) · Opus 4.6 Max 65,5 (s/ CI)</td></tr>
+        <tr><td>OmniDocBench 1.5</td><td>visão</td><td><strong>91,1</strong></td><td>89,4</td><td style="color:var(--accent-2)">+1,7</td><td>Qwen3.7-Plus 91,4 · Opus 4.6 Max 86,6 · Muse 75,8</td></tr>
+        <tr><td>CharXiv (com CI)</td><td>visão</td><td><strong>90,2</strong></td><td>78,4</td><td style="color:var(--accent-2)">+11,8</td><td>Qwen3.7-Plus 85,9 (com CI) · Muse 78,8 · Opus 4.6 Max 66,0 (s/ CI)</td></tr>
+        <tr><td>RealWorldQA</td><td>visão</td><td><strong>85,9</strong></td><td>84,1</td><td style="color:var(--accent-2)">+1,8</td><td>Qwen3.7-Plus 86,9 · Opus 4.6 Max 73,9</td></tr>
+        <tr><td>BabyVision (com CI)</td><td>visão</td><td><strong>85,6</strong></td><td>28,9</td><td style="color:var(--accent-2)">+56,7</td><td>Qwen3.7-Plus 70,4 (com CI) · Opus 4.6 Max 12,6 (s/ CI)</td></tr>
+        <tr><td>ERQA</td><td>visão</td><td><strong>65,5</strong></td><td>62,5</td><td style="color:var(--accent-2)">+3,0</td><td>Qwen3.7-Plus 69,8 · Opus 4.6 Max 40,8</td></tr>
+        <tr><td>Vision2Web</td><td>visão</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--accent-2)">+17,9</td><td>Qwen3.7-Plus 42,1 (única referência do card)</td></tr>
+        <tr><td>ClawEval-MM (Pass@3)</td><td>visão</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--accent-2)">+14,8</td><td>Qwen3.7-Plus 57,4 · Opus 4.6 Max 52,5</td></tr>
+        <tr><td>SWE-MM (bugs multimodais)</td><td>visão</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--accent-2)">+12,9</td><td>Qwen3.7-Plus 30,0 · Opus 4.6 Max 27,1</td></tr>
     </table>
 
     <div class="callout">
-        <strong>Aviso:</strong> Todos os números acima são reportados pela própria Qwen e ainda não passaram por verificação independente. As colunas de fronteira vêm de model cards e anúncios de terceiros, medidos com harness próprios — servem como ordem de grandeza, não como comparação controlada.
+        <strong>Aviso:</strong> Todos os números acima são reportados pela própria Qwen e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card — mesma tabela e mesma data de avaliação, servindo como ordem de grandeza.
     </div>
 
     <h2 id="vs-30b">Qwen3.8-27B vs Outros Modelos ~30B</h2>

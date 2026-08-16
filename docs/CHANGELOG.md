@@ -23,6 +23,27 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-15] — Fix: referências de benchmark sem fonte oficial substituídas pelas colunas reais do model card
+
+### Fixed
+- **Landing, guia de benchmarks, llms.txt e FAQ** (`t_6dd8d927` — seo-content):
+  referências de "fronteira" que citavam modelos/valores inexistentes no model
+  card (GPT-5.6 Sol, Opus 4.8, Opus 5, Qwen3.8-Max 86,1/74,8) substituídas pelas
+  colunas oficiais do card: **Qwen3.7-Plus · Muse Glimmer-30B · Opus 4.6 Max**.
+- `index.html`: barras dos gráficos (Opus 4.8→4.6 Max 78,2; GPT-5.6 Sol→Qwen3.7-Plus
+  64,0/57,6/14,2; Opus 5→Opus 4.6 Max 53,4; + barra OSWorld Opus 4.6 Max 72,7);
+  tabela de 26 benchmarks com colunas v3.6 preenchidas (36,2/70,3/87,8/24,0/69,1/
+  85,1/89,4/78,4/84,1/28,9/62,5/45,0/42,6) e referências reais nas 26 linhas;
+  legendas e caption atualizados ("Referências do model card").
+- `guia/benchmarks-comparativos/`: 3 tabelas + parágrafos narrativos recalculados
+  (GPQA "próximo de" → distâncias reais 1,1/2,1 pts; OSWorld/CoWorkBench claims).
+- `llms.txt` (l.49 e resumo) e `guia/faq/` (pergunta vs ChatGPT) realinhados.
+- Regra do projeto reafirmada: toda referência de benchmark deve ter linha
+  correspondente no model card — zero termos proibidos, 26/26 refs verificadas,
+  deltas aritméticos conferidos (26 no index, 40 no guia).
+
+---
+
 ## [2026-08-15] — Artigos do dia: Muse Glimmer 30B + tabela GGUF, e navegação consistente
 
 ### Added
