@@ -16,8 +16,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
   análise dos resultados inaugurais com rankings completos verificados ao vivo na API.
 - **Artigo Lemonade SDK v11.6** (`guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd/`):
   release notes, comparativo e caveat de suporte AMD.
-- **Artigo Qwen3.8-27B vs Qwen3.6-27B** (`guia/qwen3.8-vs-qwen3.6-27b/`):
-  26 benchmarks, throughput Strix Halo, tabela GGUF real via HF API.
+- **Artigo comparativo geracional 27B denso** (`guia/qwen3.8-vs-qwen3.6-27b`,
+  task kanban `t_b4f73b4b` — redator):
+  26 benchmarks do model card com pares apples-to-apples, throughput real medido
+  no Strix Halo (3.8/3.6 em Q4_K_M, 400 tok × 9 rodadas, platô térmico),
+  tabela GGUF com GB reais via HF API, e veredito por perfil de uso.
+  FAQPage JSON-LD com 7 perguntas; link no índice `/guia`, na home, no sitemap
+  e no `llms.txt`.
+- Medição de throughput do Qwen3.6-27B denso (Q4_K_M) no Strix Halo — 12,4 tok/s
+  decode, comparado ao 3.8-27B no mesmo quant (17,3 tok/s).
 - **Tag GA4 G-016TVX8LEE inserida nas 11 páginas sem cobertura**:
   modelos, hardware, benchmarks, guia-rapido, guia, como-rodar, faq,
   benchmarks-comparativos, comunidade-casos-uso, hardware-local,
@@ -26,6 +33,18 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 - Ambos os novos artigos com JSON-LD + GA4, sitemap e llms.txt atualizados.
 - `guia/index.html` e `index.html` (home): +2 cards cada (tags tag-bench e
   tag-hw), com marcador "Novo 16/08".
+
+### Fixed
+- **Correções QA round 1** (task `t_85dc4eab` — redator): tabela GGUF
+  completada com as células que estavam "—" (3.8 Q3_K_M = 13,82 GB;
+  3.6 Q8_0 = 28,60 GB, coluna Diferença recalculada); FAQPage JSON-LD
+  realinhado 1:1 com as 7 perguntas visíveis; ficha técnica corrigida —
+  MTP do 3.6 marcado como documentado (o claim "não documentado" era falso);
+  removidos claims sem fonte ("201 idiomas", "~85% de taxa de aceitação
+  AtomicChat"); aritmética corrigida (35B MoE: 3,3× vs 3.8 / 4,6× vs 3.6,
+  antes "+5,4×"; 0,29 GB ≈ 290 MB, antes "170 MB"); "22 de 27" → 23 de 27;
+  medianas ajustadas (+6,8 conhecimento geral, +1,6 média em percepção
+  passiva); typo 17,1 → 17,3 tok/s.
 
 ---
 
