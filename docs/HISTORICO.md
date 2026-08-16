@@ -7,6 +7,24 @@ rationale. Cada entrada conta *por que* a decisão foi tomada, não apenas
 
 ---
 
+## 2026-08-16 — Baseline de indexação + CWV pós-font-stack + lacunas de schema
+
+**Contexto.** Sem GSC ativo (verificação pendente), precisávamos saber onde estamos.
+
+**Medido (16/08, discovery t_ae4bd231).** `site:` no Google: 0 páginas indexadas —
+esperado para subdomínio vercel.app com 2 dias, zero backlinks e sitemap não submetido.
+Lighthouse lab (mobile) pós-font-stack de sistema: home 100/100 com LCP 1,1 s;
+artigo Muse 100/100 com LCP 0,8 s; zero render-blocking. Hipótese do ROADMAP
+(LCP 4,8 s → < 1 s) confirmada em lab; field data (CrUX) só quando houver tráfego.
+Achado: meta GSC em produção é placeholder em 12 páginas e ausente nas 2 novas —
+verificação via GA4 (Opção A do GSC_SETUP.md) é o caminho.
+
+**Decisão.** Completar o grafo schema: ItemList em /modelos referenciando a entidade
+única #software da home; offers+requisitos no SoftwareApplication do artigo Muse.
+applicationCategory "AIModel" mantida como extensão consciente (objetivo GEO/AEO).
+
+---
+
 ## 2026-08-15 — Instalar GA4 real (G-016TVX8LEE)
 
 **Contexto.** Horas depois de o placeholder falso ser removido (ver entrada

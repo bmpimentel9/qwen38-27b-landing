@@ -180,3 +180,35 @@ eventos custom: `scroll_depth` (25/50/75/100%) e helper `qwenTrackSearch()`.
   pendente.
 - Uma requisição externa a `googletagmanager.com` volta a existir — é a
   única dependência externa da página, aceitável pelo valor da medição.
+
+---
+
+## ADR-008 — `applicationCategory: "AIModel"` como extensão consciente de schema
+
+**Status.** Aceita (2026-08-16) · **Task:** t_11224bcd
+
+**Contexto.** A enumeração oficial de `applicationCategory` (schema.org) não tem
+valor para "modelo de linguagem". O projeto usa `SoftwareApplication` para as
+entidades de modelo (Qwen3.8-27B na home, Muse Glimmer 30B no artigo) e precisa
+de uma categoria que diga o que a coisa é — para rich results clássicos e,
+principalmente, para crawlers de IA (GEO/AEO), objetivo declarado do site.
+
+**Decisão.** Manter `applicationCategory: "AIModel"` — extensão consciente do
+vocabulário: schema.org aceita texto livre no campo, e o alvo é compreensão de
+entidade por LLMs/crawlers de IA, não apenas elegibilidade de rich result
+clássico do Google.
+
+**Alternativas consideradas.**
+1. *`BusinessApplication` / `EducationalSoftware`* (valores da enum) — errados:
+   nenhum descreve modelo de linguagem.
+2. *Omitir o campo* — perde o sinal semântico mais forte para consumidores de IA.
+3. *`AIModel` como texto livre* — não-padrão porém válido; risco limitado a
+   warnings de vocabulário em validadores estritos.
+
+**Consequências.**
+- Entidades ficam auto-descritivas para crawlers de IA (llms.txt + JSON-LD
+  coerentes).
+- Rich Results Test pode exibir warning de categoria fora da enum — aceito e
+  documentado aqui.
+- Se schema.org incorporar categoria de modelo de IA no futuro, migrar é
+  busca-e-substituição em 2 nodes (`#software` da home, `#software` do Muse).

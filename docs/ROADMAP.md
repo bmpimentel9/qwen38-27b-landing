@@ -24,7 +24,10 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
 - ✅ Fix scrollspy `SyntaxError` (`querySelector('/guia')`) + meta description 152 chars (2026-08-15)
 - ✅ GA4 real `G-016TVX8LEE` instalado, com `anonymize_ip` (2026-08-15, `7afed08` — decisão de
   analytics resolvida pelo Bruno; ver ADR-007)
-- ✅ Google Search Console — meta verificação em todas as páginas + sitemap expandido (2026-08-15, `d256ec3`)
+- ✅ Google Search Console — sitemap expandido (2026-08-15, `d256ec3`). **Meta
+  de verificação voltou a pendente** (2026-08-16): a meta em produção é
+  placeholder (`SEU_TOKEN_DE_VERIFICACAO_AQUI`) em 12 páginas e ausente nas 2
+  novas — resolver via GA4 (`GSC_SETUP.md`, card `t_65295f98`).
 - ✅ Estruturar documentação inicial em `docs/` (2026-08-15, task `t_f56140db`)
 - ✅ Consolidar docs da raiz em `docs/` + stubs + ADR-007 (2026-08-15, task `t_2e42bec9`)
 
@@ -36,13 +39,16 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
   visualização de tráfego (tentativa anterior do atlas travou na UI).
 - [ ] **Configurar metas no GA4** — 1k visitas/mês, bounce < 50%, tempo
   médio > 2 min.
-- [ ] **Primeiro artigo do pipeline diário** — validar o fluxo ponta a ponta:
-  cron 7h pesquisa → card kanban → discovery → seo-content → revisão → deploy.
+- ✅ 2 artigos publicados: Muse Glimmer 30B + quantização GGUF (2026-08-15) — *removido do curto prazo*
 - [ ] **Submeter o sitemap no Search Console** — verificação instalada
   (`d256ec3`); falta concluir o processo no console (`GSC_SETUP.md`).
-- [ ] **Validar Core Web Vitals pós-font-stack** — a troca de Google Fonts
-  para font stack de sistema deveria ter baixado o LCP de 4,8s para < 1s.
-  Medir com Lighthouse/PageSpeed Insights na produção e registrar em
+- ✅ **Validar Core Web Vitals pós-font-stack** — Lighthouse lab (mobile,
+  16/08): home 100/100 com LCP 1,1 s; artigo Muse 100/100 com LCP 0,8 s. Nota
+  lab×field: field data (CrUX) só existe com tráfego real — medir novamente
+  quando o GA4 (`G-016TVX8LEE`) mostrar tráfego.
+- ✅ **Grafo JSON-LD completo** (2026-08-16, task `t_11224bcd`): ItemList em
+  `/modelos`, `offers`+`softwareRequirements` no Muse, FAQPage em
+  `/guia/faq`, WebPage+Breadcrumb nas 4 páginas do portal — ver ADR-008 e
   `HISTORICO.md`.
 
 ## Médio prazo (30 dias)
