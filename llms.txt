@@ -22,6 +22,26 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Comunidade e casos de uso](https://qwen38-27b-landing.vercel.app/guia/comunidade-casos-uso) — reações do Hacker News, r/LocalLLaMA e X
 - [FAQ](https://qwen38-27b-landing.vercel.app/guia/faq) — perguntas frequentes
 
+
+- [Qwen3.8 vs Qwen3.6: vale o upgrade?](https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b) — comparativo geracional 27B denso, todos os 26 benchmarks do model card, throughput real e veredito por perfil de uso
+
+## Qwen3.6-27B (geração anterior, Apache 2.0)
+
+- **Lançamento:** 22/04/2026
+- **Parâmetros:** 27B denso — todos ativos
+- **Contexto:** 262.144 nativo (1.010.000 YaRN)
+- **Arquitetura:** Híbrida Gated DeltaNet + Gated Attention
+- **Modalidades:** Texto, imagem, vídeo
+- **Thinking Preservation:** Sim (retenção de raciocínio entre turnos)
+- **Licença:** Apache 2.0
+
+## Qwen3.8 vs Qwen3.6 — Comparativo geracional
+
+- **Benchmarks (model card 3.8):** 26 benchmarks lado a lado, 3.8 vence em todas; mediana dos deltas +9,8, média +12,0
+- **Maiores saltos:** DeepSWE 1.1 (13,3 → 42,2, +28,9), QwenSWEBench (49,3 → 79,0, +29,7), OSWorld-Verified (63,9 → 84,3, +20,4), BabyVision sem CI (28,9 → 65,7, +36,8)
+- **Quase empate:** GPQA +1,4; OmniDocBench +1,7; RealWorldQA +1,8; ERQA +3,0
+- **Throughput medido (Strix Halo, Q4_K_M):** 3.8-27B = 17,3 tok/s; 3.6-27B = 12,4 tok/s (diferença atribuída à compilação GGUF Unsloth vs padrão)
+
 ## Especificações
 
 - **Parâmetros:** 27B (denso, não MoE)

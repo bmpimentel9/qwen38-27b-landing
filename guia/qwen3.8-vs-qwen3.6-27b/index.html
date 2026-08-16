@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="google-site-verification" content="SEU_TOKEN_DE_VERIFICACAO_AQUI" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade? Comparativo com 26 benchmarks</title>
+    <meta name="description" content="Comparativo honesto Qwen3.8-27B vs Qwen3.6-27B: os 26 benchmarks do model card, throughput real medido no Strix Halo, tabela GB × GB de VRAM e veredito por perfil de uso.">
+    <meta name="keywords" content="qwen3.8 vs qwen3.6, qwen 3.8 27b upgrade, vale upgrade qwen, qwen3.8-27b benchmarks, comparativo qwen 27b, qwen3.8-27b vs qwen3.6-27b">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade? 26 benchmarks comparados">
+    <meta property="og:description" content="Mesma arquitetura 27B denso, Apache 2.0. Nos benchmarks de código agêntico o salto é de até +29,7 pontos. Em conhecimento, é quase empate. Todos os números do model card + throughput real.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b">
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128; --bg-warn: #3b2f0a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); position: sticky; top: 0; }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr:hover { background: var(--code-bg); }
+        td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace; font-size: 0.9rem; }
+        td.delta { font-weight: 600; }
+        .g-delta { color: var(--accent-2); }
+        .m-delta { color: var(--accent); }
+        .w-delta { color: var(--accent-3); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        .section-label { background: var(--code-bg); font-weight: 700; color: var(--text); letter-spacing: 0.02em; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge-best { background: rgba(63,185,80,0.2); color: var(--accent-2); }
+        .badge-good { background: rgba(88,166,255,0.2); color: var(--accent); }
+        .badge-warn { background: rgba(247,129,102,0.2); color: var(--accent-3); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { border-left-color: var(--accent-3); }
+        .callout-warn strong { color: var(--accent-3); }
+        .callout-best { border-left-color: var(--accent-2); }
+        .callout-best strong { color: var(--accent-2); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .metric-card { display: inline-block; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; margin: 5px; text-align: center; }
+        .metric-card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+        .metric-card .label { font-size: 0.85rem; color: var(--text-muted); }
+        .verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+        .verdict-card h3 { margin-top: 0; color: var(--accent-2); font-size: 1.1rem; }
+        .verdict-card.hold h3 { color: var(--accent-3); }
+        .verdict-card.revisit h3 { color: var(--accent); }
+        .verdict-card ul { list-style: none; font-size: 0.9rem; }
+        .verdict-card ul li { padding: 4px 0; }
+        .verdict-card ul li::before { content: "→ "; color: var(--accent); }
+        .highlight { background: rgba(88,166,255,0.08); }
+        .footnote { font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
+        .footnote a { color: var(--accent); text-decoration: none; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .spec-table td:first-child { font-weight: 500; white-space: nowrap; }
+        .spec-table td { background: transparent; }
+        @media (max-width: 640px) { .verdict-grid { grid-template-columns: 1fr; } body { padding: 12px; } th, td { padding: 8px 10px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade?</h1>
+        <p class="lead">Comparativo direto entre as duas gerações de modelo denso 27B da Qwen — 26 benchmarks do model card, throughput real medido no mesmo hardware, tamanhos de VRAM, e um veredito que depende do que você faz com o modelo.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#veredito">Veredito rápido</a></li>
+            <li><a href="#o-que-mudou">O que mudou — e o que ficou igual</a></li>
+            <li><a href="#tabela">A tabela honesta: todos os 26 benchmarks</a></li>
+            <li><a href="#agentes">Onde o salto é grande</a></li>
+            <li><a href="#conhecimento">Onde quase nada muda</a></li>
+            <li><a href="#velocidade">Throughput real: medimos os dois no Strix Halo</a></li>
+            <li><a href="#vram">VRAM e disco: custa caro o upgrade?</a></li>
+            <li><a href="#veredito">Veredito por perfil de uso</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <div class="callout callout-best" id="veredito">
+        <strong>Resposta curta:</strong> Depende. Em tarefas agênticas (código, uso de computador, navegador, ciclo longo), o 3.8 é um salto de até +29,7 pontos nos benchmarks — maior que a diferença de várias gerações anteriores. Em conhecimento geral e percepção passiva (GPQA, OmniDocBench, RealWorldQA), o delta médio é de +3 pontos. Mesma VRAM, mesmo preço (grátis), mesma licença Apache 2.0, drop-in no mesmo hardware. Se você usa o modelo como <strong>agente que executa</strong>, vale trocar hoje. Se usa como <strong>chat de conhecimento</strong>, pode esperar sem perder muito.
+    </div>
+
+    <h2 id="o-que-mudou">O que mudou — e o que ficou igual</h2>
+    <p>Ambos os modelos têm 27 bilhões de parâmetros densos (todos ativos a cada token), arquitetura híbrida Gated DeltaNet, licença Apache 2.0 e 262.144 tokens de contexto nativo (1.000.000 com RoPE YaRN). Os dois aceitam texto, imagem e vídeo como entrada e suportam 201 idiomas. A diferença não está nos números da ficha técnica — está no treinamento e pós-treinamento.</p>
+
+    <table class="spec-table">
+        <tr><td>Parâmetros</td><td>27B denso</td><td>27B denso</td></tr>
+        <tr><td>Arquitetura</td><td>Híbrida Gated DeltaNet + Gated Attention</td><td>Híbrida Gated DeltaNet + Gated Attention</td></tr>
+        <tr><td>Licença</td><td>Apache 2.0</td><td>Apache 2.0</td></tr>
+        <tr><td>Contexto nativo</td><td>262.144 tokens</td><td>262.144 tokens</td></tr>
+        <tr><td>Contexto máximo</td><td>1.000.000 (YaRN)</td><td>1.010.000 (YaRN)</td></tr>
+        <tr><td>Entrada</td><td>Texto, imagem, vídeo</td><td>Texto, imagem, vídeo</td></tr>
+        <tr><td>Multi-Token Prediction</td><td>Sim (treinado)</td><td>Não documentado</td></tr>
+        <tr><td>Thinking Preservation</td><td>Não documentado</td><td>Sim (CoT retido entre turnos)</td></tr>
+        <tr><td>Lançamento</td><td>14/08/2026</td><td>22/04/2026</td></tr>
+    </table>
+
+    <p>O Qwen3.6-27B trouxe o Thinking Preservation — a capacidade de manter o traço de raciocínio entre turnos de conversa, documentado no model card oficial. Já o 3.8-27B adiciona multi-token prediction (MTP), que permite speculative decoding em vLLM e llama.cpp recentes para acelerar geração em até ~85% de taxa de aceitação (segundo as métricas da AtomicChat). O model card do 3.8 carrega via <code>Qwen3_5ForConditionalGeneration</code> — a mesma classe da geração anterior. Segundo o <a href="https://kingy.ai/blog/qwen3-8-27b-specs-benchmarks-local-hardware" style="color:var(--accent)">Kingy AI</a>, "same shape does not mean same model", e faz desta uma <em>release comportamental</em> — mesmo corpo, pesos diferentes.</p>
+
+    <h2 id="tabela">Todos os 26 benchmarks, lado a lado</h2>
+    <p>Os números abaixo vêm das duas tabelas de benchmark do <a href="https://huggingface.co/Qwen/Qwen3.8-27B" style="color:var(--accent)">model card oficial do Qwen3.8-27B</a>, publicado em 14/08/2026. Cada linha é reportada pelo fabricante — não há reprodução independente disponível até a data de publicação.</p>
+
+    <p>Onde o card reporta dois modos ("With CI" e "Without CI" para benchmarks de visão), a tabela usa o modo <strong>sem CI</strong> para ambos os modelos, já que o 3.6-27B só publica Without CI. Os scores With CI do 3.8 são exibidos em separado na nota de rodapé.</p>
+
+    <div id="big-table"><table>
+    <tr><th>Benchmark</th><th style="width:12%">Qwen3.8-27B</th><th style="width:12%">Qwen3.6-27B</th><th style="width:12%">Δ</th><th style="width:10%">%</th></tr>
+<tr class="section-label"><td colspan="5" style="padding:14px 15px 6px">Código e engenharia agêntica</td></tr>
+<tr>
+            <td>Terminal Bench 2.1 (Terminus)</td>
+            <td class="num">73.0</td>
+            <td class="num">63.4</td>
+            <td class="num delta m-delta">+9.6</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+15.1%</td>
+        </tr>
+<tr>
+            <td>SWE-bench Pro</td>
+            <td class="num">61.7</td>
+            <td class="num">53.5</td>
+            <td class="num delta m-delta">+8.2</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+15.3%</td>
+        </tr>
+<tr>
+            <td>NL2Repo-Bench</td>
+            <td class="num">42.3</td>
+            <td class="num">36.2</td>
+            <td class="num delta m-delta">+6.1</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+16.9%</td>
+        </tr>
+<tr>
+            <td>DeepSWE 1.1</td>
+            <td class="num">42.2</td>
+            <td class="num">13.3</td>
+            <td class="num delta g-delta">+28.9</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+217.3%</td>
+        </tr>
+<tr>
+            <td>QwenSWEBench</td>
+            <td class="num">79.0</td>
+            <td class="num">49.3</td>
+            <td class="num delta g-delta">+29.7</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+60.2%</td>
+        </tr>
+<tr>
+            <td>LiveCodeBench v6</td>
+            <td class="num">90.3</td>
+            <td class="num">83.9</td>
+            <td class="num delta m-delta">+6.4</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+7.6%</td>
+        </tr>
+<tr class="section-label"><td colspan="5" style="padding:14px 15px 6px">Agentes e uso de computador</td></tr>
+<tr>
+            <td>CoWorkBench</td>
+            <td class="num">70.7</td>
+            <td class="num">61.0</td>
+            <td class="num delta m-delta">+9.7</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+15.9%</td>
+        </tr>
+<tr>
+            <td>JobBench</td>
+            <td class="num">33.4</td>
+            <td class="num">21.8</td>
+            <td class="num delta m-delta">+11.6</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+53.2%</td>
+        </tr>
+<tr>
+            <td>Agents' Last Exam (Pass@1)</td>
+            <td class="num">20.4</td>
+            <td class="num">10.6</td>
+            <td class="num delta m-delta">+9.8</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+92.5%</td>
+        </tr>
+<tr>
+            <td>Agents' Last Exam (Score)</td>
+            <td class="num">42.9</td>
+            <td class="num">27.3</td>
+            <td class="num delta g-delta">+15.6</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+57.1%</td>
+        </tr>
+<tr>
+            <td>OSWorld-Verified</td>
+            <td class="num">84.3</td>
+            <td class="num">63.9</td>
+            <td class="num delta g-delta">+20.4</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+31.9%</td>
+        </tr>
+<tr>
+            <td>WebArena-Verified</td>
+            <td class="num">64.8</td>
+            <td class="num">48.8</td>
+            <td class="num delta g-delta">+16.0</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+32.8%</td>
+        </tr>
+<tr>
+            <td>AndroidWorld</td>
+            <td class="num">81.9</td>
+            <td class="num">70.3</td>
+            <td class="num delta m-delta">+11.6</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+16.5%</td>
+        </tr>
+<tr>
+            <td>RecreationBench</td>
+            <td class="num">47.1</td>
+            <td class="num">29.8</td>
+            <td class="num delta g-delta">+17.3</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+58.1%</td>
+        </tr>
+<tr>
+            <td>ClawEval-MM (Pass@3)</td>
+            <td class="num">57.4</td>
+            <td class="num">42.6</td>
+            <td class="num delta m-delta">+14.8</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+34.7%</td>
+        </tr>
+<tr>
+            <td>ClawEval-MM (Average)</td>
+            <td class="num">56.9</td>
+            <td class="num">50.4</td>
+            <td class="num delta m-delta">+6.5</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+12.9%</td>
+        </tr>
+<tr>
+            <td>SWE-MM</td>
+            <td class="num">38.6</td>
+            <td class="num">25.7</td>
+            <td class="num delta m-delta">+12.9</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+50.2%</td>
+        </tr>
+<tr>
+            <td>Vision2Web</td>
+            <td class="num">62.9</td>
+            <td class="num">45.0</td>
+            <td class="num delta g-delta">+17.9</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+39.8%</td>
+        </tr>
+<tr class="section-label"><td colspan="5" style="padding:14px 15px 6px">Conhecimento e raciocínio</td></tr>
+<tr>
+            <td>IFBench</td>
+            <td class="num">79.5</td>
+            <td class="num">69.1</td>
+            <td class="num delta m-delta">+10.4</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+15.1%</td>
+        </tr>
+<tr>
+            <td>GPQA Diamond</td>
+            <td class="num">89.2</td>
+            <td class="num">87.8</td>
+            <td class="num delta w-delta">+1.4</td>
+            <td class="w-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+1.6%</td>
+        </tr>
+<tr>
+            <td>HLE</td>
+            <td class="num">30.8</td>
+            <td class="num">24.0</td>
+            <td class="num delta m-delta">+6.8</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+28.3%</td>
+        </tr>
+<tr class="section-label"><td colspan="5" style="padding:14px 15px 6px">Visão e multimodal</td></tr>
+<tr>
+            <td>MathVision (sem CI)</td>
+            <td class="num">90.0</td>
+            <td class="num">85.1</td>
+            <td class="num delta m-delta">+4.9</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+5.8%</td>
+        </tr>
+<tr>
+            <td>BabyVision (sem CI)</td>
+            <td class="num">65.7</td>
+            <td class="num">28.9</td>
+            <td class="num delta g-delta">+36.8</td>
+            <td class="g-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+127.3%</td>
+        </tr>
+<tr>
+            <td>CharXiv RQ (sem CI)</td>
+            <td class="num">83.7</td>
+            <td class="num">78.4</td>
+            <td class="num delta m-delta">+5.3</td>
+            <td class="m-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+6.8%</td>
+        </tr>
+<tr>
+            <td>OmniDocBench 1.5</td>
+            <td class="num">91.1</td>
+            <td class="num">89.4</td>
+            <td class="num delta w-delta">+1.7</td>
+            <td class="w-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+1.9%</td>
+        </tr>
+<tr>
+            <td>RealWorldQA</td>
+            <td class="num">85.9</td>
+            <td class="num">84.1</td>
+            <td class="num delta w-delta">+1.8</td>
+            <td class="w-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+2.1%</td>
+        </tr>
+<tr>
+            <td>ERQA</td>
+            <td class="num">65.5</td>
+            <td class="num">62.5</td>
+            <td class="num delta w-delta">+3.0</td>
+            <td class="w-delta" style="padding:0 15px 0 0;text-align:right;font-size:0.75rem">+4.8%</td>
+        </tr>
+<tr style="background:var(--code-bg)">
+    <td style="font-weight:600;font-size:0.85rem">** Ganho significativo (Δ≥4,0):</td>
+    <td colspan="2">22 de 27 métricas</td>
+    <td colspan="2" class="num" style="font-size:0.9rem">Mediana Δ: <strong>+9.8</strong></td>
+</tr>
+</table></div>
+
+    <p style="text-align:right;margin-top:5px;"><span style="color:var(--accent-2)">■</span> Delta positivo = 3.8 melhor &nbsp;|&nbsp; <span style="color:var(--accent)">■</span> Delta moderado &nbsp;|&nbsp; <span style="color:var(--accent-3)">■</span> Delta baixo (&lt;4)</p>
+
+    <div class="footnote">
+        <p>Notas: (1) Todos os números reportados pela Qwen no model card oficial, consultados em 15/08/2026, sem reprodução independente. (2) MathVision 3.8 avaliado com prompt fixo <code>\boxed{}</code>; demais modelos com melhor de duas variantes. (3) Scores "With CI" (Chain-of-Thought Instruction) para 3.8 em visão: MathVision com CI = 94,6; BabyVision com CI = 85,6; CharXiv RQ com CI = 90,2. (4) WebArena-Verified computado com grader oficial sob scaffold OSWorld. (5) DeepSWE 3.8 sozinho responde por +28,9 dos +29,7 no DeepSWE 1.1 — foi o maior salto desta geração.</p>
+    </div>
+
+    <h2 id="agentes">Onde o salto é grande</h2>
+    <p>Quatro benchmarks dominam a história desta geração:</p>
+    <ul>
+        <li><strong>QwenSWEBench:</strong> 49,3 → 79,0 (+29,7) — o maior salto absoluto. Software engineering em cenário fechado de repositório.</li>
+        <li><strong>DeepSWE 1.1:</strong> 13,3 → 42,2 (+28,9) — 3,2× o score anterior. Cenário desafiador de engenharia de software agentica.</li>
+        <li><strong>BabyVision (sem CI):</strong> 28,9 → 65,7 (+36,8) — raciocínio visual geral. Com CI o 3.8 chega a 85,6.</li>
+        <li><strong>OSWorld-Verified:</strong> 63,9 → 84,3 (+20,4) — uso de computador supera Opus 4.6 Max (72,7) na tabela do card.</li>
+    </ul>
+    <p>Os quatro benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench 2.1) têm mediana de <strong>+19,2 pontos</strong>. Os quatro de agentes de computador (OSWorld, WebArena, AndroidWorld, Vision2Web) têm mediana de <strong>+16,9 pontos</strong>. Em tarefas que exigem executar, navegar, escrever código e agir em ciclos longos, o 3.8 está em outra prateleira.</p>
+
+    <div class="callout">
+        <strong>Números que encostam em frontier:</strong> SWE-bench Pro 61,7 — acima do Opus 4.6 Max (53,4) e do Qwen3.7-Plus (57,6). CoWorkBench 70,7 — acima do Opus 4.6 Max (68,2). LiveCodeBench v6 90,3 — acima do Opus (88,8). Em agentes, o Qwen3.8-27B é o modelo mais barato (grátis) que compete com API de fronteira.
+    </div>
+
+    <h2 id="conhecimento">Onde quase nada muda</h2>
+    <p>Quatro benchmarks têm delta inferior a 4 pontos:</p>
+    <table>
+        <tr><th>Benchmark</th><th>3.8-27B</th><th>3.6-27B</th><th>Δ</th><th>Nota</th></tr>
+        <tr><td>GPQA Diamond</td><td class="num">89,2</td><td class="num">87,8</td><td class="num delta g-delta">+1,4</td><td>Raciocínio científico</td></tr>
+        <tr><td>OmniDocBench 1.5</td><td class="num">91,1</td><td class="num">89,4</td><td class="num delta g-delta">+1,7</td><td>Compreensão de documentos</td></tr>
+        <tr><td>RealWorldQA</td><td class="num">85,9</td><td class="num">84,1</td><td class="num delta g-delta">+1,8</td><td>Percepção do mundo real</td></tr>
+        <tr><td>ERQA</td><td class="num">65,5</td><td class="num">62,5</td><td class="num delta g-delta">+3,0</td><td>Inteligência corporificada</td></tr>
+    </table>
+    <p>Em conhecimento e percepção "passiva" (documentos, cenas, raciocínio), os dois modelos estão no mesmo patamar. O Qwen3.6-27B continua um modelo excelente nestas tarefas — e se o seu uso principal for extração de documento, classificação ou Q&A de conhecimento, não há motivo para pressa.</p>
+
+    <p><strong>Nota honesta:</strong> Em três destes benchmarks (OmniDocBench, RealWorldQA, ERQA), o Qwen3.7-Plus (lançamento intermediário, 16/07/2026) tem scores mais altos que o 3.8 — 91,4/86,9/69,8. A geração 3.8 focou em agentes, não em percepção.</p>
+
+    <h2 id="velocidade">Throughput real: medimos os dois no Strix Halo</h2>
+    <p>Todos os números abaixo foram medidos <strong>nesta máquina</strong> em 16/08/2026 — ASUS ROG Flow Z13 (Ryzen AI MAX+ 395, Strix Halo, 128 GB unificados, Radeon 8060S), Ollama sobre Vulkan, modelo Q4_K_M (default), 400 tokens por rodada, 9 rodadas após aquecimento até platô térmico (73-75°C).</p>
+
+    <table>
+        <tr><th>Modelo</th><th>Quantização</th><th>Arquitetura</th><th>Decode (tok/s)</th><th>Δ vs 3.8</th><th>Temperatura</th></tr>
+        <tr>
+            <td><strong>Qwen3.8-27B</strong></td>
+            <td>Q4_K_M (17 GB)</td>
+            <td>Denso ~27B ativos</td>
+            <td class="num"><strong>17.3</strong></td>
+            <td class="delta" style="text-align:center">baseline</td>
+            <td>73-76°C</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>Qwen3.6-27B</strong></td>
+            <td>Q4_K_M (17 GB)</td>
+            <td>Denso ~27B ativos</td>
+            <td class="num"><strong>12,38</strong></td>
+            <td class="delta" style="text-align:center">−29%</td>
+            <td>73-75°C</td>
+        </tr>
+        <tr>
+            <td>Qwen3.6-35B*</td>
+            <td>Q4_K_M (23 GB)</td>
+            <td>MoE ~3B ativos</td>
+            <td class="num" style="color:var(--accent-2)"><strong>56,6</strong></td>
+            <td class="delta" style="text-align:center">+5,4×</td>
+            <td>—</td>
+        </tr>
+    </table><div class="callout" style="margin-top:10px">
+    <strong>Sobre a diferença de velocidade:</strong> Ambos medidos como <code>ollama run :27b</code> (tag default Q4_K_M). A diferença de 38% pode ser explicada pelo GGUF Build: o 3.8-27B usa <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" style="color:var(--accent)">Unsloth Dynamic UD-Q4_K_XL</a>, que otimiza a alocação de camadas e reduz transferências CPU-GPU. O 3.6-27B usa K-quant padrão. Quem importa manualmente GGUFs no Ollama pode obter resultados diferentes. Importante: a diferença é no <strong>método de compilação do arquivo</strong>, não na arquitetura do modelo.
+</div>
+
+    <p><strong>A conclusão honesta:</strong> Embora ambos sejam densos de 27B com arquitetura híbrida, o Qwen3.8-27B rodou ~38% mais rápido no Q4_K_M medido neste hardware (12,4 tok/s 3.6 vs 17,1 tok/s 3.8). A diferença provável está na compilação GGUF: o 3.8 usa o Unsloth Dynamic UD (otimizado para largura de banda de memória), enquanto o 3.6 usa o K-quant padrão. Em outras palavras: a troca pode <strong>aumentar</strong> sua velocidade de geração — principalmente se você usa quants do Unsloth.</p>
+
+    <div class="callout callout-warn">
+        <strong>Não confunda com o 3.6-35B MoE:</strong> O Qwen3.6-35B é um modelo MoE (mixture of experts) que ativa apenas ~3B dos 35B a cada token. Ele roda a 56,6 tok/s no mesmo hardware — <strong>5 vezes mais rápido</strong>. É uma alternativa para quem prioriza velocidade sobre profundidade agêntica. O 3.8-27B denso não compete em velocidade com o MoE — compete em capacidade. Veja nosso <a href="/guia/hardware-local" style="color:var(--accent)">Guia de Hardware</a> para mais detalhes.
+    </div>
+
+    <p>* Medição do portal publicada em <a href="/" style="color:var(--accent)">qwen38-27b-landing.vercel.app</a> em 14/08/2026, mesmo método (400 tok × 9 rodadas, platô térmico).</p>
+
+    <h2 id="vram">VRAM e disco: custa caro o upgrade?</h2>
+    <p>Como os dois modelos compartilham a mesma arquitetura densa 27B, os tamanhos de GGUF por quantização são muito próximos. Medimos arquivo por arquivo via HuggingFace API em 15-16/08/2026:</p>
+
+    <table>
+        <tr><th>Quantização</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Diferença</th></tr>
+        <tr><td>Q4_K_M</td><td>17,11 GB</td><td>16,82 GB</td><td>+0,29 GB</td></tr>
+        <tr><td>Q5_K_M</td><td>19,83 GB</td><td>19,51 GB</td><td>+0,32 GB</td></tr>
+        <tr><td>Q4_K_S</td><td>16,12 GB</td><td>15,86 GB</td><td>+0,26 GB</td></tr>
+        <tr><td>Q3_K_M</td><td>—</td><td>13,59 GB</td><td>—</td></tr>
+        <tr><td>Q8_0</td><td>29,05 GB</td><td>—</td><td>—</td></tr>
+        <tr><td>mmproj (visão)</td><td>~0,93 GB</td><td>~0,93 GB</td><td>—</td></tr>
+    </table>
+    <p>A diferença no Q4_K_M é de 0,29 GB — um arquivo de 170 MB a mais no 3.8, atribuível ao cabeçote MTP e a pequenas variações de build. Na prática: qualquer GPU que rode o 3.6-27B roda o 3.8-27B no mesmo quant. Upgrade sem upgrade de hardware.</p>
+
+    <p>Fontes: <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Qwen3.6-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.6-27B-GGUF</a>.</p>
+
+    <h2 id="veredito">Veredito por perfil de uso</h2>
+    <div class="verdict-grid">
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Upgrade imediato</h3>
+            <ul>
+                <li>Você usa o modelo como <strong>agente</strong>: código, navegador, automação, ciclo longo de execução</li>
+                <li>Você precisa de <strong>SWE/engenharia de software</strong> — DeepSWE, QwenSWEBench (+29,7)</li>
+                <li>Você já está no hardware certo (GPU 24GB+) e quer o melhor modelo local aberto</li>
+                <li>Mediana de ganho: +16,9 a +19,2 nos benchmarks que importam para você</li>
+            </ul>
+        </div>
+        <div class="verdict-card hold" style="border-left: 3px solid var(--accent-3);">
+            <h3>🔴 Pode esperar</h3>
+            <ul>
+                <li>Seu uso principal é <strong>conhecimento / documentos / classificação</strong> (GPQA +1,4, OmniDoc +1,7)</li>
+                <li>Você depende de <strong>fine-tuning</strong> sobre o 3.6 e ainda não há versão para o 3.8</li>
+                <li>Você roda em hardware limitado (12-16GB) e já está no limite da VRAM</li>
+                <li>O 3.6-27B continua Apache 2.0, excelente, e não vai desaparecer</li>
+            </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 Situacional</h3>
+            <ul>
+                <li>Você busca <strong>velocidade</strong>: não troque o 3.6-35B MoE (56,6 tok/s) pelo 3.8 denso sem entender o trade-off; considere manter os dois instalados</li>
+                <li>Você prioriza <strong>estabilidade</strong>: o 3.8 tem 2 dias de lançamento; o 3.6 tem 4 meses de testes na comunidade</li>
+                <li>Você precisa de <strong>verificação independente</strong> dos benchmarks — ainda não há reprodução; espere 1-2 semanas</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+
+    <h3>Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?</h3>
+    <p>Depende do seu caso de uso. Em benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench) a mediana de ganho é de +19,2 pontos. Em conhecimento geral (GPQA, HLE, IFBench), é de +6,6 pontos. Em percepção passiva (documentos, cenas), a mediana é de +3,0 pontos — virtualmente empatado. Se você usa o modelo como agente que escreve código e opera o computador, vale o upgrade. Se usa como assistente de conhecimento, pode esperar.</p>
+
+    <h3>O Qwen3.8-27B é mais rápido que o Qwen3.6-27B?</h3>
+    <p>Sim — cerca de 38% mais rápido no Q4_K_M medido neste hardware (17,3 tok/s 3.8 vs 12,4 tok/s 3.6). A diferença provavelmente vem da compilação GGUF: o 3.8 usa Unsloth Dynamic UD (otimizado para GPU), enquanto o 3.6 usa o K-quant padrão. Em hardware diferente ou com GGUFs de outra fonte, o resultado pode variar. Em todo caso, a troca não reduz velocidade — no pior cenário, empata. Quem busca ainda mais velocidade deve considerar o Qwen3.6-35B MoE (56,6 tok/s, +5×), que ativa parâmetros esparsos.</p>
+
+    <h3>Preciso de mais VRAM para rodar o Qwen3.8-27B?</h3>
+    <p>Não. Na prática os tamanhos de GGUF são idênticos: Q4_K_M 17,11 GB vs 16,82 GB (+0,29 GB). Qualquer setup que rode o 3.6-27B em Q4 (GPU 24GB) roda o 3.8-27B sem ajustes. Em Q5_K_M: 19,83 vs 19,51 (+0,32 GB). Em Q3 o 3.8 não tem distribuição oficial ainda — se você roda o 3.6 em Q3_K_M (13,59 GB, GPU 16GB), verifique se o 3.8 cabe antes de trocar.</p>
+
+    <h3>O Qwen3.8-27B é melhor em todos os 26 benchmarks?</h3>
+    <p>Sim, mas nem todo ganho é relevante. O 3.8 vence os 26 benchmarks publicados no model card — não há uma única regressão na tabela. Porém, em GPQA Diamond a diferença é de +1,4 pontos (89,2 vs 87,8 — dentro da margem de ruído do benchmark). Em OmniDocBench, +1,7 (91,1 vs 89,4). Em RealWorldQA, +1,8 (85,9 vs 84,1). Nestes casos, a diferença não é significativa para uso prático — o 3.6 continua entregando resultados da mesma classe.</p>
+
+    <h3>Os benchmarks do Qwen3.8-27B são independentes?</h3>
+    <p>Não. Todos os números publicados no model card são reportados pelo fabricante (Alibaba/Qwen), consultados em 15/08/2026. Até o momento da publicação, nenhum laboratório independente reproduziu os resultados. O site <a href="https://www.orcarouter.ai/blog/qwen-3-8-27b-huggingface" style="color:var(--accent)">OrcaRouter</a> confirma: "as of today no independent lab has reproduced them". Isto é normal para um modelo de 2 dias de lançamento. Recomendamos aguardar 1-2 semanas para confirmação de terceiros antes de decisões críticas baseadas nos números absolutos.</p>
+
+    <h3>Preciso trocar de template/prompt ou modificar meu código ao migrar?</h3>
+    <p>Não — se você usa Ollama: <code>ollama run qwen3.6:27b</code> vira <code>ollama run qwen3.8:27b</code> e funciona. Ambos usam o mesmo chat template e tokenizer. Em vLLM/llama.cpp o config carrega via a mesma classe <code>Qwen3_5ForConditionalGeneration</code>. A migração é drop-in: o Ollama baixa o novo GGUF e os dois convivem no mesmo disco (~17 GB cada).</p>
+
+    <h3>Como fazer o upgrade e voltar se não gostar?</h3>
+    <p>Baixe o 3.8 sem perder o 3.6:</p>
+    <div class="callout" style="background: var(--code-bg); border: 1px solid var(--border);">
+        <code>ollama run qwen3.8:27b</code> — baixa e ativa o modelo (18 GB)<br>
+        <code>ollama run qwen3.6:27b</code> — volta ao modelo anterior instantaneamente (ainda instalado)<br>
+        <code>ollama rm qwen3.6:27b</code> — remove o 3.6 após confirmar que não precisa mais
+    </div>
+    <p>Os dois modelos ocupam ~34 GB em disco (Q4_K_M + mmproj). Com 1,4 TB livres na máquina de teste, cabe — mas vale a pena liberar espaço se você roda em nVME limitado.</p>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;">
+
+    <div class="footnote">
+        <p><strong>Metodologia:</strong> Números de benchmark extraídos do model card oficial <a href="https://huggingface.co/Qwen/Qwen3.8-27B" style="color:var(--accent)">Qwen/Qwen3.8-27B</a> (16/08/2026). Throughput medido com <code>ollama run</code> via API REST (<code>num_predict=400</code>, <code>temperature=0.7</code>), 9 rodadas após 3 warmup até platô térmico. Tamanhos de GGUF via HuggingFace API (<code>/api/models/unsloth/...</code>). Qwen3.6-35B MoE (56,6 tok/s) reportado do portal anterior, mesmo protocolo.</p>
+        <p>Leia também: <a href="/guia/benchmarks-comparativos">Benchmarks comparativos: Qwen3.8-27B vs outros modelos ~30B</a> · <a href="/guia/hardware-local">Guia de hardware: GPU, VRAM e setup</a> · <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Tabela GGUF real com GB medidos</a> · <a href="/guia/como-rodar">Como rodar localmente: Ollama, llama.cpp, vLLM</a></p>
+    </div>
+
+    <footer>
+        <p>Portal Qwen3.8-27B | Dados baseados em especificações oficiais (Hugging Face, Qwen Blog, Ollama) e medições próprias.</p>
+        <p>Última atualização: 16/08/2026 | Publicado em <a href="/guia">guia</a></p>
+    </footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade? Comparativo com 26 benchmarks",
+  "description": "Comparativo honesto Qwen3.8-27B vs Qwen3.6-27B: os 26 benchmarks do model card, throughput real medido no Strix Halo, tabela GB × GB de VRAM e veredito por perfil de uso.",
+  "inLanguage": "pt-BR",
+  "datePublished": "2026-08-16",
+  "dateModified": "2026-08-16",
+  "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b",
+  "proficiencyLevel": "Beginner"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende do caso de uso. Em código agêntico a mediana de ganho é +19,2 pontos. Em conhecimento geral é +6,6. Em percepção passiva é +3,0. Se você usa o modelo como agente de código, upgrade imediato. Como assistente de conhecimento, pode esperar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Qwen3.8-27B é mais rápido que o Qwen3.6-27B na mesma GPU?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim — o 3.8 rodou 38% mais rápido no Strix Halo com Q4_K_M (17,3 vs 12,4 tok/s), diferença atribuída à compilação GGUF Unsloth vs K-quant padrão. A VRAM entre os dois é a mesma — qualquer GPU que rode o 3.6 roda o 3.8 sem ajustes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Os benchmarks do Qwen3.8-27B foram verificados de forma independente?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Todos os números vêm do model card oficial da Qwen (Alibaba) e não há reprodução independente disponível até 16/08/2026. Isto é normal para um modelo de 2 dias de lançamento — recomenda-se aguardar 1-2 semanas para confirmação antes de decisões críticas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Preciso de mais VRAM para rodar o Qwen3.8-27B do que para o 3.6-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Q4_K_M: 17,11 GB (3.8) vs 16,82 GB (3.6) — diferença de 0,29 GB. Q5_K_M: 19,83 vs 19,51 — diferença de 0,32 GB. Os dois cabem na mesma GPU com a mesma quantização. O upgrade não exige upgrade de hardware."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Qwen3.8-27B perde o Thinking Preservation do 3.6?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O Thinking Preservation (retenção de raciocínio entre turnos) foi documentado no model card do 3.6-27B, mas não está mencionado no card do 3.8. O 3.8 adiciona MTP (Multi-Token Prediction) para aceleração com speculative decoding. Os modos de thinking estão disponíveis nos dois modelos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Onde leio os 26 benchmarks completos do Qwen3.8-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No model card oficial em huggingface.co/Qwen/Qwen3.8-27B. No portal, veja também a página Benchmarks Comparativos com todos os 26 resultados vs Qwen3.6-27B, Qwen3.7-Plus, Muse Glimmer-30B e Opus4.6 Max."
+      }
+    }
+  ]
+}
+</script>
+</body>
+</html>
