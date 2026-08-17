@@ -24,10 +24,10 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
 - ✅ Fix scrollspy `SyntaxError` (`querySelector('/guia')`) + meta description 152 chars (2026-08-15)
 - ✅ GA4 real `G-016TVX8LEE` instalado, com `anonymize_ip` (2026-08-15, `7afed08` — decisão de
   analytics resolvida pelo Bruno; ver ADR-007)
-- ✅ Google Search Console — sitemap expandido (2026-08-15, `d256ec3`). **Meta
-  de verificação voltou a pendente** (2026-08-16): a meta em produção é
-  placeholder (`SEU_TOKEN_DE_VERIFICACAO_AQUI`) em 12 páginas e ausente nas 2
-  novas — resolver via GA4 (`GSC_SETUP.md`, card `t_65295f98`).
+- ✅ Google Search Console — propriedade verificada 16/08 via GA4 (`G-016TVX8LEE`,
+  `permissionLevel: siteOwner`); 17/08 adicionado token HTML como 2º método de
+  verificação (meta real `google-site-verification` em 17/17 páginas, token
+  `tfpagcf…` via `scripts/inject_gsc_token.py` + gate `check_head.py`).
 - ✅ Estruturar documentação inicial em `docs/` (2026-08-15, task `t_f56140db`)
 - ✅ Consolidar docs da raiz em `docs/` + stubs + ADR-007 (2026-08-15, task `t_2e42bec9`)
 
@@ -40,8 +40,8 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
 - [ ] **Configurar metas no GA4** — 1k visitas/mês, bounce < 50%, tempo
   médio > 2 min.
 - ✅ 2 artigos publicados: Muse Glimmer 30B + quantização GGUF (2026-08-15) — *removido do curto prazo*
-- [ ] **Submeter o sitemap no Search Console** — verificação instalada
-  (`d256ec3`); falta concluir o processo no console (`GSC_SETUP.md`).
+- ✅ **Sitemap submetido no Search Console** (16/08 13:56 UTC, 15 URLs, 0 erros;
+  re-submetido 17/08 com 16 URLs e lastmod=2026-08-17 via PR t_d36048c1).
 - ✅ **Validar Core Web Vitals pós-font-stack** — Lighthouse lab (mobile,
   16/08): home 100/100 com LCP 1,1 s; artigo Muse 100/100 com LCP 0,8 s. Nota
   lab×field: field data (CrUX) só existe com tráfego real — medir novamente

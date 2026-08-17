@@ -7,6 +7,33 @@ rationale. Cada entrada conta *por que* a decisão foi tomada, não apenas
 
 ---
 
+## 2026-08-17 — Token HTML real como 2º método de verificação GSC + anti-regressão estrutural
+
+**Contexto.** O discovery `t_bdefb19d` revelou que a propriedade **já estava verificada**
+via GA4 (permissionLevel=siteOwner) e o sitemap já submetido — o "pendente" era um falso
+alarme causado pelo placeholder `SEU_TOKEN_DE_VERIFICACAO_AQUI` que o commit `d256ec3`
+injetou de propósito em 15/08. A causa-raiz: o ROADMAP foi escrito olhando só o HTML,
+sem checar a API do GSC.
+
+**Achado paralelo.** O sitemap real tem **16 URLs**, mas o GSC registrou **15** — o
+cache de 24h da Vercel serviu uma cópia desatualizada quando o GSC baixou o sitemap.
+
+**O que foi feito (17/08):**
+- Token HTML real `tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ` obtido via browser-use
+  no GSC e injetado em 17/17 HTMLs (13 substituições de placeholder + 4 inserções em
+  artigos novos) via `scripts/inject_gsc_token.py`.
+- Gate anti-regressão `scripts/check_head.py` (5 checks: C1 GSC meta, C2 placeholder,
+  C3 GA4, C4 canonical, C5 sitemap↔arquivos) — deve passar antes de cada merge.
+- Template `templates/template-artigo.md` atualizado com seção de head de referência.
+- Sitemap lastmod bumpado para 2026-08-17; re-submit agendado pós-merge.
+- ROADMAP corrigido (remove "pendente" falso, marca sitemap submetido).
+
+**Decisão.** Opção B do GSC_SETUP.md (token HTML) executada como redundância ativa
+ao GA4 — elimina o ponto único de falha e mata o falso alarme futuro.
+Referência: `scripts/inject_gsc_token.py`, PRD t_5ce82346.
+
+---
+
 ## 2026-08-16 — Baseline de indexação + CWV pós-font-stack + lacunas de schema
 
 **Contexto.** Sem GSC ativo (verificação pendente), precisávamos saber onde estamos.
