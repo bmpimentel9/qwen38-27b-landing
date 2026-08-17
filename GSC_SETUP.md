@@ -44,23 +44,14 @@ a propriedade automaticamente via vinculação com o GA4.
 3. Na tela de verificação, escolher "Google Analytics" como método
 4. Se a conta Google do Bruno for a mesma do GA4, a verificação é instantânea
 
-#### OPÇÃO B: Verificação via HTML tag (fallback)
+#### OPÇÃO B: Verificação via HTML tag (EXECUTADA em 17/08)
 
-Se a opção A não funcionar, usar a meta tag HTML:
+✅ **Token real injetado em 17/17 páginas** via `scripts/inject_gsc_token.py` (token `tfpagcf…`).
+Gate anti-regressão `scripts/check_head.py` bloqueia merge se faltar.
 
-1. No GSC, clicar em "Adicionar propriedade"
-2. Escolher "Prefixo de URL" e digitar: `https://qwen38-27b-landing.vercel.app`
-3. Na tela de verificação, escolher "Tag HTML"
-4. O GSC vai gerar um token no formato: `<meta name="google-site-verification" content="ABC123xyz..." />`
-5. Copiar APENAS o valor do atributo `content` (ex: `ABC123xyz...`)
-6. Substituir `SEU_TOKEN_DE_VERIFICACAO_AQUI` em todos os arquivos HTML do projeto:
-   ```bash
-   # Na raiz do projeto, rodar:
-   find . -name '*.html' -not -path './.git/*' -exec sed -i \
-     's/SEU_TOKEN_DE_VERIFICACAO_AQUI/TOKEN_REAL_DO_GSC/g' {} +
-   ```
-7. Fazer commit e push (ou aguardar deploy automático da Vercel)
-8. Voltar no GSC e clicar em "Verificar"
+**Único passo manual pendente (30s):** no GSC → Configurações → Verificação do Google →
+Tag HTML → clicar **Verificar**. Confirma o 2º método na hora; sem o clique,
+o Google re-verifica sozinho no re-crawl periódico (não é blocker).
 
 ### Passo 3: Submeter o sitemap
 
