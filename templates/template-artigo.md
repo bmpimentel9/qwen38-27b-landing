@@ -66,3 +66,20 @@ ollama run [modelo] "Seu prompt aqui"
 ---
 
 *Publicado pelo Time Hermes · [qwen38-27b-landing.vercel.app](https://qwen38-27b-landing.vercel.app)*
+
+---
+
+## Head obrigatório (copiar do artigo mais recente)
+
+Todo artigo novo deve copiar o `<head>` completo do artigo mais recente (guia/*/index.html). O script `scripts/check_head.py` valida antes de cada merge.
+
+Bloco de referência (token igual em todas as páginas):
+
+```html
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+<!-- + title, description, robots, canonical, OG/Twitter, gtag GA4 G-016TVX8LEE (ver index.html) -->
+```
+
+**Regra:** herdar o head do artigo mais recente. `check_head.py` é o gate — merge bloqueia se falhar.
