@@ -130,11 +130,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <div class="callout callout-best" id="veredito">
-        <strong>Resposta curta:</strong> Depende. Em tarefas agênticas (código, uso de computador, navegador, ciclo longo), o 3.8 é um salto de até +29,7 pontos nos benchmarks — maior que a diferença de várias gerações anteriores. Em conhecimento geral e percepção passiva (GPQA, OmniDocBench, RealWorldQA), o delta médio é de +3 pontos. Mesma VRAM, mesmo preço (grátis), mesma licença Apache 2.0, drop-in no mesmo hardware. Se você usa o modelo como <strong>agente que executa</strong>, vale trocar hoje. Se usa como <strong>chat de conhecimento</strong>, pode esperar sem perder muito.
+        <strong>Resposta curta:</strong> Depende. Em tarefas agênticas (código, uso de computador, navegador, ciclo longo), o 3.8 é um salto de até +29,7 pontos nos benchmarks — maior que a diferença de várias gerações anteriores. Em conhecimento geral e percepção passiva (GPQA, OmniDocBench, RealWorldQA), o delta médio é de +1,6 pontos. Mesma VRAM, mesmo preço (grátis), mesma licença Apache 2.0, drop-in no mesmo hardware. Se você usa o modelo como <strong>agente que executa</strong>, vale trocar hoje. Se usa como <strong>chat de conhecimento</strong>, pode esperar sem perder muito.
     </div>
 
     <h2 id="o-que-mudou">O que mudou — e o que ficou igual</h2>
-    <p>Ambos os modelos têm 27 bilhões de parâmetros densos (todos ativos a cada token), arquitetura híbrida Gated DeltaNet, licença Apache 2.0 e 262.144 tokens de contexto nativo (1.000.000 com RoPE YaRN). Os dois aceitam texto, imagem e vídeo como entrada e suportam 201 idiomas. A diferença não está nos números da ficha técnica — está no treinamento e pós-treinamento.</p>
+    <p>Ambos os modelos têm 27 bilhões de parâmetros densos (todos ativos a cada token), arquitetura híbrida Gated DeltaNet, licença Apache 2.0 e 262.144 tokens de contexto nativo (1.000.000 com RoPE YaRN). Os dois aceitam texto, imagem e vídeo como entrada. A diferença não está nos números da ficha técnica — está no treinamento e pós-treinamento.</p>
 
     <table class="spec-table">
         <tr><td>Parâmetros</td><td>27B denso</td><td>27B denso</td></tr>
@@ -143,12 +143,12 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>Contexto nativo</td><td>262.144 tokens</td><td>262.144 tokens</td></tr>
         <tr><td>Contexto máximo</td><td>1.000.000 (YaRN)</td><td>1.010.000 (YaRN)</td></tr>
         <tr><td>Entrada</td><td>Texto, imagem, vídeo</td><td>Texto, imagem, vídeo</td></tr>
-        <tr><td>Multi-Token Prediction</td><td>Sim (treinado)</td><td>Não documentado</td></tr>
+        <tr><td>Multi-Token Prediction</td><td>Sim (treinado)</td><td>Sim (documentado)</td></tr>
         <tr><td>Thinking Preservation</td><td>Não documentado</td><td>Sim (CoT retido entre turnos)</td></tr>
         <tr><td>Lançamento</td><td>14/08/2026</td><td>22/04/2026</td></tr>
     </table>
 
-    <p>O Qwen3.6-27B trouxe o Thinking Preservation — a capacidade de manter o traço de raciocínio entre turnos de conversa, documentado no model card oficial. Já o 3.8-27B adiciona multi-token prediction (MTP), que permite speculative decoding em vLLM e llama.cpp recentes para acelerar geração em até ~85% de taxa de aceitação (segundo as métricas da AtomicChat). O model card do 3.8 carrega via <code>Qwen3_5ForConditionalGeneration</code> — a mesma classe da geração anterior. Segundo o <a href="https://kingy.ai/blog/qwen3-8-27b-specs-benchmarks-local-hardware" style="color:var(--accent)">Kingy AI</a>, "same shape does not mean same model", e faz desta uma <em>release comportamental</em> — mesmo corpo, pesos diferentes.</p>
+    <p>O Qwen3.6-27B trouxe o Thinking Preservation — a capacidade de manter o traço de raciocínio entre turnos de conversa, documentado no model card oficial. Multi-token prediction (MTP) para speculative decoding não é exclusividade do 3.8: o model card do 3.6 já documentava o recurso (comandos com <code>--speculative-algo NEXTN</code>) para acelerar geração em vLLM e llama.cpp recentes. O model card do 3.8 carrega via <code>Qwen3_5ForConditionalGeneration</code> — a mesma classe da geração anterior. Segundo o <a href="https://kingy.ai/blog/qwen3-8-27b-specs-benchmarks-local-hardware" style="color:var(--accent)">Kingy AI</a>, "same shape does not mean same model", e faz desta uma <em>release comportamental</em> — mesmo corpo, pesos diferentes.</p>
 
     <h2 id="tabela">Todos os 26 benchmarks, lado a lado</h2>
     <p>Os números abaixo vêm das duas tabelas de benchmark do <a href="https://huggingface.co/Qwen/Qwen3.8-27B" style="color:var(--accent)">model card oficial do Qwen3.8-27B</a>, publicado em 14/08/2026. Cada linha é reportada pelo fabricante — não há reprodução independente disponível até a data de publicação.</p>
@@ -352,7 +352,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         </tr>
 <tr style="background:var(--code-bg)">
     <td style="font-weight:600;font-size:0.85rem">** Ganho significativo (Δ≥4,0):</td>
-    <td colspan="2">22 de 27 métricas</td>
+    <td colspan="2">23 de 27 métricas</td>
     <td colspan="2" class="num" style="font-size:0.9rem">Mediana Δ: <strong>+9.8</strong></td>
 </tr>
 </table></div>
@@ -416,17 +416,17 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <td>Q4_K_M (23 GB)</td>
             <td>MoE ~3B ativos</td>
             <td class="num" style="color:var(--accent-2)"><strong>56,6</strong></td>
-            <td class="delta" style="text-align:center">+5,4×</td>
+            <td class="delta" style="text-align:center">3,3×</td>
             <td>—</td>
         </tr>
     </table><div class="callout" style="margin-top:10px">
     <strong>Sobre a diferença de velocidade:</strong> Ambos medidos como <code>ollama run :27b</code> (tag default Q4_K_M). A diferença de 38% pode ser explicada pelo GGUF Build: o 3.8-27B usa <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" style="color:var(--accent)">Unsloth Dynamic UD-Q4_K_XL</a>, que otimiza a alocação de camadas e reduz transferências CPU-GPU. O 3.6-27B usa K-quant padrão. Quem importa manualmente GGUFs no Ollama pode obter resultados diferentes. Importante: a diferença é no <strong>método de compilação do arquivo</strong>, não na arquitetura do modelo.
 </div>
 
-    <p><strong>A conclusão honesta:</strong> Embora ambos sejam densos de 27B com arquitetura híbrida, o Qwen3.8-27B rodou ~38% mais rápido no Q4_K_M medido neste hardware (12,4 tok/s 3.6 vs 17,1 tok/s 3.8). A diferença provável está na compilação GGUF: o 3.8 usa o Unsloth Dynamic UD (otimizado para largura de banda de memória), enquanto o 3.6 usa o K-quant padrão. Em outras palavras: a troca pode <strong>aumentar</strong> sua velocidade de geração — principalmente se você usa quants do Unsloth.</p>
+    <p><strong>A conclusão honesta:</strong> Embora ambos sejam densos de 27B com arquitetura híbrida, o Qwen3.8-27B rodou ~38% mais rápido no Q4_K_M medido neste hardware (12,4 tok/s 3.6 vs 17,3 tok/s 3.8). A diferença provável está na compilação GGUF: o 3.8 usa o Unsloth Dynamic UD (otimizado para largura de banda de memória), enquanto o 3.6 usa o K-quant padrão. Em outras palavras: a troca pode <strong>aumentar</strong> sua velocidade de geração — principalmente se você usa quants do Unsloth.</p>
 
     <div class="callout callout-warn">
-        <strong>Não confunda com o 3.6-35B MoE:</strong> O Qwen3.6-35B é um modelo MoE (mixture of experts) que ativa apenas ~3B dos 35B a cada token. Ele roda a 56,6 tok/s no mesmo hardware — <strong>5 vezes mais rápido</strong>. É uma alternativa para quem prioriza velocidade sobre profundidade agêntica. O 3.8-27B denso não compete em velocidade com o MoE — compete em capacidade. Veja nosso <a href="/guia/hardware-local" style="color:var(--accent)">Guia de Hardware</a> para mais detalhes.
+        <strong>Não confunda com o 3.6-35B MoE:</strong> O Qwen3.6-35B é um modelo MoE (mixture of experts) que ativa apenas ~3B dos 35B a cada token. Ele roda a 56,6 tok/s no mesmo hardware — <strong>3,3 vezes o throughput do 3.8-27B denso</strong> (4,6× o do 3.6-27B). É uma alternativa para quem prioriza velocidade sobre profundidade agêntica. O 3.8-27B denso não compete em velocidade com o MoE — compete em capacidade. Veja nosso <a href="/guia/hardware-local" style="color:var(--accent)">Guia de Hardware</a> para mais detalhes.
     </div>
 
     <p>* Medição do portal publicada em <a href="/" style="color:var(--accent)">qwen38-27b-landing.vercel.app</a> em 14/08/2026, mesmo método (400 tok × 9 rodadas, platô térmico).</p>
@@ -439,11 +439,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>Q4_K_M</td><td>17,11 GB</td><td>16,82 GB</td><td>+0,29 GB</td></tr>
         <tr><td>Q5_K_M</td><td>19,83 GB</td><td>19,51 GB</td><td>+0,32 GB</td></tr>
         <tr><td>Q4_K_S</td><td>16,12 GB</td><td>15,86 GB</td><td>+0,26 GB</td></tr>
-        <tr><td>Q3_K_M</td><td>—</td><td>13,59 GB</td><td>—</td></tr>
-        <tr><td>Q8_0</td><td>29,05 GB</td><td>—</td><td>—</td></tr>
+        <tr><td>Q3_K_M</td><td>13,82 GB</td><td>13,59 GB</td><td>+0,23 GB</td></tr>
+        <tr><td>Q8_0</td><td>29,05 GB</td><td>28,60 GB</td><td>+0,45 GB</td></tr>
         <tr><td>mmproj (visão)</td><td>~0,93 GB</td><td>~0,93 GB</td><td>—</td></tr>
     </table>
-    <p>A diferença no Q4_K_M é de 0,29 GB — um arquivo de 170 MB a mais no 3.8, atribuível ao cabeçote MTP e a pequenas variações de build. Na prática: qualquer GPU que rode o 3.6-27B roda o 3.8-27B no mesmo quant. Upgrade sem upgrade de hardware.</p>
+    <p>A diferença no Q4_K_M é de 0,29 GB — um arquivo de ~290 MB a mais no 3.8, atribuível a pequenas variações de build. Na prática: qualquer GPU que rode o 3.6-27B roda o 3.8-27B no mesmo quant. Upgrade sem upgrade de hardware.</p>
 
     <p>Fontes: <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Qwen3.6-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.6-27B-GGUF</a>.</p>
 
@@ -480,13 +480,13 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <h2 id="faq">Perguntas frequentes</h2>
 
     <h3>Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?</h3>
-    <p>Depende do seu caso de uso. Em benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench) a mediana de ganho é de +19,2 pontos. Em conhecimento geral (GPQA, HLE, IFBench), é de +6,6 pontos. Em percepção passiva (documentos, cenas), a mediana é de +3,0 pontos — virtualmente empatado. Se você usa o modelo como agente que escreve código e opera o computador, vale o upgrade. Se usa como assistente de conhecimento, pode esperar.</p>
+    <p>Depende do seu caso de uso. Em benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench) a mediana de ganho é de +19,2 pontos. Em conhecimento geral (GPQA, HLE, IFBench), é de +6,8 pontos. Em percepção passiva (documentos, cenas), a mediana é de +1,8 pontos — virtualmente empatado. Se você usa o modelo como agente que escreve código e opera o computador, vale o upgrade. Se usa como assistente de conhecimento, pode esperar.</p>
 
     <h3>O Qwen3.8-27B é mais rápido que o Qwen3.6-27B?</h3>
-    <p>Sim — cerca de 38% mais rápido no Q4_K_M medido neste hardware (17,3 tok/s 3.8 vs 12,4 tok/s 3.6). A diferença provavelmente vem da compilação GGUF: o 3.8 usa Unsloth Dynamic UD (otimizado para GPU), enquanto o 3.6 usa o K-quant padrão. Em hardware diferente ou com GGUFs de outra fonte, o resultado pode variar. Em todo caso, a troca não reduz velocidade — no pior cenário, empata. Quem busca ainda mais velocidade deve considerar o Qwen3.6-35B MoE (56,6 tok/s, +5×), que ativa parâmetros esparsos.</p>
+    <p>Sim — cerca de 38% mais rápido no Q4_K_M medido neste hardware (17,3 tok/s 3.8 vs 12,4 tok/s 3.6). A diferença provavelmente vem da compilação GGUF: o 3.8 usa Unsloth Dynamic UD (otimizado para GPU), enquanto o 3.6 usa o K-quant padrão. Em hardware diferente ou com GGUFs de outra fonte, o resultado pode variar. Em todo caso, a troca não reduz velocidade — no pior cenário, empata. Quem busca ainda mais velocidade deve considerar o Qwen3.6-35B MoE (56,6 tok/s — 3,3× o 3.8 denso), que ativa parâmetros esparsos.</p>
 
     <h3>Preciso de mais VRAM para rodar o Qwen3.8-27B?</h3>
-    <p>Não. Na prática os tamanhos de GGUF são idênticos: Q4_K_M 17,11 GB vs 16,82 GB (+0,29 GB). Qualquer setup que rode o 3.6-27B em Q4 (GPU 24GB) roda o 3.8-27B sem ajustes. Em Q5_K_M: 19,83 vs 19,51 (+0,32 GB). Em Q3 o 3.8 não tem distribuição oficial ainda — se você roda o 3.6 em Q3_K_M (13,59 GB, GPU 16GB), verifique se o 3.8 cabe antes de trocar.</p>
+    <p>Não. Os tamanhos de GGUF são praticamente idênticos: Q4_K_M 17,11 GB vs 16,82 GB (+0,29 GB), Q5_K_M 19,83 vs 19,51 (+0,32 GB), Q3_K_M 13,82 vs 13,59 (+0,23 GB) e Q8_0 29,05 vs 28,60 (+0,45 GB). Todas as quants padrão têm distribuição oficial para os dois modelos — qualquer setup que rode o 3.6-27B (GPU 16GB em Q3_K_M, 24GB em Q4_K_M) roda o 3.8-27B sem ajustes.</p>
 
     <h3>O Qwen3.8-27B é melhor em todos os 26 benchmarks?</h3>
     <p>Sim, mas nem todo ganho é relevante. O 3.8 vence os 26 benchmarks publicados no model card — não há uma única regressão na tabela. Porém, em GPQA Diamond a diferença é de +1,4 pontos (89,2 vs 87,8 — dentro da margem de ruído do benchmark). Em OmniDocBench, +1,7 (91,1 vs 89,4). Em RealWorldQA, +1,8 (85,9 vs 84,1). Nestes casos, a diferença não é significativa para uso prático — o 3.6 continua entregando resultados da mesma classe.</p>
@@ -544,47 +544,55 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
       "name": "Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Depende do caso de uso. Em código agêntico a mediana de ganho é +19,2 pontos. Em conhecimento geral é +6,6. Em percepção passiva é +3,0. Se você usa o modelo como agente de código, upgrade imediato. Como assistente de conhecimento, pode esperar."
+        "text": "Depende do caso de uso. Em benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench) a mediana de ganho é de +19,2 pontos. Em conhecimento geral (GPQA, HLE, IFBench), é de +6,8 pontos. Em percepção passiva (documentos, cenas), a mediana é de +1,8 pontos — virtualmente empatado. Se você usa o modelo como agente que escreve código e opera o computador, vale o upgrade. Se usa como assistente de conhecimento, pode esperar."
       }
     },
     {
       "@type": "Question",
-      "name": "O Qwen3.8-27B é mais rápido que o Qwen3.6-27B na mesma GPU?",
+      "name": "O Qwen3.8-27B é mais rápido que o Qwen3.6-27B?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sim — o 3.8 rodou 38% mais rápido no Strix Halo com Q4_K_M (17,3 vs 12,4 tok/s), diferença atribuída à compilação GGUF Unsloth vs K-quant padrão. A VRAM entre os dois é a mesma — qualquer GPU que rode o 3.6 roda o 3.8 sem ajustes."
+        "text": "Sim — cerca de 38% mais rápido no Q4_K_M medido neste hardware (17,3 tok/s no 3.8 vs 12,4 no 3.6). A diferença provavelmente vem da compilação GGUF: o 3.8 usa Unsloth Dynamic UD (otimizado para GPU), enquanto o 3.6 usa o K-quant padrão. Em hardware diferente ou com GGUFs de outra fonte, o resultado pode variar. Quem busca ainda mais velocidade deve considerar o Qwen3.6-35B MoE (56,6 tok/s — 3,3× o 3.8 denso)."
       }
     },
     {
       "@type": "Question",
-      "name": "Os benchmarks do Qwen3.8-27B foram verificados de forma independente?",
+      "name": "Preciso de mais VRAM para rodar o Qwen3.8-27B?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Todos os números vêm do model card oficial da Qwen (Alibaba) e não há reprodução independente disponível até 16/08/2026. Isto é normal para um modelo de 2 dias de lançamento — recomenda-se aguardar 1-2 semanas para confirmação antes de decisões críticas."
+        "text": "Não. Os tamanhos de GGUF são praticamente idênticos: Q4_K_M 17,11 GB vs 16,82 GB (+0,29 GB), Q5_K_M 19,83 vs 19,51 (+0,32 GB), Q3_K_M 13,82 vs 13,59 (+0,23 GB) e Q8_0 29,05 vs 28,60 (+0,45 GB). Todas as quants padrão têm distribuição oficial para os dois modelos — qualquer setup que rode o 3.6-27B roda o 3.8-27B na mesma quantização."
       }
     },
     {
       "@type": "Question",
-      "name": "Preciso de mais VRAM para rodar o Qwen3.8-27B do que para o 3.6-27B?",
+      "name": "O Qwen3.8-27B é melhor em todos os 26 benchmarks?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Q4_K_M: 17,11 GB (3.8) vs 16,82 GB (3.6) — diferença de 0,29 GB. Q5_K_M: 19,83 vs 19,51 — diferença de 0,32 GB. Os dois cabem na mesma GPU com a mesma quantização. O upgrade não exige upgrade de hardware."
+        "text": "Sim, mas nem todo ganho é relevante. O 3.8 vence os 26 benchmarks publicados no model card — não há uma única regressão na tabela. Porém, em GPQA Diamond a diferença é de +1,4 pontos (89,2 vs 87,8 — dentro da margem de ruído do benchmark). Em OmniDocBench, +1,7 (91,1 vs 89,4). Em RealWorldQA, +1,8 (85,9 vs 84,1). Nestes casos, o 3.6 continua entregando resultados da mesma classe."
       }
     },
     {
       "@type": "Question",
-      "name": "O Qwen3.8-27B perde o Thinking Preservation do 3.6?",
+      "name": "Os benchmarks do Qwen3.8-27B são independentes?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "O Thinking Preservation (retenção de raciocínio entre turnos) foi documentado no model card do 3.6-27B, mas não está mencionado no card do 3.8. O 3.8 adiciona MTP (Multi-Token Prediction) para aceleração com speculative decoding. Os modos de thinking estão disponíveis nos dois modelos."
+        "text": "Não. Todos os números publicados no model card são reportados pelo fabricante (Alibaba/Qwen), consultados em 15/08/2026. Até o momento da publicação, nenhum laboratório independente reproduziu os resultados. Isto é normal para um modelo de 2 dias de lançamento. Recomendamos aguardar 1-2 semanas para confirmação de terceiros antes de decisões críticas baseadas nos números absolutos."
       }
     },
     {
       "@type": "Question",
-      "name": "Onde leio os 26 benchmarks completos do Qwen3.8-27B?",
+      "name": "Preciso trocar de template/prompt ou modificar meu código ao migrar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No model card oficial em huggingface.co/Qwen/Qwen3.8-27B. No portal, veja também a página Benchmarks Comparativos com todos os 26 resultados vs Qwen3.6-27B, Qwen3.7-Plus, Muse Glimmer-30B e Opus4.6 Max."
+        "text": "Não — se você usa Ollama: ollama run qwen3.6:27b vira ollama run qwen3.8:27b e funciona. Ambos usam o mesmo chat template e tokenizer. Em vLLM/llama.cpp o config carrega via a mesma classe Qwen3_5ForConditionalGeneration. A migração é drop-in: o Ollama baixa o novo GGUF e os dois convivem no mesmo disco (~17 GB cada)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como fazer o upgrade e voltar se não gostar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Baixe o 3.8 sem perder o 3.6: ollama run qwen3.8:27b baixa e ativa o novo modelo; ollama run qwen3.6:27b volta instantaneamente ao anterior (que continua instalado); ollama rm qwen3.6:27b remove o 3.6 só depois de confirmar que não precisa mais. Os dois modelos ocupam ~34 GB em disco (Q4_K_M + mmproj)."
       }
     }
   ]
