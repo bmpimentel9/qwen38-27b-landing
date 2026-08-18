@@ -163,6 +163,14 @@
         },
         {
           "@type": "Question",
+          "name": "Como desativar o thinking (overthinking) do Qwen3.8-27B?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No llama.cpp: --reasoning off desliga por completo; --reasoning-budget 0 encerra o raciocínio imediatamente; --reasoning-effort low/medium dosa sem desligar (default de fábrica é xhigh, que desperdiça tokens e tempo). No Ollama, use \"think\": false na requisição da API. Fonte: README oficial do llama.cpp + review Simon Willison (16/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Como instalar o Qwen3.8-27B via Ollama?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -393,6 +401,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><strong>Thinking:</strong> temp 1.0, top_p 0.95, top_k 20</li>
             <li><strong>Instruct:</strong> temp 0.7, top_p 0.80, repetition_penalty 1.5</li>
         </ul>
+    </div>
+
+    <div class="faq-item">
+        <h3 id="desativar-thinking">Como desativar o thinking (overthinking) do Qwen3.8-27B?</h3>
+        <p>No llama.cpp: <code>--reasoning off</code> desliga por completo, <code>--reasoning-budget 0</code> encerra o raciocínio imediatamente, e <code>--reasoning-effort low/medium</code> dosa sem desligar (o default de fábrica xhigh é a armadilha: 22.276 tokens de raciocínio para 3.223 de resposta no teste de Simon Willison). No Ollama, envie <code>&quot;think&quot;: false</code> na requisição da API. Detalhes e presets por hardware: <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de configuração de reasoning</a>.</p>
     </div>
 
     <h2 id="instalacao">Instalação e Uso</h2>
