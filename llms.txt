@@ -27,6 +27,11 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - MTP no llama.cpp: 7,16 → 10,47 tok/s num MacBook M5 24GB (1,46×); suporte merged via PR #22673 (verificado 18/08).
 - Qwen3.8-27B: 52 no Artificial Analysis Intelligence Index v4.1.1 — mesmo score do GPT-5.6 Luna (max), 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e #1 entre 135 open weights de até 40B; medido com reasoning ligado e 160M tokens de saída no índice (mediana da classe: 43M) (Artificial Analysis, verificado 18/08/2026).
 - MiniMax Music3 não é um modelo de 2,4B: soma ~11,1B — Global LLM 8B (init Qwen3-8B) + Local LLM 0,6B + Flow Matching 2,4B + Flow-VAE 123M; ~22 GB de pesos em bf16 (model card + tree HF API).
+- Visão do Qwen3.8-27B em GGUF: o mmproj custa 0,93 GB (BF16) ou 0,63 GB (Q8_0) no repositório oficial ggml-org — o encoder inteiro que liga a visão do modelo de 3,56M de downloads (HF API, 18/08/2026).
+- OCR multimodal local: OmniDocBench 1.5 = 91,1, CharXiv RQ = 90,2 (com CI) e MathVision = 94,6 (com CI) no Qwen3.8-27B, contra 89,4 / 78,4 / 85,1 do Qwen3.6-27B (model card oficial).
+- BabyVision: 85,6 (com CI) contra 28,9 do Qwen3.6-27B — o maior salto multimodal geracional, quase o triplo (model card oficial).
+- Bounding boxes do Qwen3.8-27B: o teste de Simon Willison (16/08) com bbox_2d em escala 0-1000 acertou os dois pelicanos ("such a good match") — detecção local sem API de visão (review Simon Willison).
+- Vídeo no Qwen3.8-27B: entendimento nativo até escala de hora; para vídeos longos o README oficial recomenda video_preprocessor_config.json com longest_edge 469762048 (≈224k video tokens) para mais frames (model card oficial).
 - Music3 em VRAM: ~23 GB full bf16 / ~22 GB com CPU offload / 8 GB com group offloading leaf_level + use_stream (docs oficiais diffusers).
 - Music3 gera músicas completas de até 5 min com vocal; 25 frames de áudio por segundo (750 tokens ≈ 30s); Community License permite uso comercial com atribuição e autorização só acima de US$ 20 mi/ano (model card + LICENSE + cookbook SGLang).
 
@@ -44,6 +49,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Lemonade SDK v11.6](https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd) — serving de LLM local GPU+NPU com suporte AMD (ROCm, Radeon, Ryzen) e MCP server embutido; release 14/08/2026
 - [Qwen3.8-27B em 16GB de VRAM](https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp) — config llama.cpp real para GPU 16GB: IQ4_XS 15,71 GB / UD-Q3_K_XL 13,44 GB / Q4_K_M 17,11 GB com offload parcial; KV cache q8_0, speculative decoding n-gram, ~20 t/s na 4070 Ti Super
 - [Configuração de reasoning do Qwen3.8-27B](https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-reasoning-configuracao-ideal) — como desativar o overthinking (xhigh-trap): --reasoning off / --reasoning-budget / --reasoning-effort no llama.cpp, think:false no Ollama, e MTP (--spec-type draft-mtp) para acelerar
+- [Visão, vídeo e OCR no Qwen3.8-27B](https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local) — como ativar a visão da VLM nativa localmente: mmproj (0,93 GB) com --mmproj ou -hf no llama.cpp, imagens no Ollama (qwen3.8:27b, entrada Text+Image), OCR de documentos (OmniDocBench 91,1), bounding boxes 0-1000 e vídeo de até 1 hora
 - [MiniMax Music3 local](https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local) — música com IA local em 8GB de VRAM: ~11,1B de parâmetros (Qwen3-8B + flow matching), três rotas (diffusers/SGLang/ComfyUI), prompts pt-BR e licença comercial
 - [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e referências do model card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max)
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
@@ -103,6 +109,9 @@ Os 26 benchmarks do model card não — são reportados pela própria Qwen, e as
 
 ### Quando o Qwen3.8-27B foi lançado?
 14 de agosto de 2026, no Hugging Face (Qwen/Qwen3.8-27B), 11 dias depois do anúncio da família (Qwen3.8-Max via API, em 3 de agosto); as quantizações GGUF da Unsloth ficaram disponíveis no mesmo dia. Fonte: Hugging Face + blog oficial da Qwen.
+
+### O Qwen3.8-27B enxerga imagens?
+Sim — é uma VLM nativa (pipeline_tag image-text-to-text no Hugging Face): a torre de visão faz parte do modelo. Para usar localmente falta só o mmproj: 0,93 GB (BF16) ou 0,63 GB (Q8_0) no repositório oficial ggml-org/Qwen3.8-27B-GGUF, carregado no llama.cpp com --mmproj ou detectado automaticamente com -hf. No Ollama, a tag qwen3.8:27b (18 GB, 256K de contexto) já aceita imagens — entrada Text, Image na biblioteca oficial. Vídeo (até escala de hora) é suportado no llama.cpp; no Ollama a página do modelo lista apenas Text, Image (18/08/2026). Fonte: model card oficial + docs multimodal llama.cpp + biblioteca Ollama + HF API.
 
 ## Qwen3.6-27B (geração anterior, Apache 2.0)
 
@@ -171,6 +180,7 @@ Os benchmarks abaixo vêm do model card oficial da Qwen e são reportados pelo f
 - Vision2Web: 62,9
 - ClawEval-MM (Pass@3): 57,4
 - SWE-MM (bugs multimodais): 38,6 (+12,9)
+- Visão em GGUF: mmproj separado — 0,93 GB (BF16) / 0,63 GB (Q8_0) no repo oficial ggml-org; --mmproj no llama.cpp, Text+Image na tag qwen3.8 do Ollama (guia: /guia/qwen3-8-27b-visao-videos-local)
 
 ## Como rodar localmente
 
