@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qwen3.8-27B em 16GB de VRAM: config llama.cpp que funciona</title>
     <meta name="description" content="Como rodar o Qwen3.8-27B em 16GB de VRAM com llama.cpp: quant IQ4_XS/Q4_K_M, contexto que cabe, speculative decoding n-gram, KV cache q8_0 e t/s reais.">
@@ -142,6 +143,14 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "Quantizando o KV cache: --cache-type-k q8_0 --cache-type-v q8_0 com --flash-attn on corta a memória de contexto pela metade vs f16. A arquitetura híbrida do Qwen3.8-27B (só 1 em cada 4 camadas usa atenção completa) já torna o KV cache muito mais leve que um transformer denso tradicional do mesmo tamanho."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Vale a pena 16GB em 2026 ou já troco pra uma de 24GB?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Para o Qwen3.8-27B, 16GB roda bem com as configs deste guia (IQ4_XS + KV cache q8_0 + speculative decoding). Mas 24GB (RTX 3090 usada, 4090 ou 5090) elimina o trade-off: quantização Q4 inteira + mmproj + 32K de contexto com folga."
               }
             }
           ]
@@ -367,7 +376,7 @@
         <p>Duas coisas: a arquitetura híbrida do Qwen3.8 (só ¼ das camadas usa atenção completa, o KV cache é leve) e a quantização do KV cache para q8_0, que dobra o contexto no mesmo espaço. Sem essas duas, 16GB comportaria muito menos.</p>
     </div>
     <div class="faq-item">
-        <h3>Vale a pena 16GB em 2026 ou já compenso pra 24GB?</h3>
+        <h3>Vale a pena 16GB em 2026 ou já troco pra uma de 24GB?</h3>
         <p>Para o Qwen3.8-27B, 16GB roda bem com as configs deste guia. Mas 24GB (3090 usada, 4090, 5090) elimina o trade-off: Q4_K_XL inteiro + mmproj + 32K de contexto com folga — veja os tiers no <a href="/guia/hardware-local">guia de hardware</a>.</p>
     </div>
 
