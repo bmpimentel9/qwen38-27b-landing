@@ -9,6 +9,34 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-18] — Artigo: Tokens por segundo no hardware real (throughput compilado)
+
+### Added
+- **Artigo "Tokens por segundo no hardware real"**
+  (`guia/tokens-por-segundo-30b-hardware-real/`, task kanban `t_507fe40f` — órfão
+  do discovery de 16/08 materializado): tabela principal hardware × stack ×
+  quantização × tok/s com 15 configurações e fonte por linha — RTX 5090
+  SGLang NVFP4+DSpark 206,1 tok/s (tweet oficial Qwen + post SGLang), 3090
+  llama.cpp 41,5 (InsiderLLM), Strix Halo 17,3 (medição própria), 3060 12GB
+  ~9,7 com MTP (HF discussion #61), DGX Spark 38, MacBook M5 7,16→10,47.
+  Metodologia explícita (nossa e de cada fonte), seção "por que 10→206"
+  (banda de memória ÷ bytes por token), MTP on/off com contexto por número,
+  expectativa por hardware brasileiro (3060 12GB, 4060 Ti 16GB, 3090 usada,
+  RX 7600, Strix Halo), tabela oficial Muse Glimmer/DFlash. FAQPage JSON-LD
+  (5 perguntas) + TechArticle + Breadcrumb; GA4 com scroll_depth.
+  - Dados-âncora re-verificados no dia da publicação (18/08): downloads GGUF
+    3.561.466 (eram 1.945.635 em 16/08 — base quase dobrou em 2 dias);
+    PR #22673 (MTP llama.cpp) confirmado MERGED via gh; correção do dado do
+    discovery: números Muse são M4/M5 **Max** (não "M5 Pro"), valores do
+    model card oficial 23,7→37,8 / 26,6→50,2 / 74,9→233,4.
+  - Sitemap (19 URLs, dedupe verificado), llms.txt (4 stats citáveis novos +
+    página + FAQ "Quantos tokens por segundo roda o Qwen3.8-27B?") e card no
+    `/guia` (tag-bench, MOFU · Novo 18/08) atualizados.
+
+---
+
+---
+
 ## [2026-08-18] — Artigo: Configuração de reasoning do Qwen3.8-27B (overthinking + MTP)
 
 ### Added

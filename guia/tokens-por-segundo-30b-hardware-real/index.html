@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokens por segundo: Qwen3.8-27B no hardware real (30B medidos)</title>
+    <meta name="description" content="Quantos tokens por segundo roda um 30B no seu hardware? Tabela com números medidos: RTX 5090 a 206 t/s, 3090 a 41, Strix Halo a 17, 3060 12GB a 10 — por stack e quantização.">
+    <meta name="keywords" content="qwen 3.8 tok/s, tokens por segundo 30b, qwen3.8-27b velocidade, throughput LLM local, quantos tokens por segundo GPU, llama.cpp benchmark tok/s, sglang qwen3.8, strix halo llm velocidade">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Tokens por segundo: Qwen3.8-27B no hardware real — 206 t/s na 5090, 10 t/s na 3060 12GB">
+    <meta property="og:description" content="Tudo o que o portal tem de números de velocidade MEDIOS num só lugar: 15+ configurações de hardware × stack × quantização, com fonte de cada número, metodologia e o que esperar no hardware brasileiro.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-18T09:30:00-03:00">
+    <meta property="article:section" content="Benchmark de performance">
+    <meta property="article:tag" content="Throughput">
+    <meta property="article:tag" content="Benchmark">
+    <meta property="article:tag" content="LLM local">
+    <meta property="article:tag" content="Qwen3.8-27B">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tokens por segundo: 30B no hardware real (206 → 10 t/s)">
+    <meta name="twitter:description" content="Números medidos por hardware × stack × quantização: RTX 5090, 3090, Strix Halo, DGX Spark, MacBook, 3060 12GB. Com fonte e contexto de cada medição.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Tokens por segundo no hardware real: Qwen3.8-27B e os 30B medidos por stack",
+          "description": "Compilado de throughput medido (tok/s) de modelos ~30B por hardware, stack de serving e quantização: RTX 5090 com SGLang NVFP4+DSpark a 206,1 tok/s, RTX 3090 a 41,5, Strix Halo a 17,3 e RTX 3060 12GB a ~10 tok/s com MTP. Com metodologia, fontes primárias e expectativa por GPU brasileira.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-18",
+          "dateModified": "2026-08-18",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real",
+          "proficiencyLevel": "Intermediate"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Tokens por segundo no hardware real", "item": "https://qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Quantos tokens por segundo roda o Qwen3.8-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Depende do stack: com SGLang, NVFP4 e speculative decoding DSpark, a equipe do SGLang mediu 206,1 tok/s de decode numa única RTX 5090; no DGX Spark, 38 tok/s. Com llama.cpp e quant UD-Q4_K_XL, uma RTX 3090 entrega ~41,5 tok/s. No Strix Halo (iGPU Radeon 8060S, 128 GB unificados), nossa medição própria com Ollama/Vulkan no Q4_K_M deu 17,3 tok/s. Numa RTX 3060 de 12 GB com offload parcial de FFN e MTP, a comunidade reporta ~10 tok/s com 96K de contexto."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Por que o mesmo modelo varia de 10 a 206 tokens por segundo?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Porque decode de modelo denso é limitado por largura de banda de memória e pelos bytes lidos por token. A RTX 5090 tem ~1.792 GB/s; o Strix Halo, ~256 GB/s; o DGX Spark, 273 GB/s. Em cima disso vêm três multiplicadores: quantização (quanto menos bits por peso, menos bytes por token), speculative decoding (MTP/DSpark/EAGLE geram e verificam vários tokens por passo, com ganho de 1,5× a 3× sem mudar a saída) e offload (cada camada que cai na RAM do sistema atravessa o PCIe e derruba o throughput)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quantos tokens por segundo são necessários para leitura confortável?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Um leitor rápido acompanha texto a ~10–15 tok/s; acima disso o texto aparece mais rápido do que se lê. O alvo prático de chat local é 15–25 tok/s; acima de 40 tok/s sobra velocidade para uso interativo e o que passa a importar é o prompt processing (tempo até o primeiro token). Abaixo de ~8 tok/s a conversa começa a arranhar a paciência."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Vale a pena ativar MTP/speculative decoding no Qwen3.8-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Em geral sim, com contexto. O suporte a MTP já foi mergeado no llama.cpp (PR #22673) e o ganho medido varia com o gargalo da máquina: 1,46× num MacBook M5 (7,16 → 10,47 tok/s), ~1,8–3,1× nos números oficiais do Muse Glimmer 30B com o drafter DFlash (5090: 74,9 → 233,4) e o DSpark do SGLang leva a 5090 a 206 tok/s. Em GPU já saturada de banda e sem cabeçalho de VRAM para o drafter, o ganho pode ser pequeno — meça antes e depois no seu setup."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quantos tokens por segundos eu vou ter numa RTX 3060 de 12GB?",
+              "acceptedAnswer": {
+                "text": "Com o Q4_K_S (16,4 GB) não cabe tudo na VRAM: uma configuração da comunidade faz offload dos tensores FFN de 46 camadas para a RAM, mantém KV cache Q4_0 e ativa MTP com --spec-draft-n-max 2, atingindo ~9,7 tok/s de geração e ~225 tok/s de prompt processing com 96K de contexto. Sem MTP e com mais offload, espere 6–8 tok/s."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+        .src { font-size: 0.8rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Tokens por segundo no hardware real: quanto o Qwen3.8-27B (e os 30B) realmente rendem</h1>
+        <p class="lead">O portal inteiro fala de qualidade — 26 benchmarks, VRAM, quantização. Mas a pergunta que chega antes de qualquer download é mais simples: <em>"vai ficar rápido na minha máquina?"</em>. Esta página reúne todos os números de throughput <strong>medidos</strong> que cobrimos desde o lançamento — por hardware, por stack, por quantização — com a fonte de cada um e o contexto que faz os números fazerem sentido.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>206,1</strong> tok/s — RTX 5090 (SGLang NVFP4 + DSpark)</span>
+            <span class="badge"><strong>41,5</strong> tok/s — RTX 3090 (llama.cpp Q4)</span>
+            <span class="badge"><strong>17,3</strong> tok/s — Strix Halo (medição própria)</span>
+            <span class="badge"><strong>~10</strong> tok/s — RTX 3060 12GB (com MTP)</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#tabela">A tabela: hardware × stack × quantização</a></li>
+            <li><a href="#por-que">Por que a variação é tão grande (10 → 206)</a></li>
+            <li><a href="#metodologia">Metodologia: como cada número foi medido</a></li>
+            <li><a href="#mtp">MTP on/off: o multiplicador de 2026</a></li>
+            <li><a href="#hardware-br">O que esperar no seu hardware brasileiro</a></li>
+            <li><a href="#muse">Bônus: Muse Glimmer 30B (DFlash) medido</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="tabela">A tabela: hardware × stack × quantização</h2>
+    <p>Cada linha abaixo tem fonte. Onde diz <strong>[nossa medição]</strong>, o número saiu da nossa máquina de referência (ASUS ROG Flow Z13, Ryzen AI MAX+ 395, 128 GB unificados) com protocolo descrito na <a href="#metodologia">metodologia</a>. Onde diz <strong>[reportado]</strong>, é número publicado pela equipe oficial do stack ou reportagem de terceiros com metodologia própria — sempre com link.</p>
+    <table>
+        <tr><th>Hardware</th><th>Stack</th><th>Modelo / quant</th><th>Decode (tok/s)</th><th>Fonte</th></tr>
+        <tr class="highlight">
+            <td>RTX 5090 (32 GB)</td>
+            <td>SGLang + DSpark</td>
+            <td>Qwen3.8-27B NVFP4</td>
+            <td><strong>206,1</strong></td>
+            <td class="src"><a href="https://x.com/Alibaba_Qwen/status/2088293486995087461">Qwen (oficial)</a> · <a href="https://www.reddit.com/r/LocalLLaMA/comments/1voearc/">SGLang</a></td>
+        </tr>
+        <tr>
+            <td>RTX Pro 6000 / 5090</td>
+            <td>SGLang + DSpark</td>
+            <td>Qwen3.8-27B NVFP4</td>
+            <td>200+</td>
+            <td class="src"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1voearc/">SGLang (lançamento)</a></td>
+        </tr>
+        <tr>
+            <td>RTX 5090</td>
+            <td>SGLang + EAGLE</td>
+            <td>Qwen3.8-27B NVFP4</td>
+            <td>152,9</td>
+            <td class="src"><a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">Cookbook SGLang</a></td>
+        </tr>
+        <tr>
+            <td>RTX 5090</td>
+            <td>SGLang + EAGLE</td>
+            <td>Qwen3.8-27B FP8</td>
+            <td>106,3–116,1</td>
+            <td class="src"><a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">Cookbook SGLang</a></td>
+        </tr>
+        <tr>
+            <td>2× RTX 3090</td>
+            <td>vLLM + LiteLLM</td>
+            <td>Qwen3.8 INT4</td>
+            <td>140 (4 lanes)</td>
+            <td class="src"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1voelnn/">r/LocalLLaMA</a></td>
+        </tr>
+        <tr>
+            <td>RTX 3090 (24 GB)</td>
+            <td>llama.cpp (llama-bench)</td>
+            <td>Qwen3.8-27B UD-Q4_K_XL</td>
+            <td>41,5</td>
+            <td class="src"><a href="https://insiderllm.com/guides/qwen-3-8-27b-vs-3-6-27b-rtx-3090">InsiderLLM</a></td>
+        </tr>
+        <tr>
+            <td>DGX Spark (128 GB)</td>
+            <td>SGLang + DSpark</td>
+            <td>Qwen3.8-27B NVFP4</td>
+            <td>38</td>
+            <td class="src"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1voearc/">SGLang</a> · <a href="https://forums.developer.nvidia.com/t/qwen3-8-27b-at-34-38-tok-s-on-dgx-spark-open-source-one-command-setup-sglang-nvfp4-dspark/380257">fórum NVIDIA</a></td>
+        </tr>
+        <tr class="highlight">
+            <td>Strix Halo (Radeon 8060S, 128 GB)</td>
+            <td>Ollama / Vulkan</td>
+            <td>Qwen3.8-27B Q4_K_M</td>
+            <td><strong>17,3</strong></td>
+            <td class="src"><strong>[nossa medição]</strong> · <a href="/guia/qwen3.8-vs-qwen3.6-27b">artigo comparativo</a></td>
+        </tr>
+        <tr>
+            <td>Strix Halo (128 GB)</td>
+            <td>llama.cpp (comunidade)</td>
+            <td>Qwen3.8-27B Dynamic Q5</td>
+            <td>10,5 → 9,4 @32K</td>
+            <td class="src"><a href="https://www.reddit.com/r/StrixHalo/comments/1vobzvd/">r/StrixHalo</a></td>
+        </tr>
+        <tr>
+            <td>Strix Halo (128 GB)</td>
+            <td>llama.cpp (comunidade)</td>
+            <td>Qwen3.8-27B Q8</td>
+            <td>7,5 → 6,9 @32K</td>
+            <td class="src"><a href="https://www.reddit.com/r/StrixHalo/comments/1vobzvd/">r/StrixHalo</a></td>
+        </tr>
+        <tr>
+            <td>Strix Halo (nossa máquina)</td>
+            <td>Ollama / Vulkan</td>
+            <td>Qwen3.8-27B Q5_K_M</td>
+            <td>10,6</td>
+            <td class="src"><strong>[nossa medição]</strong></td>
+        </tr>
+        <tr>
+            <td>Strix Halo (nossa máquina)</td>
+            <td>Ollama / Vulkan</td>
+            <td>Qwen3.6-35B MoE Q4</td>
+            <td>56,6</td>
+            <td class="src"><strong>[nossa medição]</strong> · <a href="/guia/faq">FAQ</a></td>
+        </tr>
+        <tr>
+            <td>MacBook M5 (24 GB)</td>
+            <td>llama.cpp + MTP</td>
+            <td>Qwen3.8-27B</td>
+            <td>7,16 → 10,47</td>
+            <td class="src"><a href="https://x.com/mfranz_on/status/2088612688200913099">X/Marco Franzon</a></td>
+        </tr>
+        <tr>
+            <td>RTX 3060 (12 GB)</td>
+            <td>llama.cpp + MTP + offload FFN</td>
+            <td>Qwen3.8-27B Q4_K_S + KV Q4_0, 96K ctx</td>
+            <td>~9,7–10</td>
+            <td class="src"><a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/discussions/61">HF discussion #61</a></td>
+        </tr>
+        <tr>
+            <td>RTX 5070 Ti laptop (12 GB VRAM + 32 GB RAM)</td>
+            <td>offload automático</td>
+            <td>Qwen3.8-27B Dynamic Q4, ctx 8K</td>
+            <td>3,3–4,5</td>
+            <td class="src"><a href="https://kingy.ai/blog/qwen3-8-27b-local-hardware-requirements">Kingy AI</a></td>
+        </tr>
+    </table>
+    <p class="src">Todas as fontes acessadas em 18/08/2026. Números de terceiros foram medidos com metodologias próprias (descritas nas páginas linkadas) — compare com o mesmo stack e quantização, não apenas o mesmo hardware.</p>
+
+    <div class="callout">
+        <strong>A leitura em 10 segundos:</strong> acima de 40 tok/s (3090/4090 para cima, ou 5090 com serving otimizado), sobra velocidade — o gargalo vira o prompt processing. Entre 15 e 25 tok/s (Strix Halo, Macs), a conversa flui como leitura confortável. Entre 8 e 12 tok/s (3060 12GB, laptops com offload), dá para usar com paciência — e é aí que MTP faz diferença real. Abaixo de 5 tok/s, serve para batch, não para conversa.
+    </div>
+
+    <h2 id="por-que">Por que a variação é tão grande (10 → 206 tok/s)</h2>
+    <p>Decode de um modelo denso é, no limite, uma conta de divisão: <strong>largura de banda de memória ÷ bytes lidos por token</strong>. O resto são multiplicadores em cima dessa conta.</p>
+    <table>
+        <tr><th>Hardware</th><th>Banda de memória</th><th>VRAM/memória</th><th>Teoria (27B @ 4 bits ≈ 17 GB)</th></tr>
+        <tr><td>RTX 5090</td><td>~1.792 GB/s (GDDR7)</td><td>32 GB</td><td>~105 tok/s sem speculation</td></tr>
+        <tr><td>RTX 3090</td><td>~936 GB/s</td><td>24 GB</td><td>~55 tok/s</td></tr>
+        <tr><td>DGX Spark</td><td>273 GB/s (LPDDR5x unificada)</td><td>128 GB</td><td>~16 tok/s</td></tr>
+        <tr><td>Strix Halo</td><td>~256 GB/s (LPDDR5X-8000 unificada)</td><td>128 GB</td><td>~15 tok/s</td></tr>
+    </table>
+    <p>A conta teórica explica a ordem de grandeza — e por que o DGX Spark, com 128 GB e chip Blackwell, entrega 38 tok/s e não 200: a memória unificada LPDDR5x tem capacidade enorme, banda modesta. Agora os multiplicadores que afastam o número real da teoria:</p>
+    <ul>
+        <li><strong>Quantização</strong> — cada bit a menos por peso são bytes que a GPU não precisa ler por token. Q8 lê ~2× os bytes de Q4; por isso no Strix Halo o Q8 roda a 7,5 tok/s e o Q4 da nossa medição a 17,3.</li>
+        <li><strong>Speculative decoding (MTP/DSpark/EAGLE)</strong> — o modelo pequeno propõe blocos de tokens, o grande verifica em paralelo. Ganho medido entre 1,4× e 3,1× sem mudar o output (seção dedicada <a href="#mtp">abaixo</a>).</li>
+        <li><strong>Offload CPU↔GPU</strong> — quando o modelo não cabe na VRAM, camadas caem na RAM do sistema e cada token atravessa o PCIe. É a diferença entre a 3060 12GB a ~10 tok/s (offload cirúrgico de FFN) e o laptop 5070 Ti a 3–4,5 tok/s (offload automático).</li>
+        <li><strong>Stack de serving</strong> — SGLang/vLLM compilam kernels, gerenciam KV cache e batching de forma agressiva; Ollama prioriza simplicidade. No mesmo espírito, o formato importa: NVFP4 W4A4 (Blackwell) não é só um quant menor, roda em unidades dedicadas.</li>
+    </ul>
+    <div class="callout-warn">
+        <strong>Contexto importa mais que o pico:</strong> throughput cai conforme o contexto enche (no Strix Halo, de 10,5 para 9,4 tok/s ao carregar 32K de contexto; na 3090 de 41,5 para 40,5 a 8K de profundidade). E thinking mode gera tokens de raciocínio antes da resposta — um modelo a 17 tok/s que "pensa" 2.000 tokens deixa você esperando 2 minutos por resposta que cabe em 300. Velocidade sem controle de reasoning é velocidade pela metade: veja o <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de configuração de reasoning do Qwen3.8-27B</a>.
+    </div>
+
+    <h2 id="metodologia">Metodologia: como cada número foi medido</h2>
+    <h3>Nossas medições (Strix Halo)</h3>
+    <p>Máquina: ASUS ROG Flow Z13 — Ryzen AI MAX+ 395 (Strix Halo), iGPU Radeon 8060S, 128 GB de memória unificada, Ollama sobre backend Vulkan. Protocolo:</p>
+    <ul>
+        <li><strong>Geração:</strong> 400 tokens por rodada via API REST (<code>num_predict=400</code>, <code>temperature=0.7</code>), 3 rodadas de aquecimento + 9 rodadas medidas, até platô térmico (73–75 °C) — o valor reportado é a média das rodadas estáveis.</li>
+        <li><strong>Contagem:</strong> tokens reportados pela própria API do Ollama (contagem do tokenizer do modelo, não caracteres).</li>
+        <li><strong>Contexto:</strong> medição com contexto limpo (prompt curto). Com contexto carregado, espera-se queda de ~10% (compatível com o 10,5 → 9,4 @32K reportado pela comunidade no mesmo hardware).</li>
+    </ul>
+    <p>Escala para reproduzir: <code>curl</code> na API do Ollama com <code>num_predict=400</code> e leitura do campo <code>eval_count / eval_duration</code>.</p>
+    <h3>Fontes de terceiros</h3>
+    <ul>
+        <li><strong>SGLang (5090/DGX Spark):</strong> números do post de lançamento da própria equipe do SGLang (usuário Kai, r/LocalLLaMA) e do tweet oficial da Qwen — decode batch 1 com NVFP4 + DSpark speculative decoding, imagem Docker <code>lmsysorg/sglang:qwen38-27b</code>, cookbook oficial <a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">docs.sglang.io</a>.</li>
+        <li><strong>InsiderLLM (3090):</strong> <code>llama-bench</code> com <code>-ngl 99 -fa 1 -p 512 -n 128 -d 0,4096,8192 -r 5</code>, build b10088 CUDA, 5 repetições por célula, desvio-padrão reportado de 0,02–0,05 tok/s.</li>
+        <li><strong>HF discussion #61 (3060 12GB):</strong> configuração completa publicada — Q4_K_S com <code>--override-tensor "blk\.([0-9]|[1-3][0-9]|4[0-5])\.ffn_.*=CPU"</code> (FFN de 46 camadas na RAM), KV cache Q4_0, <code>-b 256 -ub 128</code>, MTP com <code>--spec-type draft-mtp --spec-draft-n-max 2</code>.</li>
+        <li><strong>r/StrixHalo:</strong> benchmark de dia de lançamento, 128 GB, Q5/Q8 dinâmicos, contexto limpo vs 32K.</li>
+        <li><strong>Meta (Muse Glimmer):</strong> model card oficial — batch 1, greedy, média sobre conjunto diversificado de prompts; M4/M5 via ExecuTorch, 5090 via llama.cpp.</li>
+    </ul>
+
+    <h2 id="mtp">MTP on/off: o multiplicador de 2026</h2>
+    <p>Multi-Token Prediction deixa de ser paper e vira flag de linha de comando: o suporte a MTP foi <strong>mergeado no llama.cpp</strong> (PR #22673, verificado em 18/08), o SGLang empacota o DSpark no cookbook do Qwen3.8, e o Unsloth publica GGUFs que preservam a cabeça MTP. O ganho medido, porém, <strong>depende do gargalo da sua máquina</strong>:</p>
+    <table>
+        <tr><th>Setup</th><th>Sem speculation</th><th>Com speculation</th><th>Ganho</th><th>Mecanismo / fonte</th></tr>
+        <tr><td>MacBook M5 24 GB</td><td>7,16</td><td>10,47</td><td>1,46×</td><td class="src">MTP llama.cpp · <a href="https://x.com/mfranz_on/status/2088612688200913099">X</a></td></tr>
+        <tr><td>RTX 3060 12 GB</td><td>~7 (est.)</td><td>~9,7–10</td><td>~1,4×</td><td class="src">draft-mtp n-max 2 · <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/discussions/61">HF #61</a></td></tr>
+        <tr><td>RTX 5090 (Muse Glimmer)</td><td>74,9</td><td>233,4</td><td>3,1×</td><td class="src">DFlash · <a href="https://huggingface.co/meta-models/Muse-Glimmer-30B">model card Meta</a></td></tr>
+        <tr><td>RTX 5090 (Qwen3.8)</td><td>~97–105</td><td>152,9 (EAGLE) · 206,1 (DSpark)</td><td>1,5–2,1×</td><td class="src">SGLang · <a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">cookbook</a></td></tr>
+    </table>
+    <p>A regra que emerge dos números: <strong>quanto mais banda de memória sobrando em relação ao custo do drafter, maior o ganho</strong>. Na 5090 (1,8 TB/s), verificar 8 tokens propostos custa pouco e o ganho passa de 2×. No Strix Halo ou num MacBook, a banda já é o gargalo e MTP devolve uns honestos 40–50%. Em GPU com VRAM apertada (3060 12GB), o drafter precisa caber junto — e o ganho existe, mas você o sente mais como "de 7 para 10" do que como "dobrou".</p>
+    <p>Nota de honestidade: a linha "sem speculation ~97–105" da 5090 com Qwen3.8 é estimativa derivada da banda (NVFP4 ≈ 16,5 GB de pesos por token) — a fonte oficial reporta apenas os números com speculation. A cadeia completa de raciocínio sobre reasoning × velocidade (quando <em>não</em> deixar o modelo pensar) está no <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning</a>.</p>
+
+    <h2 id="hardware-br">O que esperar no seu hardware brasileiro</h2>
+    <p>As GPUs que dominam o mercado de LLM local no Brasil, com o número realista que você deve esperar — e a configuração que chega lá:</p>
+    <table>
+        <tr><th>Sua GPU</th><th>Expectativa realista (Qwen3.8-27B)</th><th>Configuração</th></tr>
+        <tr>
+            <td><strong>RTX 3060 12 GB</strong></td>
+            <td>~9,7 tok/s · 96K ctx</td>
+            <td>Q4_K_S + KV Q4_0 + offload FFN (46 camadas) + MTP n-max 2 — receita testada da <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/discussions/61">HF #61</a>; detalhes no nosso <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16 GB</a></td>
+        </tr>
+        <tr>
+            <td><strong>RTX 4060 Ti 16 GB</strong></td>
+            <td>~15–20 tok/s</td>
+            <td>IQ4_XS (15,71 GB) tudo na VRAM, KV cache q8_0, contexto curto — sem offload o teto é a banda (288 GB/s); speculative n-gram ajuda</td>
+        </tr>
+        <tr>
+            <td><strong>RTX 3060/3090 usadas (24 GB)</strong></td>
+            <td>41,5 tok/s (3090)</td>
+            <td>UD-Q4_K_XL inteiro na VRAM, flash attention on — o melhor custo/tok/s do mercado brasileiro de usadas</td>
+        </tr>
+        <tr>
+            <td><strong>RX 7600 (8 GB) / RX 6000</strong></td>
+            <td>3–6 tok/s (com offload pesado)</td>
+            <td>8 GB não segura 27B em 4 bits: UD-Q3_K_XL (13,4 GB) ou IQ3 com offload via Vulkan/ROCm — melhor rebaixar para o <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">UD-IQ2_M (10,3 GB)</a> e aceitar queda de qualidade</td>
+        </tr>
+        <tr>
+            <td><strong>Strix Halo / Ryzen AI Max (iGPU)</strong></td>
+            <td>17,3 tok/s (Q4_K_M)</td>
+            <td>medição própria, Ollama/Vulkan — 128 GB unificados seguram contexto longo sem drama; a 8060S é limitada pela banda da LPDDR5x</td>
+        </tr>
+    </table>
+    <p>Regra de bolso para o vendedor da loja não te enganar: <strong>procure o número medido no SEU stack</strong> (Ollama ≠ llama.cpp ≠ SGLang) e na SUA quantização. "Roda" e "roda bem" são frases diferentes — 3 tok/s roda, 41 tok/s roda bem.</p>
+
+    <h2 id="muse">Bônus: Muse Glimmer 30B com DFlash (medições oficiais Meta)</h2>
+    <p>O outro 30B que cobrimos traz a tabela de speculative decoding mais completa já publicada num model card — útil como referência do teto do mecânismo:</p>
+    <table>
+        <tr><th>GPU</th><th>Sem drafter</th><th>Com DFlash</th><th>Ganho</th></tr>
+        <tr class="highlight"><td>RTX 5090</td><td>74,9 tok/s</td><td><strong>233,4 tok/s</strong></td><td>3,1×</td></tr>
+        <tr><td>Apple M4 Max</td><td>23,7 tok/s</td><td>37,8 tok/s</td><td>1,5×</td></tr>
+        <tr><td>Apple M5 Max</td><td>26,6 tok/s</td><td>50,2 tok/s</td><td>1,8×</td></tr>
+    </table>
+    <p class="src">K-Quant-17GB + drafter quantizado, batch 1, greedy; M4/M5 via ExecuTorch, 5090 via llama.cpp. Model card oficial Meta (18/08/2026). Análise completa: <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer 30B</a>.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Quantos tokens por segundo roda o Qwen3.8-27B?</h3>
+        <p>Depende do stack: com SGLang, NVFP4 e DSpark, a equipe do SGLang mediu <strong>206,1 tok/s numa RTX 5090</strong>; no DGX Spark, 38 tok/s. Com llama.cpp e UD-Q4_K_XL, uma RTX 3090 entrega ~41,5 tok/s. No Strix Halo, nossa medição com Ollama/Vulkan no Q4_K_M deu <strong>17,3 tok/s</strong>. Numa RTX 3060 de 12 GB com offload parcial e MTP, a comunidade reporta ~10 tok/s com 96K de contexto. A tabela completa com fontes está <a href="#tabela">acima</a>.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quantos tok/s são "bom" para chat local?</h3>
+        <p>Leitura confortável acompanha ~10–15 tok/s; o alvo prático é 15–25 tok/s (regime do Strix Halo e Macs). Acima de 40 tok/s sobra velocidade e o gargalo passa a ser o prompt processing (segundos até o primeiro token). Abaixo de 8 tok/s a conversa arranha a paciência — é o regime de GPUs com offload pesado.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Por que o DGX Spark, com 128 GB e chip Blackwell, só entrega 38 tok/s?</h3>
+        <p>Porque decode de modelo denso é limitado por banda de memória, não por capacidade: o Spark usa LPDDR5x unificada a 273 GB/s — parecida com a do Strix Halo (256 GB/s) e ~6,5× menor que a da RTX 5090 (1.792 GB/s). Os 128 GB servem para contexto enorme e para carregar o modelo inteiro sem offload, não para velocidade de decode.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O throughput cai quando o contexto enche?</h3>
+        <p>Sim, um pouco: no Strix Halo o Q5 dinâmico caiu de 10,5 para 9,4 tok/s ao carregar 32K de contexto; na RTX 3090 o Q4 caiu de 41,5 para 40,5 a 8K de profundidade (~2%). A queda maior acontece quando o KV cache estoura a VRAM e começa o spill para a RAM — aí o throughput despenca de vez.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Como medir tokens por segundo na minha máquina?</h3>
+        <p>O caminho mais simples é o protocolo que usamos: API REST do seu runtime com <code>num_predict=400</code>, 3 aquecimentos, 9 rodadas, e leitura de <code>tokens / segundos</code> reportados pelo próprio runtime (contagem do tokenizer, não divisão de caracteres). No llama.cpp, <code>llama-bench -ngl 99 -fa 1 -p 512 -n 128 -r 5</code> dá o mesmo número com desvio-padrão.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quantos downloads o Qwen3.8-27B tem?</h3>
+        <p>O GGUF da Unsloth somava <strong>3.561.466 downloads</strong> em 18/08/2026 (janela de 30 dias, HF API) — eram 1.945.635 em 16/08 e 2.727.609 em 17/08: a base instalada quase dobrou em dois dias. Muita gente medindo exatamente o que esta página organiza.</p>
+    </div>
+
+    <div class="footnote" style="margin-top:30px;padding-top:15px;border-top:1px solid var(--border);font-size:0.85rem;color:var(--text-muted);">
+        <p><strong>Metodologia e fontes:</strong> medições próprias (Strix Halo) com protocolo 400 tok × 9 rodadas pós-aquecimento, platô térmico. Números de terceiros: <a href="https://x.com/Alibaba_Qwen/status/2088293486995087461">Qwen oficial</a>, <a href="https://www.reddit.com/r/LocalLLaMA/comments/1voearc/">SGLang (r/LocalLLaMA)</a>, <a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">cookbook SGLang</a>, <a href="https://insiderllm.com/guides/qwen-3-8-27b-vs-3-6-27b-rtx-3090">InsiderLLM</a>, <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/discussions/61">HF discussion #61</a>, <a href="https://www.reddit.com/r/StrixHalo/comments/1vobzvd/">r/StrixHalo</a>, <a href="https://huggingface.co/meta-models/Muse-Glimmer-30B">model card Meta</a>. Downloads via Hugging Face API em 18/08/2026. PR #22673 (MTP no llama.cpp) verificado como merged via GitHub em 18/08/2026.</p>
+        <p>Leia também: <a href="/guia/qwen3.8-vs-qwen3.6-27b">Qwen3.8 vs 3.6: throughput medido no Strix Halo</a> · <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Configuração de reasoning (desativar overthinking)</a> · <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B em 16 GB de VRAM</a> · <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Tabela GGUF com GB medidos</a> · <a href="/guia/como-rodar">Como rodar localmente</a> · <a href="/guia/faq">FAQ</a></p>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — tokens por segundo no hardware real | Dados: medições próprias + fontes primárias verificadas em 18/08/2026.</p>
+        <p>Última atualização: 18/08/2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
