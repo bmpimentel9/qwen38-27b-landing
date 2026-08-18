@@ -9,6 +9,41 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-18] — Artigo: Configuração de reasoning do Qwen3.8-27B (overthinking + MTP)
+
+### Added
+- **Novo artigo BOFU** (`guia/qwen3-8-27b-reasoning-configuracao-ideal/`, task `t_99ee1e28` —
+  seo-content): guia prático para desativar/dosar o reasoning e acelerar com MTP,
+  cobrindo o gap de 0 menções a overthinking/MTP/Simon no portal (sitemap verificado
+  18/08) enquanto o tema domina a review mais citada do lançamento.
+  - Dados-âncora re-verificados ao vivo em 18/08: review Simon Willison 16/08
+    (xhigh-trap: 21 min / 22.276 reasoning tokens para 3.223 de output; reasoning off:
+    137s / 3.715 tokens; MTP +72% no DGX Spark), README oficial do llama.cpp (flags
+    `--reasoning [on|off|auto]`, `--reasoning-effort minimal…max`, `--reasoning-budget
+    -1/0/N`, `--reasoning-preserve`, `--spec-type draft-mtp`), PR #22673 do llama.cpp
+    **MERGED em 16/05/2026** (builds atuais já incluem MTP; decode 22,97 → 42,45 t/s
+    ~1,85×, prefill ~0,51×), HF discussion unsloth #7 (`--reasoning-budget 0` como fix
+    para overthinking que estoura contexto), docs Ollama capabilities/thinking
+    (`"think": false` ou low/medium/high/max).
+  - MTP com contexto por número: +72% DGX Spark (Simon), ~1,85× no mesmo GGUF (PR
+    #22673), +16% RTX 3090 draft 1 (ik_llama.cpp), 2,2-2,4× Qwen3.6-27B Q8_0
+    (tproger) — números não contraditórios, contextos diferentes, citados como tal.
+  - Tabela overthinking × hardware com medições próprias (Strix Halo Q4_K_M 17,3 t/s;
+    Q5_K_M 10,6 t/s) mostrando o custo do xhigh-trap em tok/s de hardware BR.
+  - 3 presets de comando (24GB com MTP / 16GB com n-gram + KV q8_0 / Strix Halo
+    thinking off), seção de erros comuns, FAQ de 6 perguntas.
+  - JSON-LD: TechArticle + HowTo (5 passos) + FAQPage + Breadcrumb; GA4 gtag +
+    scroll_depth incluídos.
+  - Downloads GGUF atualizados na publicação: 3.561.466 (18/08, HF API) — base
+    instalada que busca "como desligar o thinking".
+  - Cross-links: guia 16GB VRAM, quantização GGUF, como-rodar, FAQ, comparativo 3.8 vs 3.6.
+- `sitemap.xml`: URL nova (priority 0.9, lastmod 2026-08-18).
+- `llms.txt`: entrada na lista de páginas + 2 stats citáveis (xhigh-trap 21min/22.276
+  tokens vs 137s off; MTP +72% DGX Spark e ~1,85× decode PR #22673).
+- `guia/index.html`: card do artigo (tag-guide Tutorial, BOFU · Novo 18/08).
+- `guia/faq/index.html`: nova Q&A "Como desativar o thinking (overthinking) do
+  Qwen3.8-27B?" (HTML + JSON-LD FAQPage, 26 perguntas, JSON validado).
+
 ## [2026-08-18] — Artigo: SGLang + FP8 oficial (órfão 16/08 materializado)
 
 ### Added
@@ -64,6 +99,42 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 - `llms.txt`: 3 stats citáveis do Music3 + entrada na lista de páginas.
 - `guia/index.html`: card do artigo (tag-guide Tutorial, BOFU · Novo 18/08).
 
+
+## [2026-08-18] — Artigo: Configuração de reasoning do Qwen3.8-27B (overthinking + MTP)
+
+### Added
+- **Novo artigo BOFU** (`guia/qwen3-8-27b-reasoning-configuracao-ideal/`, task `t_99ee1e28` —
+  seo-content): guia prático para desativar/dosar o reasoning e acelerar com MTP,
+  cobrindo o gap de 0 menções a overthinking/MTP/Simon no portal (sitemap verificado
+  18/08) enquanto o tema domina a review mais citada do lançamento.
+  - Dados-âncora re-verificados ao vivo em 18/08: review Simon Willison 16/08
+    (xhigh-trap: 21 min / 22.276 reasoning tokens para 3.223 de output; reasoning off:
+    137s / 3.715 tokens; MTP +72% no DGX Spark), README oficial do llama.cpp (flags
+    `--reasoning [on|off|auto]`, `--reasoning-effort minimal…max`, `--reasoning-budget
+    -1/0/N`, `--reasoning-preserve`, `--spec-type draft-mtp`), PR #22673 do llama.cpp
+    **MERGED em 16/05/2026** (builds atuais já incluem MTP; decode 22,97 → 42,45 t/s
+    ~1,85×, prefill ~0,51×), HF discussion unsloth #7 (`--reasoning-budget 0` como fix
+    para overthinking que estoura contexto), docs Ollama capabilities/thinking
+    (`"think": false` ou low/medium/high/max).
+  - MTP com contexto por número: +72% DGX Spark (Simon), ~1,85× no mesmo GGUF (PR
+    #22673), +16% RTX 3090 draft 1 (ik_llama.cpp), 2,2-2,4× Qwen3.6-27B Q8_0
+    (tproger) — números não contraditórios, contextos diferentes, citados como tal.
+  - Tabela overthinking × hardware com medições próprias (Strix Halo Q4_K_M 17,3 t/s;
+    Q5_K_M 10,6 t/s) mostrando o custo do xhigh-trap em tok/s de hardware BR.
+  - 3 presets de comando (24GB com MTP / 16GB com n-gram + KV q8_0 / Strix Halo
+    thinking off), seção de erros comuns, FAQ de 6 perguntas.
+  - JSON-LD: TechArticle + HowTo (5 passos) + FAQPage + Breadcrumb; GA4 gtag +
+    scroll_depth incluídos.
+  - Downloads GGUF atualizados na publicação: 3.561.466 (18/08, HF API) — base
+    instalada que busca "como desligar o thinking".
+  - Cross-links: guia 16GB VRAM, quantização GGUF, como-rodar, FAQ, comparativo 3.8 vs 3.6.
+- `sitemap.xml`: URL nova (priority 0.9, lastmod 2026-08-18) — inserção idempotente,
+  preservando a entrada minimax-music3 (editada concorrentemente por task irmã).
+- `llms.txt`: entrada na lista de páginas + 2 stats citáveis (xhigh-trap 21min/22.276
+  tokens vs 137s off; MTP +72% DGX Spark e ~1,85× decode PR #22673).
+- `guia/index.html`: card do artigo (tag-guide Tutorial, BOFU · Novo 18/08).
+- `guia/faq/index.html`: nova Q&A "Como desativar o thinking (overthinking) do
+  Qwen3.8-27B?" (HTML + JSON-LD FAQPage, 26 perguntas, JSON validado).
 
 ## [2026-08-18] — Artigo: Qwen3.8-27B em 16GB de VRAM com llama.cpp
 
