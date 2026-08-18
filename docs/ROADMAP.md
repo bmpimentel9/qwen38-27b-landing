@@ -72,15 +72,15 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
 
 ## Métricas de sucesso
 
-| Métrica            | Atual | Meta 30d | Meta 90d |
-|--------------------|-------|----------|----------|
-| Visitas/mês        | —     | 1.000    | 5.000    |
-| Artigos publicados | 0     | 15       | 60       |
-| Bounce rate        | —     | < 50%    | < 40%    |
-| Tempo médio        | —     | > 2 min  | > 3 min  |
-| GitHub stars       | —     | 50       | 200      |
+| Métrica            | Atual               | Meta 30d | Meta 90d |
+|--------------------|---------------------|----------|----------|
+| Visitas/mês        | ~350/mês (35 sessões em 3 dias) | 1.000    | 5.000    |
+| Artigos publicados | 15                  | 15       | 60       |
+| Bounce rate        | 71%                 | < 50%    | < 40%    |
+| Tempo médio        | 1min 40s            | > 2 min  | > 3 min  |
+| GitHub stars       | 0                   | 50       | 200      |
 
-*Fonte de dados: GA4 `G-016TVX8LEE` (ativo desde 2026-08-15).*
+*Fonte de dados: GA4 `G-016TVX8LEE` (ativo desde 2026-08-15). KPIs coletados via Data API. Dashboard Looker Studio: https://datastudio.google.com/reporting/0b96b952-515e-4ec1-ab74-8b03bdeede97*
 
 ---
 
