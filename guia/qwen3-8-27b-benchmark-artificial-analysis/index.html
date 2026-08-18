@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B no Artificial Analysis: 52 pontos (explicado)</title>
+    <meta name="description" content="52 no Artificial Analysis: o Qwen3.8-27B empatou com o GPT-5.6 Luna e ficou a 1 ponto do DeepSeek V4 Pro (1,7T). O que o dado diz — e o que não diz.">
+    <meta name="keywords" content="qwen 3.8 artificial analysis, qwen 3.8 benchmark, artificial analysis intelligence index, qwen3.8-27b score, melhor modelo local 2026, aaii 52, qwen3.8 vs gpt-5.6, modelo local vs nuvem, qwen 3.8 27b benchmark independente">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)">
+    <meta property="og:description" content="O índice independente da Artificial Analysis confirma: 52 pontos, mesmo score do GPT-5.6 Luna, 1 ponto atrás do DeepSeek V4 Pro de 1,7T — e #1 entre os open weights de até 40B.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-18T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="benchmarks">
+    <meta property="article:tag" content="artificial analysis">
+    <meta property="article:tag" content="modelos locais">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)">
+    <meta name="twitter:description" content="27B denso e Apache 2.0 empatando com GPT-5.6 Luna num índice independente. A análise completa — incluindo o preço escondido desse score.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)",
+          "description": "O Qwen3.8-27B pontua 52 no Artificial Analysis Intelligence Index v4.1.1 (dado verificado em 18/08/2026): mesmo score do GPT-5.6 Luna (max), 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e #1 entre 135 open weights de até 40B. Análise do índice, do placar ao vivo e das limitações do dado — incluindo o overthinking de 160M tokens que a própria Artificial Analysis mediu.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-18",
+          "dateModified": "2026-08-18",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis",
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "Nenhum — artigo de análise de benchmark"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Qwen3.8 27B",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, macOS, Windows",
+          "softwareVersion": "27B (27,8B parâmetros)",
+          "license": "https://spdx.org/licenses/Apache-2.0.html",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "publisher": { "@type": "Organization", "name": "Alibaba / Qwen" },
+          "releaseNotes": "Lançado em 14/08/2026; 52 no Artificial Analysis Intelligence Index (verificado 18/08/2026)"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Qual o score do Qwen3.8-27B no Artificial Analysis Intelligence Index?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "52 pontos no Artificial Analysis Intelligence Index v4.1.1 (verificado em 18/08/2026): mesmo score do GPT-5.6 Luna (max) e 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T). Entre os 135 modelos open weights de até 40B avaliados, é o #1 da classe — a mediana da classe é 9."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que é o Artificial Analysis Intelligence Index (AAII)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "É um índice independente mantido pela Artificial Analysis que agrega 9 avaliações na versão v4.1.1: GDPval-AA v2, τ³-Banking, Terminal-Bench v2.1, SciCode, Humanity's Last Exam, GPQA Diamond, CritPt, AA-Omniscience e AA-LCR. A diferença para o model card do fabricante: quem mede é um terceiro, com a mesma metodologia para todos os modelos — inclusive os concorrentes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O score 52 do Qwen3.8-27B é com ou sem thinking?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Com reasoning: a página da Artificial Analysis avalia a versão reasoning do modelo ('Reasoning: Yes — esta página mostra a versão de raciocínio deste modelo'). Ou seja, o 52 inclui o tempo e os tokens do raciocínio interno — e a verbosidade medida no índice (160M de tokens de saída, contra mediana de 43M) mostra o custo desse modo."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B é melhor que o GPT-5.6?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No agregado do AAII, o 27B empata com o GPT-5.6 Luna (52,3) e fica atrás do GPT-5.6 Sol (60,9), Grok 4.6 (60,9), Kimi K3 (59,7) e GLM-5.3 (59,5). Empatar com uma variante Luna no agregado não significa superar o GPT-5.6 em toda tarefa: o índice é uma média de 9 benchmarks. O que o dado estabelece é outra coisa — um modelo de 27,8B, denso e Apache 2.0, roda no mesmo quadrante de inteligência dos modelos de fronteira."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O 52 do Artificial Analysis vale para o modelo rodando local em quantização?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Não diretamente. A Artificial Analysis avalia os pesos do modelo em condição controlada; o seu GGUF 4-bit local (Q4_K_M = 17,11 GB) passa por quantização, que tem custo em qualidade. O score serve como teto de referência da família 'Qwen3.8 27B' — a degradação por quant varia por tarefa e costuma ser pequena em 4-bit, mas não é zero."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Por que o Artificial Analysis importa se o model card já tem 26 benchmarks?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Porque os 26 benchmarks do model card são auto-reportados pela Qwen e as colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do mesmo documento. O AAII é medido por um terceiro, com metodologia unificada e concorrentes de verdade na tabela — GPT-5.6, DeepSeek V4, GLM, Gemini, Grok. É a primeira verificação independente de que o 27B está nesse nível."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Qwen3.8-27B no Artificial Analysis", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --accent-4: #d2a8ff; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
+        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+        .stat-card .value.ok { color: var(--accent-2); }
+        .stat-card .value.warn { color: var(--accent-3); }
+        .src { font-size: 0.85rem; color: var(--text-muted); }
+        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)</h1>
+        <p class="lead">O índice independente da Artificial Analysis colocou o 27B denso da Alibaba no mesmo quadrante do GPT-5.6 Luna e a 1 ponto do DeepSeek V4 Pro de 1,7 trilhão de parâmetros. Simon Willison chamou de "um modelo verdadeiramente espantoso". Aqui está o dado, a metodologia — e os asteriscos.</p>
+    </header>
+
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="value">52</div>
+            <div class="label">Artificial Analysis Intelligence Index (v4.1.1)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value ok">#1</div>
+            <div class="label">entre 135 open weights de até 40B</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">−1</div>
+            <div class="label">ponto atrás do DeepSeek V4 Pro 0813 (1,7T)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value warn">160M</div>
+            <div class="label">tokens de saída no índice (mediana: 43M)</div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-dado">O dado: 52 na primeira medição independente</a></li>
+            <li><a href="#o-que-e">O que é o Artificial Analysis Intelligence Index</a></li>
+            <li><a href="#placar">O placar ao vivo (18/08)</a></li>
+            <li><a href="#o-que-nao-diz">O que o dado NÃO diz</a></li>
+            <li><a href="#preco-do-52">O preço escondido do 52: overthinking</a></li>
+            <li><a href="#custo-zero">O outro lado: custo por tarefa zero</a></li>
+            <li><a href="#familia">Contexto: a família Qwen3.8 e o primo de 2,4T</a></li>
+            <li><a href="#veredito">Veredito</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-dado">O dado: 52 na primeira medição independente</h2>
+    <p>Em 17 de agosto de 2026, Simon Willison publicou o número que faltava ao lançamento do Qwen3.8-27B: <strong>52 pontos no Artificial Analysis Intelligence Index</strong> — o mesmo score do <strong>GPT-5.6 Luna (max)</strong> e um ponto atrás do <strong>DeepSeek V4 Pro 0813</strong> e do <strong>GLM-5.2</strong>. O detalhe que fez o post viralizar (371 pontos no Hacker News): o DeepSeek daquela tabela tem <strong>1,7 trilhão de parâmetros</strong>, o GLM tem 753B, e o modelo da Qwen tem <strong>27 bilhões</strong>.</p>
+    <p>Veredito de Willison, que passou os dias anteriores testando o modelo hands-on: <em>"a truly astonishing model"</em> — um modelo verdadeiramente espantoso.</p>
+    <div class="leader">📊 <strong>Dado citável:</strong> o Qwen3.8-27B (27,8B parâmetros, Apache 2.0) pontua <strong>52 no Artificial Analysis Intelligence Index</strong> — mesmo score do GPT-5.6 Luna (max) e 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e GLM-5.2 (753B). É o <strong>#1 entre os 135 modelos open weights de até 40B</strong> avaliados (mediana da classe: 9). Fonte: <a href="https://artificialanalysis.ai/models/qwen3-8-27b">artificialanalysis.ai/models/qwen3-8-27b</a>, verificado em 18/08/2026.</div>
+    <p>Para o ecossistema de modelos locais, esse número cumpre um papel que nenhum dos 26 benchmarks do model card cumpre: é a primeira confirmação <strong>de terceiros</strong> de que o 27B está nesse nível. Até aqui, toda a narrativa "empata com fronteira" vinha de dados auto-reportados pela própria Qwen. Agora quem mediu foi um laboratório independente, com a mesma metodologia aplicada a GPT-5.6, DeepSeek, GLM, Gemini e Grok.</p>
+
+    <h2 id="o-que-e">O que é o Artificial Analysis Intelligence Index</h2>
+    <p>O <strong>Artificial Analysis Intelligence Index (AAII)</strong> é um índice agregado mantido pela Artificial Analysis, que roda os modelos contra uma bateria de avaliações e publica um score comparável. A versão atual, <strong>v4.1.1</strong>, incorpora <strong>9 avaliações</strong>:</p>
+    <ul>
+        <li>GDPval-AA v2 e <strong>τ³-Banking</strong> (tarefas profissionais/econômicas)</li>
+        <li><strong>Terminal-Bench v2.1</strong> (agente de terminal)</li>
+        <li><strong>SciCode</strong> e <strong>CritPt</strong> (ciência e código)</li>
+        <li><strong>Humanity's Last Exam</strong> e <strong>GPQA Diamond</strong> (conhecimento de fronteira)</li>
+        <li><strong>AA-Omniscience</strong> e <strong>AA-LCR</strong> (avaliações próprias da Artificial Analysis)</li>
+    </ul>
+    <p>Diferenças práticas em relação ao model card da Qwen, que você pode comparar no nosso <a href="/guia/benchmarks-comparativos">compilado dos 26 benchmarks oficiais</a>:</p>
+    <table>
+        <tr><th></th><th>Model card (Qwen)</th><th>AAII (Artificial Analysis)</th></tr>
+        <tr><td><strong>Quem mede</strong></td><td>O próprio fabricante</td><td>Laboratório independente</td></tr>
+        <tr><td><strong>Compara contra</strong></td><td>Colunas do próprio documento (Qwen3.7-Plus, Muse Glimmer, Opus 4.6 Max)</td><td>GPT-5.6, DeepSeek V4, GLM, Gemini, Grok, Kimi — medidos igual</td></tr>
+        <tr><td><strong>Formato</strong></td><td>26 benchmarks individuais</td><td>1 índice agregado de 9 avaliações</td></tr>
+        <tr><td><strong>Atualização</strong></td><td>Estático (publicação)</td><td>Contínua (re-avaliações e novas versões do índice)</td></tr>
+    </table>
+    <p class="src">O índice é "em movimento": scores mudam com re-avaliações e novas versões da metodologia. Os números deste artigo foram capturados da página oficial do modelo em <strong>18/08/2026</strong>.</p>
+
+    <h2 id="placar">O placar ao vivo (18/08)</h2>
+    <p>Valores lidos diretamente da página da Artificial Analysis em 18/08/2026, no gráfico do Intelligence Index:</p>
+    <table>
+        <tr><th>Modelo</th><th>Parâmetros</th><th>AAII</th><th>Pesos</th></tr>
+        <tr><td>GPT-5.6 Sol (max)</td><td>não divulgado</td><td>60,9</td><td>fechado</td></tr>
+        <tr><td>Grok 4.6 (high)</td><td>não divulgado</td><td>60,9</td><td>fechado</td></tr>
+        <tr><td>Kimi K3</td><td>MoE de larga escala</td><td>59,7</td><td>fechado</td></tr>
+        <tr><td>GLM-5.3 (max)</td><td>grande porte</td><td>59,5</td><td>aberto (grande)</td></tr>
+        <tr><td>DeepSeek V4 Pro 0813 (max)</td><td>1,7T</td><td>53,2</td><td>aberto (grande)</td></tr>
+        <tr><td>GPT-5.6 Luna (max)</td><td>não divulgado</td><td>52,3</td><td>fechado</td></tr>
+        <tr class="highlight"><td><strong>Qwen3.8 27B</strong></td><td><strong>27,8B denso</strong></td><td><strong>52,0</strong></td><td><strong>Apache 2.0</strong></td></tr>
+        <tr><td>Nemotron 3 Ultra</td><td>550B-A55B</td><td>38,3</td><td>aberto (grande)</td></tr>
+    </table>
+    <p class="src">Fonte: payload público da página <a href="https://artificialanalysis.ai/models/qwen3-8-27b">artificialanalysis.ai/models/qwen3-8-27b</a> (18/08/2026, 19h45). Nota de transparência: o post de Simon Willison (17/08) citava o GLM-5.2 (753B); no gráfico atual a Artificial Analysis já exibe o GLM-5.3 (59,5) — os scores de Luna e DeepSeek V4 Pro seguem os mesmos do post.</p>
+    <p>Três leituras honestas dessa tabela:</p>
+    <ul>
+        <li><strong>A 8,9 pontos da fronteira absoluta</strong> (GPT-5.6 Sol, 60,9). O 27B não é o modelo mais inteligente do mundo — e nem precisa ser.</li>
+        <li><strong>No quadrante dos gigantes:</strong> 52,0 contra 53,2 do DeepSeek V4 Pro é um empate técnico dentro do ruído de um índice agregado — com 63× menos parâmetros totais.</li>
+        <li><strong>#1 da sua classe:</strong> entre open weights de até 40B (135 modelos avaliados), é o primeiro colocado, com mediana da classe em 9. A própria Artificial Analysis resume: "entre os modelos líderes em inteligência" da categoria.</li>
+    </ul>
+
+    <h2 id="o-que-nao-diz">O que o dado NÃO diz</h2>
+    <p>Um número desses pede contexto. Quatro asteriscos antes de você sair repetindo "o 27B é melhor que o GPT-5.6":</p>
+    <h3>1. O score é do modelo COM reasoning ligado</h3>
+    <p>A página da Artificial Analysis é explícita: <em>"Reasoning: Yes — esta página mostra a versão de raciocínio deste modelo"</em>. O 52 foi obtido com o thinking rodando. Se você desliga o raciocínio para ganhar velocidade (como ensinamos no <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de configuração de reasoning</a>), o score agregado dessa configuração não é o 52 — o índice não publica variante non-reasoning do Qwen3.8-27B na página do modelo.</p>
+    <h3>2. O 52 não é o seu GGUF quantizado</h3>
+    <p>A avaliação roda os pesos em condição controlada pela Artificial Analysis. Local, o caso típico é um GGUF 4-bit (Q4_K_M = 17,11 GB, detalhes no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização</a>). Quantização tem custo em qualidade — pequeno em 4-bit para a maioria das tarefas, mas não zero. Trate o 52 como o teto de referência da família, não como garantia do seu setup.</p>
+    <h3>3. Índice agregado ≠ o seu caso de uso</h3>
+    <p>O AAII é uma média de 9 avaliações que pesam raciocínio, conhecimento, matemática e código. O seu workload pode ser um único eixo (por exemplo, geração estruturada de texto em pt-BR, ou leitura de documentos — onde o modelo brilha com 91,1 no OmniDocBench). Para decisão de stack, combine o índice com os <a href="/guia/benchmarks-comparativos">benchmarks específicos</a> do seu domínio.</p>
+    <h3>4. "Empata com Luna" é sobre o agregado</h3>
+    <p>O GPT-5.6 Luna (max) é fechado, de tamanho não divulgado, rodando em infraestrutura de datacenter. Empatar no índice não significa superar em toda tarefa — significa que, na média das 9 avaliações, os scores ficaram no mesmo degrau. É muito. Mas é isso.</p>
+
+    <h2 id="preco-do-52">O preço escondido do 52: overthinking</h2>
+    <p>A própria Artificial Analysis entregou a evidência do custo. Na avaliação do índice, o Qwen3.8 27B gerou <strong>160 milhões de tokens de saída</strong> — contra uma mediana de <strong>43M</strong> na classe (#23/135 em verbosidade, "muito verboso" na página oficial). São <strong>3,7× mais tokens</strong> que o típico para chegar ao mesmo score.</p>
+    <p>É o overthinking que documentamos desde o lançamento: no teste de Simon Willison, gerar um SVG de 3.223 tokens consumiu <strong>22.276 tokens de raciocínio e 21 minutos</strong> no default <code>xhigh</code>; com reasoning desligado, o mesmo prompt entregou em 137 segundos. O 52 do índice foi comprado, em parte, com raciocínio longo — em datacenter isso é custo de API; na sua GPU, é <strong>latência real</strong>.</p>
+    <div class="callout-warn">
+        <strong>A configuração importa mais que o score:</strong> o default de fábrica (<code>reasoning_effort=xhigh</code>) pode transformar o "modelo que empatou com o GPT-5.6" em um modelo que passa 21 minutos pensando num SVG. O meio-termo prático está no <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning</a> — e a aceleração por MTP devolve boa parte do tempo (decode ~1,85× no llama.cpp).
+    </div>
+    <p>Contraponto justo: nos <a href="/guia/tokens-por-segundo-30b-hardware-real">throughputs medidos que compilamos</a>, o mesmo modelo que "pensa demais" entrega 41,5 tok/s numa RTX 3090 e até 206 tok/s com SGLang em 5090. O overthinking é configurável; a inteligência medida pelo índice, essa fica.</p>
+
+    <h2 id="custo-zero">O outro lado: custo por tarefa zero</h2>
+    <p>O gráfico de custo por tarefa do Intelligence Index mostra a assimetria econômica do empate:</p>
+    <table>
+        <tr><th>Modelo</th><th>Custo por tarefa do índice</th><th>Como roda</th></tr>
+        <tr><td>GPT-5.6 Luna (max)</td><td>US$ 0,047</td><td>API fechada</td></tr>
+        <tr><td>DeepSeek V4 Pro 0813</td><td>US$ 0,252</td><td>API / self-host de 1,7T</td></tr>
+        <tr class="highlight"><td><strong>Qwen3.8 27B</strong></td><td><strong>US$ 0,00 (self-host)</strong></td><td><strong>GPU de 24 GB (Q4_K_M)</strong></td></tr>
+    </table>
+    <p class="src">Preço de API listado na página do modelo: US$ 0,00 in/out — pesos abertos sem provedor oficial listado; custo por tarefa do índice: "desconhecido" para o Qwen (sem API comercial), contra US$ 0,047/US$ 0,252 dos concorrentes. O custo real do local é o seu hardware: a partir de ~17 GB de VRAM, detalhes no <a href="/guia/hardware-local">guia de hardware</a>.</p>
+    <p>É a tese deste portal em formato de dado: <strong>inteligência no quadrante da fronteira, rodando numa GPU de consumidor, sem conta por token</strong>. Nem o DeepSeek V4 Pro (1,7T) nem o Luna saem desse gráfico de graça — o 27B é o único do topo que cabe na sua mesa.</p>
+
+    <h2 id="familia">Contexto: a família Qwen3.8 e o primo de 2,4T</h2>
+    <p>O 52 pertence ao <strong>Qwen3.8-27B</strong>: 27,8B parâmetros densos, Apache 2.0, 262.144 tokens de contexto nativo, multimodal (texto e imagem) — o modelo que você baixa e roda. Não confunda com o irmão que a Qwen lançou junto: o <strong>Qwen3.8-2.4T-A95B</strong>, MoE de 2,4 trilhões de parâmetros totais (95B ativos), 92 camadas, 512 experts (10+1 por camada), contexto de 262.144 tokens nativo escalável a 1.010.000 — e a versão Max (fechada) com visão e contexto de 1M.</p>
+    <p>O 2.4T não é um modelo local no sentido prático (sua escala o coloca fora do hardware de consumidor) e não tem score divulgado no post de Willison. A leitura correta da família: a Qwen treinou a geração em escala de trilhão e destilou a mesma receita num denso de 27B aberto — e a Artificial Analysis acabou de medir o resultado.</p>
+
+    <h2 id="veredito">Veredito</h2>
+    <p><strong>Para quem já roda modelos locais:</strong> o AAII 52 é a validação independente de algo que as medições da comunidade já indicavam. Se você tem 24 GB de VRAM (ou 16 GB com os ajustes certos), está com acesso ao #1 dos open weights até 40B — e a empates técnicos com modelos de 1,7T em nuvem. O asterisco é administrar o overthinking: <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">configure o reasoning</a> antes de julgar o modelo.</p>
+    <p><strong>Para quem avalia "melhor modelo local 2026":</strong> o 52 entra como o argumento de fechamento. A cadeia completa — 26 benchmarks do model card, throughput real medido, e agora índice independente — é o pacote de evidências mais completo já montado para um modelo dessa classe.</p>
+    <p><strong>Para céticos (saudável):</strong> guarde a data. Índice muda, re-avaliação acontece, e 8,9 pontos separam o 27B da fronteira absoluta. O dado não diz que modelo local venceu a nuvem. Diz que a distância virou <em>uma questão de custo e privacidade</em> — e não mais de capacidade.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Qual o score do Qwen3.8-27B no Artificial Analysis Intelligence Index?</h3>
+        <p>52 pontos na v4.1.1 do índice (verificado em 18/08/2026): mesmo score do GPT-5.6 Luna (max), 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e #1 entre os 135 open weights de até 40B — a mediana da classe é 9.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O que é o Artificial Analysis Intelligence Index (AAII)?</h3>
+        <p>Índice independente da Artificial Analysis que agrega 9 avaliações (v4.1.1): GDPval-AA v2, τ³-Banking, Terminal-Bench v2.1, SciCode, Humanity's Last Exam, GPQA Diamond, CritPt, AA-Omniscience e AA-LCR. Quem mede é um terceiro, com metodologia unificada para todos os modelos.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O score 52 do Qwen3.8-27B é com ou sem thinking?</h3>
+        <p>Com reasoning: a página oficial avalia a versão de raciocínio do modelo ("Reasoning: Yes"). O 52 inclui os tokens de raciocínio interno — e a verbosidade medida (160M de tokens de saída contra mediana de 43M) mostra o custo desse modo no índice.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B é melhor que o GPT-5.6?</h3>
+        <p>No agregado do AAII, empata com o GPT-5.6 Luna (52,3) e fica atrás do GPT-5.6 Sol (60,9), Grok 4.6 (60,9), Kimi K3 (59,7) e GLM-5.3 (59,5). O que o dado estabelece: um denso de 27,8B Apache 2.0 opera no mesmo quadrante de inteligência dos modelos de fronteira — não que os supere tarefa a tarefa.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O 52 do Artificial Analysis vale para o modelo rodando local em quantização?</h3>
+        <p>Não diretamente. O índice avalia os pesos em condição controlada; seu GGUF local (Q4_K_M = 17,11 GB) passa por quantização, que degrada um pouco a qualidade. Trate o 52 como teto de referência da família, não como garantia do seu setup.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Por que o Artificial Analysis importa se o model card já tem 26 benchmarks?</h3>
+        <p>Porque os 26 do model card são auto-reportados pela Qwen, com colunas de referência do próprio documento. O AAII é medido por um terceiro, com GPT-5.6, DeepSeek V4, GLM, Gemini e Grok na mesma tabela — a primeira verificação independente do nível do 27B.</p>
+    </div>
+
+    <div class="callout">
+        <strong>Continue por aqui:</strong> <a href="/guia/benchmarks-comparativos">os 26 benchmarks oficiais vs Qwen3.6</a> · <a href="/benchmarks">página de benchmarks do portal</a> · <a href="/guia/tokens-por-segundo-30b-hardware-real">throughput real por hardware</a> · <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">domando o overthinking</a> · <a href="/guia/qwen3.8-vs-qwen3.6-27b">vale o upgrade?</a>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — Qwen3.8-27B no Artificial Analysis | Fontes: Artificial Analysis, página do modelo Qwen3.8 27B (consultada em 18/08/2026 às 19h45; AAII v4.1.1), post de Simon Willison de 17/08/2026, thread do Hacker News #49334544 (371 pontos em 18/08), README oficiais de Qwen/Qwen3.8-27B e Qwen/Qwen3.8-2.4T-A95B, Hugging Face API.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens/s</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>

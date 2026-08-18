@@ -4,8 +4,8 @@
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Benchmarks — Portal de Modelos 30B</title>
-<meta name="description" content="Benchmarks de modelos locais de 30B: comparações de desempenho (MMLU, GPQA, HumanEval), velocidade de inferência em hardware real e resultados da comunidade.">
+<title>Benchmarks Qwen3.8-27B — 26 resultados oficiais vs concorrentes 30B</title>
+<meta name="description" content="Benchmarks do Qwen3.8-27B: 26 resultados do model card oficial (LiveCodeBench, GPQA, SWE-bench, OSWorld) comparados com Gemma 3 27B e GPT-OSS-20B. Fontes citadas.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/benchmarks">
 <link rel="stylesheet" href="/assets/css/portal.css">
@@ -73,35 +73,249 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 </nav>
 
 <main>
-  <h1>Benchmarks</h1>
-  <p class="subtitle">Números oficiais dos model cards + medições reais em hardware local. Atualizado toda semana.</p>
+  <h1>Benchmarks do Qwen3.8-27B</h1>
+  <p class="subtitle">26 resultados do model card oficial + comparação com concorrentes ≤30B + medições reais em hardware local. Cada número cita a fonte.</p>
 
-  <h2>Benchmarks oficiais (Qwen3.8-27B)</h2>
+  <div class="callout">
+    <strong>Regra do projeto:</strong> nenhum benchmark é inventado. Todos os números do Qwen3.8-27B vêm do
+    <a href="https://huggingface.co/Qwen/Qwen3.8-27B">model card oficial no Hugging Face</a>.
+    Dados de concorrentes vêm das fontes primárias oficiais: <a href="https://arxiv.org/abs/2503.19786">Gemma 3 Technical Report (arXiv 2503.19786)</a>
+    e <a href="https://arxiv.org/abs/2508.10925">model card GPT-OSS (arXiv 2508.10925)</a>.
+    Benchmarks reportados pelo fabricante — verificação independente ainda pendente.
+  </div>
+
+  <!-- ===================== TABELA PRINCIPAL: 26 BENCHMARKS DO QWEN3.8-27B ===================== -->
+  <h2 id="oficiais">Benchmarks oficiais (26) — Qwen3.8-27B</h2>
+  <p>Todos os 26 benchmarks publicados no model card oficial, organizados por categoria. A coluna "vs Qwen3.6-27B" mostra o delta em relação à geração anterior. A coluna "Referências do model card" traz as comparações publicadas no próprio card: Qwen3.7-Plus, Muse Glimmer-30B e Claude Opus 4.6 Max ("Opus4.6 Max", nome como no card).</p>
+
   <table>
     <thead>
-      <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Comparável (32B)</th><th>Nota</th></tr>
+      <tr><th>Benchmark</th><th>Categoria</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referências do model card</th></tr>
     </thead>
     <tbody>
-      <tr><td>MMLU-Pro</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
-      <tr><td>GPQA</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
-      <tr><td>HumanEval</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
-      <tr><td>IFEval</td><td>—</td><td>—</td><td>Consulte o model card oficial</td></tr>
+      <!-- Código e engenharia de software -->
+      <tr class="highlight"><td>LiveCodeBench v6</td><td>código</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--green)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus4.6 Max 88,8</td></tr>
+      <tr><td>Terminal-Bench 2.1 (Terminus)</td><td>código</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--green)">+9,6</td><td>Opus4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
+      <tr><td>SWE-bench Pro</td><td>código</td><td><strong>61,7</strong></td><td>53,5</td><td style="color:var(--green)">+8,2</td><td>Qwen3.7-Plus 57,6 · Muse 51,2 · Opus4.6 Max 53,4</td></tr>
+      <tr><td>DeepSWE 1.1</td><td>código</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--green)">+28,9</td><td>Qwen3.7-Plus 14,2 (única referência do card)</td></tr>
+      <tr><td>QwenSWEBench</td><td>código</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--green)">+29,7</td><td>Opus4.6 Max 63,8 · Qwen3.7-Plus 59,2</td></tr>
+      <tr><td>NL2Repo-Bench</td><td>código</td><td><strong>42,3</strong></td><td>36,2</td><td style="color:var(--green)">+6,1</td><td>Opus4.6 Max 47,6 · Qwen3.7-Plus 41,1</td></tr>
+      <!-- Agentes e uso de computador -->
+      <tr class="highlight"><td>OSWorld-Verified</td><td>agente</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--green)">+20,4</td><td>Qwen3.7-Plus 73,3 · Opus4.6 Max 72,7 · Muse 65,9</td></tr>
+      <tr><td>AndroidWorld</td><td>agente</td><td><strong>81,9</strong></td><td>70,3</td><td style="color:var(--green)">+11,6</td><td>Qwen3.7-Plus 81,0 · Opus4.6 Max 62,0</td></tr>
+      <tr><td>WebArena-Verified</td><td>agente</td><td><strong>64,8</strong></td><td>48,8</td><td style="color:var(--green)">+16,0</td><td>Qwen3.7-Plus 55,3 (única referência do card)</td></tr>
+      <tr><td>CoWorkBench</td><td>agente</td><td><strong>70,7</strong></td><td>61,0</td><td style="color:var(--green)">+9,7</td><td>Opus4.6 Max 68,2 · Qwen3.7-Plus 65,1</td></tr>
+      <tr><td>JobBench</td><td>agente</td><td><strong>33,4</strong></td><td>21,8</td><td style="color:var(--green)">+11,6</td><td>Qwen3.7-Plus 27,6 (única referência do card)</td></tr>
+      <tr><td>Agents' Last Exam — Pass@1</td><td>agente</td><td><strong>20,4</strong></td><td>10,6</td><td style="color:var(--green)">+9,8</td><td>Qwen3.7-Plus 13,2 (única referência do card)</td></tr>
+      <tr><td>Agents' Last Exam — Score</td><td>agente</td><td><strong>42,9</strong></td><td>27,3</td><td style="color:var(--green)">+15,6</td><td>Qwen3.7-Plus 33,6 (única referência do card)</td></tr>
+      <tr><td>RecreationBench</td><td>agente</td><td><strong>47,1</strong></td><td>29,8</td><td style="color:var(--green)">+17,3</td><td>Qwen3.7-Plus 30,2 (única referência do card)</td></tr>
+      <!-- Conhecimento e raciocínio -->
+      <tr class="highlight"><td>GPQA Diamond</td><td>conhec.</td><td><strong>89,2</strong></td><td>87,8</td><td style="color:var(--green)">+1,4</td><td>Opus4.6 Max 91,3 · Qwen3.7-Plus 90,3 · Muse 83,5</td></tr>
+      <tr><td>Humanity's Last Exam (HLE)</td><td>conhec.</td><td><strong>30,8</strong></td><td>24,0</td><td style="color:var(--green)">+6,8</td><td>Opus4.6 Max 40,0 · Qwen3.7-Plus 34,7 · Muse 22,0</td></tr>
+      <tr><td>IFBench (seguir instruções)</td><td>conhec.</td><td><strong>79,5</strong></td><td>69,1</td><td style="color:var(--green)">+10,4</td><td>Qwen3.7-Plus 79,1 · Muse 77,0 · Opus4.6 Max 62,5</td></tr>
+      <!-- Multimodal -->
+      <tr class="highlight"><td>MathVision (com CI)</td><td>visão</td><td><strong>94,6</strong></td><td>85,1</td><td style="color:var(--green)">+9,5</td><td>Qwen3.7-Plus 90,3 (s/ CI) · Opus4.6 Max 65,5 (s/ CI)</td></tr>
+      <tr><td>OmniDocBench 1.5</td><td>visão</td><td><strong>91,1</strong></td><td>89,4</td><td style="color:var(--green)">+1,7</td><td>Qwen3.7-Plus 91,4 · Opus4.6 Max 86,6 · Muse 75,8</td></tr>
+      <tr><td>CharXiv (com CI)</td><td>visão</td><td><strong>90,2</strong></td><td>78,4</td><td style="color:var(--green)">+11,8</td><td>Qwen3.7-Plus 85,9 (com CI) · Muse 78,8 · Opus4.6 Max 66,0 (s/ CI)</td></tr>
+      <tr><td>RealWorldQA</td><td>visão</td><td><strong>85,9</strong></td><td>84,1</td><td style="color:var(--green)">+1,8</td><td>Qwen3.7-Plus 86,9 · Opus4.6 Max 73,9</td></tr>
+      <tr><td>BabyVision (com CI)</td><td>visão</td><td><strong>85,6</strong></td><td>28,9</td><td style="color:var(--green)">+56,7</td><td>Qwen3.7-Plus 70,4 (com CI) · Opus4.6 Max 12,6 (s/ CI)</td></tr>
+      <tr><td>ERQA</td><td>visão</td><td><strong>65,5</strong></td><td>62,5</td><td style="color:var(--green)">+3,0</td><td>Qwen3.7-Plus 69,8 · Opus4.6 Max 40,8</td></tr>
+      <tr><td>Vision2Web</td><td>visão</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--green)">+17,9</td><td>Qwen3.7-Plus 42,1 (única referência do card)</td></tr>
+      <tr><td>ClawEval-MM (Pass@3)</td><td>visão</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--green)">+14,8</td><td>Qwen3.7-Plus 57,4 · Opus4.6 Max 52,5</td></tr>
+      <tr><td>SWE-MM (bugs multimodais)</td><td>visão</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--green)">+12,9</td><td>Qwen3.7-Plus 30,0 · Opus4.6 Max 27,1</td></tr>
     </tbody>
   </table>
-  <p style="color:var(--muted);font-size:.9rem;">⚠️ Dados completos do model card serão preenchidos na task de conteúdo (seo-content) — aqui fica o esqueleto pronto.</p>
+  <p style="color:var(--muted);font-size:.85rem;">
+    Fonte única das colunas "Referências do model card": o próprio
+    <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen/Qwen3.8-27B — Hugging Face model card</a>.
+    Benchmarks reportados pelo fabricante (Qwen/Alibaba); as referências servem como ordem de grandeza, não comparação controlada.
+    No SWE-bench Pro, o Opus4.6 Max usa o score oficialmente reportado; os demais modelos foram reavaliados pela Qwen
+    com o harness Claude Code (temp 1,0, top_p 0,95, contexto 256K), conforme nota do card.
+    <br>Deltas (Δ) calculados em relação ao Qwen3.6-27B, também do model card oficial.
+  </p>
 
-  <h2>Velocidade de inferência (medida em máquina real)</h2>
+  <!-- ===================== COMPARAÇÃO COM CONCORRENTES ≤30B ===================== -->
+  <h2 id="comparacao">Comparação com concorrentes ≤30B</h2>
+  <p>Benchmarks comparáveis entre Qwen3.8-27B, Gemma 3 27B (instruct) e GPT-OSS-20B. Só benchmarks onde há sobreposição de métrica e fonte primária oficial. Os modelos usam harnesses diferentes, então a comparação é ordem de grandeza — não controlada. "n/r" = não reportado na fonte oficial do modelo.</p>
+
   <table>
     <thead>
-      <tr><th>Hardware</th><th>Modelo</th><th>Quantização</th><th>Velocidade</th><th>Contexto</th></tr>
+      <tr>
+        <th>Benchmark</th>
+        <th>Qwen3.8-27B</th>
+        <th>Gemma 3 27B (IT)</th>
+        <th>GPT-OSS-20B</th>
+        <th>Fonte concorrente</th>
+      </tr>
     </thead>
     <tbody>
+      <tr class="highlight">
+        <td>GPQA Diamond</td>
+        <td><strong>89,2</strong></td>
+        <td>42,4 (base: 24,3)</td>
+        <td>66,0 (medium, sem tools)</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 6</a> · <a href="https://arxiv.org/abs/2508.10925">GPT-OSS, Table 3</a></td>
+      </tr>
       <tr>
+        <td>LiveCodeBench</td>
+        <td><strong>90,3</strong> (v6)</td>
+        <td>29,7 (versão avaliada no TR)</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 6</a></td>
+      </tr>
+      <tr>
+        <td>SWE-bench (Pro / Verified)</td>
+        <td><strong>61,7</strong> (Pro)</td>
+        <td>n/r</td>
+        <td>53,2 (Verified, reasoning: medium)</td>
+        <td><a href="https://arxiv.org/abs/2508.10925">GPT-OSS, Table 3</a></td>
+      </tr>
+      <tr>
+        <td>MMLU</td>
+        <td>n/r</td>
+        <td>76,9</td>
+        <td>84,0 (medium)</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 18</a> · <a href="https://arxiv.org/abs/2508.10925">GPT-OSS, Table 3</a></td>
+      </tr>
+      <tr>
+        <td>MMLU-Pro</td>
+        <td>n/r</td>
+        <td>67,5</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 6</a></td>
+      </tr>
+      <tr>
+        <td>HumanEval</td>
+        <td>n/r</td>
+        <td>87,8</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 18</a></td>
+      </tr>
+      <tr>
+        <td>MBPP</td>
+        <td>n/r</td>
+        <td>74,4</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 18</a></td>
+      </tr>
+      <tr>
+        <td>MATH</td>
+        <td>n/r</td>
+        <td>89,0</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Tables 6/18</a></td>
+      </tr>
+      <tr>
+        <td>GSM8K</td>
+        <td>n/r</td>
+        <td>95,9</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 18</a></td>
+      </tr>
+      <tr>
+        <td>IFEval / IFBench</td>
+        <td><strong>79,5</strong> (IFBench)</td>
+        <td>90,4 (IFEval)</td>
+        <td>n/r</td>
+        <td><a href="https://arxiv.org/abs/2503.19786">Gemma 3 TR, Table 18</a></td>
+      </tr>
+      <tr>
+        <td>HLE (Humanity's Last Exam)</td>
+        <td><strong>30,8</strong></td>
+        <td>n/r</td>
+        <td>8,8 (com tools, reasoning: medium)</td>
+        <td><a href="https://arxiv.org/abs/2508.10925">GPT-OSS, Table 3</a></td>
+      </tr>
+      <tr>
+        <td>OSWorld-Verified</td>
+        <td><strong>84,3</strong></td>
+        <td>n/r</td>
+        <td>n/r</td>
+        <td>só o model card do Qwen3.8-27B reporta</td>
+      </tr>
+      <tr>
+        <td>MathVision (com CI)</td>
+        <td><strong>94,6</strong></td>
+        <td>n/r</td>
+        <td>n/r</td>
+        <td>só o model card do Qwen3.8-27B reporta</td>
+      </tr>
+      <tr>
+        <td>OmniDocBench 1.5</td>
+        <td><strong>91,1</strong></td>
+        <td>n/r</td>
+        <td>n/r</td>
+        <td>só o model card do Qwen3.8-27B reporta</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Atenção:</strong> os três modelos usam harnesses de avaliação diferentes.
+    O Qwen3.8-27B publica 26 benchmarks do próprio model card; o Gemma 3 27B publica um conjunto clássico
+    (MMLU, MMLU-Pro, GSM8K, HumanEval, MATH, IFEval…) no Technical Report; o GPT-OSS-20B publica AIME, GPQA,
+    HLE, MMLU, SWE-bench Verified e Tau-Bench no model card (arXiv). A sobreposição direta é limitada.
+    IFBench (Qwen) e IFEval (Gemma) são benchmarks distintos de seguir instruções — não são a mesma métrica.
+    "n/r" significa que a fonte oficial não reporta aquele benchmark — não que o modelo seja pior nele.
+  </div>
+
+  <h3 id="vs-gemma3">Qwen3.8-27B vs Gemma 3 27B</h3>
+  <p>
+    Ambos são modelos densos na faixa de 27B. O Qwen3.8-27B tem <strong>262K de contexto nativo</strong> (vs 128K do Gemma 3),
+    <strong>multimodalidade nativa</strong> (texto, imagem, vídeo, documentos vs apenas texto+imagem no Gemma 3) e
+    <strong>26 benchmarks publicados</strong> focados em agentes e código, enquanto o Gemma 3 participa majoritariamente de
+    benchmarks clássicos de conhecimento.
+  </p>
+  <p>
+    Em GPQA Diamond, o Qwen3.8-27B (89,2) está <strong>46,8 pontos à frente</strong> do Gemma 3 27B instruct (42,4;
+    o modelo pré-treinado faz 24,3). Em código, LiveCodeBench: 90,3 (v6) vs 29,7 (a versão avaliada no TR não é especificada; não é comparável à v6).
+    O Gemma 3 27B não publica SWE-bench, OSWorld ou benchmarks de agentes.
+  </p>
+  <p style="color:var(--muted);font-size:.85rem;">
+    Fonte Gemma 3 27B: <a href="https://arxiv.org/abs/2503.19786">Gemma 3 Technical Report (arXiv 2503.19786)</a>,
+    Tables 6 e 18 — modelo instruct (<a href="https://huggingface.co/google/gemma-3-27b-it">google/gemma-3-27b-it</a>; o README do HF não traz tabela de evals).
+  </p>
+
+  <h3 id="vs-gpt-oss">Qwen3.8-27B vs GPT-OSS-20B</h3>
+  <p>
+    O GPT-OSS-20B é um MoE de 20B (~3,6B ativos por token) — mais rápido e leve, mas com menos capacidade por token.
+    O Qwen3.8-27B é denso (27B ativos). Em benchmarks comparáveis: GPQA Diamond 89,2 vs 66,0 (reasoning: medium, sem tools;
+    low 56,8 / high 71,5); SWE-bench Pro 61,7 vs Verified 53,2 (medium); HLE 30,8 vs 8,8 (com tools, medium).
+    O Qwen3.8-27B publica ainda 20+ benchmarks que o GPT-OSS-20B não reporta (OSWorld, AndroidWorld, MathVision, etc.).
+  </p>
+  <p>
+    O GPT-OSS-20B reporta benchmarks que o card do Qwen3.8-27B não traz: MMLU 84,0 (medium) e AIME 2025 72,1 (sem tools, medium).
+    Model card do GPT-OSS não publica MMLU-Pro nem IFEval.
+  </p>
+  <p style="color:var(--muted);font-size:.85rem;">
+    Fonte GPT-OSS-20B: <a href="https://arxiv.org/abs/2508.10925">model card / system card GPT-OSS (arXiv 2508.10925)</a>, Table 3
+    (<a href="https://huggingface.co/openai/gpt-oss-20b">openai/gpt-oss-20b</a> — o README do HF linka para o arXiv; valores em reasoning low/medium/high).
+  </p>
+
+  <!-- ===================== VELOCIDADE DE INFERÊNCIA (MEDIÇÃO REAL) ===================== -->
+  <h2 id="inferencia">Velocidade de inferência — medição real em hardware local</h2>
+  <p>Medição própria em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan. Esta é a única tabela com dado próprio (não do model card) — o diferencial do portal.</p>
+
+  <table>
+    <thead>
+      <tr><th>Hardware</th><th>Modelo</th><th>Quantização</th><th>Velocidade</th><th>Contexto</th><th>Fonte</th></tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
         <td>AMD Strix Halo (Radeon 8060S)</td>
         <td>Qwen3.8-27B</td>
-        <td>Q4_K_M</td>
-        <td>~60-90 tok/s</td>
+        <td>Q5_K_M</td>
+        <td><strong>10,6 tok/s</strong> (decode)</td>
         <td>131K</td>
+        <td>Medição própria — <a href="https://qwen38-27b-landing.vercel.app/">landing page</a></td>
+      </tr>
+      <tr>
+        <td>AMD Strix Halo (Radeon 8060S)</td>
+        <td>Qwen3.6-35B (MoE)</td>
+        <td>Q5_K_M</td>
+        <td><strong>56,6 tok/s</strong> (decode)</td>
+        <td>131K</td>
+        <td>Medição própria — <a href="https://qwen38-27b-landing.vercel.app/">landing page</a></td>
       </tr>
       <tr>
         <td>RTX 4090 24GB</td>
@@ -109,6 +323,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <td>Q4_K_M</td>
         <td>~70-90 tok/s (estimado)</td>
         <td>32K</td>
+        <td>Estimativa da comunidade</td>
       </tr>
       <tr>
         <td>RTX 3060 12GB</td>
@@ -116,12 +331,18 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <td>Q4_K_M (offload parcial)</td>
         <td>~15-25 tok/s (estimado)</td>
         <td>16K</td>
+        <td>Estimativa da comunidade</td>
       </tr>
     </tbody>
   </table>
-  <p style="color:var(--muted);font-size:.9rem;">Medição real do Strix Halo será documentada com script reproduzível (task seo-tech).</p>
+  <p style="color:var(--muted);font-size:.85rem;">
+    A medição do Strix Halo é reproduzível: Ollama sobre Vulkan, Q5_K_M, prompt de 512 tokens, contexto 131K.
+    Para detalhes de hardware, veja <a href="/hardware.html">nosso guia de hardware</a>.
+    <br>Nota: o Qwen3.6-35B (MoE) ativa apenas ~3B por token — por isso é 5,3× mais rápido no mesmo hardware.
+  </p>
 
-  <h2>Resultados da comunidade</h2>
+  <!-- ===================== RESULTADOS DA COMUNIDADE ===================== -->
+  <h2 id="comunidade">Resultados e reações da comunidade</h2>
   <div class="cards">
     <div class="card">
       <span class="tag">HF Trending</span>
@@ -135,7 +356,31 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
       <p>Quantizações prontas (Q2-Q8) para Ollama, llama.cpp e LM Studio.</p>
       <div class="meta"><span>⭐ 1.1k likes</span><a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">Ver GGUF ↗</a></div>
     </div>
+    <div class="card">
+      <span class="tag">Benchmark</span>
+      <h3>Benchmarks comparativos completos</h3>
+      <p>Análise técnica dos 26 benchmarks vs Qwen3.6-27B e modelos de fronteira. Tabelas detalhadas por categoria.</p>
+      <div class="meta"><span>Guia</span><a href="/guia/benchmarks-comparativos">Ver análise completa ↗</a></div>
+    </div>
   </div>
+
+  <h2 id="takeaways">Principais conclusões</h2>
+  <ul style="line-height:2;">
+    <li><strong>O salto está nos agentes:</strong> OSWorld-Verified +20,4, DeepSWE 1.1 +28,9, QwenSWEBench +29,7. Conhecimento bruto (GPQA +1,4) teve ganhos menores.</li>
+    <li><strong>Supera fronteira em CoWorkBench:</strong> 70,7 vs Opus 4.6 Max 68,2 — um modelo de 27B denso superando um modelo proprietário de fronteira, na tabela do próprio card.</li>
+    <li><strong>Lidera SWE-bench Pro no card:</strong> 61,7 à frente de todas as referências publicadas — Qwen3.7-Plus 57,6 · Muse Glimmer-30B 51,2 · Opus 4.6 Max 53,4.</li>
+    <li><strong>GPQA Diamond 89,2:</strong> 46,8 pontos acima do Gemma 3 27B instruct (42,4) e 23,2 acima do GPT-OSS-20B (66,0, medium). No próprio card, fica entre Muse (83,5) e Qwen3.7-Plus (90,3), abaixo do Opus4.6 Max (91,3). Harnesses diferentes — não é comparação controlada.</li>
+    <li><strong>Multimodalidade nativa:</strong> MathVision 94,6, OmniDocBench 91,1, CharXiv 90,2 — a torre de visão entrega em tarefas reais.</li>
+    <li><strong>Denso = qualidade, MoE = velocidade:</strong> 10,6 tok/s (denso 27B) vs 56,6 tok/s (MoE 35B) no mesmo hardware.</li>
+    <li><strong>Ainda não verificado independentemente:</strong> Todos os 26 benchmarks são reportados pela própria Qwen. Verificação independente pendente.</li>
+  </ul>
+
+  <p style="margin-top:2rem;">
+    Para requisitos de hardware, veja <a href="/hardware.html">nosso guia de hardware</a>.
+    Para comandos de instalação, confira <a href="/guia-rapido.html">o guia rápido</a>.
+    Para a análise técnica completa dos 26 benchmarks, visite
+    <a href="/guia/benchmarks-comparativos">benchmarks comparativos</a>.
+  </p>
 </main>
 
 <footer>Portal 30B · Mantido pelo Time Hermes · <a href="/">Voltar ao início</a></footer>
