@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como Rodar o Qwen3.8-27B no SGLang (FP8): Guia Passo a Passo</title>
+    <meta name="description" content="Tutorial completo: instale o SGLang, baixe o FP8 oficial do Qwen3.8-27B, suba o servidor com 262K de contexto e valide com benchmark. 206 tok/s na RTX 5090.">
+    <meta name="keywords" content="como rodar sglang, sglang qwen3.8, qwen 3.8 fp8, Qwen3.8-27B-FP8, servidor LLM local, inferência FP8, sglang tutorial, LLM local GPU, throughput sglang">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo">
+    <meta property="og:description" content="Servidor OpenAI-compatible com o checkpoint FP8 oficial: 30,9 GB, 262K de contexto nativo e 206 tok/s na RTX 5090. Instalação, flags de contexto, MTP e benchmark de validação.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-18T08:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="SGLang">
+    <meta property="article:tag" content="FP8">
+    <meta property="article:tag" content="Qwen3.8-27B">
+    <meta property="article:tag" content="LLM local">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)">
+    <meta name="twitter:description" content="Checkpoint FP8 de 30,9 GB, 262K de contexto nativo, MTP no próprio checkpoint e servidor OpenAI-compatible. Guia completo em português.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Como rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo",
+          "description": "Tutorial completo em português: instalação do SGLang via uv/venv ou Docker, download do checkpoint FP8 oficial Qwen/Qwen3.8-27B-FP8 (30,89 GB), servidor OpenAI-compatible com 262.144 tokens de contexto, MTP/EAGLE, benchmark de validação com bench_serving e comparação SGLang × llama.cpp/Ollama.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-18",
+          "dateModified": "2026-08-18",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b",
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "SGLang, CUDA 12.8+, Python 3.10+, GPU NVIDIA com suporte a FP8 (Ada Lovelace ou mais recente)"
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o Qwen3.8-27B no SGLang com checkpoint FP8 oficial",
+          "description": "Passo a passo para servir o Qwen3.8-27B-FP8 localmente com SGLang: instalar, baixar, subir o servidor e validar com benchmark.",
+          "totalTime": "PT40M",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Verificar os pré-requisitos de hardware", "text": "GPU NVIDIA com 32 GB de VRAM e suporte a FP8 (RTX 5090, RTX PRO 6000 Blackwell), ou H100/H200; alternativas de 24 GB usam quantização GGUF 4 bits via llama.cpp." },
+            { "@type": "HowToStep", "position": 2, "name": "Instalar o SGLang", "text": "Criar ambiente Python 3.10+ e instalar via uv: pip install --upgrade pip && pip install uv && uv pip install sglang. Ou usar a imagem Docker oficial lmsysorg/sglang:qwen38-27b." },
+            { "@type": "HowToStep", "position": 3, "name": "Subir o servidor com o checkpoint FP8", "text": "python -m sglang.launch_server --model-path Qwen/Qwen3.8-27B-FP8 --reasoning-parser qwen3 --tool-call-parser qwen3_coder --served-model-name qwen3.8-27b --context-length 131072 --mamba-full-memory-ratio calculado para a carga." },
+            { "@type": "HowToStep", "position": 4, "name": "Testar o endpoint", "text": "curl no http://localhost:30000/v1/chat/completions com o modelo qwen3.8-27b; thinking mode vem por padrão, desabilite com chat_template_kwargs.enable_thinking false." },
+            { "@type": "HowToStep", "position": 5, "name": "Validar com benchmark", "text": "python3 -m sglang.bench_serving --backend sglang --host 127.0.0.1 --port 30000 --dataset-name random com o tamanho típico de carga e comparar tok/s." }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Como rodar o Qwen3.8-27B no SGLang?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Instale o SGLang (uv pip install sglang), aponte o servidor para o checkpoint Qwen/Qwen3.8-27B-FP8 e use os parsers qwen3: python -m sglang.launch_server --model-path Qwen/Qwen3.8-27B-FP8 --reasoning-parser qwen3 --tool-call-parser qwen3_coder. O servidor expõe API OpenAI-compatible na porta 30000." }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto de VRAM precisa o Qwen3.8-27B FP8?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O checkpoint FP8 pesa 30,89 GB (medido via HF API), então o ponto de entrada em GPU única é 32 GB — RTX 5090 ou RTX PRO 6000 Blackwell — com margem apertada para KV cache; o conforto é em H100/H200 de 80 GB. Em 24 GB, o caminho é o GGUF 4 bits via llama.cpp." }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual a diferença entre FP8 oficial e quantização GGUF?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O FP8 oficial é quantizado pela própria Qwen com método fine-grained de bloco 128, com métricas de performance quase idênticas ao modelo original segundo o model card; GGUF é o formato do llama.cpp com quantizações de 2 a 8 bits feitas pela comunidade. FP8 visa serving de alto throughput (SGLang, vLLM); GGUF visa hardware de consumidor e iGPU." }
+            },
+            {
+              "@type": "Question",
+              "name": "SGLang ou llama.cpp para o Qwen3.8-27B?",
+              "acceptedAnswer": { "@type": "Answer", "text": "SGLang para GPU NVIDIA dedicada servindo aplicações: throughput alto (206,1 tok/s medidos na RTX 5090), MTP via EAGLE no próprio checkpoint e parsers de reasoning/tool-call nativos. llama.cpp para hardware de consumidor e setups com memória unificada (Strix Halo, Macs): GGUF 4 bits cabe em 17 GB e roda via Ollama com um comando." }
+            },
+            {
+              "@type": "Question",
+              "name": "Como ativar o MTP no SGLang?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O checkpoint FP8 já traz a cabeça MTP (arquivo mtp.safetensors, 0,48 GB) treinada pela Qwen. No SGLang, ative com: --speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4 — a configuração recomendada no cookbook oficial do SGLang." }
+            },
+            {
+              "@type": "Question",
+              "name": "O SGLang funciona com o modo thinking do Qwen3.8?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sim, e o thinking vem ligado por padrão. O parser --reasoning-parser qwen3 casa com o template que alterna o thinking via enable_thinking. Para resposta direta, envie chat_template_kwargs com enable_thinking: false na requisição; para não preservar o raciocínio de mensagens antigas, preserve_thinking: false." }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Como rodar no SGLang (FP8)", "item": "https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+        .flag-table td:first-child { white-space: nowrap; font-family: monospace; color: var(--accent-3); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)</h1>
+        <p class="lead">Ollama resolve para o uso pessoal, mas quando o Qwen3.8-27B vira infraestrutura — API para o seu agente, para o time, para o produto — a pergunta muda de "roda?" para "quantos tokens por segundo?". Este guia monta o caminho de máximo throughput em GPU única: o servidor SGLang com o checkpoint FP8 quantizado pela própria Qwen, do <code>pip install</code> ao benchmark de validação.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>206,1</strong> tok/s na RTX 5090</span>
+            <span class="badge"><strong>30,89 GB</strong> checkpoint FP8</span>
+            <span class="badge"><strong>262K</strong> contexto nativo</span>
+            <span class="badge"><strong>MTP</strong> dentro do checkpoint</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#por-que">Por que SGLang + FP8 para o Qwen3.8-27B</a></li>
+            <li><a href="#requisitos">Pré-requisitos de hardware e software</a></li>
+            <li><a href="#instalacao">Passo 1 — Instalar o SGLang (uv/venv ou Docker)</a></li>
+            <li><a href="#servidor">Passo 2 — Subir o servidor FP8</a></li>
+            <li><a href="#contexto">Passo 3 — Contexto: 262K nativo e 1M com YaRN</a></li>
+            <li><a href="#teste">Passo 4 — Testar o endpoint (thinking e instruct)</a></li>
+            <li><a href="#mtp">Passo 5 — MTP: speculative decoding sem baixar nada extra</a></li>
+            <li><a href="#benchmark">Passo 6 — Benchmark de validação</a></li>
+            <li><a href="#vram">Quanto ocupa: FP8 × GGUF</a></li>
+            <li><a href="#quando">Quando SGLang × quando llama.cpp/Ollama</a></li>
+            <li><a href="#troubleshooting">Troubleshooting: as 4 armadilhas</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="por-que">Por que SGLang + FP8 para o Qwen3.8-27B</h2>
+    <p>O <a href="https://huggingface.co/Qwen/Qwen3.8-27B-FP8">checkpoint FP8 oficial</a> é a resposta da Qwen para quem quer servir o modelo em produção sem pagar o preço do BF16: quantização fine-grained com blocos de 128, <strong>com métricas "quase idênticas às do modelo original"</strong> — a frase é do próprio model card. Ele pesa <strong>30,89 GB</strong> (soma dos arquivos safetensors, medida via HF API), contra ~54 GB do BF16.</p>
+    <p>O SGLang é um dos três motores de serving que a Qwen <a href="https://huggingface.co/Qwen/Qwen3.8-27B-FP8#quickstart">recomenda oficialmente</a> para carga de produção, e mantém um <a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">cookbook dedicado ao Qwen3.8-27B</a> com receitas validadas para cada placa — algo que nem todo modelo de pesos abertos tem. Três razões para escolher essa combinação:</p>
+    <ul>
+        <li><strong>Throughput de verdade em GPU única.</strong> A própria equipe do SGLang mediu o FP8 do Qwen3.8-27B a <strong>206,1 tok/s</strong> em uma RTX 5090 — e 38,28 tok/s no DGX Spark. Para comparação, o mesmo modelo em GGUF Q4 no Strix Halo via Ollama entrega <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">na casa de 17 tok/s</a>.</li>
+        <li><strong>MTP vem dentro do checkpoint.</strong> A cabeça de Multi-Token Prediction treinada pela Qwen (arquivo <code>mtp.safetensors</code>, 0,48 GB) é aproveitada pelo SGLang via EAGLE — speculative decoding sem baixar um drafter separado.</li>
+        <li><strong>Parsers prontos para o Qwen3.8.</strong> O cookbook oficial carrega <code>--reasoning-parser qwen3 --tool-call-parser qwen3_coder</code> em todas as receitas: sem eles, um harness recebe os tool calls como texto cru dentro de <code>&lt;tool_call&gt;</code> e nunca parseia nada.</li>
+    </ul>
+    <div class="callout">
+        <strong>Cobre um buraco do portal:</strong> este é o primeiro artigo sobre SGLang do site. Até ontem, todo o conteúdo de execução local cobria Ollama, llama.cpp e vLLM — o motor que a Qwen lista como recomendação para serving não tinha uma única menção em português por aqui. Este guia corrige isso.
+    </div>
+
+    <h2 id="requisitos">Pré-requisitos de hardware e software</h2>
+    <p>O FP8 não roda em qualquer GPU: a precisão de 8 bits em floating point exige hardware moderno. A tabela do cookbook oficial do SGLang valida o Qwen3.8-27B single-GPU em <strong>H200, RTX PRO 6000, RTX 5090 e DGX Spark</strong> — nas precisões BF16, FP8 e NVFP4.</p>
+    <table>
+        <tr><th>Componente</th><th>Mínimo</th><th>Notas</th></tr>
+        <tr class="highlight"><td>GPU</td><td>32 GB VRAM com FP8</td><td>RTX 5090 (32 GB) ou RTX PRO 6000 Blackwell — entrada em GPU única. H100/H200 (80 GB) para folga de KV cache e concorrência</td></tr>
+        <tr><td>Alternativa 24 GB</td><td>RTX 3090/4090</td><td>FP8 não cabe; o caminho é <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">GGUF 4 bits via llama.cpp</a> (Q4_K_M = 17,11 GB)</td></tr>
+        <tr><td>Alternativa unificada</td><td>DGX Spark</td><td>Cookbook valida a 38,28 tok/s — memória unificada muda o jogo de sizing</td></tr>
+        <tr><td>Sistema</td><td>Linux, CUDA 12.8+</td><td>SGLang prioriza Linux + NVIDIA; verifique o <a href="https://docs.sglang.io/">guia de instalação oficial</a> para a sua plataforma</td></tr>
+        <tr><td>Python</td><td>3.10+</td><td>Requisito do SGLang e do bench_serving</td></tr>
+        <tr><td>Disco</td><td>~35 GB livres</td><td>30,89 GB de pesos + ambiente CUDA</td></tr>
+    </table>
+    <p>Se a sua GPU não está nessa lista, o FP8 provavelmente não é o seu caminho — pule para <a href="#quando">SGLang × llama.cpp/Ollama</a> ou direto para o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16 GB de VRAM</a>.</p>
+
+    <h2 id="instalacao">Passo 1 — Instalar o SGLang (uv/venv ou Docker)</h2>
+    <p>O caminho recomendado pelo cookbook oficial é um ambiente virtual limpo com <code>uv</code> — evita conflito de dependências CUDA com outros projetos:</p>
+    <pre><code># criar e ativar o ambiente (qualquer venv padrão serve)
+python3 -m venv sglang-env &amp;&amp; source sglang-env/bin/activate
+
+# instalar via uv, como no cookbook oficial do SGLang
+pip install --upgrade pip
+pip install uv
+uv pip install sglang</code></pre>
+    <p>O pacote <code>sglang</code> no PyPI publica versões com frequência semanal (a 0.5.17 é a mais recente no dia desta publicação) — o README da Qwen recomenda explicitamente <em>"usar as versões mais recentes dos frameworks"</em> para garantir suporte ao Qwen3.8, então <code>uv pip install -U sglang</code> antes de começar não é má ideia.</p>
+    <p><strong>Alternativa Docker</strong> — a imagem oficial dedicada ao modelo:</p>
+    <pre><code>docker pull lmsysorg/sglang:qwen38-27b</code></pre>
+    <p>O container já vem com CUDA, FlashInfer e os kernels certos para a arquitetura híbrida (Gated DeltaNet + Gated Attention) do Qwen3.8. Se você prefere não gerenciar ambiente Python, comece por aqui e substitua o comando interno do exemplo Docker pelo <code>sglang serve</code> da seção seguinte.</p>
+
+    <h2 id="servidor">Passo 2 — Subir o servidor FP8</h2>
+    <p>Um comando serve o modelo. Este é o ponto de partida que este portal recomenda — parsers oficiais, nome curto de modelo e contexto deliberadamente menor que o máximo:</p>
+    <pre><code>python -m sglang.launch_server \
+    --model-path Qwen/Qwen3.8-27B-FP8 \
+    --served-model-name qwen3.8-27b \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_coder \
+    --context-length 131072 \
+    --mamba-full-memory-ratio 0.35</code></pre>
+    <p>A primeira execução baixa os 30,89 GB do checkpoint direto do Hugging Face (login <code>hf auth</code> ou <code>HF_TOKEN</code> se quiser puxar de repositório privado; o Qwen3.8-27B-FP8 é público). Quando o log mostrar o endpoint pronto, a API OpenAI-compatible está em <code>http://localhost:30000/v1</code> — e há também um endpoint compatível com a API Anthropic em <code>/v1/messages</code>, útil para apontar o Claude Code local.</p>
+    <table class="flag-table">
+        <tr><th>Flag</th><th>Por quê</th></tr>
+        <tr class="highlight"><td>--model-path Qwen/Qwen3.8-27B-FP8</td><td>O checkpoint FP8 oficial. Sem quantização on-the-fly: os pesos já vêm em FP8 de bloco 128 da Qwen</td></tr>
+        <tr><td>--served-model-name qwen3.8-27b</td><td>O nome que aparece em /v1/models. Sem isso, clientes precisam enviar a string "Qwen/Qwen3.8-27B-FP8" inteira — nome curto mantém configs de harness limpas</td></tr>
+        <tr class="highlight"><td>--reasoning-parser qwen3</td><td>Casa com o template do Qwen3.8: separa o bloco &lt;think&gt; da resposta final. Vem ligado por padrão no modelo — o parser é o que entrega isso estruturado via API</td></tr>
+        <tr><td>--tool-call-parser qwen3_coder</td><td>Parseia tool calls do formato Qwen (JSON dentro de &lt;tool_call&gt;). Sem ele, agente não funciona — tool call chega como texto cru</td></tr>
+        <tr><td>--context-length 131072</td><td>128K em vez dos 262K nativos: cada token de contexto come VRAM do KV/state pool. Suba para 262144 quando a carga pedir (ver seção de contexto)</td></tr>
+        <tr class="highlight"><td>--mamba-full-memory-ratio 0.35</td><td>A flag de sizing que mais importa em modelos GDN híbridos. O default 0.9 superdimensiona o pool do Mamba e engarrafa a concorrência. 0.35 é ponto de partida para carga agêntica típica — o cookbook traz uma calculadora para o seu comprimento médio de requisição</td></tr>
+    </table>
+    <div class="callout">
+        <strong>Por que 0.35 no mamba ratio?</strong> O cookbook oficial resume: modelos híbridos GDN dividem a memória pós-pesos entre um pool de estado do Mamba (que define o teto de concorrência) e um pool de KV de atenção paginado, e a razão entre eles é o <code>--mamba-full-memory-ratio</code>. O default 0.9 reserva o pior caso — bonito para cargas de contexto curtíssimo, desperdiçado para agentes que mandam 20-30K de contexto por requisição. Meça o seu comprimento médio e calcule; não copie o default.
+    </div>
+
+    <h2 id="contexto">Passo 3 — Contexto: 262K nativo e 1M com YaRN</h2>
+    <p>O Qwen3.8-27B tem <strong>262.144 tokens de contexto nativos</strong> — sem truque, sem flag, é o que o checkpoint suporta de fábrica. Para cargas que passam disso, o README oficial documenta a extensão para <strong>1.000.000 de tokens via YaRN</strong> (RoPE scaling), com o comando SGLang:</p>
+    <pre><code>SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 python -m sglang.launch_server ... \
+    --json-model-override-args '{"text_config": {"rope_parameters": {
+        "mrope_interleaved": true, "mrope_section": [11, 11, 10],
+        "rope_type": "yarn", "rope_theta": 10000000,
+        "partial_rotary_factor": 0.25, "factor": 4.0,
+        "original_max_position_embeddings": 262144}}}' \
+    --context-length 1000000</code></pre>
+    <p>Duas recomendações que vêm do próprio model card: use o YaRN <em>só</em> quando a carga realmente exceder 262K — a implementação é static YaRN e pode degradar textos curtos —; e calibre o <code>factor</code> para o seu teto real (carga típica de 524K? <code>factor: 2.0</code> em vez de 4.0).</p>
+
+    <h2 id="teste">Passo 4 — Testar o endpoint (thinking e instruct)</h2>
+    <p>Smoke test imediato com curl:</p>
+    <pre><code>curl http://localhost:30000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3.8-27b",
+    "messages": [{"role": "user", "content": "Explique FP8 em uma frase."}],
+    "temperature": 1.0, "top_p": 0.95,
+    "max_tokens": 1024
+  }'</code></pre>
+    <p>A resposta vem no formato OpenAI, com o raciocínio separado no campo <code>reasoning_content</code> — o thinking mode é o padrão do modelo. As configurações de sampling recomendadas pelo model card:</p>
+    <ul>
+        <li><strong>Thinking (padrão):</strong> temperature 1,0 · top_p 0,95 · top_k 20</li>
+        <li><strong>Instruct (sem raciocínio):</strong> temperature 0,7 · top_p 0,80 · presence_penalty 1,5 · top_k 20</li>
+    </ul>
+    <p>Para uma resposta direta sem o bloco de raciocínio, desligue o thinking na requisição:</p>
+    <pre><code>"extra_body": { "chat_template_kwargs": { "enable_thinking": false } }</code></pre>
+    <p>E se a conversa acumula blocos &lt;think&gt; de mensagens antigas pesando no contexto, o <code>preserve_thinking</code> (que vem ligado por padrão e é ótimo para agentes) pode ser desligado por requisição com <code>"preserve_thinking": false</code> — ambos documentados no README do checkpoint.</p>
+
+    <h2 id="mtp">Passo 5 — MTP: speculative decoding sem baixar nada extra</h2>
+    <p>O Qwen3.8-27B foi treinado com <strong>Multi-Token Prediction</strong> — e o checkpoint FP8 inclui a cabeça MTP no próprio pacote (é o arquivo <code>mtp.safetensors</code> de 0,48 GB). No SGLang, isso vira speculative decoding via EAGLE com quatro flags:</p>
+    <pre><code>python -m sglang.launch_server \
+    --model-path Qwen/Qwen3.8-27B-FP8 \
+    --served-model-name qwen3.8-27b \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_coder \
+    --speculative-algorithm EAGLE \
+    --speculative-num-steps 3 \
+    --speculative-eagle-topk 1 \
+    --speculative-num-draft-tokens 4</code></pre>
+    <p>Essa é a configuração 3/1/4 que o cookbook oficial valida por placa. O ganho: em vez de gerar um token por passo, o modelo rascunha 4 com a cabeça MTP e verifica em bloco — onde a aceitação é alta, o decode acelera de forma expressiva. Dois avisos honestos do próprio cookbook: <strong>meça</strong> — com speculative decoding, precisão mais alta às vezes vence (FP8 + EAGLE: 106,3 tok/s contra 116,1 em um dos cenários medidos) —; e o MTP consome VRAM extra de rascunho, o que em placas de 32 GB pode pedir <code>--mem-fraction-static</code> mais conservador.</p>
+
+    <h2 id="benchmark">Passo 6 — Benchmark de validação</h2>
+    <p>Não confie em número de blog (nem deste): rode o benchmark oficial do SGLang contra o seu servidor e veja os seus tok/s. O <code>bench_serving</code> mede throughput, TTFT e latência entre tokens:</p>
+    <pre><code># com o servidor rodando em outro terminal
+python3 -m sglang.bench_serving \
+    --backend sglang \
+    --host 127.0.0.1 --port 30000 \
+    --dataset-name random \
+    --random-input-len 4096 \
+    --random-output-len 1024 \
+    --num-prompts 200 \
+    --model qwen3.8-27b</code></pre>
+    <p>Ajuste os parâmetros à sua carga real: <code>--random-input-len</code> perto do seu contexto médio de agente, <code>--max-concurrency</code> no nível de paralelismo que a aplicação usa, <code>--num-prompts</code> para uma amostra estatística decente. Compare três configurações antes de congelar o setup:</p>
+    <table>
+        <tr><th>Cenário</th><th>O que isola</th></tr>
+        <tr><td>input 2048 / output 1024 / conc 1</td><td>Decode puro em uso interativo — o teto de tok/s de usuário único</td></tr>
+        <tr><td>input 16384 / output 2048 / conc 4-8</td><td>Carga agêntica realista — onde o mamba ratio certo aparece</td></tr>
+        <tr><td>mesma carga ± MTP (EAGLE 3/1/4)</td><td>O ganho (ou prejuízo) do speculative decoding no SEU contexto</td></tr>
+        <tr><td>mesma carga ± --chunked-prefill-size 2048</td><td>Chunks de prefill menores suavizam a latência entre tokens sob carga mista</td></tr>
+    </table>
+    <p>Referências para calibrar expectativa: <strong>206,1 tok/s</strong> FP8 na RTX 5090 e <strong>38,28 tok/s</strong> no DGX Spark, números divulgados pela equipe do SGLang na estreia do checkpoint.</p>
+
+    <h2 id="vram">Quanto ocupa: FP8 × GGUF</h2>
+    <p>O FP8 oficial é um degrau de precisão entre o GGUF Q8 da comunidade e o BF16 — e o mais alto que ainda cabe em GPU de consumidor única:</p>
+    <table>
+        <tr><th>Checkpoint / quant</th><th>Tamanho</th><th>Cabe em</th><th>Motor</th></tr>
+        <tr><td>BF16 (original)</td><td>~54 GB</td><td>2× RTX 3090 (48 GB) ou A100/H100 80GB</td><td>SGLang, vLLM</td></tr>
+        <tr class="highlight"><td><strong>FP8 oficial (Qwen)</strong></td><td><strong>30,89 GB</strong></td><td><strong>RTX 5090 / RTX PRO 6000 (32 GB)</strong></td><td><strong>SGLang, vLLM</strong></td></tr>
+        <tr><td>NVFP4 (RadixArk)</td><td>24,6 GiB</td><td>GPU Blackwell — 1M de contexto em GPU única</td><td>SGLang, vLLM</td></tr>
+        <tr><td>GGUF Q8_0</td><td>29,05 GB</td><td>24 GB com offload parcial; 32 GB com folga</td><td>llama.cpp, Ollama</td></tr>
+        <tr><td>GGUF Q4_K_M</td><td>17,11 GB</td><td>RTX 3090/4090 (24 GB)</td><td>llama.cpp, Ollama</td></tr>
+        <tr><td>GGUF UD-Q3_K_XL</td><td>13,44 GB</td><td>16 GB com KV cache quantizado</td><td>llama.cpp</td></tr>
+        <tr><td>GGUF UD-IQ2_M</td><td>10,32 GB</td><td>12 GB no limite</td><td>llama.cpp</td></tr>
+    </table>
+    <p>A tabela completa de quantizações GGUF com GB medidos — incluindo o mmproj de visão — está no artigo <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF: quanto cabe na sua GPU</a>.</p>
+    <div class="callout-warn">
+        <strong>Sobre a qualidade do FP8:</strong> o model card da Qwen afirma métricas "quase idênticas" ao BF16, mas não publica a tabela comparativa por benchmark. Se a sua aplicação é sensível a qualidade (avaliação, juiz de LLM, extração estruturada), valide: rode o bench_serving com MTP ligado e desligado e uma avaliação qualitativa nos seus prompts reais antes de congelar.
+    </div>
+
+    <h2 id="quando">Quando SGLang × quando llama.cpp/Ollama</h2>
+    <p>Não é questão de melhor ou pior — é para qual máquina e para qual papel. A regra prática deste portal:</p>
+    <table>
+        <tr><th>Se o seu caso é…</th><th>Use</th><th>Por quê</th></tr>
+        <tr class="highlight"><td>GPU NVIDIA dedicada servindo API (agente, time, produto)</td><td><strong>SGLang + FP8</strong></td><td>206 tok/s na 5090, MTP nativo, parsers de reasoning/tool-call, endpoint Anthropic-compatible</td></tr>
+        <tr><td>Uso pessoal no desktop, quer simples e rápido</td><td>Ollama</td><td><code>ollama run qwen3.8:27b</code> — um comando, GGUF 18 GB, 256K de contexto</td></tr>
+        <tr><td>GPU de 16-24 GB (4090, 5080, 4070 Ti Super)</td><td>llama.cpp</td><td>GGUF 4 bits (17,11 GB) ou <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">config de 16 GB</a> com KV cache quantizado</td></tr>
+        <tr><td>Memória unificada (Strix Halo, Mac M-series)</td><td>Ollama/llama.cpp</td><td>Backends Vulkan/Metal — SGLang foca CUDA/Linux; a 128 GB unificados o GGUF Q5 roda a 10,6 tok/s</td></tr>
+        <tr><td>Servidor headless com orquestração de containers</td><td>SGLang via Docker</td><td>Imagem lmsysorg/sglang:qwen38-27b pronta, sem gerenciar env CUDA</td></tr>
+        <tr><td>Heterogêneo/produção com vLLM já no stack</td><td>vLLM ≥ 0.27.2</td><td>Mesmo checkpoint FP8 serve nos dois; vLLM tem recipe oficial e NVFP4 em Blackwell</td></tr>
+    </table>
+    <p>O detalhe que costuma decidir: <strong>SGLang exige GPU NVIDIA dedicada com FP8</strong> (Ada/Blackwell ou datacenter) e Linux como plataforma primária. No resto do espectro — memória unificada, iGPU AMD, Mac — o ecossistema GGUF/llama.cpp é o caminho, e o portal tem os guias: <a href="/guia/como-rodar">como rodar localmente</a> cobre Ollama, llama.cpp, vLLM e MLX.</p>
+
+    <h2 id="troubleshooting">Troubleshooting: as 4 armadilhas</h2>
+    <ul>
+        <li><strong>Throughput muito abaixo do esperado sem erro nenhum.</strong> Suspeito nº 1: o <code>--mamba-full-memory-ratio</code> no default 0.9. Ele reserva pool Mamba para o pior caso e <em>silenciosamente</em> limita a concorrência — o modelo serve, mas engarrafa. Calcule o ratio para o seu comprimento médio de requisição (o cookbook do SGLang tem a calculadora) e meça de novo.</li>
+        <li><strong>Latência entre tokens irregular sob carga mista.</strong> Chunks de prefill de 8192 tokens stallam o decode ~600 ms por vez em modelos GDN híbridos. <code>--chunked-prefill-size 2048</code> suaviza o ITL e ainda melhora o TTFT de onda única.</li>
+        <li><strong>Agente não consegue chamar ferramentas.</strong> Faltou o <code>--tool-call-parser qwen3_coder</code> (ou apontar o harness para o endpoint certo). Sem o parser, o JSON do tool call chega como texto dentro de <code>&lt;tool_call&gt;</code> e nunca parseia. E lembre que o nome do modelo no cliente deve bater com <code>--served-model-name</code>.</li>
+        <li><strong>OOM na GPU de 32 GB com contexto grande.</strong> 30,89 GB de pesos deixam pouco para KV/state pool. Três saídas na ordem: baixar <code>--context-length</code> (128K em vez de 262K), reduzir <code>--mem-fraction-static</code>, ou aceitar que a sua carga pede o NVFP4 (24,6 GiB) ou o GGUF 4 bits.</li>
+    </ul>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Como rodar o Qwen3.8-27B no SGLang?</h3>
+        <p>Instale o SGLang (<code>uv pip install sglang</code>), aponte o servidor para o checkpoint <code>Qwen/Qwen3.8-27B-FP8</code> e use os parsers qwen3: <code>python -m sglang.launch_server --model-path Qwen/Qwen3.8-27B-FP8 --reasoning-parser qwen3 --tool-call-parser qwen3_coder</code>. O servidor expõe API OpenAI-compatible na porta 30000.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto de VRAM precisa o Qwen3.8-27B FP8?</h3>
+        <p>O checkpoint FP8 pesa 30,89 GB (medido via HF API), então o ponto de entrada em GPU única é 32 GB — RTX 5090 ou RTX PRO 6000 Blackwell — com margem apertada para KV cache; o conforto é em H100/H200 de 80 GB. Em 24 GB, o caminho é o GGUF 4 bits via llama.cpp.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual a diferença entre FP8 oficial e quantização GGUF?</h3>
+        <p>O FP8 oficial é quantizado pela própria Qwen com método fine-grained de bloco 128, com métricas quase idênticas ao modelo original segundo o model card; GGUF é o formato do llama.cpp com quantizações de 2 a 8 bits feitas pela comunidade. FP8 visa serving de alto throughput (SGLang, vLLM); GGUF visa hardware de consumidor e memória unificada.</p>
+    </div>
+    <div class="faq-item">
+        <h3>SGLang ou llama.cpp para o Qwen3.8-27B?</h3>
+        <p>SGLang para GPU NVIDIA dedicada servindo aplicações: throughput alto (206,1 tok/s medidos na RTX 5090), MTP via EAGLE no próprio checkpoint e parsers de reasoning/tool-call nativos. llama.cpp para hardware de consumidor e memória unificada (Strix Halo, Macs): GGUF 4 bits cabe em 17 GB e roda via Ollama com um comando.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Como ativar o MTP no SGLang?</h3>
+        <p>O checkpoint FP8 já traz a cabeça MTP (mtp.safetensors, 0,48 GB) treinada pela Qwen. Ative com: <code>--speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4</code> — a configuração recomendada no cookbook oficial do SGLang.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O SGLang funciona com o modo thinking do Qwen3.8?</h3>
+        <p>Sim, e o thinking vem ligado por padrão. O parser <code>--reasoning-parser qwen3</code> casa com o template que alterna o thinking via enable_thinking. Para resposta direta, envie <code>chat_template_kwargs</code> com <code>enable_thinking: false</code>; para não preservar o raciocínio de mensagens antigas, <code>preserve_thinking: false</code>.</p>
+    </div>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="https://huggingface.co/Qwen/Qwen3.8-27B-FP8">Qwen3.8-27B-FP8 — checkpoint oficial no Hugging Face</a></li>
+        <li><a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">SGLang Cookbook: Qwen3.8-27B</a> — receitas validadas por placa e a calculadora do mamba ratio</li>
+        <li><a href="/guia/como-rodar">Como rodar modelos 30B localmente</a> — Ollama, llama.cpp, vLLM e MLX (o guia geral do portal)</li>
+        <li><a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF: quanto cabe na sua GPU</a> — a tabela completa de GB medidos</li>
+        <li><a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B em 16 GB de VRAM</a> — o caminho llama.cpp para placas menores</li>
+        <li><a href="/guia/hardware-local">Guia de hardware para modelos 30B</a> · <a href="/guia/faq">FAQ do portal</a></li>
+    </ul>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — guia SGLang + FP8 do Qwen3.8-27B | Comandos baseados no model card oficial do checkpoint, no SGLang Cookbook Qwen3.8-27B e na doc de bench_serving (verificados em 18/08/2026). Downloads do checkpoint: 741.011 na data de publicação.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
