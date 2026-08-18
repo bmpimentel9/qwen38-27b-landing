@@ -9,6 +9,37 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-18] — Artigo: Qwen3.8-27B em 16GB de VRAM com llama.cpp
+
+### Added
+- **Novo artigo BOFU** (`guia/qwen38-27b-16gb-vram-llama-cpp/`, task `t_8cd3cf24` —
+  seo-content): guia técnico para rodar o 27B denso em GPU de 16GB com
+  llama.cpp, atendendo demanda comprovada no r/LocalLLaMA (threads "Squeezing
+  Qwen3.8-27B onto a Single 16GB GPU" e "After pushing 1M+ tokens") com zero
+  de cobertura pt-BR na SERP.
+  - Dados medidos ao vivo via Hugging Face API (18/08): IQ4_XS 15,71 GB ·
+    UD-Q3_K_XL 13,44 GB · Q4_K_M 17,11 GB · UD-IQ2_M 10,32 GB · mmproj 0,93 GB.
+  - Retenção de qualidade citando benchmark da comunidade r/LocalLLM (18/08):
+    IQ4_XS 98,5%, UD-Q3_K_XL 97,8% (ppl KL 7,0615 vs 7,1113).
+  - Flags verificadas no README oficial do llama.cpp: `--spec-type
+    ngram-simple` (speculative decoding sem drafter), `--cache-type-k/v q8_0`
+    + `--flash-attn on`, `--no-mmproj`, `--n-gpu-layers` com offload parcial
+    (preset Q4_K_M).
+  - 3 presets de comando (IQ4_XS qualidade / UD-Q3_K_XL contexto 64K+ /
+    Q4_K_M offload parcial), tabela de throughput da comunidade (~20 t/s na
+    RTX 4070 Ti Super), seção de erros comuns, FAQ de 6 perguntas.
+  - JSON-LD: TechArticle + HowTo (5 passos) + FAQPage + Breadcrumb; GA4
+    gtag + scroll_depth incluídos.
+  - Âncoras internas para `guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu`,
+    `guia/como-rodar`, `guia/hardware-local`.
+- `sitemap.xml`: URL nova (priority 0.9, lastmod 2026-08-18).
+- `llms.txt`: entrada na lista de páginas com números citáveis.
+- `guia/index.html`: card do artigo (tag-hw Tutorial, BOFU · Novo 18/08).
+
+### Fixed
+- `sitemap.xml`: preservado lastmod 2026-08-17 do Lemonade (editado
+  externamente após a última leitura em disco).
+
 ## [2026-08-16] — Artigos do dia + GA4 coverage no portal todo
 
 ### Added

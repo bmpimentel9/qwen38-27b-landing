@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B em 16GB de VRAM: config llama.cpp que funciona</title>
+    <meta name="description" content="Como rodar o Qwen3.8-27B em 16GB de VRAM com llama.cpp: quant IQ4_XS/Q4_K_M, contexto que cabe, speculative decoding n-gram, KV cache q8_0 e t/s reais.">
+    <meta name="keywords" content="qwen3.8-27b 16gb, rodar llm 27b em 16gb, qwen3.8 vram, llama.cpp 16gb, IQ4_XS, speculative decoding, kv cache quantizado, 4070 ti super llm, rodar 30b em 16gb">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Qwen3.8-27B em 16GB de VRAM: a config llama.cpp que funciona">
+    <meta property="og:description" content="27B denso em placa de 16GB sem offload parcial: quant certa, contexto que cabe, speculative decoding e KV cache quantizado — com números medidos.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-18T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="llama.cpp">
+    <meta property="article:tag" content="hardware local">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qwen3.8-27B em 16GB de VRAM: config llama.cpp">
+    <meta name="twitter:description" content="27B denso em placa de 16GB: IQ4_XS + KV cache quantizado + speculative decoding, com t/s reais.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona",
+          "description": "Guia técnico para rodar o Qwen3.8-27B (27B denso) em uma GPU de 16GB com llama.cpp: quantizações que cabem (IQ4_XS 15,71 GB, UD-Q3_K_XL 13,44 GB, Q4_K_M 17,11 GB com offload), contexto que cabe com KV cache quantizado q8_0, speculative decoding n-gram e throughput real da comunidade (~20 t/s na RTX 4070 Ti Super).",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-18",
+          "dateModified": "2026-08-18",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp",
+          "proficiencyLevel": "Expert",
+          "dependencies": "llama.cpp (build atual), CUDA",
+          "about": { "@type": "Thing", "name": "Qwen3.8-27B" }
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o Qwen3.8-27B em uma GPU de 16GB com llama.cpp",
+          "inLanguage": "pt-BR",
+          "totalTime": "PT30M",
+          "tool": [
+            { "@type": "HowToTool", "name": "llama.cpp (llama-server atual)" },
+            { "@type": "HowToTool", "name": "GPU NVIDIA com 16GB de VRAM (ex.: RTX 4070 Ti Super, 5070 Ti)" }
+          ],
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Escolha a quantização que cabe",
+              "text": "16GB comporta o IQ4_XS (15,71 GB medidos no HF) com contexto curto, o UD-Q3_K_XL (13,44 GB) com contexto longo, ou o Q4_K_M (17,11 GB) apenas com KV cache quantizado e alguns GB de pesos fora da GPU."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Inicie o llama-server com contexto adequado",
+              "text": "Use --ctx-size compatível com o espaço restante após os pesos (32K–73K conforme a quant) e --n-gpu-layers 99 para 100% de offload, exceto no Q4_K_M."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Quantize o KV cache",
+              "text": "Adicione --cache-type-k q8_0 --cache-type-v q8_0 com --flash-attn on para reduzir pela metade a memória de contexto sem perda perceptível."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Ative speculative decoding n-gram",
+              "text": "Some --spec-type ngram-simple: sem modelo drafter e sem VRAM extra, acelera código e textos repetitivos."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 5,
+              "name": "Valide uso de VRAM e throughput",
+              "text": "Confira no log do llama-server a memória de compute alocada e meça os tokens/s no seu hardware; espera-se ~20 t/s em RTX 4070 Ti Super com Q4_K_M."
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B roda em 16GB de VRAM?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim. A quantização IQ4_XS tem 15,71 GB medidos no Hugging Face e cabe na íntegra numa GPU de 16GB com contexto curto (8K-16K) e KV cache quantizado. Para contexto longo, o UD-Q3_K_XL (13,44 GB) deixa ~2,5 GB para o KV cache. O Q4_K_M (17,11 GB) só roda com alguns pesos fora da GPU ou apelando para contexto mínimo."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual quantização escolher para 16GB?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "IQ4_XS se você quer máxima qualidade que cabe inteira (98,5% de retenção segundo benchmark da comunidade com perplexidade KL); UD-Q3_K_XL (97,8%) se precisa de contexto 64K+ para código agêntico; Q4_K_M (99%+) só se aceitar offload parcial de pesos para a RAM."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quantos tokens/s o Qwen3.8-27B faz em 16GB?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Com 100% de offload em RTX 4070 Ti Super, a comunidade reporta ~20 t/s de geração no Q4_K_M com 130K de contexto alocado — e mais com speculative decoding n-gram ativado, que pode dobrar a velocidade em cargas repetitivas como código."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que é speculative decoding n-gram no llama.cpp?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "É aceleração sem modelo drafter: o llama.cpp usa n-grams do próprio prompt/cache para propor rascunhos de tokens que o modelo principal só valida (--spec-type ngram-simple). Não gasta VRAM extra e é especialmente eficaz em código e texto estruturado."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como o contexto cabe em 16GB junto com o modelo?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Quantizando o KV cache: --cache-type-k q8_0 --cache-type-v q8_0 com --flash-attn on corta a memória de contexto pela metade vs f16. A arquitetura híbrida do Qwen3.8-27B (só 1 em cada 4 camadas usa atenção completa) já torna o KV cache muito mais leve que um transformer denso tradicional do mesmo tamanho."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Qwen3.8-27B em 16GB de VRAM", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .verdict { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin: 20px 0; }
+        .verdict h3 { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona</h1>
+        <p class="lead">Um modelo de 27B parâmetros denso numa placa de 16GB, 100% na GPU, sem ficar trocando teto de contexto por qualidade às cegas. Este guia mostra a matemática da VRAM (GB medidos, não estimados), as três quants que cabem, o comando pronto do llama-server e as alavancas — KV cache quantizado e speculative decoding n-gram — que a comunidade está usando para extrair o máximo de cada GB.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
+            <li><a href="#a-matematica">A matemática dos 16GB: pesos + contexto + CUDA</a></li>
+            <li><a href="#quants">As quants que cabem (tabela com GB medidos)</a></li>
+            <li><a href="#comandos">Comandos prontos do llama-server</a></li>
+            <li><a href="#kv-cache">Alavanca 1: KV cache quantizado</a></li>
+            <li><a href="#spec-decoding">Alavanca 2: speculative decoding n-gram</a></li>
+            <li><a href="#velocidade">O que esperar em t/s</a></li>
+            <li><a href="#erros">Erros comuns e como resolver</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resposta-rapida">A resposta rápida</h2>
+    <p><strong>Sim, o Qwen3.8-27B roda em 16GB de VRAM.</strong> A combinação que a comunidade convergiu após o lançamento (14/08/2026): quantização <strong>IQ4_XS</strong> (15,71 GB medidos no Hugging Face) para qualidade máxima que cabe inteira, ou <strong>UD-Q3_K_XL</strong> (13,44 GB) quando o contexto importa mais. Comando mínimo:</p>
+    <pre><code>llama-server -hf unsloth/Qwen3.8-27B-GGUF:IQ4_XS \
+  --ctx-size 16384 --n-gpu-layers 99 \
+  --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on \
+  --spec-type ngram-simple</code></pre>
+    <p>Em uma RTX 4070 Ti Super, espere <strong>~20 t/s</strong> de geração — mais com speculative decoding em cargas repetitivas (código). Se o seu caso de uso é agêntico com contexto de 64K+, troque a quant para UD-Q3_K_XL e o <code>--ctx-size</code> para 65536.</p>
+
+    <h2 id="a-matematica">A matemática dos 16GB: pesos + contexto + CUDA</h2>
+    <p>Os "16GB" do rótulo da placa não são 16GB úteis. O orçamento real de VRAM para o modelo se divide assim:</p>
+    <table>
+        <tr><th>Componente</th><th>VRAM típica</th><th>Observação</th></tr>
+        <tr><td>Desktop + drivers + CUDA context</td><td>0,6–1,2 GB</td><td>Já ocupados antes do modelo carregar</td></tr>
+        <tr><td>Pesos do modelo (quant)</td><td>10,3–15,7 GB</td><td>Depende da quantização escolhida</td></tr>
+        <tr><td>KV cache (contexto)</td><td>0,3–3 GB</td><td>Cresce com <code>--ctx-size</code>; cai pela metade com q8_0</td></tr>
+        <tr><td>Buffers de compute</td><td>0,3–0,8 GB</td><td>Somas, ativações, grafos CUDA</td></tr>
+        <tr><td>mmproj (visão, opcional)</td><td>0,93 GB</td><td>Só se passar imagens; use <code>--no-mmproj</code> para liberar</td></tr>
+    </table>
+    <p>Some tudo: em uma 4070 Ti Super, o espaço real para pesos fica em <strong>~14,5 GB</strong>. É por isso que o Q4_K_M (17,11 GB) <em>não</em> cabe inteiro — e por isso que existe este guia. Dois fatores jogam a favor do Qwen3.8-27B:</p>
+    <ul>
+        <li><strong>Arquitetura híbrida:</strong> só 1 em cada 4 blocos usa atenção completa (o resto é Gated DeltaNet linear, sem KV cache clássico). O custo de contexto por token é muito menor que o de um transformer denso tradicional de 27B.</li>
+        <li><strong>Gama de quants da Unsloth:</strong> o repositório GGUF oficial cobre de UD-IQ2_M (10,32 GB) a Q8_0 (29,05 GB) — sempre há um ponto que encaixa no seu orçamento. A tabela completa de tamanhos está no nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a>.</li>
+    </ul>
+
+    <h2 id="quants">As quants que cabem: tabela com GB medidos</h2>
+    <p>Medições <strong>ao vivo via Hugging Face API</strong> (18/08/2026) do repositório <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">unsloth/Qwen3.8-27B-GGUF</a>, mais a retenção de qualidade medida pela comunidade (benchmark de perplexidade KL divulgado no r/LocalLLM em 18/08):</p>
+    <table>
+        <tr><th>Quantização</th><th>Tamanho (medido)</th><th>Qualidade retida</th><th>Cabe em 16GB?</th></tr>
+        <tr><td>UD-IQ2_M</td><td>10,32 GB</td><td>~92–93%</td><td>Sim, com folga (contexto 128K+)</td></tr>
+        <tr><td>UD-Q2_K_XL</td><td>10,68 GB</td><td>~93%</td><td>Sim, com folga</td></tr>
+        <tr><td>UD-Q3_K_XL</td><td>13,44 GB</td><td>97,8%</td><td>Sim — sobra ~1–1,5 GB para contexto</td></tr>
+        <tr class="highlight"><td><strong>IQ4_XS</strong></td><td><strong>15,71 GB</strong></td><td><strong>98,5%</strong></td><td><strong>Sim, no limite — contexto 8–16K</strong></td></tr>
+        <tr><td>Q4_K_M</td><td>17,11 GB</td><td>~99%</td><td>Não inteiro — exige offload parcial ou RAM</td></tr>
+    </table>
+    <p><em>Fontes: tamanhos medidos via HF API (18/08/2026); retenção de qualidade do benchmark da comunidade r/LocalLLM ("I benchmarked every Qwen 3.8 27B quant that fits in 16GB VRAM", 18/08/2026 — IQ4_XS 98,5%, UD-Q3_K_XL 97,8%, ppl KL 7,0615 vs 7,1113).</em></p>
+    <div class="callout">
+        <strong>Como ler a tabela:</strong> a diferença de qualidade entre IQ4_XS e UD-Q3_K_XL é pequena (98,5% vs 97,8%), mas a diferença de espaço é 2,27 GB — que em 16GB é o equivalente a dezenas de milhares de tokens de contexto. A decisão é sempre <strong>qualidade máxima vs. contexto máximo</strong>, e a arquitetura híbrida do modelo torna o contexto surpreendentemente barato.
+    </div>
+    <div class="callout-warn">
+        <strong>Cuidado com o mmproj:</strong> o encoder de visão (0,93 GB) é baixado automaticamente pelo <code>-hf</code>. Se você não vai passar imagens para o modelo, adicione <code>--no-mmproj</code> e recupere quase 1 GB — em 16GB, isso é o contexto inteiro de uma sessão.
+    </div>
+
+    <h2 id="comandos">Comandos prontos do llama-server</h2>
+    <p>Três presets testados contra a matemática acima. Todos assumem build atual do llama.cpp (as flags de speculative decoding e KV cache quantizado exigem versão recente) e CUDA para NVIDIA:</p>
+
+    <h3>Preset A — Máxima qualidade que cabe inteira (IQ4_XS)</h3>
+    <pre><code>llama-server -hf unsloth/Qwen3.8-27B-GGUF:IQ4_XS \
+  --ctx-size 16384 --n-gpu-layers 99 \
+  --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on \
+  --spec-type ngram-simple --no-mmproj \
+  --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    <p>15,71 GB de pesos + ~1 GB de sistema deixam pouco mais de 1 GB de margem — com KV q8_0, isso comporta o <code>--ctx-size 16384</code> com folga. Ideal para chat geral e código com arquivos pontuais. Os parâmetros de sampling são os recomendados pela Qwen para o modo thinking.</p>
+
+    <h3>Preset B — Contexto longo para código agêntico (UD-Q3_K_XL)</h3>
+    <pre><code>llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q3_K_XL \
+  --ctx-size 65536 --n-gpu-layers 99 \
+  --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on \
+  --spec-type ngram-simple --no-mmproj \
+  --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    <p>13,44 GB de pesos abrem ~2,5 GB para o KV cache — o suficiente para 64K de contexto quantizado, o formato de trabalho que usuários de coding agents reportaram em threads do r/LocalLLaMA após empurrar 1M+ de tokens pelo modelo (73K alocados em 16GB com Q4_K_M e técnica de offload parcial). Se o seu agente lê repositórios inteiros, é este preset.</p>
+
+    <h3>Preset C — Q4_K_M com offload parcial (para quem insiste no Q4)</h3>
+    <pre><code>llama-server -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_M \
+  --ctx-size 32768 --n-gpu-layers 54 \
+  --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on \
+  --spec-type ngram-simple --no-mmproj</code></pre>
+    <p>O Q4_K_M (17,11 GB) não cabe inteiro. A saída da comunidade: descarregar ~10 das 64 camadas para a RAM do sistema (<code>--n-gpu-layers 54</code> ajuste fino no seu setup). Você mantém ~20 t/s porque as camadas restantes na CPU são as mais baratas — mas espere queda em prompt processing. Comece em 54 e suba até a VRAM estourar; recue 2 camadas.</p>
+
+    <h2 id="kv-cache">Alavanca 1: KV cache quantizado (dobre seu contexto)</h2>
+    <p>O KV cache padrão é f16. O llama.cpp permite quantizá-lo para <code>q8_0</code> — metade do tamanho, perda imperceptível:</p>
+    <pre><code>--cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on</code></pre>
+    <p>Três pontos que o README oficial do llama.cpp deixa claro e que ninguém conta em tutorial:</p>
+    <ul>
+        <li><strong>V quantizado exige flash attention.</strong> Sem <code>--flash-attn on</code> (ou o modo auto ativando), o <code>--cache-type-v</code> não funciona — por isso as duas flags andam sempre juntas.</li>
+        <li><strong>K e V aceitam tipos diferentes</strong> (ex.: K em q8_0, V em q4_0). Se precisar espremer mais contexto, K aguenta q8_0 e V q4_0 com degradação ainda pequena.</li>
+        <li><strong>Valores aceitos:</strong> f32, f16, bf16, q8_0, q4_0, q4_1, iq4_nl, q5_0, q5_1 — para K e V, no modelo principal e no drafter (<code>-ctkd</code>/<code>-ctvd</code>).</li>
+    </ul>
+    <p>Na prática: dobra o contexto disponível sem tocar na quantização do modelo. É a primeira alavanca a puxar antes de descer de IQ4_XS para Q3.</p>
+
+    <h2 id="spec-decoding">Alavanca 2: speculative decoding n-gram (velocidade grátis)</h2>
+    <p>Speculative decoding clássico usa um modelo drafter menor propondo tokens que o modelo grande valida. Custo: um GGUF extra na VRAM — que em 16GB você não tem. A alternativa do llama.cpp atual, e o motivo dos guias "100% VRAM offload + n-gram" em destaque no r/LocalLLaMA:</p>
+    <pre><code>--spec-type ngram-simple</code></pre>
+    <p>Sem drafter, sem VRAM extra. O mecanismo indexa n-grams do próprio prompt e do cache gerado e os usa como rascunho — o modelo principal só valida. Onde brilha:</p>
+    <ul>
+        <li><strong>Código:</strong> repetição de padrões (imports, boilerplate, fechamento de blocos) faz a taxa de aceitação subir muito. É a carga onde a comunidade reporta os maiores ganhos.</li>
+        <li><strong>Textos estruturados:</strong> JSON, YAML, markdown tabular.</li>
+        <li><strong>Prosa criativa livre:</strong> ganho pequeno ou nulo — rascunhos são rejeitados e o custo do chute morre no validador.</li>
+    </ul>
+    <p>Variantes disponíveis no <code>--spec-type</code>: <code>ngram-simple</code> (N=12 de lookup, M=48 de draft — padrões ajustáveis via <code>--spec-ngram-simple-size-n/-size-m</code>), <code>ngram-map-k</code>, <code>ngram-map-k4v</code>, <code>ngram-mod</code>, <code>ngram-cache</code>. Se você não quer experimentar, comece no <code>ngram-simple</code> padrão — é o que os guias da comunidade usam.</p>
+    <div class="callout">
+        <strong>Referência de ganho:</strong> o modelo vizinho Muse Glimmer 30B com drafter dedicado (DFlash, 1,63 GB) chega a 3,1× na RTX 5090. N-gram não chega lá, mas é o único speculative decoding que custa zero GB — em 16GB, "de graça e 1,3–2× em código" ganha de "caro e 3×".
+    </div>
+
+    <h2 id="velocidade">O que esperar em t/s (números reais)</h2>
+    <p>Throughput depende de quant, contexto ocupado e geração de prompt — mas estes são os números publicados pela comunidade nas primeiras 96h após o lançamento dos pesos, para GPU de 16GB com 100% de offload:</p>
+    <table>
+        <tr><th>Setup (GPU 16GB)</th><th>Quant</th><th>Contexto alocado</th><th>Geração</th></tr>
+        <tr class="highlight"><td>RTX 4070 Ti Super</td><td>Q4_K_M (offload parcial)</td><td>130K</td><td>~20 t/s</td></tr>
+        <tr><td>RTX 4070 Ti Super</td><td>IQ4_XS / UD-Q3_K_XL (100% GPU)</td><td>16K–64K</td><td>~20–25 t/s + boost n-gram</td></tr>
+        <tr><td>2× RTX 5060 Ti (32GB)</td><td>Q4_K_M inteiro</td><td>32K+</td><td>~25–30 t/s</td></tr>
+    </table>
+    <p><em>Fontes: threads do r/LocalLLaMA e r/LocalLLM de 15–18/08/2026 (links na seção de fontes do portal). Números de comunidade, não medições de laboratório — trate como ordem de grandeza e meça no seu hardware.</em></p>
+    <p>Para referência de teto: no Strix Halo (Radeon 8060S, 128GB unificados) medimos 10,6 tok/s no Q5_K_M via Ollama/Vulkan — GPU dedicada de 16GB bate esse número com metade do modelo em bits. E o t/s cai conforme o contexto enche: com 60K+ de tokens em cache, espere queda de 20–30% na geração.</p>
+
+    <h2 id="erros">Erros comuns e como resolver</h2>
+    <ul>
+        <li><strong>"CUDA error: out of memory" no carregamento:</strong> a quant não cabe. Desça um nível (Q4_K_M → IQ4_XS → UD-Q3_K_XL) ou reduza <code>--n-gpu-layers</code>. Cada camada retirada devolve ~0,2 GB.</li>
+        <li><strong>Estoura a VRAM depois de minutos de uso:</strong> é o KV cache crescendo com o contexto. Diminua o <code>--ctx-size</code> ou quantize o cache (q8_0). Lembre que <code>--ctx-size</code> aloca o máximo no boot — não é um teto flexível.</li>
+        <li><strong>Velocidade caiu muito com contexto cheio:</strong> normal (atenção sobre mais tokens). Se for crítico, prefere preset B com Q3 e mais margem de cache.</li>
+        <li><strong>Flag não reconhecida (<code>--spec-type</code>, <code>--cache-type-v</code>):</strong> build antigo do llama.cpp. Reconstrua da master — speculative decoding n-gram e V-quant exigem versão recente.</li>
+        <li><strong>Qualidade estranha em português:</strong> confira se está no sampling recomendado (temp 1,0 / top-p 0,95 / top-k 20 para thinking; temp 0,7 / top-p 0,80 para instruct). Não é a quant.</li>
+    </ul>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B roda em 16GB de VRAM?</h3>
+        <p>Sim. IQ4_XS (15,71 GB) cabe inteiro com contexto curto; UD-Q3_K_XL (13,44 GB) cabe com 64K+ de contexto; Q4_K_M (17,11 GB) exige offload parcial de ~10 camadas para a RAM. Todos com ~20 t/s numa 4070 Ti Super.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual quantização escolher para 16GB?</h3>
+        <p>IQ4_XS para máxima qualidade que cabe inteira (98,5% de retenção); UD-Q3_K_XL (97,8%) quando contexto longo para agentes importa mais que o último meio ponto de qualidade; Q4_K_M só com offload parcial.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quantos tokens/s em 16GB?</h3>
+        <p>~20 t/s de geração com Q4_K_M e 130K alocados na RTX 4070 Ti Super (relato da comunidade). Com 100% na GPU em IQ4_XS/Q3 e speculative decoding n-gram em código, espere 20–25 t/s com picos acima.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O que é speculative decoding n-gram?</h3>
+        <p>Aceleração sem modelo drafter: o llama.cpp propõe rascunhos a partir de n-grams do próprio prompt/cache e o modelo só valida. Zero VRAM extra, ganho real em código e texto estruturado. Ative com <code>--spec-type ngram-simple</code>.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Como o contexto cabe junto com o modelo?</h3>
+        <p>Duas coisas: a arquitetura híbrida do Qwen3.8 (só ¼ das camadas usa atenção completa, o KV cache é leve) e a quantização do KV cache para q8_0, que dobra o contexto no mesmo espaço. Sem essas duas, 16GB comportaria muito menos.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Vale a pena 16GB em 2026 ou já compenso pra 24GB?</h3>
+        <p>Para o Qwen3.8-27B, 16GB roda bem com as configs deste guia. Mas 24GB (3090 usada, 4090, 5090) elimina o trade-off: Q4_K_XL inteiro + mmproj + 32K de contexto com folga — veja os tiers no <a href="/guia/hardware-local">guia de hardware</a>.</p>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — Qwen3.8-27B em 16GB de VRAM | Tamanhos medidos via Hugging Face API (18/08/2026, repositório Unsloth); flags verificadas no README oficial do llama.cpp; throughput = relatos da comunidade r/LocalLLaMA e r/LocalLLM (15–18/08/2026).</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
