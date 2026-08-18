@@ -25,6 +25,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - RTX 3090 com llama.cpp (UD-Q4_K_XL): 41,5 tok/s de decode no Qwen3.8-27B (InsiderLLM, llama-bench, 3.8≈3.6 no mesmo setup).
 - RTX 3060 12GB: ~9,7 tok/s no Qwen3.8-27B Q4_K_S com 96K de contexto — offload FFN de 46 camadas + KV cache Q4_0 + MTP (HF discussion #61, comunidade).
 - MTP no llama.cpp: 7,16 → 10,47 tok/s num MacBook M5 24GB (1,46×); suporte merged via PR #22673 (verificado 18/08).
+- Qwen3.8-27B: 52 no Artificial Analysis Intelligence Index v4.1.1 — mesmo score do GPT-5.6 Luna (max), 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e #1 entre 135 open weights de até 40B; medido com reasoning ligado e 160M tokens de saída no índice (mediana da classe: 43M) (Artificial Analysis, verificado 18/08/2026).
 - MiniMax Music3 não é um modelo de 2,4B: soma ~11,1B — Global LLM 8B (init Qwen3-8B) + Local LLM 0,6B + Flow Matching 2,4B + Flow-VAE 123M; ~22 GB de pesos em bf16 (model card + tree HF API).
 - Music3 em VRAM: ~23 GB full bf16 / ~22 GB com CPU offload / 8 GB com group offloading leaf_level + use_stream (docs oficiais diffusers).
 - Music3 gera músicas completas de até 5 min com vocal; 25 frames de áudio por segundo (750 tokens ≈ 30s); Community License permite uso comercial com atribuição e autorização só acima de US$ 20 mi/ano (model card + LICENSE + cookbook SGLang).
@@ -48,6 +49,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
 - [Como rodar localmente](https://qwen38-27b-landing.vercel.app/guia/como-rodar) — Ollama, llama.cpp, vLLM, HuggingFace, MLX
 - [SGLang + FP8 oficial](https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b) — tutorial completo do servidor SGLang com o checkpoint Qwen3.8-27B-FP8 (30,89 GB): instalação uv/Docker, flags de contexto, MTP via EAGLE, benchmark bench_serving e quando SGLang × llama.cpp/Ollama; 206,1 tok/s na RTX 5090
+- [Qwen3.8-27B no Artificial Analysis](https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis) — 52 no Artificial Analysis Intelligence Index (verificado 18/08/2026): o que o índice independente mede (9 avaliações, v4.1.1), placar ao vivo vs GPT-5.6 Luna/DeepSeek V4 Pro/GLM-5.3, #1 entre open weights ≤40B, o preço escondido (160M tokens de verbosidade) e o que o dado não diz
 - [Comunidade e casos de uso](https://qwen38-27b-landing.vercel.app/guia/comunidade-casos-uso) — reações do Hacker News, r/LocalLLaMA e X
 - [FAQ](https://qwen38-27b-landing.vercel.app/guia/faq) — perguntas frequentes
 
@@ -94,7 +96,10 @@ Não: com temperature 0 o thinking mode entra em loop repetitivo. As configuraç
 Tecnicamente sim, via llama.cpp, mas o throughput fica em 1–3 tok/s — inviável para uso interativo; só vale para teste ou em servidor com 64 GB ou mais de RAM. Fonte: testes com llama.cpp relatados no portal e na comunidade.
 
 ### Os benchmarks do Qwen3.8-27B são verificados independentemente?
-Não: os 26 benchmarks são reportados pela própria Qwen no model card oficial, e as colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do mesmo documento — servem como ordem de grandeza, não como comparação controlada. Fonte: model card oficial.
+Os 26 benchmarks do model card não — são reportados pela própria Qwen, e as colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do mesmo documento. Mas existe verificação independente: o Artificial Analysis Intelligence Index (v4.1.1) pontua o Qwen3.8 27B em 52 — mesmo score do GPT-5.6 Luna (max), 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e #1 entre 135 open weights de até 40B (verificado em 18/08/2026). Fonte: artificialanalysis.ai/models/qwen3-8-27b. Análise completa em /guia/qwen3-8-27b-benchmark-artificial-analysis.
+
+### Qual o score do Qwen3.8-27B no Artificial Analysis Intelligence Index?
+52 na v4.1.1 do índice (verificado em 18/08/2026): mesmo score do GPT-5.6 Luna (max) e 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e do GLM-5.2; #1 entre os 135 open weights de até 40B (mediana da classe: 9). O score é da versão com reasoning ligado — e o custo aparece na verbosidade: 160M tokens de saída no índice contra mediana de 43M. Fonte: artificialanalysis.ai/models/qwen3-8-27b + post Simon Willison 17/08/2026. Análise: /guia/qwen3-8-27b-benchmark-artificial-analysis.
 
 ### Quando o Qwen3.8-27B foi lançado?
 14 de agosto de 2026, no Hugging Face (Qwen/Qwen3.8-27B), 11 dias depois do anúncio da família (Qwen3.8-Max via API, em 3 de agosto); as quantizações GGUF da Unsloth ficaram disponíveis no mesmo dia. Fonte: Hugging Face + blog oficial da Qwen.

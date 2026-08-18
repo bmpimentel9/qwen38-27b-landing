@@ -9,6 +9,36 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-18] — Artigo: Qwen3.8-27B no Artificial Analysis (52 no AAII)
+
+### Added
+- **Artigo "Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz
+  (e o que não diz)"**
+  (`guia/qwen3-8-27b-benchmark-artificial-analysis/`, task kanban `t_adedfbd2`,
+  tema prioritário do daily 18/08): primeira cobertura do Artificial Analysis
+  Intelligence Index no portal (gap: 0 menções a AAII antes deste artigo).
+  Placar ao vivo lido do payload da página do modelo (18/08 19h45): Qwen 52,0 ·
+  GPT-5.6 Luna (max) 52,3 · DeepSeek V4 Pro 0813 53,2 · GPT-5.6 Sol/Grok 4,6
+  60,9 · Kimi K3 59,7 · GLM-5.3 59,5 · Nemotron 3 Ultra 38,3. Dados inéditos
+  capturados: #1 entre 135 open weights ≤40B (mediana da classe: 9),
+  verbosidade 160M tokens vs mediana 43M (evidência do overthinking medida
+  pela própria AA), custo por tarefa do índice (Luna US$ 0,047 · DeepSeek
+  US$ 0,252 · Qwen self-host US$ 0,00), metodologia v4.1.1 (9 avaliações
+  listadas). Seção "o que o dado NÃO diz": score é COM reasoning, não vale
+  para quantização local, índice agregado ≠ caso de uso, empate com Luna é
+  sobre o agregado. Contexto 2.4T-A95B como parágrafo (não tema). FAQPage
+  JSON-LD (6 perguntas) + TechArticle + SoftwareApplication/AIModel (ADR-008)
+  + Breadcrumb; GA4 com scroll_depth. Re-verificações do dia: post Simon
+  17/08 relido; HN story AAII agora com 371 pontos/174 comentários (eram
+  349); página AAII re-capturada (score 52 inalterado).
+  - Sitemap (22 URLs), llms.txt (stat citável + página + 2 Q&As: score AAII e
+    "benchmarks verificados independentemente" reescrita com a ressalva AAII),
+    card no `/guia` (tag-bench, MOFU · Novo 18/08).
+
+---
+
+---
+
 ## [2026-08-18] — Artigo: Tokens por segundo no hardware real (throughput compilado)
 
 ### Added
