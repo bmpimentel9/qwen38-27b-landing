@@ -62,7 +62,7 @@
           "name": "O que é o Qwen3.8-27B?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Um modelo de linguagem de pesos abertos (licença Apache 2.0) desenvolvido pela equipe Qwen (Alibaba Cloud). É um modelo denso de 27 bilhões de parâmetros — todos ativos a cada token. Tem atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Foi lançado em 14 de agosto de 2026."
+            "text": "O Qwen3.8-27B é um modelo de linguagem denso de 27 bilhões de parâmetros, de pesos abertos (licença Apache 2.0), lançado pela equipe Qwen (Alibaba Cloud) em 14 de agosto de 2026. Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -70,7 +70,7 @@
           "name": "Qual a diferença entre denso e MoE?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Modelo denso ativa todos os parâmetros a cada token (maior qualidade por parâmetro, menor velocidade). Modelo MoE (Mixture of Experts) ativa apenas uma fração dos parâmetros. O Qwen3.8-27B é denso; o Qwen3.6-35B da geração anterior é MoE (ativa ~3B de 35B). No mesmo hardware, o MoE entrega 5,3× mais tokens/s."
+            "text": "Modelo denso ativa todos os parâmetros a cada token; MoE ativa só uma fração — o Qwen3.8-27B é denso (27B ativos por token) e o Qwen3.6-35B é MoE (~3B ativos de 35B), 5,3× mais rápido no mesmo hardware. Fonte: medição própria do portal + model cards oficiais."
           }
         },
         {
@@ -78,7 +78,7 @@
           "name": "O que é atenção híbrida?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Um padrão que intercala 3 camadas de Gated DeltaNet linear (eficiente para contexto longo) com 1 camada de Gated Attention (raciocínio completo), repetido 16 vezes ao longo de 64 camadas. Isso permite processar 262K tokens sem estourar a memória com KV cache."
+            "text": "O Qwen3.8-27B intercala 3 camadas de Gated DeltaNet linear com 1 camada de Gated Attention — padrão repetido 16 vezes ao longo de 64 camadas —, o que permite processar os 262.144 tokens de contexto nativo sem estourar a memória de KV cache. Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -86,7 +86,7 @@
           "name": "O que é multimodalidade nativa?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A torre de visão é nativa, não um adaptador adicionado depois. O modelo entende imagens, vídeos e documentos sem componentes adicionais. Benchmarks confirmam: MathVision 94,6 (matemática a partir de imagens), OmniDocBench 91,1 (leitura de documentos), CharXiv 90,2 (gráficos científicos)."
+            "text": "A torre de visão é nativa, não um adaptador adicionado depois: o modelo entende imagens, vídeos e documentos sem componentes adicionais, com 94,6 no MathVision e 91,1 no OmniDocBench 1.5. Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -94,7 +94,23 @@
           "name": "Quanto de VRAM o Qwen3.8-27B precisa?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Depende da quantização: GGUF 4 bits (Q4_K_M) ~14–17 GB — RTX 4090/5090, Strix Halo, Mac 32GB+; GGUF 5 bits (Q5_K_M) ~18–19 GB; GGUF 8 bits / FP8 ~27 GB — RTX 5090 32GB, 2× 3090; BF16 (sem perdas) ~54 GB — A100/H100 80GB; NVFP4 (Blackwell) 24,6 GiB — 1M de contexto em GPU única."
+            "text": "Depende da quantização: o mínimo prático é 17,11 GB em 4 bits (Q4_K_M); 5 bits (Q5_K_M) mede 19,83 GB, 8 bits ocupa cerca de 27 GB e BF16 chega a 54 GB. Fonte: tabela GGUF medida via Hugging Face API (15/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Qwen3.8-27B roda em RTX 3060 de 12 GB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Roda, com sacrifício: o GGUF mais leve (UD-IQ2_M) ocupa 10,32 GB e cabe nos 12 GB da RTX 3060, mas sobra pouco espaço para o KV cache — contexto curto é obrigatório — e a qualidade cai frente ao 4 bits. O ponto confortável é o Q4_K_M de 17,11 GB, que exige GPU de 24 GB. Fonte: tabela GGUF medida via Hugging Face API (15/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Qwen3.8-27B roda em GPU de 16GB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Roda no limite: o IQ4_XS ocupa 15,71 GB — o maior quant 4-bit que cabe em 16 GB — apenas em modo texto, com KV cache quantizado e contexto curto; o mmproj de visão (+0,93 GB) não cabe junto. Fonte: tabela GGUF medida via Hugging Face API (17/08/2026) + relatos da comunidade r/LocalLLaMA."
           }
         },
         {
@@ -102,7 +118,7 @@
           "name": "O Qwen3.8-27B roda em RTX 3090?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Sim. A RTX 3090 tem 24GB de VRAM, suficiente para Q4_K_M (~17GB) com folga para KV cache. É o melhor custo-benefício para LLMs locais em 2026 — usada por ~R$ 3.500–4.500."
+            "text": "Sim: a RTX 3090 tem 24 GB de VRAM, suficiente para o Q4_K_M de 17,11 GB com folga para o KV cache. Fonte: tabela GGUF medida via Hugging Face API (15/08/2026)."
           }
         },
         {
@@ -110,7 +126,7 @@
           "name": "O Qwen3.8-27B roda no Mac?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Sim. Macs com Apple Silicon e 32GB+ de memória unificada rodam o Qwen3.8-27B via Ollama MLX (ollama run qwen3.8:27b-mlx) ou mlx-lm. MacBook Pro M4 Max (36/48GB), Mac Studio M2 Max (64GB) e Mac Studio M2 Ultra (128GB) são os recomendados."
+            "text": "Sim: Macs com Apple Silicon e 32 GB ou mais de memória unificada rodam o modelo via Ollama MLX (ollama run qwen3.8:27b-mlx) ou mlx-lm. Fonte: documentação Ollama/MLX + model card oficial."
           }
         },
         {
@@ -118,7 +134,7 @@
           "name": "Consigo rodar sem placa de vídeo (CPU only)?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Tecnicamente sim via llama.cpp, mas o throughput é de ~1–3 tokens/s — inviável para uso interativo. Considere apenas para testes ou com um servidor com 64GB+ de RAM."
+            "text": "Tecnicamente sim, via llama.cpp, mas o throughput fica em 1–3 tok/s — inviável para uso interativo. Fonte: testes com llama.cpp relatados no portal e na comunidade."
           }
         },
         {
@@ -126,7 +142,7 @@
           "name": "Qual a velocidade do Qwen3.8-27B localmente?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Depende do hardware e quantização. Em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan, Q5_K_M: 10,6 tok/s de decode. Um relato no Hacker News cita ~700 tok/s de prefill e ~30 tok/s de decode em hardware semelhante. Modelo denso é mais lento que MoE: o Qwen3.6-35B MoE entrega 56,6 tok/s no mesmo hardware — 5,3× mais rápido."
+            "text": "No Strix Halo (ASUS ROG Flow Z13, Radeon 8060S, 128 GB unificados) com Ollama sobre Vulkan, o Q5_K_M entrega 10,6 tok/s de decode; o Qwen3.6-35B MoE entrega 56,6 tok/s no mesmo hardware — 5,3× mais. Fonte: medição própria do portal (Strix Halo, Ollama/Vulkan)."
           }
         },
         {
@@ -134,7 +150,7 @@
           "name": "O que é thinking mode?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "O Qwen3.8-27B tem dois modos: Thinking (padrão, com raciocínio passo a passo visível) e Instruct (resposta direta sem raciocínio explícito). O thinking mode é controlado por reasoning_effort (xhigh, medium, low) e preserve_thinking (mantém contexto de raciocínio entre mensagens, ativo por padrão)."
+            "text": "O Qwen3.8-27B tem dois modos: Thinking (padrão, com raciocínio passo a passo visível) e Instruct (resposta direta, sem raciocínio explícito). Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -142,7 +158,7 @@
           "name": "Como configurar sampling corretamente?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Thinking: temp 1.0, top_p 0.95, top_k 20. Instruct: temp 0.7, top_p 0.80, repetition_penalty 1.5. Nunca use temperature=0 no thinking mode — o modelo entra em loop repetitivo."
+            "text": "As configurações oficiais são Thinking com temp 1,0 / top_p 0,95 / top_k 20 e Instruct com temp 0,7 / top_p 0,80 / repetition_penalty 1,5; temperature 0 faz o thinking mode entrar em loop repetitivo. Fonte: model card oficial (configurações de sampling)."
           }
         },
         {
@@ -150,7 +166,7 @@
           "name": "Como instalar o Qwen3.8-27B via Ollama?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Um comando puxa o modelo quantizado (18GB, 256K contexto, texto + imagem): ollama run qwen3.8:27b."
+            "text": "ollama run qwen3.8:27b — um único comando puxa o modelo quantizado de 18 GB, com 256K de contexto e suporte a texto e imagem. Fonte: biblioteca oficial Ollama (ollama.com/library/qwen3.8)."
           }
         },
         {
@@ -158,7 +174,7 @@
           "name": "Como rodar via llama.cpp?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144 --temp 1.0 --top-p 0.95 --top-k 20."
+            "text": "No llama.cpp, rode a GGUF Q4_K_XL da Unsloth com contexto de 262.144 tokens e o sampling do model card: temp 1,0, top_p 0,95, top_k 20. Fonte: documentação oficial llama.cpp/Unsloth e vLLM."
           }
         },
         {
@@ -166,7 +182,7 @@
           "name": "Como rodar via vLLM?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3. Requer vLLM ≥ 0.27.2."
+            "text": "No vLLM (versão 0.27.2 ou superior), sirva o modelo com --max-model-len 262144 e --reasoning-parser qwen3. Fonte: documentação oficial llama.cpp/Unsloth e vLLM."
           }
         },
         {
@@ -174,7 +190,7 @@
           "name": "Qual a licença do Qwen3.8-27B?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Apache 2.0 — permite uso comercial e modificação sem restrições. É uma das licenças mais permissivas do ecossistema de LLMs."
+            "text": "Apache 2.0: pesos abertos, uso comercial e modificação permitidos, sem restrições. Fonte: repositório oficial no Hugging Face (Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -182,7 +198,7 @@
           "name": "Quando o Qwen3.8-27B foi lançado?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Os pesos foram liberados em 14 de agosto de 2026 no Hugging Face (Qwen/Qwen3.8-27B). O anúncio da família Qwen3.8 ocorreu em 3 de agosto (Qwen3.8-Max via API); 11 dias depois os pesos do 27B foram publicados. Quantizações GGUF da Unsloth estavam disponíveis no mesmo dia."
+            "text": "Os pesos foram liberados em 14 de agosto de 2026 no Hugging Face (Qwen/Qwen3.8-27B), 11 dias depois do anúncio da família, em 3 de agosto. Fonte: Hugging Face + blog oficial da Qwen."
           }
         },
         {
@@ -190,7 +206,7 @@
           "name": "Qual a família Qwen3.8?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Qwen3.8-27B — 27B denso, este modelo (pesos abertos, Apache 2.0); Qwen3.8-2.4T-A95B — 2,4T MoE, ~95B ativos; Qwen3.8-Max — flagship, API apenas."
+            "text": "A família tem três modelos: Qwen3.8-27B (27B denso, pesos abertos, Apache 2.0), Qwen3.8-2.4T-A95B (2,4T MoE, ~95B ativos) e Qwen3.8-Max (flagship, apenas via API). Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -198,7 +214,7 @@
           "name": "O Qwen3.8-27B fala português?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Sim. Como modelo multilíngue treinado pela Qwen, o Qwen3.8-27B compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. A qualidade em português é boa para conversação, programação e análise de documentos."
+            "text": "Sim: o Qwen3.8-27B é multilíngue, compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -206,7 +222,15 @@
           "name": "Qwen3.8-27B vs Qwen3.6-35B (MoE): qual escolher?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Qwen3.8-27B (denso): melhor qualidade por parâmetro, melhor em agentes (OSWorld 84,3 vs 63,9) — escolha para raciocínio agêntico de horizonte longo. Qwen3.6-35B (MoE): 5,3× mais rápido no mesmo hardware (56,6 vs 10,6 tok/s) — escolha para conversa contínua e uso interativo fluido."
+            "text": "O denso dá mais qualidade por parâmetro e vence em agentes (OSWorld 84,3 vs 63,9); o MoE é 5,3× mais rápido no mesmo hardware (56,6 vs 10,6 tok/s). Fonte: medição própria do portal + model cards oficiais."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qwen3.8-27B ou Muse Glimmer 30B para agentes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não há comparação head-to-head oficial entre os dois; nos 4 benchmarks comuns aos model cards, o Qwen3.8-27B leva: SWE-Bench Pro 61,7 vs 51,2; OSWorld-Verified 84,3 vs 65,9; GPQA Diamond 89,2 vs 83,5; IFBench 79,5 vs 77,0. O Muse Glimmer 30B é propósito-construído para agentes always-on (tool calling MCP nativo e drafter DFlash, que acelera a inferência 3,1× na RTX 5090) e ocupa menos em 4 bits: 15,88 GB contra 17,92 GB. Fonte: model cards oficiais Qwen e Meta."
           }
         },
         {
@@ -214,7 +238,7 @@
           "name": "Qwen3.8-27B vs GPT-OSS-20B?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "O Qwen3.8-27B tem contexto nativo 2× maior (262K vs 128K), multimodalidade nativa, thinking mode e 26 benchmarks publicados. O GPT-OSS-20B é menor e mais rápido (20B total, ~3,6B ativos). Para raciocínio agêntico e contexto longo, o Qwen3.8-27B é superior."
+            "text": "O Qwen3.8-27B tem contexto nativo 2× maior (262.144 vs 128K tokens), multimodalidade nativa e thinking mode; o GPT-OSS-20B é menor e mais rápido (20B totais, ~3,6B ativos). Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -222,7 +246,7 @@
           "name": "Qwen3.8-27B vs ChatGPT: qual é melhor?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Em benchmarks agênticos, o Qwen3.8-27B supera as referências do próprio model card: OSWorld 84,3 (vs Opus 4.6 Max 72,7 e Qwen3.7-Plus 73,3), CoWorkBench 70,7 (vs 68,2). Em conhecimento geral, fica a poucos pontos da fronteira (GPQA 89,2 vs 91,3). A vantagem do Qwen3.8-27B é rodar localmente, com privacidade total e sem custo de API."
+            "text": "Em benchmarks agênticos do model card, o Qwen3.8-27B supera as referências: OSWorld 84,3 contra 72,7 do Opus 4.6 Max e 73,3 do Qwen3.7-Plus; em conhecimento geral fica a poucos pontos da fronteira (GPQA 89,2 vs 91,3). Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         },
         {
@@ -230,7 +254,7 @@
           "name": "Os benchmarks são verificados independentemente?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Não. Todos os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card da Qwen — servem como ordem de grandeza, não como comparação controlada."
+            "text": "Não: os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
         }
       ]
@@ -290,32 +314,32 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <div class="faq-item">
         <h3>O que é o Qwen3.8-27B?</h3>
-        <p>O Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) desenvolvido pela equipe Qwen (Alibaba Cloud). É um modelo <strong>denso de 27 bilhões de parâmetros</strong> — todos ativos a cada token, ao contrário de MoE. Tem atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Foi lançado em 14 de agosto de 2026.</p>
+        <p>O Qwen3.8-27B é um modelo de linguagem <strong>denso de 27 bilhões de parâmetros</strong>, de pesos abertos (licença Apache 2.0), lançado pela equipe Qwen (Alibaba Cloud) em 14 de agosto de 2026 — todos ativos a cada token, ao contrário de MoE. Tem atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos).</p>
     </div>
 
     <div class="faq-item">
         <h3>Qual a diferença entre denso e MoE?</h3>
-        <p>Modelo <strong>denso</strong> ativa todos os parâmetros a cada token (maior qualidade por parâmetro, menor velocidade). Modelo <strong>MoE</strong> (Mixture of Experts) ativa apenas uma fração dos parâmetros (menor qualidade por token, maior velocidade). O Qwen3.8-27B é denso; o Qwen3.6-35B da geração anterior é MoE (ativa ~3B de 35B). No mesmo hardware, o MoE entrega 5,3× mais tokens/s.</p>
+        <p>Modelo <strong>denso</strong> ativa todos os parâmetros a cada token; <strong>MoE</strong> (Mixture of Experts) ativa só uma fração — o Qwen3.8-27B é denso (27B ativos por token) e o Qwen3.6-35B é MoE (~3B ativos de 35B), 5,3× mais rápido no mesmo hardware. Denso: maior qualidade por parâmetro, menor velocidade. MoE: menor qualidade por token, maior velocidade.</p>
     </div>
 
     <div class="faq-item">
         <h3>O que é atenção híbrida?</h3>
-        <p>O Qwen3.8-27B usa um padrão que intercala 3 camadas de Gated DeltaNet linear (eficiente para contexto longo) com 1 camada de Gated Attention (raciocínio completo), repetido 16 vezes ao longo de 64 camadas. Isso permite processar 262K tokens sem estourar a memória com KV cache.</p>
+        <p>O Qwen3.8-27B intercala 3 camadas de Gated DeltaNet linear com 1 camada de Gated Attention — padrão repetido 16 vezes ao longo de 64 camadas —, o que permite processar os 262.144 tokens de contexto nativo sem estourar a memória de KV cache. A Gated DeltaNet linear é eficiente para contexto longo; a Gated Attention dá raciocínio completo.</p>
     </div>
 
     <div class="faq-item">
         <h3>O que é multimodalidade nativa?</h3>
-        <p>A torre de visão é <strong>nativa</strong>, não um adaptador adicionado depois. O modelo entende imagens, vídeos e documentos sem componentes adicionais. Benchmarks confirmam: MathVision 94,6 (matemática a partir de imagens), OmniDocBench 91,1 (leitura de documentos), CharXiv 90,2 (gráficos científicos).</p>
+        <p>A torre de visão é <strong>nativa</strong>, não um adaptador adicionado depois: o modelo entende imagens, vídeos e documentos sem componentes adicionais, com 94,6 no MathVision (matemática a partir de imagens) e 91,1 no OmniDocBench 1.5 (leitura de documentos). Nos gráficos científicos, CharXiv 90,2.</p>
     </div>
 
     <h2 id="hardware">Hardware e VRAM</h2>
 
     <div class="faq-item">
         <h3>Quanto de VRAM o Qwen3.8-27B precisa?</h3>
-        <p>Depende da quantização:</p>
+        <p>Depende da quantização: o mínimo prático é 17,11 GB em 4 bits (Q4_K_M); 5 bits (Q5_K_M) mede 19,83 GB, 8 bits ocupa cerca de 27 GB e BF16 chega a 54 GB.</p>
         <ul>
-            <li><strong>GGUF 4 bits (Q4_K_M):</strong> ~14–17 GB — RTX 4090/5090, Strix Halo, Mac 32GB+</li>
-            <li><strong>GGUF 5 bits (Q5_K_M):</strong> ~18–19 GB</li>
+            <li><strong>GGUF 4 bits:</strong> 13,44 GB (Q3_K_XL) a 17,11 GB (Q4_K_M) — RTX 4090/5090, Strix Halo, Mac 32GB+</li>
+            <li><strong>GGUF 5 bits (Q5_K_M):</strong> 19,83 GB</li>
             <li><strong>GGUF 8 bits / FP8:</strong> ~27 GB — RTX 5090 32GB, 2× 3090</li>
             <li><strong>BF16 (sem perdas):</strong> ~54 GB — A100/H100 80GB</li>
             <li><strong>NVFP4 (Blackwell):</strong> 24,6 GiB — 1M de contexto em GPU única</li>
@@ -324,40 +348,51 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <div class="faq-item">
+        <h3>O Qwen3.8-27B roda em RTX 3060 de 12 GB?</h3>
+        <p>Roda, com sacrifício: o GGUF mais leve (UD-IQ2_M) ocupa 10,32 GB e cabe nos 12 GB da RTX 3060, mas sobra pouco espaço para o KV cache — contexto curto é obrigatório — e a qualidade cai frente ao 4 bits. O ponto confortável é o Q4_K_M de 17,11 GB, que exige GPU de 24 GB.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3 id="gpu-16gb">O Qwen3.8-27B roda em GPU de 16GB?</h3>
+        <p>Roda no limite: o IQ4_XS ocupa 15,71 GB — o maior quant 4-bit que cabe em 16 GB — apenas em modo texto, com KV cache quantizado e contexto curto; o mmproj de visão (+0,93 GB) não cabe junto.</p>
+        <p>Na prática, o que a comunidade usa em placas de 16 GB (RTX 5080 Laptop, RTX 5060 Ti) são quants menores — IQ3_XXS (11,92 GB) ou Q3_K_XL (13,44 GB) — com KV cache Q8_0 e speculative decoding MTP no llama.cpp; usuários do r/LocalLLaMA relatam 35–45 tok/s com KV cache q4_0 e ~100k de contexto (relato da comunidade, não medição do portal). Para velocidade em 16 GB, o MoE Qwen3.6-35B (~3B ativos) é a alternativa: 56,6 tok/s no Strix Halo contra 10,6 tok/s do 27B denso em Q5_K_M (medição própria). A tabela completa de GB medidos por quantização está no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu" style="color:var(--accent)">guia de quantização</a>.</p>
+    </div>
+
+    <div class="faq-item">
         <h3>O Qwen3.8-27B roda em RTX 3090?</h3>
-        <p>Sim. A RTX 3090 tem 24GB de VRAM, suficiente para Q4_K_M (~17GB) com folga para KV cache. É o melhor custo-benefício para LLMs locais em 2026 — usada por ~R$ 3.500–4.500.</p>
+        <p>Sim: a RTX 3090 tem 24 GB de VRAM, suficiente para o Q4_K_M de 17,11 GB com folga para o KV cache. É o melhor custo-benefício para LLMs locais em 2026 — usada por ~R$ 3.500–4.500.</p>
     </div>
 
     <div class="faq-item">
         <h3>O Qwen3.8-27B roda no Mac?</h3>
-        <p>Sim. Macs com Apple Silicon e 32GB+ de memória unificada rodam o Qwen3.8-27B via Ollama MLX (<code>ollama run qwen3.8:27b-mlx</code>) ou mlx-lm. MacBook Pro M4 Max (36/48GB), Mac Studio M2 Max (64GB) e Mac Studio M2 Ultra (128GB) são os recomendados.</p>
+        <p>Sim: Macs com Apple Silicon e 32 GB ou mais de memória unificada rodam o modelo via Ollama MLX (<code>ollama run qwen3.8:27b-mlx</code>) ou mlx-lm. MacBook Pro M4 Max (36/48GB), Mac Studio M2 Max (64GB) e Mac Studio M2 Ultra (128GB) são os recomendados.</p>
     </div>
 
     <div class="faq-item">
         <h3>Consigo rodar sem placa de vídeo (CPU only)?</h3>
-        <p>Tecnicamente sim via llama.cpp, mas o throughput é de ~1–3 tokens/s — inviável para uso interativo. Considere apenas para testes ou com um servidor com 64GB+ de RAM.</p>
+        <p>Tecnicamente sim, via llama.cpp, mas o throughput fica em 1–3 tok/s — inviável para uso interativo. Considere apenas para testes ou com um servidor com 64GB+ de RAM.</p>
     </div>
 
     <h2 id="performance">Performance e Velocidade</h2>
 
     <div class="faq-item">
         <h3>Qual a velocidade do Qwen3.8-27B localmente?</h3>
-        <p>Depende do hardware e quantização. Em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan, Q5_K_M: <strong>10,6 tok/s de decode</strong>. Um relato no Hacker News cita ~700 tok/s de prefill e ~30 tok/s de decode em hardware semelhante.</p>
-        <p>Modelo denso é mais lento que MoE: o Qwen3.6-35B MoE entrega 56,6 tok/s no mesmo hardware — 5,3× mais rápido. O 27B denso é melhor como especialista chamado sob demanda.</p>
+        <p>No Strix Halo (ASUS ROG Flow Z13, Radeon 8060S, 128 GB unificados) com Ollama sobre Vulkan, o Q5_K_M entrega <strong>10,6 tok/s de decode</strong>; o Qwen3.6-35B MoE entrega 56,6 tok/s no mesmo hardware — 5,3× mais.</p>
+        <p>Um relato no Hacker News cita ~700 tok/s de prefill e ~30 tok/s de decode em hardware semelhante. O 27B denso é melhor como especialista chamado sob demanda.</p>
     </div>
 
     <div class="faq-item">
         <h3>O que é thinking mode?</h3>
-        <p>O Qwen3.8-27B tem dois modos: <strong>Thinking</strong> (padrão, com raciocínio passo a passo visível) e <strong>Instruct</strong> (resposta direta sem raciocínio explícito). O thinking mode é controlado por <code>reasoning_effort</code> (xhigh, medium, low) e <code>preserve_thinking</code> (mantém contexto de raciocínio entre mensagens, ativo por padrão).</p>
+        <p>O Qwen3.8-27B tem dois modos: <strong>Thinking</strong> (padrão, com raciocínio passo a passo visível) e <strong>Instruct</strong> (resposta direta, sem raciocínio explícito). O thinking mode é controlado por <code>reasoning_effort</code> (xhigh, medium, low) e <code>preserve_thinking</code> (mantém contexto de raciocínio entre mensagens, ativo por padrão).</p>
     </div>
 
     <div class="faq-item">
         <h3>Como configurar sampling corretamente?</h3>
+        <p>As configurações oficiais são Thinking com temp 1,0 / top_p 0,95 / top_k 20 e Instruct com temp 0,7 / top_p 0,80 / repetition_penalty 1,5; temperature 0 faz o thinking mode entrar em loop repetitivo.</p>
         <ul>
             <li><strong>Thinking:</strong> temp 1.0, top_p 0.95, top_k 20</li>
             <li><strong>Instruct:</strong> temp 0.7, top_p 0.80, repetition_penalty 1.5</li>
         </ul>
-        <div class="callout" style="margin-top:10px"><strong>NUNCA use temperature=0 no thinking mode.</strong> O modelo entra em loop repetitivo.</div>
     </div>
 
     <h2 id="instalacao">Instalação e Uso</h2>
@@ -365,11 +400,12 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="faq-item">
         <h3>Como instalar o Qwen3.8-27B via Ollama?</h3>
         <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>ollama run qwen3.8:27b</code></pre>
-        <p>Um comando puxa o modelo quantizado (18GB, 256K contexto, texto + imagem). Para o guia completo, veja <a href="/guia/como-rodar" style="color:var(--accent)">como rodar o Qwen3.8-27B</a>.</p>
+        <p><code>ollama run qwen3.8:27b</code> — um único comando puxa o modelo quantizado de 18 GB, com 256K de contexto e suporte a texto e imagem. Para o guia completo, veja <a href="/guia/como-rodar" style="color:var(--accent)">como rodar o Qwen3.8-27B</a>.</p>
     </div>
 
     <div class="faq-item">
         <h3>Como rodar via llama.cpp?</h3>
+        <p>No llama.cpp, rode a GGUF Q4_K_XL da Unsloth com contexto de 262.144 tokens e o sampling do model card: temp 1,0, top_p 0,95, top_k 20.</p>
         <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL \
   --ctx-size 262144 \
   --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
@@ -377,26 +413,27 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <div class="faq-item">
         <h3>Como rodar via vLLM?</h3>
+        <p>No vLLM (versão 0.27.2 ou superior), sirva o modelo com <code>--max-model-len 262144</code> e <code>--reasoning-parser qwen3</code>.</p>
         <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>vllm serve Qwen/Qwen3.8-27B \
   --max-model-len 262144 \
   --reasoning-parser qwen3</code></pre>
-        <p>Requer vLLM ≥ 0.27.2.</p>
     </div>
 
     <h2 id="modelo">Sobre o Modelo</h2>
 
     <div class="faq-item">
         <h3>Qual a licença do Qwen3.8-27B?</h3>
-        <p><strong>Apache 2.0</strong> — permite uso comercial e modificação sem restrições. É uma das licenças mais permissivas do ecossistema de LLMs.</p>
+        <p><strong>Apache 2.0</strong>: pesos abertos, uso comercial e modificação permitidos, sem restrições. É uma das licenças mais permissivas do ecossistema de LLMs.</p>
     </div>
 
     <div class="faq-item">
         <h3>Quando o Qwen3.8-27B foi lançado?</h3>
-        <p>Os pesos foram liberados em <strong>14 de agosto de 2026</strong> no Hugging Face (Qwen/Qwen3.8-27B). O anúncio da família Qwen3.8 ocorreu em 3 de agosto (Qwen3.8-Max via API); 11 dias depois os pesos do 27B foram publicados. Quantizações GGUF da Unsloth estavam disponíveis no mesmo dia.</p>
+        <p>Os pesos foram liberados em <strong>14 de agosto de 2026</strong> no Hugging Face (Qwen/Qwen3.8-27B), 11 dias depois do anúncio da família (Qwen3.8-Max via API), em 3 de agosto. Quantizações GGUF da Unsloth estavam disponíveis no mesmo dia.</p>
     </div>
 
     <div class="faq-item">
         <h3>Qual a família Qwen3.8?</h3>
+        <p>A família tem três modelos: Qwen3.8-27B (27B denso, pesos abertos, Apache 2.0), Qwen3.8-2.4T-A95B (2,4T MoE, ~95B ativos) e Qwen3.8-Max (flagship, apenas via API).</p>
         <ul>
             <li><strong>Qwen3.8-27B</strong> — 27B denso · este modelo (pesos abertos, Apache 2.0)</li>
             <li><strong>Qwen3.8-2.4T-A95B</strong> — 2,4T MoE, ~95B ativos</li>
@@ -406,30 +443,36 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <div class="faq-item">
         <h3>O Qwen3.8-27B fala português?</h3>
-        <p>Sim. Como modelo multilíngue treinado pela Qwen, o Qwen3.8-27B compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. A qualidade em português é boa para conversação, programação e análise de documentos.</p>
+        <p>Sim: o Qwen3.8-27B é multilíngue, compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. A qualidade em português é boa para conversação, programação e análise de documentos.</p>
     </div>
 
     <h2 id="comparacoes">Comparações</h2>
 
     <div class="faq-item">
         <h3>Qwen3.8-27B vs Qwen3.6-35B (MoE): qual escolher?</h3>
-        <p><strong>Qwen3.8-27B (denso):</strong> melhor qualidade por parâmetro, melhor em agentes (OSWorld 84,3 vs 63,9). Escolha para raciocínio agêntico de horizonte longo.</p>
-        <p><strong>Qwen3.6-35B (MoE):</strong> 5,3× mais rápido no mesmo hardware (56,6 vs 10,6 tok/s). Escolha para conversa contínua e uso interativo fluido.</p>
+        <p>O denso dá mais qualidade por parâmetro e vence em agentes (OSWorld 84,3 vs 63,9); o MoE é 5,3× mais rápido no mesmo hardware (56,6 vs 10,6 tok/s).</p>
+        <p><strong>Qwen3.8-27B (denso):</strong> escolha para raciocínio agêntico de horizonte longo. <strong>Qwen3.6-35B (MoE):</strong> escolha para conversa contínua e uso interativo fluido.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qwen3.8-27B ou Muse Glimmer 30B para agentes?</h3>
+        <p>Não há comparação head-to-head oficial entre os dois; nos 4 benchmarks comuns aos model cards, o Qwen3.8-27B leva: SWE-Bench Pro 61,7 vs 51,2; OSWorld-Verified 84,3 vs 65,9; GPQA Diamond 89,2 vs 83,5; IFBench 79,5 vs 77,0. O Muse Glimmer 30B é propósito-construído para agentes always-on (tool calling MCP nativo e drafter DFlash, que acelera a inferência 3,1× na RTX 5090) e ocupa menos em 4 bits: 15,88 GB contra 17,92 GB.</p>
     </div>
 
     <div class="faq-item">
         <h3>Qwen3.8-27B vs GPT-OSS-20B?</h3>
-        <p>O Qwen3.8-27B tem contexto nativo 2× maior (262K vs 128K), multimodalidade nativa, thinking mode e 26 benchmarks publicados. O GPT-OSS-20B é menor e mais rápido (20B total, ~3,6B ativos). Para raciocínio agêntico e contexto longo, o Qwen3.8-27B é superior.</p>
+        <p>O Qwen3.8-27B tem contexto nativo 2× maior (262.144 vs 128K tokens), multimodalidade nativa e thinking mode; o GPT-OSS-20B é menor e mais rápido (20B totais, ~3,6B ativos). Para raciocínio agêntico e contexto longo, o Qwen3.8-27B é superior.</p>
     </div>
 
     <div class="faq-item">
         <h3>Qwen3.8-27B vs ChatGPT: qual é melhor?</h3>
-        <p>Em benchmarks agênticos, o Qwen3.8-27B (modelo local de 27B) supera as referências do próprio model card: OSWorld 84,3 (vs Opus 4.6 Max 72,7 e Qwen3.7-Plus 73,3), CoWorkBench 70,7 (vs Opus 4.6 Max 68,2). Em conhecimento geral, fica a poucos pontos da fronteira (GPQA 89,2 vs 91,3 do Opus 4.6 Max e 90,3 do Qwen3.7-Plus). A vantagem do Qwen3.8-27B é rodar localmente, com privacidade total e sem custo de API.</p>
+        <p>Em benchmarks agênticos do model card, o Qwen3.8-27B supera as referências: OSWorld 84,3 contra 72,7 do Opus 4.6 Max e 73,3 do Qwen3.7-Plus; em conhecimento geral fica a poucos pontos da fronteira (GPQA 89,2 vs 91,3).</p>
+        <p>CoWorkBench 70,7 (vs Opus 4.6 Max 68,2) e GPQA 90,3 do Qwen3.7-Plus completam o quadro. A vantagem do Qwen3.8-27B é rodar localmente, com privacidade total e sem custo de API.</p>
     </div>
 
     <div class="faq-item">
         <h3>Os benchmarks são verificados independentemente?</h3>
-        <p><strong>Não.</strong> Todos os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card da Qwen — servem como ordem de grandeza, não como comparação controlada.</p>
+        <p><strong>Não:</strong> os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card da Qwen — servem como ordem de grandeza, não como comparação controlada.</p>
     </div>
 
     <div class="callout">

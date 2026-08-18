@@ -190,6 +190,7 @@
         <tr><th>Quantização</th><th>Qwen3.8-27B</th><th>Muse Glimmer 30B</th></tr>
         <tr><td>UD-IQ2_M</td><td>10,32 GB</td><td>12,26 GB</td></tr>
         <tr><td>UD-Q3_K_XL</td><td>13,44 GB</td><td>13,36 GB</td></tr>
+        <tr><td>IQ4_XS</td><td>15,71 GB</td><td>—</td></tr>
         <tr class="highlight"><td><strong>UD-Q4_K_XL</strong></td><td><strong>17,92 GB</strong></td><td><strong>15,88 GB</strong></td></tr>
         <tr><td>Q5_K_M / UD-Q5_K_M</td><td>19,83 GB</td><td>19,19 GB</td></tr>
         <tr><td>Q6_K / UD-Q6_K_XL</td><td>22,88 GB</td><td>26,27 GB</td></tr>
@@ -197,7 +198,7 @@
         <tr><td>mmproj (encoder de visão)</td><td>0,93 GB</td><td>1,4–3,85 GB</td></tr>
         <tr><td>drafter DFlash (spec. decoding)</td><td>—</td><td>1,63 GB</td></tr>
     </table>
-    <p><em>Fonte: Hugging Face API — <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF">unsloth/Muse-Glimmer-30B-GGUF</a>, coletados em 15/08/2026. UD- = Dynamic Unsupervised Quantization da Unsloth.</em></p>
+    <p><em>Fonte: Hugging Face API — <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF">unsloth/Muse-Glimmer-30B-GGUF</a>, coletados em 15/08/2026. UD- = Dynamic Unsupervised Quantization da Unsloth. IQ4_XS acrescentado em 17/08/2026 (mesma metodologia); o repo do Muse Glimmer não tem IQ4_XS.</em></p>
     <div class="callout">
         <strong>Três leituras que a tabela entrega:</strong> (1) no sweet spot Q4_K_XL, o Muse Glimmer é <strong>2 GB menor</strong> que o Qwen3.8 (15,88 vs 17,92) — diferença que vira contexto extra na mesma GPU; (2) em Q8_0 os dois convergem para ~29-30 GB, como esperado; (3) o Qwen3.8 publica Q5_K_M e Q6_K clássicos, enquanto o Muse Glimmer cobre a faixa alta com UD-Q5/Q6.
     </div>
@@ -206,7 +207,7 @@
     <div class="gpu-row">
         <div class="gpu-card">
             <h3>12–16 GB</h3>
-            <p>RTX 4070 Ti Super/5070 Ti 16GB, ou Mac 24-32GB unificada. <strong>IQ2_M e Q3_K_XL</strong> dos dois modelos (10–13,4 GB). Espere perda de qualidade perceptível vs Q4, mas roda.</p>
+            <p>RTX 5080/5080 Laptop, RTX 5060 Ti, RTX 4070 Ti Super/5070 Ti 16GB, ou Mac 24–32GB unificada. <strong>IQ2_M e Q3_K_XL</strong> dos dois modelos (10–13,4 GB); no Qwen3.8-27B, o <strong>IQ4_XS (15,71 GB)</strong> é o maior 4-bit que cabe em 16 GB — apenas texto, KV cache quantizado e contexto curto. Espere perda de qualidade perceptível vs Q4 no Q3/IQ2. <a href="/guia/faq#gpu-16gb">Veja o Q&amp;A dedicado a 16 GB</a>.</p>
         </div>
         <div class="gpu-card">
             <h3>24 GB</h3>
