@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniMax Music3 local: gerando música com 8GB de VRAM</title>
+    <meta name="description" content="Como rodar o MiniMax Music3 local: 8GB de VRAM com group offloading, músicas de 5 min com vocal, prompts em português e licença para uso comercial.">
+    <meta name="keywords" content="minimax music3 local, gerar música IA local, IA para música offline, text-to-music open weights, música com IA sem internet, ComfyUI música, diffusers música, GPU 8GB música IA">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="MiniMax Music3 local: gerando música com 8GB de VRAM">
+    <meta property="og:description" content="O modelo de música de pesos abertos da MiniMax gera músicas completas de até 5 minutos com vocal na sua GPU. Caber em 8GB é possível — o passo a passo completo.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-18T09:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="música IA">
+    <meta property="article:tag" content="modelos locais">
+    <meta property="article:tag" content="MiniMax Music3">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MiniMax Music3 local: música com IA em 8GB de VRAM">
+    <meta name="twitter:description" content="Pesos abertos, músicas de até 5 min com vocal, e um caminho real para GPU de 8GB. Primeira cobertura de música local do portal.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "MiniMax Music3 local: gerando música com 8GB de VRAM",
+          "description": "Tutorial completo do MiniMax Music3 rodando local: arquitetura híbrida (8B Qwen3 + 2,4B flow matching), três rotas de instalação (diffusers, SGLang-Omni, ComfyUI), tabela de VRAM medida e prompts em português.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-18",
+          "dateModified": "2026-08-18",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local",
+          "about": { "@id": "https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local#music3" },
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "Python 3.10+, PyTorch com CUDA, diffusers (branch minimax-music3-integration) ou ComfyUI atualizado, ~11 GB de disco para os pesos"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local#music3",
+          "name": "MiniMax Music3",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, Windows, macOS",
+          "softwareVersion": "3",
+          "description": "Modelo de geração de música por texto (text-to-music) com pesos abertos da MiniMax: letras + descrição de estilo geram músicas completas de até 5 minutos com vocal. Combina Global LLM de 8B (inicializado do Qwen3-8B) para estrutura musical, Local LLM de 0,6B para detalhe acústico, Flow Matching de 2,4B e Flow-VAE de 123M — ~11,1B de parâmetros somados. Pesos: ~22 GB em bfloat16.",
+          "url": "https://huggingface.co/MiniMaxAI/MiniMax-Music3",
+          "author": { "@type": "Organization", "name": "MiniMax" },
+          "releaseNotes": "https://github.com/MiniMax-AI/MiniMax-Music3",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "isAccessibleForFree": true
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o MiniMax Music3 localmente em GPU de 8GB",
+          "description": "Rota do diffusers com group offloading em modo streaming: baixar pesos, ativar offloads, gerar a primeira música.",
+          "totalTime": "PT30M",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Baixe os pesos", "text": "hf download MiniMaxAI/MiniMax-Music3 --local-dir minimax_ttm (ou deixe o diffusers baixar sozinho no primeiro from_pretrained)" },
+            { "@type": "HowToStep", "position": 2, "name": "Instale o diffusers da branch de integração", "text": "pip install git+https://github.com/huggingface/diffusers@minimax-music3-integration" },
+            { "@type": "HowToStep", "position": 3, "name": "Carregue a pipeline com ComponentsManager e CPU offload automático", "text": "ModularPipeline.from_pretrained com components_manager que enable_auto_cpu_offload, componentes em bfloat16" },
+            { "@type": "HowToStep", "position": 4, "name": "Ative group offloading streaming no language model", "text": "apply_group_offloading(pipe.language_model, onload_device='cuda', offload_type='leaf_level', use_stream=True) — cabe em 8GB" },
+            { "@type": "HowToStep", "position": 5, "name": "Gere com letra + caption e salve o WAV", "text": "pipe(prompt=caption, lyrics=com tags de seção, audio_duration, generator com seed); soundfile escreve o estéreo" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Quanto de VRAM o MiniMax Music3 precisa?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Pipeline completo em bfloat16: ~23 GB. Com CPU offload automático: ~22 GB livres. Com group offloading leaf_level em modo streaming sobre o language model: 8 GB — mais lento, mas cabe em RTX 3060 Ti / 4060." }
+            },
+            {
+              "@type": "Question",
+              "name": "Quais os parâmetros do MiniMax Music3?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Não é um modelo de 2,4B: a arquitetura soma ~11,1B — Global LLM de 8B (inicializado do Qwen3-8B), Local LLM de 0,6B, Flow Matching de 2,4B e Flow-VAE de 123M. O número 2,4B que circula por aí é só o módulo de flow matching." }
+            },
+            {
+              "@type": "Question",
+              "name": "O MiniMax Music3 funciona em português?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sim, letras em português são cantadas — o model card demonstra geração em vários idiomas e a comunidade reporta pt-BR funcionando. O jeito mais confiável de conduzir a pronúncia é escrever a letra como soa (abafo fonético), e o caption/descrição funciona melhor em inglês." }
+            },
+            {
+              "@type": "Question",
+              "name": "Posso usar as músicas comercialmente?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sim, na maioria dos casos. A MiniMax-Music3 Community License permite uso comercial com duas condições: exibir 'MiniMax-Music3' na interface do produto e pedir autorização por escrito à MiniMax se a receita anual do seu grupo ultrapassar US$ 20 milhões. Se você hospedar um serviço de geração, precisa manter salvaguardas contra usos que violem a licença." }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual a diferença entre SGLang-Omni, diffusers e ComfyUI para o Music3?",
+              "acceptedAnswer": { "@type": "Answer", "text": "SGLang-Omni é o servidor oficial (API compatível com OpenAI /v1/audio/speech, CUDA graphs, melhor para servir continuamente, 2 GPUs dividem estágios). diffusers é a rota Python scriptável e a única com group offloading documentada para 8GB. ComfyUI é a interface visual com workflow oficial e pesos reempacotados — a mais fácil para quem já usa Comfy." }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto tempo de música o Music3 gera?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Músicas completas de até 5 minutos com estrutura real (intro, verso, refrão, ponte, instrumental, final). O limite é de teto, não de meta: em SGLang, max_new_tokens conta frames a 25 fps (750 frames ≈ 30s); o modelo encerra sozinho com token de fim de áudio." }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "MiniMax Music3 local", "item": "https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px  0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>MiniMax Music3 local: gerando música com 8GB de VRAM</h1>
+        <p class="lead">O portal cobre modelos de linguagem locais desde o início — esta é a primeira vez que um modelo de <strong>música</strong> entra no radar, e ele entra por um motivo claro: pesos abertos, músicas completas de até 5 minutos com vocal cantado, e um caminho oficial para rodar em GPU de 8GB — a placa de entrada do PC gamer brasileiro.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>~11,1B</strong> parâmetros somados</span>
+            <span class="badge"><strong>8 GB</strong> de VRAM no modo streaming</span>
+            <span class="badge"><strong>5 min</strong> de música por geração</span>
+            <span class="badge"><strong>US$ 0</strong> pesos abertos (Community License)</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-que-e">O que é o MiniMax Music3</a></li>
+            <li><a href="#vram-tiers">VRAM: os três degraus (23 → 22 → 8 GB)</a></li>
+            <li><a href="#requisitos">Antes de começar: requisitos</a></li>
+            <li><a href="#diffusers">Rota 1 — diffusers (a rota dos 8GB)</a></li>
+            <li><a href="#sglang">Rota 2 — SGLang-Omni (servidor oficial)</a></li>
+            <li><a href="#comfyui">Rota 3 — ComfyUI (a mais fácil)</a></li>
+            <li><a href="#hardware-br">O que roda no hardware brasileiro típico</a></li>
+            <li><a href="#prompts-ptbr">Prompts em português: letra + caption</a></li>
+            <li><a href="#licenca">Licença: posso usar comercialmente?</a></li>
+            <li><a href="#limitacoes">Limitações: o que esperar (e o que não)</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-que-e">O que é o MiniMax Music3</h2>
+    <p>O <strong>MiniMax Music3</strong> é um modelo de <strong>geração de música por texto</strong> (text-to-music) lançado pela MiniMax com pesos abertos no <a href="https://huggingface.co/MiniMaxAI/MiniMax-Music3">Hugging Face</a> em 7 de agosto de 2026. Você entrega duas coisas — <strong>letras</strong> e uma <strong>descrição musical</strong> (caption) — e recebe uma música completa: voz cantada, arranjo, estrutura de música de verdade, em WAV estéreo.</p>
+    <p>Não é um TTS com batida. O Music3 modela música como música: seções (intro, verso, pré-refrão, refrão, ponte, instrumental, solo, final), progressão emocional, identidade vocal estável e evolução de arranjo ao longo da faixa. Saída nativa de <strong>32 kHz estéreo</strong> (o vocoder entrega 44,1 kHz; o servidor de referência reamostra para 32 kHz).</p>
+    <p>Um detalhe que interessa ao público deste portal: o cérebro estrutural do Music3 é um <strong>LLM Qwen3 de 8B parâmetros</strong> — o Global LLM que planeja a música frame a frame foi inicializado a partir do Qwen3-8B e retreinado para tokens semânticos de música. A mesma família de modelos que <a href="/guia/benchmarks-comparativos">analisamos aqui</a> virou o compositor de dentro de um modelo de música local.</p>
+
+    <h3 id="arquitetura">A arquitetura em 4 módulos (e o mito do "2,4B")</h3>
+    <p>A circula por aí que o Music3 seria "um modelo de 2,4B parâmetros". Isso é meia-verdade que confunde o planejamento de hardware. Os <strong>2,4B são só o módulo de flow matching</strong> — o que transformaria tokens em áudio. O pipeline completo soma <strong>~11,1B</strong>:</p>
+    <table>
+        <tr><th>Componente</th><th>Parâmetros</th><th>Faz o quê</th></tr>
+        <tr class="highlight"><td><strong>Global LLM</strong></td><td>8B</td><td>Estrutura musical de longo prazo. Inicializado do Qwen3-8B; prevê o primeiro codebook RVQ frame a frame (36 camadas, hidden 4096, GQA 32/8, vocab 200k).</td></tr>
+        <tr><td><strong>Local LLM</strong></td><td>0,6B</td><td>Detalhe acústico frame a frame: preenche os 7 codebooks residuais de cada frame via depth decoder de 4 camadas.</td></tr>
+        <tr><td><strong>Flow Matching</strong></td><td>2,4B</td><td>DIT (36 camadas, dim 2048) que resolve o latente do Flow-VAE por janelas de 200 frames, Euler 30 passos, CFG 1,7.</td></tr>
+        <tr><td><strong>Flow-VAE Decoder</strong></td><td>123M</td><td>Decodificador estilo DAC que transforma latente em forma de onda estéreo (upsampling 512x).</td></tr>
+    </table>
+    <p>Por isso os requisitos de VRAM parecem estranhos à primeira vista — "2,4B que precisa de 23GB?" — e por isso o modelo baixa ~22 GB de pesos em bfloat16 (flowmatching_vae.pth 9,83 GB + qwen_7B + dav.pth 0,49 GB + módulos). Somando os módulos: 8B + 0,6B + 2,4B + 123M ≈ <strong>11,1B</strong>. Quem planeja disco e VRAM pelo "2,4B" se dá mal.</p>
+
+    <h2 id="vram-tiers">VRAM: os três degraus (23 → 22 → 8 GB)</h2>
+    <p>Os números oficiais, medidos pela Hugging Face e documentados na <a href="https://huggingface.co/docs/diffusers/api/pipelines/minimax_music3">doc do diffusers</a>:</p>
+    <table>
+        <tr><th>Modo</th><th>VRAM livre</th><th>Como</th><th>Custo</th></tr>
+        <tr><td><strong>Full bf16</strong></td><td>~23 GB</td><td>pipeline inteira na GPU</td><td>mais rápido; RTX 3090/4090/5090 de 24GB</td></tr>
+        <tr><td><strong>CPU offload automático</strong></td><td>~22 GB</td><td><code>enable_auto_cpu_offload</code></td><td>pouca troca de peso; 22GB já não roda em 16GB</td></tr>
+        <tr class="highlight"><td><strong>Group offloading + streaming</strong></td><td><strong>8 GB</strong></td><td><code>apply_group_offloading(..., use_stream=True)</code> no language model</td><td>mais lento; RTX 3060 Ti / 4060 / 3090 dividida</td></tr>
+    </table>
+    <div class="callout">
+        <strong>O degrau dos 8GB não é quantização — é offload.</strong> O caminho para caber em uma GPU de 8GB não é um quant menor (não há build GGUF oficial documentada para o pipeline completo), e sim <strong>group offloading em leaf_level com use_stream=True</strong>: os blocos do language model sobem para a GPU só quando executam, sob demanda, com cópias sobrepostas em CUDA streams. A doc é explícita: "additionally group-offloading the language model fits in 8 GB". É mais lento — mas é oficial, documentado e funciona.
+    </div>
+
+    <h2 id="requisitos">Antes de começar: requisitos</h2>
+    <ul>
+        <li><strong>GPU NVIDIA com CUDA</strong> e driver atualizado (as três rotas assumem CUDA; 8GB = RTX 3060 Ti / 4060; 24GB = RTX 3090 / 4090 / 5090).</li>
+        <li><strong>~22 GB de disco</strong> para os pesos em bfloat16 (o download via <code>hf</code> traz flowmatching_vae.pth de 9,83 GB + backbone Qwen3 8B + demais módulos).</li>
+        <li><strong>Python 3.10+</strong> com PyTorch CUDA (para diffusers) ou ComfyUI atualizado (interface).</li>
+        <li><strong>Paciência no primeiro download</strong> — e, no modo 8GB, paciência na geração: cada música pode levar vários minutos porque o estágio autoregressivo domina o tempo.</li>
+    </ul>
+
+    <h2 id="diffusers">Rota 1 — diffusers (a rota dos 8GB)</h2>
+    <p>A rota recomendada para quem quer <strong>scriptar gerações</strong> e para quem tem <strong>8GB</strong>. O suporte ao Music3 está na branch <code>minimax-music3-integration</code> do diffusers, como pipeline modular.</p>
+
+    <h3>Instalação</h3>
+    <pre><code># ambiente
+python -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install torch soundfile --index-url https://download.pytorch.org/whl/cu124
+
+# diffusers com a integração Music3
+pip install git+https://github.com/huggingface/diffusers@minimax-music3-integration
+
+# pesos (opcional — o from_pretrained baixa sozinho na primeira execução)
+hf download MiniMaxAI/MiniMax-Music3 --local-dir minimax_ttm</code></pre>
+
+    <h3>A geração mínima (~23 GB)</h3>
+    <pre><code>import soundfile as sf
+import torch
+from diffusers import ModularPipeline
+
+pipe = ModularPipeline.from_pretrained("MiniMaxAI/MiniMax-Music3")
+pipe.load_components(dtype=torch.bfloat16)
+pipe.to("cuda")
+
+lyrics = """[verse]
+Luz da manhã atravessando o pinheiro
+Cada rua quieta é nossa
+[chorus]
+Devagar o mundo respira
+E nada mais importa agora"""
+
+prompt = (
+    "Genre: acoustic pop. BPM: 96. Key: C major. Warm and intimate, building gently into the chorus. "
+    "Vocals: soft female lead, close and breathy, light stacked harmonies in the chorus. "
+    "Arrangement: fingerpicked guitar and soft piano; brushed drums and upright bass enter in the chorus."
+)
+
+audio = pipe(
+    prompt=prompt,
+    lyrics=lyrics,
+    audio_duration=60.0,
+    generator=torch.Generator("cuda").manual_seed(7),
+    output="audios",
+)[0]
+
+sf.write("minha_musica.wav", audio.T, pipe.sampling_rate)</code></pre>
+
+    <h3 id="codigo-8gb">A configuração de 8 GB</h3>
+    <p>Dois offloads empilhados: o automático (CPU offload) para a pipeline e o group offloading streaming para o language model:</p>
+    <pre><code>import torch
+from diffusers import ComponentsManager, ModularPipeline
+from diffusers.hooks.group_offloading import apply_group_offloading
+
+manager = ComponentsManager()
+manager.enable_auto_cpu_offload(device="cuda")
+pipe = ModularPipeline.from_pretrained(
+    "MiniMaxAI/MiniMax-Music3", components_manager=manager
+)
+pipe.load_components(dtype=torch.bfloat16)
+
+# Só é preciso abaixo de ~22 GB livres — mais lento, mas cabe em 8 GB
+apply_group_offloading(
+    pipe.language_model,
+    onload_device=torch.device("cuda"),
+    offload_type="leaf_level",
+    use_stream=True,
+)</code></pre>
+    <p>Com isso, a mesma <code>pipe(...)</code> do exemplo anterior roda em uma RTX 4060 de 8GB. O estágio autoregressivo (25 frames por segundo de áudio) domina o tempo de geração — espere alguns minutos por minuto de música, não segundos.</p>
+
+    <h2 id="sglang">Rota 2 — SGLang-Omni (servidor oficial)</h2>
+    <p>Se a intenção é <strong>servir</strong> o Music3 — um serviço local que responde em API — a rota oficial é o <a href="https://sgl-project.github.io/sglang-omni/cookbook/minimax_music3.html">SGLang-Omni</a>, o mesmo runtime que o model card recomenda. Ele expõe a API <code>/v1/audio/speech</code> compatível com o cliente OpenAI:</p>
+    <pre><code># instalar conforme o guia oficial de instalação do sglang-omni
+CUDA_VISIBLE_DEVICES=0 sgl-omni serve --model-path MiniMaxAI/MiniMax-Music3 --port 8000
+
+# gerar (letra em input, descrição em instructions)
+curl http://127.0.0.1:8000/v1/audio/speech \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "MiniMaxAI/MiniMax-Music3",
+    "input": "[Verse]\nSunday morning, quiet and slow\n[Chorus]\nTake it easy, take it slow",
+    "instructions": "A melancholic lo-fi hip-hop track with a mellow piano riff, soft vinyl crackle, and a slow steady drum beat at 85 BPM",
+    "response_format": "wav",
+    "seed": 42,
+    "max_new_tokens": 750
+  }' \
+  --output song_1.wav</code></pre>
+    <p>Detalhes que valem ouro e estão no cookbook oficial:</p>
+    <ul>
+        <li><strong><code>max_new_tokens</code> conta frames a 25 fps</strong> — 750 frames ≈ 30 segundos. É teto, não meta: o modelo encerra sozinho com o token de fim de áudio.</li>
+        <li><strong>Tags de seção em linha própria</strong> — a normalização descarta texto na mesma linha da tag: <code>[Verse]\nLetra</code> funciona; <code>[Verse] Letra</code> canta sem essa linha, sem aviso.</li>
+        <li><strong>Configuração de 2 GPUs</strong>: <code>CUDA_VISIBLE_DEVICES=0,1</code> coloca o estágio AR na primeira e o DIT/DAV na segunda — útil para 2×8GB.</li>
+    </ul>
+
+    <h2 id="comfyui">Rota 3 — ComfyUI (a mais fácil)</h2>
+    <p>Para quem já usa ComfyUI, o suporte é <strong>nativo e oficial</strong>: atualize o ComfyUI, abra <strong>Template Library → Audio → MiniMax Music 3 Text to Music</strong> e siga o popup que baixa os modelos. A documentação oficial da Comfy mantém o <a href="https://docs.comfy.org/tutorials/audio/minimax/minimax-music-3">tutorial completo</a>, e os pesos reempacotados (diffusion model, text encoder e VAE prontos para os nodes) estão no <a href="https://huggingface.co/Comfy-Org/MiniMax-Music-3">Comfy-Org/MiniMax-Music-3</a> — o espelho mais baixado do modelo (285 mil downloads contra 11,7 mil do repo original na data desta publicação).</p>
+    <p>É a rota com menor fricção para experimentar prompts — sem Python, com workflow visual editável — mas é também a rota em que você tem menos controle sobre offloads finos, então trate-a como laboratório de prompts, não como o caminho dos 8GB.</p>
+
+    <h2 id="hardware-br">O que roda no hardware brasileiro típico</h2>
+    <p>Cruzando os três degraus de VRAM com as placas mais comuns no mercado brasileiro de reposição:</p>
+    <table>
+        <tr><th>GPU</th><th>VRAM</th><th>Veredito Music3</th></tr>
+        <tr class="highlight"><td><strong>RTX 3060 Ti / 4060</strong></td><td>8 GB</td><td><strong>Roda no modo streaming</strong> — group offloading leaf_level, mais lento. O candidato real do "8GB de VRAM" do título.</td></tr>
+        <tr><td>RTX 4060 Ti 16GB / 5060 Ti 16GB</td><td>16 GB</td><td>Gap desconfortável: os ~22GB do offload automático não cabem. Recorra ao group offloading (cabe folgado) ou aguarde quantizações comunitárias maduras.</td></tr>
+        <tr><td>2× RTX 3060 Ti ou 2× 4060</td><td>8+8 GB</td><td>Rota SGLang-Omni com estágios divididos por GPU (AR na primeira, DIT/DAV na segunda).</td></tr>
+        <tr><td>RTX 3090 (usada, mercado BR forte) / 4090 / 5090</td><td>24 GB</td><td>Full bf16 (~23 GB) — a experiência completa, sem offload.</td></tr>
+    </table>
+    <p>Como referência da casa: <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">explicamos aqui</a> o esforço de encaixar um LLM de 27B em 16GB via quantização GGUF — lá o caminho é quant menor; aqui, em 2026, o caminho dos 8GB é offload estruturado. Ferramenta diferente, mesma lição: <strong>quanto de VRAM você tem importa mais do que quantos parâmetros o modelo tem</strong>. Para o panorama geral de placas por caso de uso, veja o <a href="/guia/hardware-local">guia de hardware local</a>.</p>
+
+    <h2 id="prompts-ptbr">Prompts em português: letra + caption</h2>
+    <p>O controle do Music3 vem de duas entradas complementares — e a doc é explícita de que <strong>a caption é o controle mais forte que você tem</strong>: captions vagas dão arranjos genéricos; nomear instrumentos, andamento e caráter de produção dá a música que você pediu.</p>
+    <ul>
+        <li><strong>Letra (input)</strong>: as palavras cantadas, com tags de seção cada uma em linha própria — <code>[Intro]</code>, <code>[Verse]</code>, <code>[Pre-Chorus]</code>, <code>[Chorus]</code>, <code>[Post-Chorus]</code>, <code>[Bridge]</code>, <code>[Instrumental]</code>, <code>[Solo]</code>, <code>[Outro]</code>.</li>
+        <li><strong>Caption/descrição (instructions)</strong>: estilo, emoção, voz, instrumentação, produção. Para máximo controle, a MiniMax recomenda a estrutura em três blocos: metadados globais (gênero, BPM, tom, escala, progressão emocional), detalhes vocais (gênero vocal, timbre, performance, harmonias) e arranjo (instrumentos primário/secundários, groove, texturas).</li>
+    </ul>
+
+    <h3>Exemplo 1 — MPB acústica intimista (60s)</h3>
+    <pre><code>lyrics = """[verse]
+Manhã de domingo devagar
+Sol passando pela janela do bar
+[chorus]
+Deixa o tempo passar
+A gente não tem hora pra voltar"""
+
+prompt = (
+    "Genre: Brazilian MPB, acoustic. BPM: 82. Key: G major. Intimate and warm, "
+    "gentle emotional build into the chorus. "
+    "Vocals: soft female lead in Brazilian Portuguese, close and breathy, "
+    "light stacked harmonies in the chorus. "
+    "Arrangement: nylon-string fingerpicked guitar and soft piano; brushed drums "
+    "and upright bass enter in the chorus; warm, natural production."
+)</code></pre>
+
+    <h3>Exemplo 2 — lo-fi hip-hop instrumental</h3>
+    <pre><code>lyrics = "[Intro]\n(instrumental)"
+
+prompt = (
+    "Genre: lo-fi hip-hop, instrumental only. BPM: 78. "
+    "Mellow piano riff, soft vinyl crackle, slow steady drum beat, "
+    "warm sub bass, jazzy chords, late-night study atmosphere."
+)</code></pre>
+    <p>Letras são obrigatórias e não podem ser vazias — para instrumentais, o cookbook oficial recomenda pedir "instrumental" na caption e manter a letra mínima, como acima.</p>
+
+    <h3>Exemplo 3 — arena rock com verso em português</h3>
+    <pre><code>lyrics = """[verse]
+Crescemos ouvindo estádio cheio
+Rádio pirata no fim do mundo
+[chorus]
+A gente é o fogo que não apaga
+Queimando contra o céu"""
+
+prompt = (
+    "Genre: arena rock anthem. BPM: 130. Key: E minor. "
+    "Confident and gritty, building tension through verses before a wide, soaring chorus. "
+    "Vocals: powerful male lead in Brazilian Portuguese, gravelly texture, melodic in the refrain. "
+    "Arrangement: distorted electric guitars, punchy live drums, wide stereo image, "
+    "lightly compressed; extended guitar solo after the second chorus."
+)</code></pre>
+
+    <h2 id="licenca">Licença: posso usar comercialmente?</h2>
+    <p>Sim, na maioria dos casos — com regras. A <strong>MiniMax-Music3 Community License</strong> permite uso comercial dos pesos e das músicas geradas sob três condições:</p>
+    <ul>
+        <li><strong>Atribuição na interface</strong>: produtos ou serviços comerciais que usam o modelo devem exibir "MiniMax-Music3" prominentemente na UI.</li>
+        <li><strong>Limite de receita</strong>: se o seu grupo fatura mais de <strong>US$ 20 milhões/ano</strong> com produtos que usam o modelo, é preciso autorização prévia por escrito (api@minimax.io).</li>
+        <li><strong>Serviços de geração</strong>: se você hospeda um serviço que gera músicas para terceiros, deve implementar e manter salvaguardas técnicas contra usos que violem a licença (incluindo violação de direitos de terceiros).</li>
+    </ul>
+    <p>Não é Apache 2.0 como o Qwen3.8-27B — é uma community license no estilo Llama: aberta para quase todos, com cláusulas para quem escala. Para projeto indie, agência ou conteúdo monetizado, o caminho está aberto; leia o texto integral no <a href="https://huggingface.co/MiniMaxAI/MiniMax-Music3/blob/main/LICENSE">LICENSE do repo</a>.</p>
+
+    <h2 id="limitacoes">Limitações: o que esperar (e o que não)</h2>
+    <div class="callout-warn">
+        <strong>Português cantado: funciona, com ressalvas.</strong> O model card demonstra geração em múltiplos idiomas e a comunidade reporta letras em pt-BR sendo cantadas corretamente. As ressalvas práticas: (1) pronúncia de algumas palavras pode exigir ajuste — o truque da comunidade é escrever a letra <em>como soa</em> (abafo fonético) quando uma sílaba sai errada; (2) a caption/descrição funciona melhor em inglês, onde o modelo foi treinado nas descrições estruturadas; (3) não há como fixar uma voz de referência como em TTS — o que controla a voz é a descrição textual dela.
+    </div>
+    <ul>
+        <li><strong>Tempo de geração</strong>: em 8GB, espere minutos por minuto de áudio. O estágio autoregressivo a 25 fps domina; não é realtime.</li>
+        <li><strong>Não existe "voz própria"</strong>: não há reference speaker, voice ou temperature ajustáveis na API SGLang — o que você controla é letra, caption, seed e duração.</li>
+        <li><strong>Duração é teto</strong>: audio_duration/max_new_tokens limitam o máximo; o modelo decide quando terminar. Música de 5 minutos completos pode exigir cap alto e sorte com a seed.</li>
+        <li><strong>Offline de verdade</strong>: por outro lado — sem API key, sem telemetria, sem custo por geração. Depois dos ~22GB baixados, a música é sua e do seu disco.</li>
+    </ul>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Quanto de VRAM o MiniMax Music3 precisa?</h3>
+        <p>~23 GB em bfloat16 completo; ~22 GB livres com CPU offload automático; <strong>8 GB</strong> com group offloading leaf_level em modo streaming sobre o language model. O último é mais lento, mas é a rota oficial documentada pela Hugging Face para GPUs de entrada.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quais os parâmetros do MiniMax Music3?</h3>
+        <p>~11,1B somados: Global LLM de 8B (inicializado do Qwen3-8B), Local LLM de 0,6B, Flow Matching de 2,4B e Flow-VAE de 123M. O "2,4B" que circula é só o módulo de flow matching.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O MiniMax Music3 funciona em português?</h3>
+        <p>Sim — letras em português são cantadas (model card demonstra multi-idioma; comunidade reporta pt-BR funcionando). Pronúncia pontual pode exigir abafo fonético na letra, e a caption funciona melhor em inglês. Não dá para fixar voz de referência.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Posso usar as músicas comercialmente?</h3>
+        <p>Sim, sob a MiniMax-Music3 Community License: exiba "MiniMax-Music3" na UI do produto comercial; acima de US$ 20 milhões/ano de receita do grupo, exige autorização prévia por escrito; serviços hospedados de geração precisam manter salvaguardas anti-abuso.</p>
+    </div>
+    <div class="faq-item">
+        <h3>diffusers, SGLang-Omni ou ComfyUI — qual escolher?</h3>
+        <p>diffusers para script e para os 8GB (única rota com group offloading documentado); SGLang-Omni para servir com API compatível OpenAI e dividir estágios em 2 GPUs; ComfyUI para experimentar prompts com workflow visual oficial e pesos reempacotados.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto tempo de música o Music3 gera?</h3>
+        <p>Músicas completas de até 5 minutos com estrutura real. Em SGLang, max_new_tokens conta frames a 25 fps (750 ≈ 30s); o modelo encerra sozinho com token de fim de áudio — o parâmetro é teto, não meta.</p>
+    </div>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-Music3">MiniMax Music3 no Hugging Face</a> — model card, pesos e licença</li>
+        <li><a href="https://huggingface.co/docs/diffusers/api/pipelines/minimax_music3">Documentação do pipeline no diffusers</a> — incluindo os presets de VRAM citados aqui</li>
+        <li><a href="https://sgl-project.github.io/sglang-omni/cookbook/minimax_music3.html">Cookbook SGLang-Omni: MiniMax Music 3</a> — servidor oficial, parâmetros e regras do prompt</li>
+        <li><a href="https://docs.comfy.org/tutorials/audio/minimax/minimax-music-3">Tutorial oficial ComfyUI</a> e <a href="https://huggingface.co/Comfy-Org/MiniMax-Music-3">pesos reempacotados Comfy-Org</a></li>
+        <li><a href="/guia/como-rodar">Como rodar modelos 30B localmente</a> — o panorama geral de runtimes locais do portal</li>
+        <li><a href="/guia/hardware-local">Guia de hardware local</a> — VRAM e setups por caso de uso</li>
+        <li><a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF: quanto cabe na sua GPU</a></li>
+        <li><a href="/guia/faq">FAQ do portal</a></li>
+    </ul>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — primeira cobertura de música local | Dados: model card MiniMaxAI/MiniMax-Music3, docs diffusers (branch minimax-music3-integration), cookbook SGLang-Omni e tutorial ComfyUI — todos verificados ao vivo em 18/08/2026.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>

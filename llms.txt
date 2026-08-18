@@ -18,6 +18,9 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - Muse Glimmer 30B em 4-bit (UD-Q4_K_XL) = 15,88 GB; setup completo com mmproj + drafter ≈ 18,9 GB (tabela GGUF medida via HF API).
 - Drafter DFlash acelera o Muse Glimmer 3,1× na RTX 5090: 74,9 → 233,4 tok/s (model card oficial Meta).
 - Ollama `qwen3.8:27b`: modelo de 18 GB com 256K de contexto (biblioteca oficial Ollama).
+- MiniMax Music3 não é um modelo de 2,4B: soma ~11,1B — Global LLM 8B (init Qwen3-8B) + Local LLM 0,6B + Flow Matching 2,4B + Flow-VAE 123M; ~22 GB de pesos em bf16 (model card + tree HF API).
+- Music3 em VRAM: ~23 GB full bf16 / ~22 GB com CPU offload / 8 GB com group offloading leaf_level + use_stream (docs oficiais diffusers).
+- Music3 gera músicas completas de até 5 min com vocal; 25 frames de áudio por segundo (750 tokens ≈ 30s); Community License permite uso comercial com atribuição e autorização só acima de US$ 20 mi/ano (model card + LICENSE + cookbook SGLang).
 
 ## Páginas do portal
 
@@ -32,6 +35,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Agent Memory Leaderboard](https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados) — primeiros resultados (15/08/2026): 65 sistemas em Text Memory, MemoraX lidera com 58,02; metodologia Add→Search / Answer→Eval
 - [Lemonade SDK v11.6](https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd) — serving de LLM local GPU+NPU com suporte AMD (ROCm, Radeon, Ryzen) e MCP server embutido; release 14/08/2026
 - [Qwen3.8-27B em 16GB de VRAM](https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp) — config llama.cpp real para GPU 16GB: IQ4_XS 15,71 GB / UD-Q3_K_XL 13,44 GB / Q4_K_M 17,11 GB com offload parcial; KV cache q8_0, speculative decoding n-gram, ~20 t/s na 4070 Ti Super
+- [MiniMax Music3 local](https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local) — música com IA local em 8GB de VRAM: ~11,1B de parâmetros (Qwen3-8B + flow matching), três rotas (diffusers/SGLang/ComfyUI), prompts pt-BR e licença comercial
 - [Benchmarks comparativos](https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos) — 26 benchmarks vs Qwen3.6-27B e referências do model card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max)
 - [Guia de hardware](https://qwen38-27b-landing.vercel.app/guia/hardware-local) — VRAM, GPU, setups por quantização
 - [Como rodar localmente](https://qwen38-27b-landing.vercel.app/guia/como-rodar) — Ollama, llama.cpp, vLLM, HuggingFace, MLX

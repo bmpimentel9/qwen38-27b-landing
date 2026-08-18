@@ -9,6 +9,41 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-18] — Artigo: MiniMax Music3 local (primeira cobertura de música local)
+
+### Added
+- **Novo artigo BOFU** (`guia/minimax-music3-musica-local/`, task `t_432eb96f` —
+  seo-content, tema órfão do discovery t_7130b492 materializado): tutorial de
+  setup do modelo de música da MiniMax com pesos abertos, atendendo a janela
+  "minimax music3 local" / "gerar música IA local" sem cobertura pt-BR.
+  - Dados re-verificados ao vivo em 18/08 antes de citar (exigência do card):
+    model card `MiniMaxAI/MiniMax-Music3` (criado 07/08, atualizado 14/08),
+    tree da HF API (flowmatching_vae.pth 9,83 GB + dav.pth 0,49 GB), LICENSE
+    Community (comercial OK com atribuição; autorização só > US$ 20 mi/ano).
+  - **Correção de dado-âncora do discovery**: o "2,4B params" do discovery é
+    só o módulo Flow Matching — o pipeline soma ~11,1B (Global LLM 8B init
+    Qwen3-8B + Local LLM 0,6B + Flow Matching 2,4B + Flow-VAE 123M). O artigo
+    abre com uma seção dedicada ao mito do "2,4B".
+  - Tiers de VRAM oficiais (docs diffusers, branch minimax-music3-integration):
+    ~23 GB full bf16 / ~22 GB auto CPU offload / **8 GB com group offloading
+    leaf_level + use_stream** — este último é o degrau que viabiliza
+    3060 Ti/4060 e vira o gancho do título.
+  - Três rotas documentadas: diffusers (script + 8GB, com código completo),
+    SGLang-Omni (servidor oficial /v1/audio/speech, 2 GPUs dividem estágios),
+    ComfyUI (nativo, template oficial, pesos Comfy-Org 285k downloads).
+  - Tabela hardware BR (8/16/24 GB + 2×8), 3 exemplos de prompt pt-BR (MPB
+    acústica, lo-fi instrumental, arena rock), limitações honestas de
+    pt-BR cantado, seção de licença comercial.
+  - JSON-LD: TechArticle + SoftwareApplication (applicationCategory "AIModel"
+    conforme ADR-008) + HowTo (5 passos) + FAQPage (6) + Breadcrumb; GA4
+    gtag + scroll_depth incluídos.
+  - Âncoras internas para `guia/qwen38-27b-16gb-vram-llama-cpp`,
+    `guia/hardware-local`, `guia/como-rodar`, `guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu`.
+- `sitemap.xml`: URL nova (priority 0.9, lastmod 2026-08-18).
+- `llms.txt`: 3 stats citáveis do Music3 + entrada na lista de páginas.
+- `guia/index.html`: card do artigo (tag-guide Tutorial, BOFU · Novo 18/08).
+
+
 ## [2026-08-18] — Artigo: Qwen3.8-27B em 16GB de VRAM com llama.cpp
 
 ### Added
