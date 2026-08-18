@@ -5,7 +5,7 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
 
 **Board kanban:** `seo-local-models-30b`  
 **Produção:** https://qwen38-27b-landing.vercel.app (GA4 `G-016TVX8LEE` ativo)  
-**Última atualização:** 2026-08-16
+**Última atualização:** 2026-08-18
 
 ---
 
