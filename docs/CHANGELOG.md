@@ -9,6 +9,27 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-18] — Artigo: SGLang + FP8 oficial (órfão 16/08 materializado)
+
+### Added
+- **Novo artigo BOFU** (`guia/como-rodar-sglang-qwen3-8-27b/`, task `t_77b213f6`
+  — seo-content, tema órfão do discovery de 16/08 materializado): tutorial do
+  servidor SGLang com o checkpoint FP8 oficial do Qwen3.8-27B. Primeira
+  cobertura de SGLang do portal (gap verificado por grep: 0 menções antes).
+  Instalação uv/venv + Docker (`lmsysorg/sglang:qwen38-27b`), comando
+  `launch_server` com parsers qwen3 e explicação flag a flag, contexto 262K
+  nativo + 1M via YaRN (comando oficial do README FP8), thinking/instruct com
+  sampling do model card, MTP via EAGLE 3/1/4, benchmark `bench_serving`,
+  tabela FP8 × GGUF cross-linkada, decisão SGLang × llama.cpp/Ollama e
+  troubleshooting (mamba-full-memory-ratio, chunked-prefill, OOM em 32GB).
+- Dados verificados no dia da publicação (18/08, HF API): checkpoint FP8 com
+  741.011 downloads (era 352.971 em 16/08) e 30,89 GB somando os safetensors
+  da tree API; PyPI sglang 0.5.17 é a mais recente.
+- Card do artigo no `/guia` (tag-guide) e na home; sitemap + llms.txt
+  (citação citável + lista de páginas) atualizados.
+
+---
+
 ## [2026-08-18] — Artigo: MiniMax Music3 local (primeira cobertura de música local)
 
 ### Added
