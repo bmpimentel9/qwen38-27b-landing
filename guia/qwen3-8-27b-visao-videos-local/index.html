@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)</title>
+    <meta name="description" content="Guia de visão do Qwen3.8-27B local: mmproj GGUF, --mmproj no llama.cpp, imagens no Ollama, OCR de documentos, bounding boxes e vídeo de hora — com benchmarks multimodais.">
+    <meta name="keywords" content="qwen 3.8 visão, qwen 3.8 multimodal, qwen 3.8 ocr, llama.cpp imagem, modelo local visão, qwen3.8-27B mmproj, vlm local, qwen 3.8 vídeo, ollama imagem, bounding box llm, modelo local ocr">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)">
+    <meta property="og:description" content="3,5 milhões de downloads do GGUF e quase ninguém usa a visão: ative o mmproj (0,93 GB) no llama.cpp ou mande imagens no Ollama. OCR, bounding boxes e vídeo de até 1 hora.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-18T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="multimodal">
+    <meta property="article:tag" content="visão">
+    <meta property="article:tag" content="llama.cpp">
+    <meta property="article:tag" content="OCR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)">
+    <meta name="twitter:description" content="O 27B é uma VLM nativa: mmproj de 0,93 GB no llama.cpp, imagens no Ollama, OCR 91,1 no OmniDocBench e vídeo de até 1 hora. O guia completo.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama",
+          "description": "Guia prático da visão do Qwen3.8-27B em hardware local: ativar o mmproj (0,93 GB) no llama.cpp com --mmproj ou -hf, enviar imagens no Ollama (images em base64), OCR de documentos (OmniDocBench 91,1), bounding boxes em escala 0-1000 e vídeo de até 1 hora com sampling de frames.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-18",
+          "dateModified": "2026-08-18",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local",
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "llama.cpp atualizado (libmtmd, suporte a imagem/vídeo) ou Ollama com a tag qwen3.8:27b; GGUF + mmproj do repositório oficial ggml-org/Qwen3.8-27B-GGUF"
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como ativar a visão do Qwen3.8-27B no llama.cpp e no Ollama",
+          "totalTime": "PT15M",
+          "tool": [
+            { "@type": "HowToTool", "name": "llama.cpp atualizado (llama-server com libmtmd)" },
+            { "@type": "HowToTool", "name": "Ollama (tag qwen3.8:27b, 18 GB, entrada Text+Image)" },
+            { "@type": "HowToTool", "name": "GGUF + mmproj (ggml-org/Qwen3.8-27B-GGUF ou unsloth/Qwen3.8-27B-GGUF)" }
+          ],
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Baixe o mmproj junto com o GGUF", "text": "O modelo de texto sozinho é cego: a visão vem num arquivo separado, o mmproj (multimodal projector). No repositório oficial ggml-org/Qwen3.8-27B-GGUF existem duas versões: mmproj-Qwen3.8-27B-BF16.gguf (0,93 GB) e mmproj-Qwen3.8-27B-Q8_0.gguf (0,63 GB). O repo da unsloth traz mmproj-F16.gguf e mmproj-BF16.gguf, ambos com 0,93 GB." },
+            { "@type": "HowToStep", "position": 2, "name": "Suba o llama-server com o mmproj", "text": "Caminho automático: llama-server -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M — com -hf o mmproj é detectado sozinho e offloadado para a GPU por padrão. Caminho manual: llama-server -m Qwen3.8-27B-Q4_K_M.gguf --mmproj mmproj-Qwen3.8-27B-BF16.gguf. Flags úteis: --no-mmproj (desliga a visão) e --no-mmproj-offload (mantém o encoder na CPU)." },
+            { "@type": "HowToStep", "position": 3, "name": "Envie a imagem pelo chat", "text": "No CLI: coloque o caminho do arquivo no meio da mensagem. Na API OpenAI-compatível do llama-server (/v1/chat/completions), envie content com type image_url — o mesmo formato do model card oficial. O mesmo endpoint aceita vídeo via type video_url." },
+            { "@type": "HowToStep", "position": 4, "name": "No Ollama, use o campo images", "text": "ollama run qwen3.8:27b ./foto.png o que tem aqui? no terminal; na API, um array images com a imagem em base64 dentro da mensagem do usuário. A tag padrão (18 GB, 256K de contexto) já lista entrada Text, Image — sem tag especial de visão." },
+            { "@type": "HowToStep", "position": 5, "name": "Para vídeo longo, ajuste o sampling", "text": "O README oficial recomenda editar o video_preprocessor_config.json com longest_edge 469762048 (correspondente a 224k video tokens) para sampling com mais frames em vídeos de hora — a config de fábrica é conservadora para economizar em texto e imagem." }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B enxerga imagens?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim — o Qwen3.8-27B é uma VLM nativa (pipeline_tag image-text-to-text no Hugging Face): a torre de visão faz parte do modelo, não é um adaptador posterior. Para usar localmente falta só o arquivo mmproj (~0,93 GB BF16 ou 0,63 GB Q8_0 no repo oficial ggml-org), que o llama-server carrega com --mmproj ou detecta automaticamente com -hf; no Ollama, a tag qwen3.8:27b já aceita imagens. Fonte: model card oficial + docs multimodal do llama.cpp (18/08/2026)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto de VRAM extra a visão do Qwen3.8-27B consome?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O mmproj (o encoder de visão quantizado em GGUF) adiciona 0,93 GB na versão BF16 ou 0,63 GB na Q8_0 do repositório oficial ggml-org/Qwen3.8-27B-GGUF — medidos via Hugging Face API em 18/08/2026. Por padrão o llama.cpp offloada o mmproj para a GPU (--no-mmproj-offload para manter na CPU). Some a isso os tokens da imagem no contexto: a conta completa de GB por quantização está no guia de quantização GGUF do portal."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B serve para OCR?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Serve, e bem: 91,1 no OmniDocBench 1.5 (document intelligence) e 90,2 no CharXiv RQ (gráficos científicos), números do model card oficial. É uma alternativa local a APIs de OCR para documentos digitalizados, tabelas e gráficos — com a vantagem de responder perguntas sobre o conteúdo, não só extrair texto. Para PNG/JPG simples em CLI, ferramentas dedicadas continuam mais rápidas."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como enviar imagem para o Qwen3.8-27B no Ollama?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No terminal: ollama run qwen3.8:27b ./foto.png descreva esta imagem. Na API /api/chat, adicione um array \"images\": [\"<base64>\"> dentro da mensagem do usuário (a doc oficial de capabilities/vision usa exatamente esse formato). A tag qwen3.8:27b (18 GB, 256K) já lista entrada Text, Image na biblioteca oficial."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B entende vídeo localmente?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim, no llama.cpp: a doc multimodal lista vídeo como entrada suportada e o model card descreve understanding de vídeos de até escala de hora, com o formato video_url na API. Para vídeos longos, o README oficial recomenda ajustar o video_preprocessor_config.json (longest_edge 469762048 ≈ 224k video tokens) para sampling com mais frames. No Ollama, a página da biblioteca lista apenas Text, Image para a qwen3.8 — vídeo ficou por conta do llama.cpp."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Visão e vídeo locais", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
+        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent-3); }
+        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+        .stat-card .value.ok { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama</h1>
+        <p class="lead">3,56 milhões de downloads do GGUF depois, quase ninguém liga a visão: o 27B é uma VLM nativa que lê documentos, acerta bounding boxes e entende vídeo de até uma hora — e o encoder inteiro cabe em 0,93 GB. Como ativar tudo em hardware local, stack por stack.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
+            <li><a href="#vlm-nativa">VLM nativa: o que o modelo enxerga (e o que o model card promete)</a></li>
+            <li><a href="#mmproj">mmproj: os 0,93 GB que ligam os olhos do modelo</a></li>
+            <li><a href="#llama-cpp">llama.cpp: do download ao primeiro OCR</a></li>
+            <li><a href="#ollama">Ollama: imagem em um comando</a></li>
+            <li><a href="#ocr">OCR e documentos: substitui uma API de OCR?</a></li>
+            <li><a href="#bbox">Bounding boxes: o teste do pelicano do Simon Willison</a></li>
+            <li><a href="#video">Vídeo: de clipes curtos a uma hora de gravação</a></li>
+            <li><a href="#benchmarks">Benchmarks multimodais: os números do model card</a></li>
+            <li><a href="#vram">Quanto custa a visão em VRAM</a></li>
+            <li><a href="#presets">Presets prontos por perfil de hardware</a></li>
+            <li><a href="#erros">Erros comuns e como resolver</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
+    <p><strong>Para o Qwen3.8-27B enxergar imagens localmente:</strong> no llama.cpp, baixe o mmproj junto com o GGUF e suba o servidor com <code>-hf</code> (detecção automática) ou <code>--mmproj arquivo.gguf</code> (manual). No Ollama, a tag <code>qwen3.8:27b</code> já aceita imagens: passe o caminho do arquivo no terminal ou um array <code>images</code> em base64 na API. A visão custa +0,93 GB (BF16) ou +0,63 GB (Q8_0) de VRAM.</p>
+    <pre><code># llama.cpp — caminho automático (baixa GGUF + mmproj e detecta sozinho)
+llama-server -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M
+
+# caminho manual (arquivos já baixados)
+llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
+  --mmproj mmproj-Qwen3.8-27B-BF16.gguf
+
+# Ollama — a tag padrão já tem entrada Text, Image
+ollama run qwen3.8:27b ./foto.png o que aparece nesta imagem?</code></pre>
+    <p>No terminal do llama.cpp, coloque o caminho da imagem no meio da mensagem; na API, use o formato do model card (<code>image_url</code> / <code>video_url</code>).</p>
+
+    <h2 id="vlm-nativa">VLM nativa: o que o modelo enxerga (e o que o model card promete)</h2>
+    <p>O Qwen3.8-27B não é um LLM de texto que "também aceita" imagem: é uma <strong>vision-language model nativa</strong>. O Hugging Face classifica o repositório oficial como <code>pipeline_tag: image-text-to-text</code>, e o model card descreve a capacidade como <em>"understands images and videos, from STEM diagrams and documents to hour-scale videos"</em> — de diagramas de STEM e documentos a vídeos na escala de horas. Na arquitetura, é um <em>Causal Language Model with Vision Encoder</em>: a torre de visão nasceu junto com o modelo.</p>
+    <p>O detalhe que interessa para quem roda local: quase toda a distribuição GGUF do modelo é o cérebro de texto. <strong>A visão viaja num arquivo separado e opcional — o mmproj</strong> — e quem baixa só o Q4_K_M fica com um modelo cego sem saber. Os números de adoção tornam o gap evidente: <strong>3.561.466 downloads</strong> no repositório unsloth/Qwen3.8-27B-GGUF (Hugging Face API, 18/08/2026), contra guias de visão que simplesmente não existiam em português até agora.</p>
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="value">3,56M</div>
+            <div class="label">downloads do GGUF (unsloth, 18/08)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value ok">+0,93 GB</div>
+            <div class="label">é tudo que falta para o modelo enxergar</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">1h+</div>
+            <div class="label">de vídeo entendido por sessão</div>
+        </div>
+    </div>
+    <p>Nos benchmarks multimodais do próprio model card, o salto geracional é grande: BabyVision (raciocínio visual geral) foi de 28,9 no Qwen3.6-27B para <strong>85,6</strong> no 3.8 com CI — quase o triplo. Em Vision2Web (desenvolvimento web a partir de screenshot), 45,0 → <strong>62,9</strong>. A tabela completa está na seção de <a href="#benchmarks">benchmarks multimodais</a> deste guia.</p>
+
+    <h2 id="mmproj">mmproj: os 0,93 GB que ligam os olhos do modelo</h2>
+    <p>O <strong>mmproj</strong> (multimodal projector) é o encoder de visão do modelo convertido para GGUF: ele transforma pixels em embeddings que o LLM entende. Sem ele carregado, o modelo responde a mensagens com imagem como se nada tivesse sido anexado — comportamento confuso para quem não sabe que falta um arquivo.</p>
+    <p>Onde encontrar (tamanhos medidos via Hugging Face API em 18/08/2026):</p>
+    <table>
+        <thead>
+            <tr><th>Repositório</th><th>Arquivo</th><th>Tamanho</th></tr>
+        </thead>
+        <tbody>
+            <tr class="highlight"><td>ggml-org/Qwen3.8-27B-GGUF (oficial)</td><td>mmproj-Qwen3.8-27B-BF16.gguf</td><td>0,93 GB</td></tr>
+            <tr><td>ggml-org/Qwen3.8-27B-GGUF (oficial)</td><td>mmproj-Qwen3.8-27B-Q8_0.gguf</td><td>0,63 GB</td></tr>
+            <tr><td>unsloth/Qwen3.8-27B-GGUF</td><td>mmproj-F16.gguf / mmproj-BF16.gguf</td><td>0,93 GB cada</td></tr>
+        </tbody>
+    </table>
+    <p>Três fatos práticos, direto da doc multimodal oficial do llama.cpp (libmtmd):</p>
+    <ul>
+        <li><strong>Com <code>-hf</code>, o mmproj é detectado automaticamente</strong> quando o repositório tem um — é o caminho sem fricção.</li>
+        <li><strong>Com <code>-m modelo.gguf</code>, você precisa apontar <code>--mmproj arquivo.gguf</code></strong> — sem a flag, fica cego.</li>
+        <li><strong>O mmproj vai para a GPU por padrão</strong> (<code>--no-mmproj-offload</code> mantém na CPU, útil quando a VRAM está no limite) e <code>--no-mmproj</code> desliga a visão de vez (economia de VRAM para uso só-texto — usado no nosso <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia do 27B em 16GB</a>).</li>
+    </ul>
+
+    <h2 id="llama-cpp">llama.cpp: do download ao primeiro OCR</h2>
+    <p>O suporte multimodal do llama.cpp hoje passa pela libmtmd, exposto em três ferramentas: <code>llama-cli</code>, <code>llama-server</code> (via API OpenAI-compatível <code>/chat/completions</code>) e <code>llama-mtmd-cli</code> (para teste e desenvolvimento). Imagem, áudio e vídeo são entradas suportadas.</p>
+    <h3>1. Servidor com visão (o setup do dia a dia)</h3>
+    <pre><code># automático: baixa o Q4_K_M (18,97 GB) + mmproj do repo oficial
+llama-server -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M --ctx-size 32768
+
+# manual: você já tem os arquivos
+llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
+  --mmproj mmproj-Qwen3.8-27B-BF16.gguf \
+  --ctx-size 32768 \
+  --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    <h3>2. Enviando imagem pela API (formato do model card)</h3>
+    <p>O template oficial de mensagens multimodais do Qwen3.8-27B é OpenAI-style — <code>content</code> vira uma lista com um objeto de imagem e um de texto. O <code>llama-server</code> aceita exatamente esse formato no endpoint compatível:</p>
+    <pre><code>curl http://localhost:8080/v1/chat/completions -H "Content-Type: application/json" -d '{
+  "model": "qwen3.8-27b",
+  "messages": [{
+    "role": "user",
+    "content": [
+      { "type": "image_url",
+        "image_url": { "url": "file:///caminho/da/nota-fiscal.png" } },
+      { "type": "text",
+        "text": "Extraia em JSON: emissor, CNPJ, valor total e data de emissão." }
+    ]
+  }]
+}'</code></pre>
+    <p>É o mesmo shape do exemplo oficial do model card — que demonstra até matemática a partir de diagrama (MathVision, 94,6 com CI). Para URL pública, troque o <code>url</code> por um <code>https://...</code> comum.</p>
+    <h3>3. Teste rápido no terminal</h3>
+    <pre><code># CLI interativo: o caminho do arquivo dentro da mensagem já resolve
+llama-cli -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M \
+  --ctx-size 16384
+
+&gt; Descreva o que aparece em ./fatura.png e liste os itens da tabela</code></pre>
+
+    <h2 id="ollama">Ollama: imagem em um comando</h2>
+    <p>No Ollama não há flag de servidor nem arquivo extra para gerenciar: a visão já vem embutida na tag padrão. A página oficial do modelo na biblioteca lista <code>qwen3.8:latest</code> e <code>qwen3.8:27b</code> com <strong>18 GB, contexto 256K e entrada "Text, Image"</strong> (verificado em 18/08/2026) — não existe tag especial de visão para procurar.</p>
+    <pre><code># terminal: imagem anexada no próprio comando
+ollama run qwen3.8:27b ./foto.png o que aparece nesta imagem?</code></pre>
+    <p>Pela API (<code>/api/chat</code>), o formato oficial da doc de capabilities/vision é um array <code>images</code> com a imagem em base64 dentro da mensagem do usuário:</p>
+    <pre><code># 1. baixe uma imagem de teste
+curl -L -o test.jpg "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
+
+# 2. codifique
+IMG=$(base64 &lt; test.jpg | tr -d '\n')
+
+# 3. envie
+curl http://localhost:11434/api/chat -d '{
+  "model": "qwen3.8:27b",
+  "messages": [{
+    "role": "user",
+    "content": "O que há nesta imagem? Responda em português.",
+    "images": ["'"$IMG"'"]
+  }],
+  "stream": false
+}'</code></pre>
+    <div class="callout">
+        <strong>Diferença importante entre as stacks:</strong> a biblioteca do Ollama lista entrada <em>Text, Image</em> para a qwen3.8 — vídeo não aparece. Para vídeo local, o caminho hoje é o llama.cpp (seção abaixo). E lembre do preço do raciocínio: visão + <code>xhigh</code> de fábrica multiplica tokens de thinking por imagem; o controle de reasoning está no nosso <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de configuração de reasoning</a> (use <code>think: false</code> no Ollama ou <code>--reasoning off</code> para OCR em lote).
+    </div>
+
+    <h2 id="ocr">OCR e documentos: substitui uma API de OCR?</h2>
+    <p>Para texto nascido digital (PDF de texto, PNG de nota fiscal, screenshot de tabela), sim — com ressalva de velocidade. Os números do model card posicionam o modelo como leitor de documentos de primeira linha:</p>
+    <ul>
+        <li><strong>OmniDocBench 1.5 (document intelligence): 91,1</strong> — à frente do Qwen3.6-27B (89,4) e do Opus 4.6 Max (86,6).</li>
+        <li><strong>CharXiv RQ (gráficos científicos): 90,2 com CI</strong> (83,7 sem) — leitura de eixos, legendas e conclusões de gráficos.</li>
+        <li><strong>MathVision (matemática a partir de imagem): 94,6 com CI</strong> (90,0 sem) — o caso demonstrado no próprio model card com um diagrama geométrico.</li>
+    </ul>
+    <p>A vantagem sobre OCR tradicional não é extrair caracteres — é <strong>entender o documento</strong>: "qual item da tabela saiu mais caro?", "qual trecho contradiz o contrato?", "gere o JSON dessa fatura". Um OCR devolve texto; o Qwen3.8-27B devolve resposta. Para processamento em lote de milhares de páginas escaneadas, uma ferramenta dedicada de OCR antes do LLM continua sendo o pipeline mais barato — o modelo brilha no documento que exige interpretação, não digitação.</p>
+    <div class="callout">
+        <strong>Receita de extração estruturada:</strong> peça explicitamente o formato ("Extraia em JSON com as chaves X, Y, Z"). Com <code>--reasoning off</code> e temperatura baixa, a extração fica mais rápida e mais determinística; com thinking ligado, documentos ambíguos rendem melhor. O meio-termo é <code>--reasoning-effort medium</code>.
+    </div>
+
+    <h2 id="bbox">Bounding boxes: o teste do pelicano do Simon Willison</h2>
+    <p>O teste de visão mais citado do lançamento veio da review hands-on de <a href="https://simonwillison.net/2026/Aug/16/qwen-38-27b/">Simon Willison (16/08/2026)</a>: pedir bounding boxes de objetos numa foto, em escala 0-1000. O prompt: <em>"Return JSON bounding boxes for the pelicans in this photo, 0-1000 scale for each dimension"</em>.</p>
+    <p>A resposta — duas caixas com <code>bbox_2d</code> apontando cada pelicano — levou ao veredito <strong>"This is such a good match"</strong>:</p>
+    <pre><code>[
+  { "bbox_2d": [195, 290, 370, 780], "label": "pelicans" },
+  { "bbox_2d": [445, 320, 675, 850], "label": "pelicans" }
+]</code></pre>
+    <p>Por que isso importa para uso local: bounding box em JSON é a base de pipelines de <strong>detecção barata</strong> — etiquetar imagens, pré-anotar datasets, verificar se um objeto aparece num print. O Simon foi além e pediu ao próprio modelo (no modo agêntico) para construir uma ferramenta HTML que renderiza essas caixas sobre a imagem — a ferramenta virou a <a href="https://tools.simonwillison.net/bbox-lab/">bbox-lab</a>. O mesmo prompt funciona em português no seu llama-server local.</p>
+    <p>Dica prática: os valores são <strong>normalizados 0-1000</strong>, não pixels — divida por 1000 e multiplique pelas dimensões reais da imagem antes de desenhar a caixa.</p>
+
+    <h2 id="video">Vídeo: de clipes curtos a uma hora de gravação</h2>
+    <p>O model card promete <em>hour-scale videos</em> e o formato oficial de envio é o <code>video_url</code> (análogo ao <code>image_url</code>), com uma pegadinha documentada: por padrão o processador faz sampling conservador de frames para não estourar o contexto. A recomendação oficial para vídeos longos é editar o <code>video_preprocessor_config.json</code>:</p>
+    <pre><code>{ "longest_edge": 469762048, "shortest_edge": 4096 }</code></pre>
+    <p>O valor corresponde a <strong>224k video tokens</strong> e habilita sampling com mais frames — é o que destrava o desempenho em gravações de uma hora (o arquivo <code>video_preprocessor_config.json</code> acompanha o repositório oficial). No vLLM, o sampling é controlável por requisição via <code>extra_body.mm_processor_kwargs</code> com <code>fps</code> (default <code>fps=2</code>); o model card observa que esse controle por requisição é suportado no vLLM.</p>
+    <p>No llama.cpp, o vídeo entra pelo mesmo caminho da imagem — a doc multimodal lista vídeo como modalidade suportada na libmtmd (arquivo local no CLI, <code>video_url</code> na API). A conta de contexto é a restrição real: cada frame consumido vira token, então vídeo longo + contexto curto = corte silencioso do começo. Para sessões sérias de vídeo, suba o <code>--ctx-size</code> (64K+).</p>
+
+    <h2 id="benchmarks">Benchmarks multimodais: os números do model card</h2>
+    <p>Tabela completa da seção <em>VL Performance</em> do model card oficial (colunas: Qwen3.8-27B, Qwen3.6-27B, Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max). Onde há dois valores, "sem CI / com CI":</p>
+    <table>
+        <thead>
+            <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Qwen3.7-Plus</th><th>Muse Glimmer</th><th>Opus 4.6 Max</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>MathVision (matemática visual)</td><td>90,0 / <strong>94,6</strong></td><td>85,1</td><td>90,3</td><td>--</td><td>65,5</td></tr>
+            <tr class="highlight"><td>BabyVision (raciocínio visual geral)</td><td>65,7 / <strong>85,6</strong></td><td>28,9</td><td>64,7 / 70,4</td><td>--</td><td>12,6</td></tr>
+            <tr><td>CharXiv RQ (gráficos científicos)</td><td>83,7 / <strong>90,2</strong></td><td>78,4</td><td>85,8 / 85,9</td><td>78,8</td><td>66,0</td></tr>
+            <tr><td>OmniDocBench 1.5 (documentos)</td><td><strong>91,1</strong></td><td>89,4</td><td>91,4</td><td>75,8</td><td>86,6</td></tr>
+            <tr><td>Vision2Web (web por screenshot)</td><td><strong>62,9</strong></td><td>45,0</td><td>42,1</td><td>--</td><td>--</td></tr>
+            <tr><td>RealWorldQA</td><td>85,9</td><td>84,1</td><td><strong>86,9</strong></td><td>--</td><td>73,9</td></tr>
+            <tr><td>ERQA</td><td>65,5</td><td>62,5</td><td><strong>69,8</strong></td><td>--</td><td>40,8</td></tr>
+            <tr><td>OSWorld-Verified (agentes desktop)</td><td><strong>84,3</strong></td><td>63,9</td><td>73,3</td><td>65,9</td><td>72,7</td></tr>
+            <tr><td>AndroidWorld</td><td><strong>81,9</strong></td><td>70,3</td><td>81,0</td><td>--</td><td>62,0</td></tr>
+            <tr><td>WebArena-Verified</td><td><strong>64,8</strong></td><td>48,8</td><td>48,8</td><td>--</td><td>--</td></tr>
+            <tr><td>RecreationBench</td><td><strong>47,1</strong></td><td>29,8</td><td>--</td><td>--</td><td>--</td></tr>
+            <tr><td>ClawEval-MM (agêntico multimodal)</td><td>57,4 P@3 / <strong>56,9</strong> avg</td><td>42,6 / 50,4</td><td>57,4 / 60,1</td><td>--</td><td>52,5 / 54,7</td></tr>
+            <tr><td>SWE-MM (SWE-bench Multimodal)</td><td><strong>38,6</strong></td><td>25,7</td><td>30,0</td><td>--</td><td>27,1</td></tr>
+        </tbody>
+    </table>
+    <p>Notas do próprio model card: MathVision usa prompt fixo com <code>\boxed{}</code> para o 3.8 (variantes para os outros); Vision2Web é média das categorias frontend/webpage/website; SWE-MM roda no harness Claude Code com o dev split público; benchmarks com duas linhas de score reportam "sem CI" e "com CI" separadamente; células "--" = resultado não disponível. Como sempre, são números auto-reportados pela Qwen — a leitura de comparação entre gerações (3.6 → 3.8) é a mais segura.</p>
+
+    <h2 id="vram">Quanto custa a visão em VRAM</h2>
+    <p>Os pesos do encoder (mmproj) são pequenos; a conta real soma três coisas: quantização do modelo de texto + mmproj + <strong>tokens da imagem no KV cache</strong>. Referências medidas (tabela completa no nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a>):</p>
+    <table>
+        <thead>
+            <tr><th>Setup</th><th>Modelo texto</th><th>mmproj</th><th>Total de pesos</th><th>GPU confortável</th></tr>
+        </thead>
+        <tbody>
+            <tr class="highlight"><td>Q4_K_M + BF16 (oficial ggml-org)</td><td>18,97 GB (repo) / 17,11 GB (unsloth)</td><td>0,93 GB</td><td>~18-19,9 GB</td><td>24 GB</td></tr>
+            <tr><td>Q4_K_M + mmproj Q8_0 (oficial)</td><td>18,97 GB (repo)</td><td>0,63 GB</td><td>~19,6 GB</td><td>24 GB</td></tr>
+            <tr><td>UD-Q4_K_XL (unsloth) + BF16</td><td>17,92 GB</td><td>0,93 GB</td><td>~18,9 GB</td><td>24 GB</td></tr>
+            <tr><td>IQ4_XS (unsloth) + BF16</td><td>15,71 GB</td><td>0,93 GB</td><td>~16,6 GB</td><td>não cabe em 16 GB com folga de KV</td></tr>
+        </tbody>
+    </table>
+    <p>A leitura prática: <strong>em 16 GB, imagem pontual dá para tentar com mmproj na CPU</strong> (<code>--no-mmproj-offload</code>) e contexto curto; o conforto começa em 24 GB. Vídeo é território de 24 GB+ ou memória unificada grande (Strix Halo, Mac 36 GB+) por causa do contexto. Contexto recomendado: 16-32K para OCR e imagens simples, 64K+ para vídeo.</p>
+
+    <h2 id="presets">Presets prontos por perfil de hardware</h2>
+    <h3>GPU 24GB (3090 / 4090) — visão completa com MTP</h3>
+    <pre><code>llama-server \
+  -hf  ggml-org/Qwen3.8-27B-GGUF:Q4_K_M \
+  --ctx-size 32768 \
+  --temp 1.0 --top-p 0.95 --top-k 20 \
+  --reasoning-effort medium</code></pre>
+    <p>(mmproj detectado automaticamente pelo <code>-hf</code>; para acelerar o decode, some o combo MTP do <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning</a>: <code>-hfd ggml-org/Qwen3.8-27B-GGUF:Q4_0 --spec-default --spec-type draft-mtp</code>.)</p>
+    <h3>GPU 16GB (4070 Ti Super / 5070 Ti) — imagem pontual</h3>
+    <pre><code>llama-server \
+  -hf unsloth/Qwen3.8-27B-GGUF:IQ4_XS \
+  --mmproj mmproj-F16.gguf \
+  --no-mmproj-offload \
+  --ctx-size 16384 --flash-attn on \
+  --cache-type-k q8_0 --cache-type-v q8_0 \
+  --reasoning off</code></pre>
+    <p>(Encoder de visão na CPU e KV cache q8_0 para caber; documento por documento, não em lote. Detalhes do limite de 16 GB no <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia dedicado</a>.)</p>
+    <h3>Strix Halo / Mac 32GB+ (memória unificada) — vídeo</h3>
+    <pre><code>llama-server \
+  -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M \
+  --ctx-size 65536 \
+  --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    <h3>Ollama — o mínimo viável</h3>
+    <pre><code>ollama run qwen3.8:27b
+# no chat: arraste a imagem ou use ./foto.png na mensagem
+# na API: "images": ["&lt;base64&gt;"] + "think": false p/ OCR rápido</code></pre>
+
+    <h2 id="erros">Erros comuns e como resolver</h2>
+    <ul>
+        <li><strong>"O modelo ignora a imagem que enviei"</strong> — mmproj não carregado. Com <code>-m</code> você esqueceu o <code>--mmproj</code>; com <code>-hf</code>, atualize o llama.cpp (builds antigos não têm libmtmd para o Qwen3.8). Confira no log de inicialização a linha do multimodal projector.</li>
+        <li><strong>"CUDA out of memory ao carregar"</strong> — some 0,93 GB à sua conta de VRAM (ou use o mmproj Q8_0 de 0,63 GB do repo oficial; ou <code>--no-mmproj-offload</code> para deixar o encoder na CPU).</li>
+        <li><strong>"A resposta vem em inglês"</strong> — o encoder é treinado multilíngue, mas o prompt manda: peça explicitamente "responda em português" ou fixe o idioma no system prompt.</li>
+        <li><strong>"Ocr demora uma eternidade"</strong> — é o xhigh-trap multiplicado por tokens de imagem. <code>--reasoning off</code> (llama.cpp) ou <code>"think": false</code> (Ollama) resolve a maioria dos casos de extração; contextos acima de 16K ajudam.</li>
+        <li><strong>"Vídeo corta o começo / responde só do fim"</strong> — contexto curto para o número de frames: suba o <code>--ctx-size</code> ou reduza o fps do sampling; para hora de vídeo, ajuste o <code>video_preprocessor_config.json</code> conforme o README.</li>
+        <li><strong>"Bounding box errada no desenho"</strong> — os valores são escala 0-1000, não pixels: normalize antes de renderizar (foi exatamente o que a bbox-lab do Simon fez).</li>
+    </ul>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B enxerga imagens?</h3>
+        <p>Sim — é uma VLM nativa (<code>pipeline_tag: image-text-to-text</code>): a torre de visão faz parte do modelo. Localmente, falta só o mmproj (~0,93 GB BF16 / 0,63 GB Q8_0), que o llama.cpp carrega com <code>--mmproj</code> ou detecta com <code>-hf</code>; no Ollama a tag <code>qwen3.8:27b</code> já aceita imagem.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto de VRAM extra a visão consome?</h3>
+        <p>+0,93 GB (BF16) ou +0,63 GB (Q8_0) de pesos, mais os tokens da imagem no contexto. Em 24 GB sobra folga; em 16 GB use <code>--no-mmproj-offload</code> e contexto curto. A tabela completa está no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização</a>.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B serve para OCR?</h3>
+        <p>Serve: 91,1 no OmniDocBench 1.5 e 90,2 no CharXiv RQ (model card). A vantagem é entender o documento (responder perguntas, gerar JSON), não só digitar texto — para lote de páginas escaneadas, OCR dedicado antes do LLM continua mais barato.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Como enviar imagem no Ollama?</h3>
+        <p>No terminal, o caminho do arquivo na mensagem (<code>ollama run qwen3.8:27b ./foto.png descreva</code>); na API, array <code>"images"</code> com base64 dentro da mensagem do usuário — formato da doc oficial capabilities/vision.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Ele entende vídeo localmente?</h3>
+        <p>No llama.cpp, sim — vídeo é modalidade suportada na libmtmd, enviada como <code>video_url</code> na API, e o model card cobre vídeos de até escala de hora (com o ajuste do <code>video_preprocessor_config.json</code>). No Ollama a página do modelo lista apenas Text, Image (18/08/2026).</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quais benchmarks multimodais devo citar?</h3>
+        <p>OmniDocBench 91,1 (documentos), MathVision 94,6 com CI (matemática visual), CharXiv 90,2 (gráficos) e Vision2Web 62,9 (web por screenshot) — todos do model card oficial, com comparativos contra Qwen3.6-27B na tabela deste guia.</p>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — Visão, vídeo e OCR no Qwen3.8-27B | Fontes: model card oficial Qwen/Qwen3.8-27B no Hugging Face (seção VL Performance, lida em 18/08/2026), docs multimodal do llama.cpp (libmtmd, 18/08/2026), biblioteca Ollama qwen3.8 + doc capabilities/vision (18/08/2026), review Simon Willison 16/08/2026 (bbox_2d/bbox-lab), Hugging Face API (tamanhos de arquivo e downloads, 18/08/2026).</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/modelos">Catálogo de modelos</a> | <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Configuração de reasoning</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>

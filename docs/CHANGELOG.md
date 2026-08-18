@@ -9,7 +9,41 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
-## [2026-08-18] — Artigo: Tokens por segundo no hardware real (throughput compilado)
+## [2026-08-18] — Artigo: Qwen3.8-27B enxerga — visão, vídeo e OCR locais (mmproj)
+
+### Added
+- **Artigo "Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp
+  e Ollama"** (`guia/qwen3-8-27b-visao-videos-local/`, task kanban
+  `t_933f2b89` — Tema 2 do discovery 18/08): primeiro guia multimodal do
+  portal, atacando o gap de 0 páginas de visão/vídeo para uma VLM nativa
+  com 3,56M de downloads de GGUF (unsloth, HF API 18/08).
+  - Os 3 requisitos obrigatórios do card verificados ao vivo (18/08):
+    (1) doc multimodal do llama.cpp (libmtmd) — `-hf` detecta mmproj
+    automaticamente, `--mmproj file.gguf` no caminho manual, flags
+    `--no-mmproj` e `--no-mmproj-offload`; (2) template oficial de prompt
+    do model card — `image_url`/`video_url` OpenAI-style; (3) Ollama —
+    `qwen3.8:latest`/`:27b` (18 GB, 256K) listam entrada "Text, Image",
+    sem tag especial de visão (doc capabilities/vision: array `images`
+    base64); vídeo NÃO listado no Ollama — tratado como diferenciação
+    honesta entre stacks no artigo.
+  - Conteúdo: mmproj medido 0,93 GB (BF16) / 0,63 GB (Q8_0) no repo
+    oficial ggml-org + 0,93 GB (F16/BF16) na unsloth (HF API); passo a
+    passo llama-server (auto e manual) + curl /v1/chat/completions;
+    OCR (OmniDocBench 91,1, CharXiv 90,2 com CI, MathVision 94,6 com CI);
+    bounding boxes bbox_2d escala 0-1000 do teste do Simon Willison
+    (16/08, "such a good match", bbox-lab); vídeo hour-scale com o ajuste
+    oficial do video_preprocessor_config.json (longest_edge 469762048 ≈
+    224k video tokens); tabela VL completa de 13 benchmarks do model card
+    (5 colunas); tabela de custo de VRAM; presets por hardware (24GB/16GB/
+    unificada/Ollama); seção de erros comuns.
+  - JSON-LD: TechArticle + HowTo (5 steps) + FAQPage (5 perguntas) +
+    BreadcrumbList; GA4 G-016TVX8LEE com scroll_depth; canonical/OG/Twitter.
+  - Companions: sitemap (21→22 URLs), llms.txt (+5 stats citáveis, página
+    na lista, Q&A nova "O Qwen3.8-27B enxerga imagens?", linha na seção
+    Multimodal), card no `/guia` (tag-guide, BOFU · Novo 18/08), Q&A nova
+    na FAQ do portal (HTML + JSON-LD, 26→27 perguntas).
+
+---
 
 ### Added
 - **Artigo "Tokens por segundo no hardware real"**

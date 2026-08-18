@@ -187,6 +187,14 @@
         },
         {
           "@type": "Question",
+          "name": "O Qwen3.8-27B enxerga imagens?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim — é uma VLM nativa (pipeline_tag image-text-to-text no Hugging Face): a torre de visão faz parte do modelo. Para usar localmente falta só o mmproj: 0,93 GB (BF16) ou 0,63 GB (Q8_0) no repositório oficial ggml-org/Qwen3.8-27B-GGUF, carregado no llama.cpp com --mmproj ou detectado automaticamente com -hf. No Ollama, a tag qwen3.8:27b (18 GB, 256K de contexto) já aceita imagens — entrada Text, Image na biblioteca oficial. Vídeo (até escala de hora) é suportado no llama.cpp. Fonte: model card oficial + docs multimodal llama.cpp + biblioteca Ollama (18/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Como rodar via vLLM?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -422,6 +430,12 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <pre style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0;"><code>llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL \
   --ctx-size 262144 \
   --temp 1.0 --top-p 0.95 --top-k 20</code></pre>
+    </div>
+
+    <div class="faq-item">
+        <h3 id="enxerga-imagens">O Qwen3.8-27B enxerga imagens?</h3>
+        <p>Sim — é uma <strong>VLM nativa</strong> (<code>pipeline_tag: image-text-to-text</code> no Hugging Face): a torre de visão faz parte do modelo, não é um adaptador posterior. Para usar localmente falta só o <strong>mmproj</strong>: 0,93 GB (BF16) ou 0,63 GB (Q8_0) no repositório oficial <code>ggml-org/Qwen3.8-27B-GGUF</code>. No llama.cpp ele é carregado com <code>--mmproj arquivo.gguf</code> ou detectado automaticamente com <code>-hf</code>; no Ollama, a tag <code>qwen3.8:27b</code> já aceita imagens (entrada Text, Image). Vídeo, até escala de hora, é suportado no llama.cpp.</p>
+        <p>Guia completo: <a href="/guia/qwen3-8-27b-visao-videos-local" style="color:var(--accent)">Qwen3.8-27B enxerga — visão, vídeo e OCR no llama.cpp e Ollama</a>.</p>
     </div>
 
     <div class="faq-item">
