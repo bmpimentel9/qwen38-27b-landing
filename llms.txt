@@ -21,6 +21,10 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - MTP (--spec-type draft-mtp) no llama.cpp: +72% no DGX Spark (Simon Willison) e decode 22,97 → 42,45 tok/s (~1,85×) nos testes do PR #22673 (merged); prefill cai ~0,51× no mesmo caminho.
 - Ollama `qwen3.8:27b`: modelo de 18 GB com 256K de contexto (biblioteca oficial Ollama).
 - Qwen3.8-27B-FP8 (checkpoint oficial): 30,89 GB medidos via HF API, 741.011 downloads em 5 dias (18/08/2026); FP8 fine-grained bloco 128 com métricas "quase idênticas" ao BF16 segundo o model card. Throughput SGLang medido pela equipe: 206,1 tok/s na RTX 5090 e 38,28 tok/s no DGX Spark.
+- Throughput máximo do Qwen3.8-27B: 206,1 tok/s de decode numa única RTX 5090 com SGLang + NVFP4 + speculative decoding DSpark (equipe SGLang, tweet oficial Qwen, 14/08/2026); no DGX Spark o mesmo stack entrega 38 tok/s.
+- RTX 3090 com llama.cpp (UD-Q4_K_XL): 41,5 tok/s de decode no Qwen3.8-27B (InsiderLLM, llama-bench, 3.8≈3.6 no mesmo setup).
+- RTX 3060 12GB: ~9,7 tok/s no Qwen3.8-27B Q4_K_S com 96K de contexto — offload FFN de 46 camadas + KV cache Q4_0 + MTP (HF discussion #61, comunidade).
+- MTP no llama.cpp: 7,16 → 10,47 tok/s num MacBook M5 24GB (1,46×); suporte merged via PR #22673 (verificado 18/08).
 - MiniMax Music3 não é um modelo de 2,4B: soma ~11,1B — Global LLM 8B (init Qwen3-8B) + Local LLM 0,6B + Flow Matching 2,4B + Flow-VAE 123M; ~22 GB de pesos em bf16 (model card + tree HF API).
 - Music3 em VRAM: ~23 GB full bf16 / ~22 GB com CPU offload / 8 GB com group offloading leaf_level + use_stream (docs oficiais diffusers).
 - Music3 gera músicas completas de até 5 min com vocal; 25 frames de áudio por segundo (750 tokens ≈ 30s); Community License permite uso comercial com atribuição e autorização só acima de US$ 20 mi/ano (model card + LICENSE + cookbook SGLang).
@@ -49,6 +53,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 
 
 - [Qwen3.8 vs Qwen3.6: vale o upgrade?](https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b) — comparativo geracional 27B denso, todos os 26 benchmarks do model card, throughput real e veredito por perfil de uso
+- [Tokens por segundo no hardware real](https://qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real) — todos os números de throughput medidos num só lugar: 206,1 t/s (5090/SGLang) a ~10 t/s (3060 12GB), por hardware × stack × quantização, com fonte e contexto de cada número, metodologia e MTP on/off
 
 ## Perguntas frequentes
 
@@ -72,6 +77,9 @@ Não há comparação head-to-head oficial entre os dois; nos 4 benchmarks comun
 
 ### O Qwen3.8-27B é denso ou MoE? O que muda na prática?
 Denso: os 27 bilhões de parâmetros ativam a cada token, o que dá mais qualidade por parâmetro e menos velocidade — no mesmo hardware (Strix Halo, Q5_K_M, Ollama/Vulkan) o 27B denso entrega 10,6 tok/s de decode, enquanto o Qwen3.6-35B MoE, com ~3B parâmetros ativos, entrega 56,6 tok/s (5,3× mais). Fonte: medição própria publicada no portal + model cards oficiais.
+
+### Quantos tokens por segundo roda o Qwen3.8-27B?
+Depende do stack e do hardware: RTX 5090 com SGLang + NVFP4 + DSpark chega a 206,1 tok/s; RTX 3090 com llama.cpp UD-Q4_K_XL entrega ~41,5 tok/s; Strix Halo com Ollama/Vulkan Q4_K_M, 17,3 tok/s; RTX 3060 12GB com offload FFN + MTP, ~9,7 tok/s com 96K de contexto. Decode de denso é limitado por banda de memória ÷ bytes por token; speculative decoding (MTP/DSpark) multiplica 1,4–3× conforme o gargalo. Fonte: SGLang/Qwen oficiais, InsiderLLM, HF discussion #61 e medições próprias (compilado em /guia/tokens-por-segundo-30b-hardware-real).
 
 ### Qual o tamanho de contexto do Qwen3.8-27B?
 262.144 tokens nativos, extensíveis a 1.000.000 com RoPE scaling; em NVFP4 (Blackwell), o modelo ocupa 24,6 GiB e roda 1M de contexto em uma única GPU. Fonte: model card oficial.
