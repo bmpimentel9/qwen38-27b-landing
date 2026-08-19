@@ -80,6 +80,33 @@
           ]
         },
         {
+          "@type": "Dataset",
+          "name": "Melhores modelos locais de 30B (ago/2026) — tabela mestra",
+          "description": "Dados estruturados da tabela mestra: 6 modelos locais de até 30B avaliados em agosto/2026 (Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B e DeepSeek V4 Flash, incluído como comparação de 284B totais). Valores em https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#tabela-mestra",
+          "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b",
+          "isAccessibleForFree": true,
+          "creator": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "license": "https://qwen38-27b-landing.vercel.app/",
+          "temporalCoverage": "2026-08",
+          "variableMeasured": [
+            { "@type": "PropertyValue", "name": "modelo", "description": "Nome e versão do modelo" },
+            { "@type": "PropertyValue", "name": "params", "description": "Parâmetros totais e arquitetura: denso ou MoE" },
+            { "@type": "PropertyValue", "name": "ativos", "description": "Parâmetros ativos por token (determina custo computacional e velocidade)" },
+            { "@type": "PropertyValue", "name": "gguf_gb", "description": "Tamanho do arquivo GGUF 4-bit medido em disco, em GB decimais conforme a fonte; GPT-OSS-20B é o único em GiB (11,27 GiB MXFP4 ≈ 12,10 GB). Qwen3.8-27B: IQ4_XS 15,71 GB e Q4_K_M 17,11 GB; Muse Glimmer: UD-Q4_K_XL 15,88 GB (Unsloth); Qwen3.6-27B: ≈15,7–17,1 GB (mesma arquitetura do 3.8); Gemma 3 27B: Q4_K_M 16,55 GB (bartowski); DeepSeek V4 Flash: UD-IQ3_XXS 103 GB (Q8_K_XL 162 GB)" },
+            { "@type": "PropertyValue", "name": "contexto", "description": "Contexto nativo em tokens do model card: 262.144 (Qwen3.8), 131.072+ (Muse Glimmer), 131.072 (GPT-OSS), 262.144 com 1M via YaRN (Qwen3.6), 128.000 (Gemma 3), 1.048.576 (DeepSeek V4 Flash)" },
+            { "@type": "PropertyValue", "name": "licenca", "description": "Licença: Apache 2.0 (Qwen3.8, Muse Glimmer, GPT-OSS, Qwen3.6), Gemma Terms of Use, MIT (DeepSeek V4 Flash)" },
+            { "@type": "PropertyValue", "name": "visao", "description": "Visão nativa: Qwen3.8 (mmproj 0,93 GB), Muse Glimmer (ViT-G/14 ~1,8B), Gemma 3 (128K) — GPT-OSS e DeepSeek V4 Flash não" },
+            { "@type": "PropertyValue", "name": "lancamento", "description": "Data de lançamento: 14/08/2026 (Qwen3.8), 10/08/2026 (Muse Glimmer), 05/08/2025 (GPT-OSS), 22/04/2026 (Qwen3.6), 12/03/2025 (Gemma 3), 24/04/2026 (DeepSeek V4 Flash)" }
+          ],
+          "distribution": [
+            {
+              "@type": "DataDownload",
+              "encodingFormat": "text/html",
+              "contentUrl": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#tabela-mestra"
+            }
+          ]
+        },
+        {
           "@type": "FAQPage",
           "mainEntity": [
             {
@@ -184,7 +211,21 @@
         footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
         footer a { color: var(--accent); text-decoration: none; }
         ul { margin-left: 25px; margin-bottom: 15px; }
-        @media (max-width: 640px) { body { padding: 12px; } th, td { padding: 8px 10px; } }
+        .table-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 15px 0 5px 0; }
+        .filter-btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px; padding: 5px 14px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+        .table-note { font-size: 0.8rem; color: var(--text-muted); margin: 6px 0 0 0; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-wrap table { min-width: 860px; margin-top: 10px; }
+        th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+        th.sortable:hover { color: var(--accent-2); }
+        th.sortable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        th .sort-ind { font-size: 0.72rem; color: var(--text-muted); margin-left: 4px; }
+        th[aria-sort] .sort-ind { color: var(--accent-2); }
+        tr.filter-hidden { display: none; }
+        tr.row-dim td { opacity: 0.55; }
+        @media (max-width: 640px) { body { padding: 12px; } th, td { padding: 8px 10px; } .filter-btn { padding: 5px 10px; font-size: 0.8rem; } }
     </style>
 </head>
 <body>
@@ -256,19 +297,32 @@
     </div>
 
     <h2 id="tabela-mestra">A tabela mestra: 6 modelos, VRAM real, contexto e licença</h2>
-    <p>Coluna "GGUF" mostra arquivo medido em disco (fonte em cada linha), não estimativa de VRAM em carga. Contexto é o nativo do model card. "Ativos/token" é o número que separa denso de MoE — e o que determina velocidade.</p>
-    <table>
+    <p>Coluna "GGUF" mostra arquivo medido em disco (fonte em cada linha), não estimativa de VRAM em carga. Contexto é o nativo do model card. "Ativos/token" é o número que separa denso de MoE — e o que determina velocidade. A tabela é interativa: filtre por caso de uso nos botões e clique nos cabeçalhos <em>GGUF</em>, <em>Contexto</em> e <em>Lançamento</em> para ordenar.</p>
+    <div class="table-controls" role="group" aria-label="Filtrar modelos por caso de uso">
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Todos (6)</button>
+        <button type="button" class="filter-btn" data-filter="codigo" aria-pressed="false">Código</button>
+        <button type="button" class="filter-btn" data-filter="agentes" aria-pressed="false">Agentes</button>
+        <button type="button" class="filter-btn" data-filter="visao" aria-pressed="false">Visão</button>
+        <button type="button" class="filter-btn" data-filter="hardware" aria-pressed="false">Hardware fraco (12–16 GB)</button>
+        <button type="button" class="filter-btn" data-filter="contexto" aria-pressed="false">Contexto longo</button>
+    </div>
+    <p class="table-note"><span id="tableCounter" aria-live="polite">6 de 6 modelos</span> · vencedores do caso de uso em destaque; os demais ficam esmaecidos. O DeepSeek V4 Flash (284B totais, GGUF de 103 GB) nunca aparece como recomendado no filtro de hardware fraco.</p>
+    <div class="table-wrap">
+    <table id="modelTable">
+        <thead>
         <tr>
-            <th>Modelo</th>
-            <th>Parâmetros</th>
-            <th>Ativos/token</th>
-            <th>GGUF 4-bit (medido)</th>
-            <th>Contexto nativo</th>
-            <th>Licença</th>
-            <th>Visão</th>
-            <th>Lançamento</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Parâmetros</th>
+            <th scope="col">Ativos/token</th>
+            <th scope="col" class="sortable" data-key="gguf" tabindex="0" title="Ordenar por tamanho do GGUF 4-bit">GGUF 4-bit (medido) <span class="sort-ind" aria-hidden="true">↕</span></th>
+            <th scope="col" class="sortable" data-key="ctx" tabindex="0" title="Ordenar por contexto nativo">Contexto nativo <span class="sort-ind" aria-hidden="true">↕</span></th>
+            <th scope="col">Licença</th>
+            <th scope="col">Visão</th>
+            <th scope="col" class="sortable" data-key="lanc" tabindex="0" title="Ordenar por data de lançamento">Lançamento <span class="sort-ind" aria-hidden="true">↕</span></th>
         </tr>
-        <tr>
+        </thead>
+        <tbody id="modelTableBody">
+        <tr data-profiles="codigo agentes visao contexto" data-winner="codigo" data-gguf="15.71" data-ctx="262144" data-lanc="2026-08-14">
             <td><strong>Qwen3.8-27B</strong></td>
             <td>27B denso</td>
             <td>27B</td>
@@ -278,7 +332,7 @@
             <td>Nativa (mmproj 0,93 GB)</td>
             <td>14/08/2026</td>
         </tr>
-        <tr>
+        <tr data-profiles="agentes visao" data-winner="agentes" data-gguf="15.88" data-ctx="131072" data-lanc="2026-08-10">
             <td><strong>Muse Glimmer 30B</strong></td>
             <td>29,6B denso</td>
             <td>29,6B</td>
@@ -288,7 +342,7 @@
             <td>Nativa (ViT-G/14 ~1,8B)</td>
             <td>10/08/2026</td>
         </tr>
-        <tr>
+        <tr data-profiles="hardware" data-winner="hardware" data-gguf="12.10" data-ctx="131072" data-lanc="2025-08-05">
             <td><strong>GPT-OSS-20B</strong></td>
             <td>20,9B MoE</td>
             <td>3,6B</td>
@@ -298,7 +352,7 @@
             <td>Não</td>
             <td>05/08/2025</td>
         </tr>
-        <tr>
+        <tr data-profiles="contexto" data-winner="contexto" data-gguf="16.4" data-ctx="262144" data-lanc="2026-04-22">
             <td><strong>Qwen3.6-27B</strong></td>
             <td>27B denso</td>
             <td>27B</td>
@@ -308,7 +362,7 @@
             <td>Nativa</td>
             <td>22/04/2026</td>
         </tr>
-        <tr>
+        <tr data-profiles="visao" data-winner="visao" data-gguf="16.55" data-ctx="128000" data-lanc="2025-03-12">
             <td><strong>Gemma 3 27B (IT)</strong></td>
             <td>27B denso</td>
             <td>27B</td>
@@ -318,7 +372,7 @@
             <td>Nativa (128K)</td>
             <td>12/03/2025</td>
         </tr>
-        <tr>
+        <tr data-profiles="contexto" data-winner="" data-gguf="103" data-ctx="1048576" data-lanc="2026-04-24">
             <td><strong>DeepSeek V4 Flash</strong> <span class="badge badge-alt">intruso</span></td>
             <td>284B MoE</td>
             <td>13B</td>
@@ -328,7 +382,105 @@
             <td>Não (texto)</td>
             <td>24/04/2026</td>
         </tr>
+        </tbody>
     </table>
+    </div>
+    <script>
+    (function () {
+        var tbody = document.getElementById('modelTableBody');
+        if (!tbody) { return; }
+        var rows = Array.prototype.slice.call(tbody.rows);
+        var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filter-btn[data-filter]'));
+        var sortThs = Array.prototype.slice.call(document.querySelectorAll('#modelTable th.sortable'));
+        var counter = document.getElementById('tableCounter');
+        var currentFilter = 'all';
+        var sortKey = null;
+        var sortDir = 1;
+        var originalRows = rows.slice();
+        var filterLabels = { codigo: ' para código', agentes: ' para agentes', visao: ' para visão', hardware: ' para hardware fraco', contexto: ' para contexto longo' };
+
+        function apply() {
+            var visible = 0;
+            rows.forEach(function (r) {
+                var profiles = (r.getAttribute('data-profiles') || '').split(' ');
+                var show = currentFilter === 'all' || profiles.indexOf(currentFilter) > -1;
+                r.classList.toggle('filter-hidden', !show);
+                var isWinner = currentFilter !== 'all' && r.getAttribute('data-winner') === currentFilter;
+                r.classList.toggle('row-dim', show && currentFilter !== 'all' && !isWinner);
+                if (show) { visible++; }
+            });
+            if (counter) {
+                counter.textContent = visible + ' de 6 modelos' + (filterLabels[currentFilter] || '');
+            }
+        }
+
+        function setSortInd() {
+            sortThs.forEach(function (th) {
+                var ind = th.querySelector('.sort-ind');
+                if (!ind) { return; }
+                if (th.getAttribute('data-key') === sortKey) {
+                    th.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
+                    ind.textContent = sortDir === 1 ? '▲' : '▼';
+                } else {
+                    th.removeAttribute('aria-sort');
+                    ind.textContent = '↕';
+                }
+            });
+        }
+
+        function sortRows() {
+            if (!sortKey) {
+                originalRows.forEach(function (r) { tbody.appendChild(r); });
+                rows = originalRows.slice();
+                setSortInd();
+                return;
+            }
+            rows.sort(function (a, b) {
+                var va = a.getAttribute('data-' + sortKey);
+                var vb = b.getAttribute('data-' + sortKey);
+                var cmp;
+                if (sortKey === 'lanc') {
+                    cmp = va < vb ? -1 : (va > vb ? 1 : 0);
+                } else {
+                    cmp = parseFloat(va) - parseFloat(vb);
+                }
+                return cmp * sortDir;
+            });
+            rows.forEach(function (r) { tbody.appendChild(r); });
+            setSortInd();
+        }
+
+        filterBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                currentFilter = btn.getAttribute('data-filter');
+                filterBtns.forEach(function (b) {
+                    b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+                });
+                apply();
+            });
+        });
+
+        sortThs.forEach(function (th) {
+            function activate() {
+                var key = th.getAttribute('data-key');
+                if (sortKey === key) {
+                    if (sortDir === 1) { sortDir = -1; } else { sortKey = null; sortDir = 1; }
+                } else {
+                    sortKey = key;
+                    sortDir = 1;
+                }
+                sortRows();
+                setSortInd();
+            }
+            th.addEventListener('click', activate);
+            th.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+            });
+        });
+
+        apply();
+    })();
+    </script>
     <p class="footnote">Fontes: Qwen3.8/Q3.6 — GGUFs medidos via API do Hugging Face (dossiê do portal). Muse Glimmer — GGUF UD-Q4_K_XL do repositório Unsloth (15,88 GB; o kquant 4-bit oficial da Meta lista 16,76 GB). GPT-OSS — model card e bench llama.cpp #15396 (arquivo 11,27 GiB; os "16 GB" do anúncio da OpenAI incluem contexto). Gemma 3 — Q4_K_M 16,55 GB (bartowski, decimal). DeepSeek — GGUFs dinâmicos Unsloth (recomendação oficial UD-IQ3_XXS com 110 GB de RAM total). Benchmarks completos: <a href="/guia/benchmarks-comparativos">comparativo do portal</a> e <a href="/guia/qwen3.8-vs-qwen3.6-27b">26 benchmarks 3.8 vs 3.6</a>.</p>
 
     <h2 id="veredito-codigo">Veredito: código e engenharia — Qwen3.8-27B</h2>
