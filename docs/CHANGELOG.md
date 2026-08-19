@@ -9,6 +9,40 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-19] — Correção QA (t_b6a7139d): âncora 73,6 vs 73,4
+reatribuída ao pareamento correto
+
+### Fixed
+- **[CRÍTICO] Par 73,6 vs 73,4 tok/s reatribuído**: o bench de 45
+  configs da KGP Talkie testou somente o Qwen3.8-27B — 73,6 é thinking
+  ON e 73,4 é thinking OFF do mesmo modelo; o bench não tem número do
+  3.6. O artigo e companions apresentavam o par como "decode 3.8 vs
+  3.6 com thinking off" em 16 superfícies: meta description,
+  og/twitter description, JSON-LD TechArticle, FAQ #1 (HTML +
+  JSON-LD), lead do hero, resposta rápida, stat-card, veredito, causa
+  6, "erros comuns", card do /guia, FAQ do portal (HTML + JSON-LD) e
+  llms.txt (3 blocos). Reframe para o pareamento real (thinking on vs
+  off: o raciocínio não muda o decode, muda o tempo até a 1ª palavra,
+  2,18 s → 0,18 s) e tese "decode 3.8 = decode 3.6" reancorada no que
+  existe: InsiderLLM ~41,5 t/s ("3.8 ≈ 3.6") na 3090, Strix Halo 17,3
+  vs 12,4 (medição própria) e dev.to (pesos de tamanho idêntico). O
+  parágrafo "O benchmark que desarma a briga" já descrevia o
+  pareamento on/off corretamente e não foi alterado. Detecção: QA
+  t_80c62de4 (veredito FAIL sobre o source primário).
+- **[MÉDIO] Multiplicador de MTP na 5090**: "1,81× (73,4 → 151,2
+  t/s)" corrigido para "2,06× com draft n=2 e thinking off (73,4 →
+  151,2 t/s)" no corpo (Causa 2) e na tabela resumo. No source, o
+  1,81× é o pico do draft n=3 (73,6 → 133,6); o próprio KGP chama o
+  n=2+off de "2.06x". Bases 73,6 → 73,4 corrigidas também na medição
+  de referência e na tabela antes/depois.
+- **[BAIXO] FAQ do artigo**: 6 perguntas h3 harmonizadas verbatim com
+  o JSON-LD (ex.: "MTP tem custo?" → "Ativar MTP tem algum custo?")
+  para máxima elegibilidade de featured snippet.
+- **[BAIXO] Resíduo do fix irmão (t_9babb5d1, 5f95fe8)**: o
+  twitter:description dizia ainda "MTP renomeado" (claim falso já
+  corrigido nas demais superfícies) — alinhado para "MTP
+  desligado".
+
 ## [2026-08-19] — Artigo: Qwen3.8-27B está lento? 6 causas e fixes
 
 ### Added
@@ -17,9 +51,10 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
   card das threads r/LocalLLaMA 1voa3ch + 1vriwym): primeiro conteúdo do
   portal dedicado à dor "por que está lento" (gap: 'lento' só aparecia em
   menções espalhadas). Tese verificada por dados: o decode do 3.8 é igual
-  ao do 3.6 (73,6 vs 73,4 tok/s com thinking off, mesmo bench de 45
-  configs — KGP Talkie 16/08; ~41,5 t/s na 3090 com "3.8 ≈ 3.6";
-  17,3 vs 12,4 no Strix Halo, medição própria). As 6 causas: xhigh-trap
+  ao do 3.6 (~41,5 t/s na 3090 com "3.8 ≈ 3.6"; 17,3 vs 12,4 no Strix
+  Halo, medição própria); no bench de 45 configs o thinking não muda o
+  decode do 3.8 — 73,6 on vs 73,4 off, só o tempo até a 1ª palavra
+  (2,18 s → 0,18 s). As 6 causas: xhigh-trap
   (2,18s → 0,18s até a 1ª palavra), MTP desligado (nunca configurado — especulação é opt-in no
   llama.cpp; 3090: ~31,6 → 74 t/s, +134,5%), contexto
   estourando VRAM (32K = +2,5 GB; KV q4_0 136,7 vs 125,5 t/s), quant
