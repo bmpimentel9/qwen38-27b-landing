@@ -8,6 +8,33 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-19] — Pilar "Melhores modelos locais de 30B" (t_f81bb139)
+
+### Added
+- **Página-hub `/guia/melhores-modelos-locais-30b`**: primeiro best-of do
+  portal. Veredito por caso de uso (código → Qwen3.8-27B; agentes MCP →
+  Muse Glimmer 30B; hardware 12–16 GB → GPT-OSS-20B; contexto 1M →
+  DeepSeek V4 Flash), tabela mestra de 6 modelos com GGUF medido, contexto
+  nativo e licença. DeepSeek V4 Flash como "o intruso da lista" (284B
+  totais / 13B ativos) com rotulagem honesta de memória superior. JSON-LD:
+  TechArticle + BreadcrumbList + ItemList (6) + FAQPage (6). Fecha o item
+  "Página de comparação — tabela interativa de modelos ≤30B" do ROADMAP
+  médio prazo (versão tabela estática; interativa é follow-up seo-tech).
+- **Companions**: sitemap 26→27 URLs; llms.txt +5 stats + link da página;
+  card no /guia (primeiro da grade, tag "Comparativo"); FAQ do portal +1
+  Q&A (HTML + JSON-LD).
+- **Fontes novas verificadas 19/08**: Muse Glimmer context length
+  131.072+ e vocab 202.048 (model card); DeepSeek V4 Flash 284B/13B, 1M
+  contexto, UD-IQ3_XXS 103 GB / 110 GB RAM mín (Unsloth); GPT-OSS-20B
+  GGUF 11,27 GiB (llama.cpp #15396); Gemma 3 27B Q4_K_M 15,41 GB.
+
+### Decisions
+- DeepSeek V4 Flash entra por paridade de ativos/token (13B), não de
+  totais — rotulado "intruso" em tabela, callout e FAQ para não gerar
+  claim falso de que é ≤30B em memória.
+- GPT-OSS-20B: GGUF 11,27 GiB como número principal (medido), "16 GB"
+  do anúncio citado como "inclui contexto" — evita repetir o pattern do
+  claim "roda em 13GB" sem fonte clara.
 
 ## [2026-08-19] — Artigo: Qwen3.8-27B está lento? 6 causas e fixes
 
