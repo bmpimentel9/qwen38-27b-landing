@@ -9,6 +9,36 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-19] — Artigo: LTX-2.5 local no ComfyUI (vídeo-gen open weights)
+
+### Added
+- **Artigo "LTX-2.5 com pesos abertos: gerar vídeo (com áudio) local no
+  ComfyUI"**
+  (`guia/ltx-2-5-video-local-comfyui/`, task kanban `t_460e2e51`, tema
+  prioritário do daily 19/08): primeira cobertura de vídeo-gen open-weights
+  que roda local no portal (gap: 0 menções a LTX nas 23 páginas). Dados
+  verificados ao vivo em 19/08: 17 arquivos públicos no repo (desde 17/08),
+  transformer 22B bf16 42,02 / comfy-int8 21,50 / nvfp4 18,72 GB; encoder
+  gemma4-12b int8 15,37 GB; VAE de áudio 0,36 GB (áudio sincronizado nativo).
+  Setup oficial ComfyUI int8 = 49,98 GB somados em arquivos (inclui prompt
+  enhancer gemma4_e2b 10,28 GB do repo Comfy-Org/gemma-4 — achado próprio,
+  ausente do discovery) — rótulo obrigatório "soma de arquivos, não pico de
+  inferência". Rota comunitária GGUF medida: transformer Q4_K_M 15,09 GB +
+  encoder Q5_K_M 9,51 GB (realrebelai/LTX-2.5_GGUFs 14,8k dl, Abiray 37,2k
+  dl). Licença lida na íntegra (LTX-2.x Community License, 11/08/2026):
+  comercial grátis < US$ 10M ARR agregado, sem branding obrigatório,
+  derivados herdam a licença. Workflows oficiais confirmados no
+  docs.comfy.org (T2V/I2V/FLF2V nativos, nós LTXV* no core). Cross-links:
+  minimax-music3, qwen3-8-27b-visao-videos-local, hardware-local,
+  como-rodar, modelos. JSON-LD: TechArticle + SoftwareApplication/AIModel +
+  HowTo (5 passos) + FAQPage (8) + Breadcrumb.
+- **Companions**: sitemap 23→24 URLs; llms.txt (+1 página, +6 stats citáveis,
+  +1 Q&A "O LTX-2.5 roda em quantos GB?"); card no /guia/index.html
+  (tag-guide, BOFU, Novo 19/08); FAQ do portal +1 item (HTML e JSON-LD
+  juntos — 28 no FAQPage).
+
+---
+
 ## [2026-08-18] — Artigo: Qwen3.8-27B no Artificial Analysis (52 no AAII)
 
 ### Added

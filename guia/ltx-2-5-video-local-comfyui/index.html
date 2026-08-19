@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTX-2.5 local: vídeo com áudio no ComfyUI (22B abertos)</title>
+    <meta name="description" content="Como rodar o LTX-2.5 local no ComfyUI: vídeo com áudio sincronizado, setup int8 de ~40 GB em arquivos, tiers de VRAM, GGUFs comunitários e a licença de US$ 10M.">
+    <meta name="keywords" content="ltx 2.5 comfyui, ltx 2.5 local, ltx 2.5 pesos abertos, gerar vídeo com ia local, ltx 2.5 download, ltx 2.5 vram, vídeo com áudio ia local, lightricks ltx">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/ltx-2-5-video-local-comfyui">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="LTX-2.5 local: gerar vídeo com áudio no ComfyUI">
+    <meta property="og:description" content="O modelo de vídeo de 22B da Lightricks soltou os pesos: vídeo COM áudio sincronizado nativo, workflows oficiais no ComfyUI e setup int8 que soma ~40 GB. O guia completo em português.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/ltx-2-5-video-local-comfyui">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-19T09:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="geração de vídeo">
+    <meta property="article:tag" content="modelos locais">
+    <meta property="article:tag" content="LTX-2.5">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LTX-2.5 local: vídeo com áudio no ComfyUI (22B)">
+    <meta name="twitter:description" content="Primeira cobertura de vídeo-gen open-weights que roda local de verdade: 17 arquivos públicos desde 17/08, áudio nativo sincronizado e workflows oficiais no ComfyUI.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "LTX-2.5 com pesos abertos: gerar vídeo (com áudio) local no ComfyUI",
+          "description": "Guia do LTX-2.5 rodando local: os 17 arquivos do repo (transformer 22B em bf16/int8/nvfp4, encoder Gemma4-12B, VAEs de vídeo e áudio), setup oficial ComfyUI int8, tiers de VRAM com rótulo de soma de arquivos, GGUFs comunitários e a LTX-2.x Community License.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-19",
+          "dateModified": "2026-08-19",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/ltx-2-5-video-local-comfyui",
+          "about": { "@id": "https://qwen38-27b-landing.vercel.app/guia/ltx-2-5-video-local-comfyui#ltx25" },
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "ComfyUI atualizado (workflows LTX-2.5 nativos), conta Hugging Face com acesso aprovado ao repo Lightricks/LTX-2.5, ~40 GB em arquivos para o setup int8"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/ltx-2-5-video-local-comfyui#ltx25",
+          "name": "LTX-2.5",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, Windows, macOS",
+          "softwareVersion": "2.5",
+          "description": "World model de vídeo e áudio com pesos abertos da Lightricks (17/08/2026): transformer DiT de 22B, text encoder Gemma4-12B, VAE de vídeo e VAE de áudio. Gera vídeo com áudio sincronizado nativo em uma passada, com multi-shot consistente entre cortes e suporte a 4K HDR. Sobra int8 do transformer: 21,50 GB; repo soma 17 arquivos públicos.",
+          "url": "https://huggingface.co/Lightricks/LTX-2.5",
+          "author": { "@type": "Organization", "name": "Lightricks" },
+          "releaseNotes": "https://ltx.io/model/ltx-2-5",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "isAccessibleForFree": true
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o LTX-2.5 no ComfyUI local",
+          "description": "Caminho oficial ComfyUI com os pesos int8: aceitar os termos no Hugging Face, atualizar o ComfyUI, baixar os modelos para as pastas certas e rodar o workflow T2V nativo.",
+          "totalTime": "PT60M",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Peça acesso ao repo no Hugging Face", "text": "Abra a página de Lightricks/LTX-2.5, aceite a LTX-2.x Community License e aguarde a aprovação (gated automático). O download falha sem acesso." },
+            { "@type": "HowToStep", "position": 2, "name": "Atualize o ComfyUI", "text": "O suporte ao LTX-2.5 é nativo a partir das versões recentes — Template Library > Video > LTX-2.5 (T2V, I2V ou FLF2V)." },
+            { "@type": "HowToStep", "position": 3, "name": "Baixe os modelos para as pastas", "text": "Transformer comfy-int8 (21,50 GB) em models/diffusion_models, encoder int8 (15,37 GB) + prompt enhancer gemma4_e2b (10,28 GB) em models/text_encoders, VAEs de vídeo (1,47 GB) e áudio (0,36 GB) em models/vae, upscaler (1,00 GB) em models/latent_upscale_models." },
+            { "@type": "HowToStep", "position": 4, "name": "Carregue o workflow nativo", "text": "Template Library > Video > LTX-2.5 T2V (ou I2V/FLF2V). Os nós LTXV* já vêm no ComfyUI — sem custom nodes obrigatórios." },
+            { "@type": "HowToStep", "position": 5, "name": "Escreva o prompt com cena + áudio", "text": "Descreva a cena inteira (plano, ação, câmera) e os sons/diálogo na mesma frase — o modelo gera vídeo e áudio sincronizados juntos." }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O LTX-2.5 roda em quantos GB?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Os arquivos do setup oficial ComfyUI int8 somam ~50 GB: transformer 21,50 + encoder 15,37 + VAEs 1,83 + upscaler 1,00 + prompt enhancer 10,28 GB. Sem o enhancer, o núcleo soma 38,70 GB. Esses números são soma dos arquivos do repo — o pico de VRAM durante a inferência pode ser diferente (maior ou menor, dependendo de offload). Em GGUF comunitário Q4_K_M, o transformer cai para 15,09 GB." }
+            },
+            {
+              "@type": "Question",
+              "name": "O LTX-2.5 é open source?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Tem pesos abertos, mas não é OSI open source: a LTX-2.x Community License permite uso comercial gratuito abaixo de US$ 10 milhões de receita anual (somando todo o grupo), sem branding obrigatório; acima disso exige licença paga. Derivados (fine-tunes, LoRAs) devem permanecer sob a mesma licença." }
+            },
+            {
+              "@type": "Question",
+              "name": "O LTX-2.5 gera áudio junto com o vídeo?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sim — é a assinatura do modelo: áudio e vídeo são gerados juntos, sincronizados, em uma passada. O repo traz um VAE de áudio dedicado (0,36 GB), e as modalidades oficiais incluem text-to-audio-video, video-to-audio e audio-to-video." }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual a diferença entre os transformers bf16, comfy-int8 e nvfp4 do LTX-2.5?",
+              "acceptedAnswer": { "@type": "Answer", "text": "bf16 (42,02 GB) é o checkpoint completo/treinável para ltx-pipelines (PyTorch). comfy-int8 (21,50 GB) é a quantização oficial para ComfyUI — não carrega no PyTorch. nvfp4 (18,72 GB, só distilled) exige GPU Blackwell (RTX 50/PRO) e roda no ComfyUI ou no ltx-pipelines com ltx-kernels." }
+            },
+            {
+              "@type": "Question",
+              "name": "O LTX-2.5 roda em GPU de 24 GB?",
+              "acceptedAnswer": { "@type": "Answer", "text": "No limite. O núcleo int8 soma 38,70 GB em arquivos — não cabe inteiro. O caminho da comunidade em 24 GB é o GGUF: transformer Q4_K_M de 15,09 GB + encoder GGUF Q5_K_M de 9,51 GB + VAEs 3,3 GB ≈ 28 GB com o encoder offloadado para CPU/RAM. Não é o setup oficial, mas os workflows GGUF comunitários já têm dezenas de milhares de downloads." }
+            },
+            {
+              "@type": "Question",
+              "name": "LTX-2.5 ou MiniMax H3?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O MiniMax H3 (33B) tem qualidade comparável segundo o benchmark da própria Lightricks, mas não é local: API fechada. O LTX-2.5 é o modelo de vídeo com pesos abertos que roda em workstation — para o público deste portal, a comparação relevante é int8 (40 GB) vs nvfp4 (37 GB) vs GGUF (28 GB), não LTX vs API." }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto custa rodar o LTX-2.5 pela API oficial?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Para comparação com o local: a API ltx-2-5-fast cobra US$ 0,09/segundo de vídeo a 720p e US$ 0,30/segundo a 4K; o Pro sai a US$ 0,12-0,17/segundo (720p-1080p). Rodando local, após os ~50 GB de download, cada geração sai a custo zero de API." }
+            },
+            {
+              "@type": "Question",
+              "name": "Preciso de custom nodes para o LTX-2.5 no ComfyUI?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Não para o caminho oficial: os nós LTXV (LTXVImgToVideo, LTXVAudioVAELoader, LTXVDurationPredictor etc.) já vêm no ComfyUI atualizado, junto com três workflows nativos (T2V, I2V e FLF2V). Custom nodes como ComfyUI-GGUF só entram para os pesos GGUF comunitários." }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "LTX-2.5 local no ComfyUI", "item": "https://qwen38-27b-landing.vercel.app/guia/ltx-2-5-video-local-comfyui" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>LTX-2.5 com pesos abertos: gerar vídeo (com áudio) local no ComfyUI</h1>
+        <p class="lead">Depois da <a href="/guia/minimax-music3-musica-local">música local com o Music3</a>, a segunda fronteira multimodal do portal: <strong>geração de vídeo</strong>. A Lightricks abriu os pesos do LTX-2.5 em 17 de agosto — um transformer de 22B que gera <strong>vídeo com áudio sincronizado nativo</strong>, com workflows oficiais no ComfyUI. É o primeiro modelo de vídeo-gen que roda local de verdade em workstation. Este é o guia de quantos GB você precisa, o que baixar e o que a licença permite.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>22B</strong> transformer DiT</span>
+            <span class="badge"><strong>17 arquivos</strong> públicos desde 17/08</span>
+            <span class="badge"><strong>~50 GB</strong> somados no setup ComfyUI int8</span>
+            <span class="badge"><strong>US$ 0</strong> comercial &lt; US$ 10M ARR</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-que-e">O que é o LTX-2.5 (e por que ele importa para o local)</a></li>
+            <li><a href="#arquivos">Os 17 arquivos do repo: o que baixar</a></li>
+            <li><a href="#vram-tiers">Quanto pesa cada setup: bf16, int8, nvfp4 e GGUF</a></li>
+            <li><a href="#comfyui">Rodando no ComfyUI: o caminho oficial</a></li>
+            <li><a href="#prompts">Prompts: cena, câmera e som na mesma frase</a></li>
+            <li><a href="#hardware-br">O que roda no hardware brasileiro típico</a></li>
+            <li><a href="#licenca">Licença: a Community License de US$ 10M</a></li>
+            <li><a href="#limitacoes">Limitações e o que observar</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-que-e">O que é o LTX-2.5 (e por que ele importa para o local)</h2>
+    <p>O <strong>LTX-2.5</strong> é o world model de vídeo e áudio da <a href="https://ltx.io/model/ltx-2-5">Lightricks</a> — a empresa por trás do LTX Video, um dos nomes mais estabelecidos em vídeo-gen open. A família LTX-2 nasceu com áudio e vídeo <strong>gerados juntos, sincronizados, na mesma passada</strong> — não um vídeo mudo ganhando trilha depois. A versão 2.5, publicada com <a href="https://huggingface.co/Lightricks/LTX-2.5">pesos abertos no Hugging Face</a>, adiciona três coisas que mudam o jogo:</p>
+    <ul>
+        <li><strong>Multi-shot nativo</strong>: uma geração produz múltiplos planos conectados que mantêm personagem, ambiente, iluminação, voz e estilo entre os cortes. Versões anteriores geravam um plano contínuo só.</li>
+        <li><strong>Diffusion fidelity rendering + novo decoder de vídeo</strong>: compute alocado por complexidade de cena — rostos e texto na tela mais nítidos, menos artefatos em movimento rápido.</li>
+        <li><strong>4K HDR nativo com workflow RAW</strong>: saída pensada para finishing profissional (a documentação do ComfyUI cita 4K HDR a até 50 FPS), e <strong>duração automática</strong> — o modelo prevê a duração do clipe a partir da ação descrita.</li>
+    </ul>
+    <p>O texto que guia tudo isso não é um CLIP ou T5 genérico: é um <strong>Gemma 4 12B customizado</strong> como text encoder, que segundo a Lightricks segura prompts complexos (múltiplos personagens, movimentos de câmera, iluminação) sem derrubar detalhes. E vem um <strong>prompt enhancer</strong> embutido no workflow oficial: um modelo menor que expande um prompt curto em instruções cinematográficas detalhadas.</p>
+    <p>Para o público deste portal, o ponto é simples: <strong>até agora, todo "gerador de vídeo com IA local" era um modelo de imagem animado ou um player de API</strong>. O LTX-2.5 é o primeiro vídeo-gen de grande porte com pesos públicos que roda em hardware de workstation — 555.993 downloads e 1.264 likes no Hugging Face na data deste artigo, dois dias após a abertura dos pesos (verificado em 19/08/2026 via API). O buzz ainda é baixo — os posts no Hacker News sobre o 2.5 estão na casa de 1-2 pontos — o que significa que a janela de cobertura em português está aberta.</p>
+
+    <h2 id="arquivos">Os 17 arquivos do repo: o que baixar</h2>
+    <p>O repo <code>Lightricks/LTX-2.5</code> é <strong>gated com aprovação automática</strong> (<code>gated: auto</code> na API do Hugging Face): você aceita a licença na página do modelo e o acesso é liberado na hora — não há fila de revisão manual. O download falha sem o aceite. A publicação é de <strong>17 de agosto de 2026</strong> (última modificação do repo: 17/08 13:54 UTC); antes disso o repositório estava vazio.</p>
+    <p>São <strong>17 arquivos públicos</strong>, organizados em pacotes divididos por componente (tamanhos medidos via tree API do Hugging Face em 19/08/2026):</p>
+    <table>
+        <tr><th>Arquivo</th><th>Tamanho</th><th>Para que serve</th></tr>
+        <tr><td><code>diffusion_models/…dev-transformer-bf16</code></td><td>42,02 GB</td><td>DiT 22B completo/treinável (ltx-pipelines)</td></tr>
+        <tr><td><code>…dev-transformer-comfy-int8-convrot</code></td><td>21,50 GB</td><td>DiT 22B full em int8 — <strong>só ComfyUI</strong></td></tr>
+        <tr><td><code>…distilled-transformer-bf16</code></td><td>42,02 GB</td><td>DiT 22B distilled, 8 passos, CFG=1</td></tr>
+        <tr class="highlight"><td><code>…distilled-transformer-comfy-int8-convrot</code></td><td><strong>21,50 GB</strong></td><td><strong>O transformer do workflow ComfyUI oficial</strong></td></tr>
+        <tr><td><code>…distilled-transformer-nvfp4</code></td><td>18,72 GB</td><td>DiT distilled em NVFP4 (Blackwell)</td></tr>
+        <tr><td><code>text_encoders/gemma4-12b…bf16</code></td><td>26,26 GB</td><td>Encoder Gemma4-12B + projeções</td></tr>
+        <tr class="highlight"><td><code>gemma4-12b…comfy-int8-convrot</code></td><td><strong>15,37 GB</strong></td><td><strong>Encoder int8 do workflow ComfyUI oficial</strong></td></tr>
+        <tr><td><code>vae/ltx-2.5-video-vae-bf16</code></td><td>1,47 GB</td><td>DiffVAE — mais qualidade, mais pesada</td></tr>
+        <tr><td><code>vae/ltx-2.5-video-vae-conv-bf16</code></td><td>1,45 GB</td><td>Conv VAE — mais rápida e leve</td></tr>
+        <tr><td><code>vae/ltx-2.5-audio-vae-bf16</code></td><td>0,36 GB</td><td><strong>VAE de áudio + vocoder</strong> — o áudio nativo</td></tr>
+        <tr><td><code>loras/…distilled-lora-450-bf16</code></td><td>8,90 GB</td><td>LoRA distilled (workflows dev-transformer)</td></tr>
+        <tr><td><code>latent_upscale_models/…spatial-upscaler-x2</code></td><td>1,00 GB</td><td>Upscaler espacial 2× (pipeline multi-stage)</td></tr>
+        <tr><td><code>…temporal-upscaler-x2</code></td><td>0,26 GB</td><td>Upscaler temporal 2×</td></tr>
+        <tr><td><code>model_patches/…duration-head-bf16</code></td><td>~0 GB</td><td>Duração automática do clipe</td></tr>
+    </table>
+    <p>Três detalhes que o model card oficial deixa explícitos e que economizam download errado: os arquivos <code>*-comfy-int8-convrot</code> são <strong>ComfyUI-only</strong> — não carregam no ltx-pipelines/PyTorch; o caminho PyTorch oficial usa os <strong>bf16</strong> (com dicas de low-VRAM como <code>--quantization fp8-cast</code> e <code>--offload cpu</code>); e o <strong>nvfp4</strong> é "ComfyUI, ou ltx-pipelines com <code>--quantization nvfp4-prequant</code> (Blackwell / ltx-kernels)".</p>
+    <p>Além do repo principal, existem hoje dois satélites oficiais: o <a href="https://huggingface.co/Lightricks/LTX-2.5-Diffusers">Lightricks/LTX-2.5-Diffusers</a> (empacotamento para a lib diffusers, criado 18/08, 4.593 downloads no primeiro dia — a integração ainda não saiu em release, instala-se do main) e o <a href="https://github.com/Lightricks/LTX-2">repo GitHub LTX-2</a> com o pacote <code>ltx-pipelines</code> (CLI oficial Python), o trainer e os kernels.</p>
+
+    <h2 id="vram-tiers">Quanto pesa cada setup: bf16, int8, nvfp4 e GGUF</h2>
+    <div class="callout-warn">
+        <strong>Leia o rótulo antes de planejar hardware.</strong> Todos os GB desta seção são <strong>soma dos arquivos do repo</strong> — um fato verificável na tree API do Hugging Face. <strong>Não são pico de VRAM medido em inferência</strong>: o pico real pode ser maior (todos os componentes carregados + latentes + estado do sampler) ou menor (ComfyUI faz offload de componentes entre estágios). Ninguém — nem a Lightricks — publicou até agora números de pico de VRAM por resolução. Trate estes números como o tamanho do download e do disco, não como um requisito exato de VRAM.
+    </div>
+    <p>Combinando os arquivos por perfil de uso (somas verificadas em 19/08/2026):</p>
+    <table>
+        <tr><th>Setup</th><th>Arquivos somados</th><th>Hardware típico</th></tr>
+        <tr><td><strong>PyTorch bf16</strong> (ltx-pipelines)</td><td>~72,6 GB (transformer 42,02 + encoder 26,26 + VAEs 3,28)</td><td>2× 48 GB ou datacenter; treinável</td></tr>
+        <tr class="highlight"><td><strong>ComfyUI int8</strong> (oficial)</td><td><strong>49,98 GB</strong> (transformer 21,50 + encoder 15,37 + VAE vídeo 1,47 + VAE áudio 0,36 + upscaler 1,00 + enhancer 10,28)</td><td>workstation 48 GB (RTX A6000/6000 Ada, 2× 3090)</td></tr>
+        <tr><td>ComfyUI int8 sem enhancer</td><td>39,70 GB (núcleo 38,70 + upscaler 1,00)</td><td>limite de 40 GB — mas o workflow oficial pede o enhancer</td></tr>
+        <tr><td><strong>ComfyUI nvfp4</strong> (distilled)</td><td>~46,3 GB (transformer 18,72 + encoder int8 15,37 + VAEs + upscaler + enhancer)</td><td><strong>RTX 50/PRO Blackwell</strong> + 48 GB</td></tr>
+        <tr><td><strong>GGUF comunitário Q4_K_M</strong></td><td>~28 GB (transformer 15,09 + encoder Q5_K_M 9,51 + VAEs 3,3)</td><td>24 GB com encoder offloadado</td></tr>
+    </table>
+    <p>A linha de baixo merece destaque: a comunidade já reempacotou o transformer em <a href="https://huggingface.co/models?search=LTX-2.5%20GGUF">GGUF</a> — o repo <code>realrebelai/LTX-2.5_GGUFs</code> (14,8 mil downloads) oferece Q2_K de 8,83 GB até Q8_0 de 23,63 GB, e o <code>Abiray/LTX-2.5-Distilled-GGUF</code> já soma 37,2 mil downloads. Existe até encoder em GGUF (<code>elix3r/gemma4-12b-with-proj-ltx-2.5-GGUF</code>, Q5_K_M de 9,51 GB). Não é o caminho oficial — mas é a rota que aproxima o 22B das GPUs de 24 GB que o público brasileiro realmente tem.</p>
+
+    <h2 id="comfyui">Rodando no ComfyUI: o caminho oficial</h2>
+    <p>O suporte ao LTX-2.5 é <strong>nativo no ComfyUI</strong> — sem custom nodes obrigatórios. O <a href="https://docs.comfy.org/tutorials/video/ltx/ltx-2-5">tutorial oficial</a> documenta três workflows que já vêm no Template Library, e o model card da Lightricks aponta para a <a href="https://docs.ltx.video/open-source-model/integration-tools/comfy-ui">doc de integração ComfyUI</a> da própria Lightricks. Passo a passo:</p>
+
+    <h3>1. Acesso ao repo no Hugging Face</h3>
+    <p>Abra a página de <a href="https://huggingface.co/Lightricks/LTX-2.5">Lightricks/LTX-2.5</a>, faça login, aceite a LTX-2.x Community License e aguarde a aprovação (automática). O tutorial do ComfyUI é explícito: "Model downloads will fail without access".</p>
+
+    <h3>2. ComfyUI atualizado + template</h3>
+    <p>Atualize o ComfyUI para a versão mais recente e abra <strong>Template Library → Video → LTX-2.5</strong>. Três workflows nativos:</p>
+    <ul>
+        <li><strong>T2V</strong> (texto → vídeo, com upscaling espacial opcional)</li>
+        <li><strong>I2V</strong> (imagem → vídeo — a imagem é o primeiro frame)</li>
+        <li><strong>FLF2V</strong> (first-last frame → vídeo: interpola o caminho entre duas imagens)</li>
+    </ul>
+    <p>Os nós <code>LTXV*</code> — <code>LTXVImgToVideo</code>, <code>LTXVAudioVAELoader</code>, <code>LTXVDurationPredictor</code>, <code>LTXVLatentUpsampler</code> e mais ~25 — já vêm no core. Se algum nó faltar, o ComfyUI está desatualizado.</p>
+
+    <h3>3. Modelos nas pastas certas</h3>
+    <p>O conjunto oficial dos três workflows (T2V e I2V são iguais; FLF2V dispensa o upscaler):</p>
+    <pre><code>ComfyUI/
+└── models/
+    ├── diffusion_models/
+    │   └── ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors   (21,50 GB)
+    ├── text_encoders/
+    │   ├── gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors        (15,37 GB)
+    │   └── gemma4_e2b_it_bf16.safetensors                                     (10,28 GB)
+    ├── vae/
+    │   ├── ltx-2.5-video-vae-bf16.safetensors                                 (1,47 GB)
+    │   └── ltx-2.5-audio-vae-bf16.safetensors                                 (0,36 GB)
+    └── latent_upscale_models/
+        └── ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors            (1,00 GB)</code></pre>
+    <p>O detalhe que surpreende: além do encoder int8, o workflow pede um segundo text encoder — <code>gemma4_e2b_it_bf16</code> (10,28 GB). É o <strong>prompt enhancer</strong> do LTX-2.5 em ação, hospedado no repo <a href="https://huggingface.co/Comfy-Org/gemma-4">Comfy-Org/gemma-4</a> (aberto, sem gate). Baixe os dois.</p>
+    <p>O download seco, via CLI:</p>
+    <pre><code>hf auth login   # conta com acesso aprovado ao repo
+
+# núcleo int8 do workflow ComfyUI (~38,7 GB)
+hf download Lightricks/LTX-2.5 \
+  diffusion_models/ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors \
+  text_encoders/gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors \
+  vae/ltx-2.5-video-vae-bf16.safetensors \
+  vae/ltx-2.5-audio-vae-bf16.safetensors \
+  --local-dir ComfyUI/models
+
+# upscaler espacial (workflow T2V/I2V, +1,0 GB)
+hf download Lightricks/LTX-2.5 \
+  latent_upscale_models/ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors \
+  --local-dir ComfyUI/models
+
+# prompt enhancer (repo separado, sem gate, +10,3 GB)
+hf download Comfy-Org/gemma-4 text_encoders/gemma4_e2b_it_bf16.safetensors \
+  --local-dir ComfyUI/models</code></pre>
+
+    <h3>4. Alternativas ao ComfyUI</h3>
+    <ul>
+        <li><strong>ltx-pipelines</strong> (Python/CLI oficial): usa os pesos <strong>bf16</strong> com flags de low-VRAM (<code>--quantization fp8-cast</code>, <code>--offload cpu</code>), suporta i2v com <code>--image PATH FRAME_IDX STRENGTH</code>, HDR/EXR nativo e duração automática via duration-head. Requisitos: Python ≥ 3.12, CUDA ≥ 12.7, PyTorch ~2.7.</li>
+        <li><strong>diffusers</strong>: pipeline <code>LTX2ImageToVideoPipeline</code> no repo <code>Lightricks/LTX-2.5-Diffusers</code> — dois estágios (gera latente 544×960 e faz latent upsample 2× antes do segundo passe). Instalação do main: <code>pip install git+https://github.com/huggingface/diffusers</code>.</li>
+    </ul>
+
+    <h2 id="prompts">Prompts: cena, câmera e som na mesma frase</h2>
+    <p>As dicas oficiais de prompting do tutorial ComfyUI resumem o método em três regras — e a segunda é a que todo mundo esquece:</p>
+    <ul>
+        <li><strong>Descreva a cena inteira</strong> num parágrafo fluido: tipo de plano, cena, ação, personagens e movimento de câmera.</li>
+        <li><strong>Descreva o áudio</strong>: sons ambiente e diálogo fazem parte do prompt — o modelo gera o áudio sincronizado junto. Quem não pede som, pode receber silêncio.</li>
+        <li><strong>Use o prompt enhancer</strong>: escreva a ideia simples e deixe o <code>gemma4_e2b</code> expandir em instruções cinematográficas completas.</li>
+    </ul>
+    <p>Exemplo funcional para T2V em português de produção (prompts de vídeo funcionam melhor em inglês, como no <a href="/guia/minimax-music3-musica-local">Music3</a> — a descrição entra em inglês, o conteúdo falado pode ser em português):</p>
+    <pre><code>Medium wide shot, golden hour in Rio de Janeiro. A street vendor
+arranges fresh mangoes while waves break along the sidewalk. The camera
+dollies in slowly. Ambient sound: Atlantic waves, distant samba from a
+radio, seagulls. The vendor says in Brazilian Portuguese: "Manga
+calcinha, dois reais!" — warm natural light, 24fps, cinematic.</code></pre>
+    <p>Para I2V, a regra oficial é diferente: <strong>descreva o que acontece a partir da imagem</strong> (movimento, câmera e som), não re-descreva o que já está visível — frases como "use a imagem fornecida como primeiro frame" ancoram a continuidade. Em FLF2V, descreva a transição entre os dois frames. E lembre das constraints físicas do modelo: frames devem satisfazer <code>num_frames % 8 == 1</code> (1, 9, 17, … 121, …) e largura/altura divisíveis por 32 — ou deixe o duration-head decidir a duração sozinho.</p>
+
+    <h2 id="hardware-br">O que roda no hardware brasileiro típico</h2>
+    <p>Cruzando os setups com as placas do mercado brasileiro de reposição — mesma análise do <a href="/guia/hardware-local">guia de hardware local</a>, agora para vídeo-gen:</p>
+    <table>
+        <tr><th>GPU</th><th>VRAM</th><th>Veredito LTX-2.5</th></tr>
+        <tr><td>RTX 3060/4060 (8-12 GB)</td><td>8-12 GB</td><td><strong>Ainda não.</strong> Nem o GGUF Q2_K de 8,83 GB + encoder + VAEs cabe com folga operacional. Aguardar quants menores ou offload agressivo (nada oficial hoje).</td></tr>
+        <tr><td>RTX 4060 Ti / 5060 Ti 16GB</td><td>16 GB</td><td>Não roda o 22B completo. GGUF Q2_K de 8,83 GB é o único transformer que cabe — qualidade comprometida e encoder obrigatoriamente na CPU.</td></tr>
+        <tr class="highlight"><td><strong>RTX 3090 / 4090 / 5090</strong></td><td>24 GB</td><td><strong>Rota GGUF comunitária</strong>: transformer Q4_K_M 15,09 GB na GPU + encoder Q5_K_M 9,51 GB offloadado + VAEs 3,3 GB. Lento, não-oficial, mas é o que a comunidade está rodando.</td></tr>
+        <tr><td>2× RTX 3090</td><td>48 GB</td><td>Setup int8 oficial (~50 GB somados) cabe com gerenciamento de offload; fluxo estável para produção local.</td></tr>
+        <tr><td>RTX 5090 / PRO Blackwell 48GB+</td><td>32-48 GB</td><td>nvfp4 (transformer 18,72 GB) + encoder int8 — a rota mais eficiente em Blackwell.</td></tr>
+        <tr><td>RTX A6000 / 6000 Ada</td><td>48 GB</td><td>Setup int8 oficial confortável — a workstation de referência do modelo.</td></tr>
+    </table>
+    <p>Perspectiva de custo: a API oficial cobra <strong>US$ 0,09/segundo de vídeo a 720p</strong> no ltx-2-5-fast (US$ 0,30/s a 4K) — um clipe de 10s a 720p custa US$ 0,90. Local, após o download, cada geração sai a custo zero — o mesmo argumento do <a href="/guia/como-rodar">porquê rodar LLMs local</a>, agora aplicado a vídeo.</p>
+    <p>Um contraste honesto com o resto do portal: enquanto o <a href="/guia/qwen3-8-27b-visao-videos-local">Qwen3.8-27B enxerga vídeo</a> (entende horas de gravação em 24 GB) e o Music3 compõe música em 8 GB, o LTX-2.5 <strong>produz</strong> vídeo — e é a tarefa mais pesada das três. O gap de VRAM entre "assistir" e "gerar" vídeo local é grande, e o LTX-2.5 é o primeiro modelo a fechá-lo de verdade.</p>
+
+    <h2 id="licenca">Licença: a Community License de US$ 10M</h2>
+    <p>O campo <code>license</code> da API vem <code>null</code>, o que costuma assustar — mas o texto existe e é claro: a <strong>LTX-2.x Community License Agreement</strong> (datada de 11/08/2026, publicada no <a href="https://github.com/Lightricks/LTX-2/blob/main/LICENSE.md">LICENSE.md do repo LTX-2</a> e exigida no aceite do Hugging Face). O que ela diz, lida na íntegra:</p>
+    <ul>
+        <li><strong>Uso comercial e produção gratuitos abaixo de US$ 10 milhões de receita anual</strong> — medida na entidade inteira, somando subsidiárias e afiliadas sob controle comum (Seção 1.6 e 2.1). A página oficial resume: "open weights with a permissive license, no mandatory branding, and free use under $10M ARR" (ltx.io).</li>
+        <li><strong>Sem branding obrigatório</strong> — ao contrário do Music3 (que exige "MiniMax-Music3" na interface), nenhum watermark de atribuição é exigido no produto. É a diferença para quem constrói produto em cima.</li>
+        <li><strong>Acima de US$ 10M/ano</strong>: uso comercial exige Commercial Use Agreement paga (contato em ltxv-licensing@lightricks.com). Uso pessoal/pesquisa/testing continua livre até para empresas acima do teto (Seção 2.2).</li>
+        <li><strong>Derivados herdam a licença</strong>: fine-tunes, LoRAs e checkpoints derivados devem ser distribuídos sob a mesma Community License (Seção 3.2), e transferir um derivado para uma empresa acima de US$ 10M exige que ela tenha licença paga (Seção 3.5) — o model card resume: "transfer of fine-tunes may require a paid license".</li>
+        <li><strong>Output é seu</strong>: a licenciante não reivindica direitos sobre o conteúdo gerado (Seção 5), com as salvaguardas de uso da Attachment A e obrigações de transparência de IA (rotulagem de conteúdo sintético) preservadas.</li>
+    </ul>
+    <p>Não é Apache 2.0 como o Qwen3.8-27B — é uma community license estilo Llama com teto de receita. Para criador, agência e SaaS indie brasileiro, o uso é gratuito e sem atribuição obrigatória; o teto de US$ 10M equivale a ~R$ 54 milhões/ano — acima disso, conversa comercial.</p>
+
+    <h2 id="limitacoes">Limitações e o que observar</h2>
+    <div class="callout-warn">
+        <strong>Benchmark é da própria Lightricks.</strong> O número de velocidade que circula — 2× GB200 gerando clipe de 10s a 720p em 6,8 segundos, mais rápido que tempo real — vem do benchmark próprio da empresa, em hardware de datacenter (US$ 60k+ por placa). Ninguém publicou ainda números independentes em hardware de consumidor; trate qualquer "roda em X GB" que você ler por aí com desconfiança se não mostrar a metodologia.
+    </div>
+    <ul>
+        <li><strong>"Rodar em Mac/hardware consumidor"</strong>: a página oficial lista "runs on consumer hardware including Mac" — mas sem números por configuração. O que é verificável hoje são os tamanhos de arquivo; pico de VRAM por resolução ainda não foi publicado por ninguém.</li>
+        <li><strong>22B é 22B</strong>: mesmo distilled e quantizado, é um modelo maior que qualquer LLM do portal. Não espere a experiência fluida de um 8B de texto.</li>
+        <li><strong>MiniMax H3 e Seedance</strong>: a tabela comparativa oficial coloca o H3 (33B) como o rival direto de qualidade — mas H3 é API fechada, e 33B passaria da tese ≤30B deste portal. Para o público local, o H3 é contexto, não alternativa.</li>
+        <li><strong>Ecossistema em dia 2</strong>: GGUFs comunitários, workflows IC-LoRA e repos derivados estão surgindo por hora (19 quantizações e 11 finetunes já listados no model tree). O setup oficial deve estabilizar nas próximas semanas — este artigo reflete o estado de 19/08/2026.</li>
+        <li><strong>Constraints de geração</strong>: frames múltiplos de 8 + 1, dimensões divisíveis por 32, e o modelo "não é intencionado a prover informação factual" (limitations do card).</li>
+    </ul>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O LTX-2.5 roda em quantos GB?</h3>
+        <p>Setup oficial ComfyUI int8: <strong>~50 GB somados em arquivos</strong> (transformer 21,50 + encoder 15,37 + VAEs 1,83 + upscaler 1,00 + enhancer 10,28). Núcleo sem enhancer: 38,70 GB. Rota GGUF comunitária Q4_K_M: ~28 GB. Atenção ao rótulo: são somas de arquivos do repo — o pico de VRAM em inferência pode ser diferente e ainda não foi medido/publicado por ninguém.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O LTX-2.5 é open source?</h3>
+        <p>Pesos abertos, licença community: uso comercial grátis abaixo de US$ 10M de receita anual agregada, sem branding obrigatório; acima disso, licença paga. Derivados (LoRAs, fine-tunes) devem permanecer sob a mesma licença. Não é OSI-approved — é o modelo Llama/Music3 de licença, mais permissiva que a do Music3 (sem exigência de atribuição na UI).</p>
+    </div>
+    <div class="faq-item">
+        <h3>O LTX-2.5 gera áudio junto com o vídeo?</h3>
+        <p>Sim — é o diferencial estrutural: áudio e vídeo são gerados juntos, sincronizados, na mesma passada. O repo traz um VAE de áudio dedicado (0,36 GB) e as modalidades oficiais incluem text-to-audio-video, video-to-audio e audio-to-video. No prompt, descreva os sons e o diálogo junto com a cena.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual a diferença entre bf16, comfy-int8 e nvfp4?</h3>
+        <p>bf16 (42,02 GB) é o checkpoint completo para ltx-pipelines/PyTorch e treino. comfy-int8 (21,50 GB) é a quantização oficial do ComfyUI — não carrega no PyTorch. nvfp4 (18,72 GB, só distilled) exige GPU Blackwell (RTX 50/PRO) e roda no ComfyUI ou via ltx-pipelines com ltx-kernels.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O LTX-2.5 roda em GPU de 24 GB?</h3>
+        <p>No limite, pela rota comunitária: transformer GGUF Q4_K_M (15,09 GB) na GPU + encoder GGUF Q5_K_M (9,51 GB) offloadado para CPU/RAM + VAEs (3,3 GB). Não é o setup oficial (int8 soma ~50 GB) e exige os custom nodes ComfyUI-GGUF — mas os repos comunitários já somam dezenas de milhares de downloads.</p>
+    </div>
+    <div class="faq-item">
+        <h3>LTX-2.5 ou MiniMax H3?</h3>
+        <p>H3 (33B) compete em qualidade no benchmark da própria Lightricks, mas é API fechada — não é local. Para este portal, o H3 é contexto de mercado; a escolha local é entre os tiers do próprio LTX (int8 40 GB / nvfp4 46 GB / GGUF 28 GB somados).</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto custa a API oficial, para comparar?</h3>
+        <p>ltx-2-5-fast: US$ 0,09/s a 720p até US$ 0,30/s a 4K; Pro: US$ 0,12-0,17/s (720p-1080p). Clipe de 10s a 720p ≈ US$ 0,90. Local: custo zero por geração após o download — a conta que favorece o self-host para volume.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Preciso de custom nodes no ComfyUI?</h3>
+        <p>Não para o caminho oficial: os nós LTXV* e os três workflows (T2V, I2V, FLF2V) vêm no ComfyUI atualizado. Custom nodes (ComfyUI-GGUF) só para os pesos GGUF comunitários.</p>
+    </div>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="https://huggingface.co/Lightricks/LTX-2.5">Lightricks/LTX-2.5 no Hugging Face</a> — model card, pesos e licença (gated auto)</li>
+        <li><a href="https://docs.comfy.org/tutorials/video/ltx/ltx-2-5">Tutorial oficial ComfyUI: LTX-2.5</a> — workflows T2V/I2V/FLF2V e pastas dos modelos</li>
+        <li><a href="https://ltx.io/model/ltx-2-5">Página oficial do LTX-2.5</a> — specs, claims e benchmark</li>
+        <li><a href="https://github.com/Lightricks/LTX-2">GitHub Lightricks/LTX-2</a> — ltx-pipelines, trainer, kernels e LICENSE.md</li>
+        <li><a href="https://huggingface.co/Lightricks/LTX-2.5-Diffusers">Lightricks/LTX-2.5-Diffusers</a> — empacotamento para diffusers</li>
+        <li><a href="/guia/minimax-music3-musica-local">MiniMax Music3 local</a> — a primeira frente multimodal: música em 8 GB</li>
+        <li><a href="/guia/qwen3-8-27b-visao-videos-local">Qwen3.8-27B enxerga vídeos</a> — o outro lado: entender vídeo localmente em 24 GB</li>
+        <li><a href="/guia/hardware-local">Guia de hardware local</a> — VRAM e setups por caso de uso</li>
+        <li><a href="/modelos">Modelos cobertos pelo portal</a> — o catálogo atual</li>
+        <li><a href="/guia/faq">FAQ do portal</a></li>
+    </ul>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — primeira cobertura de vídeo-gen local | Dados: HF API de Lightricks/LTX-2.5 (+tree, 19/08/2026), model card oficial, docs.comfy.org (tutorial LTX-2.5), ltx.io e LICENSE.md do repo LTX-2 — todos verificados ao vivo em 19/08/2026.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
