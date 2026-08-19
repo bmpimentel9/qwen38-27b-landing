@@ -49,8 +49,7 @@
         footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
         footer a { color: var(--accent); text-decoration: none; }
     </style>
-<script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -296,12 +295,19 @@
             "@type": "Answer",
             "text": "No decode puro não é: o 3.8 gera à mesma velocidade do 3.6 (na 3090 os decodes são equivalentes a ~41,5 t/s; no Strix Halo o 3.8 é mais rápido, 17,3 vs 12,4 t/s) — e o bench de 45 configs na RTX 5090, que testou só o 3.8, mostra que nem o thinking muda esse decode: 73,6 on vs 73,4 off. A lentidão percebida tem três causas: raciocínio xhigh por padrão (2,18 s vs 0,18 s até a primeira palavra), MTP desligado (a especulação não vem ativa por padrão no llama.cpp; RTX 3090 foi de ~31,6 para 74 t/s com --spec-type draft-mtp) e contexto estourando a VRAM (32K = +2,5 GB; 128K não coube em GPU de 20 GB). Regressão real documentada: M5 Max 128 GB (20-25 vs 30-40 t/s a 64K). Fonte: KGP Talkie 45 configs, r/LocalLLaMA 1vqjeub, dev.to, medições próprias (19/08/2026). Diagnóstico completo: /guia/qwen3-8-27b-lento-causas-fixes."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual o melhor modelo local de 30B em agosto/2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depende do trabalho. Código e engenharia agêntica: Qwen3.8-27B (LiveCodeBench v6 90,3; OSWorld-Verified 84,3; SWE-bench Pro 61,7 — model card oficial). Agente 24/7 com ferramentas MCP: Muse Glimmer 30B (MCP Atlas 75,5). GPU de 12–16 GB: GPT-OSS-20B (GGUF MXFP4 de 11,27 GiB). Contexto de 1M com 110 GB+ de memória unificada: DeepSeek V4 Flash (284B totais / 13B ativos, UD-IQ3_XXS 103 GB). Fontes: model cards oficiais e dossiê do portal (19/08/2026); página completa em /guia/melhores-modelos-locais-30b."
+          }
         }
       ]
     }
   ]
-}
-</script>
+}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
@@ -509,6 +515,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <h2 id="comparacoes">Comparações</h2>
+
+    <div class="faq-item">
+        <h3>Qual o melhor modelo local de 30B em agosto/2026?</h3>
+        <p>Depende do trabalho. Código e engenharia agêntica: <strong>Qwen3.8-27B</strong> (LiveCodeBench v6 90,3; OSWorld-Verified 84,3; SWE-bench Pro 61,7 — model card oficial). Agente 24/7 com ferramentas MCP: <strong>Muse Glimmer 30B</strong> (MCP Atlas 75,5, benchmark que o Qwen3.8 não publicou). GPU de 12–16 GB: <strong>GPT-OSS-20B</strong> (GGUF MXFP4 de 11,27 GiB). Contexto de 1M com 110 GB+ de memória unificada: <strong>DeepSeek V4 Flash</strong> (284B totais / 13B ativos). Página completa: <a href="/guia/melhores-modelos-locais-30b">Melhores modelos locais de 30B</a>.</p>
+    </div>
 
     <div class="faq-item">
         <h3>Qwen3.8-27B vs Qwen3.6-35B (MoE): qual escolher?</h3>
