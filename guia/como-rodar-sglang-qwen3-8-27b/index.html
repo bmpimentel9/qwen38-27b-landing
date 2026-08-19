@@ -165,6 +165,11 @@
         .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
         .badge strong { color: var(--accent-2); }
         .flag-table td:first-child { white-space: nowrap; font-family: monospace; color: var(--accent-3); }
+    @media (max-width: 640px) {
+  table { display: block; overflow-x: auto; }
+  code { overflow-wrap: anywhere; }
+  pre code { overflow-wrap: normal; }
+}
     </style>
 </head>
 <body>
