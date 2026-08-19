@@ -272,6 +272,14 @@
             "@type": "Answer",
             "text": "Não: os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. Fonte: model card oficial (Hugging Face, Qwen/Qwen3.8-27B)."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "O LTX-2.5 roda em quantos GB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Setup oficial ComfyUI int8 soma ~50 GB em arquivos (transformer 21,50 + encoder 15,37 + VAEs 1,83 + upscaler 1,00 + prompt enhancer 10,28 GB); núcleo sem enhancer: 38,70 GB. É soma dos arquivos do repo — o pico de VRAM em inferência pode ser diferente. Rota comunitária em 24 GB: GGUF Q4_K_M (transformer 15,09 + encoder 9,51 GB). Fonte: tree HF API Lightricks/LTX-2.5 + docs.comfy.org (19/08/2026). Guia: /guia/ltx-2-5-video-local-comfyui."
+          }
         }
       ]
     }
@@ -500,6 +508,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="faq-item">
         <h3>Os benchmarks são verificados independentemente?</h3>
         <p><strong>Não:</strong> os 26 benchmarks são reportados pela própria Qwen no model card oficial e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card da Qwen — servem como ordem de grandeza, não como comparação controlada.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>O LTX-2.5 roda em quantos GB?</h3>
+        <p>O setup oficial do ComfyUI com pesos int8 soma <strong>~50 GB em arquivos</strong>: transformer 21,50 + encoder 15,37 + VAEs de vídeo e áudio 1,83 + upscaler 1,00 + prompt enhancer 10,28 GB (núcleo sem o enhancer: 38,70 GB). Importante: é a soma dos arquivos do repo — o pico de VRAM em inferência pode ser diferente. Em 24 GB, a rota é o GGUF comunitário: transformer Q4_K_M (15,09 GB) + encoder Q5_K_M (9,51 GB). Guia completo em <a href="/guia/ltx-2-5-video-local-comfyui">LTX-2.5 local no ComfyUI</a>.</p>
     </div>
 
     <div class="callout">
