@@ -267,6 +267,14 @@
         },
         {
           "@type": "Question",
+          "name": "Quantos tokens de contexto o Qwen3.8-27B suporta local?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "262.144 tokens (256K) nativos, confirmados no config.json oficial (max_position_embeddings=262144), extensíveis a 1M com RoPE scaling. Em 24 GB de VRAM o contexto completo cabe com modelo 4-bit + KV cache Q4: medição de terceiros (RTX PRO 4000 Blackwell, piszczek.pl) sustenta 50,44 tok/s de média em produção com os 262.144 tokens e 12,61 tok/s com o cache ocupado (261.500 tokens). Fonte: config.json oficial + artigo piszczek.pl (17-18/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Os benchmarks são verificados independentemente?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -398,6 +406,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <h2 id="performance">Performance e Velocidade</h2>
+
+    <div class="faq-item">
+        <h3>Quantos tokens de contexto o Qwen3.8-27B suporta local?</h3>
+        <p><strong>262.144 tokens (256K) nativos</strong> — confirmados no config.json oficial (max_position_embeddings=262144) —, extensíveis a 1M com RoPE scaling. Em 24 GB de VRAM o contexto completo cabe com modelo 4-bit + KV cache Q4: medição de terceiros (RTX PRO 4000 Blackwell, piszczek.pl) sustenta <strong>50,44 tok/s de média em produção</strong> com os 262.144 tokens e 12,61 tok/s com o cache ocupado (261.500 tokens). Em 16 GB, reduza o contexto — o guia completo está em <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>.</p>
+    </div>
 
     <div class="faq-item">
         <h3>Qual a velocidade do Qwen3.8-27B localmente?</h3>

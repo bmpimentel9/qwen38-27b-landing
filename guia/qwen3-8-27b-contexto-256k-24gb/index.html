@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B com 256K de contexto em 24 GB (guia 2026)</title>
+    <meta name="description" content="Contexto de 262.144 tokens numa GPU de 24 GB a 50,44 tok/s: a conta do KV cache Q4 (48+16 camadas), os flags do llama.cpp e as armadilhas da quantização.">
+    <meta name="keywords" content="qwen 3.8 256k, qwen 3.8 contexto longo, 256k context local, qwen 3.8 24gb, kv cache local, qwen3.8-27b contexto, contexto longo llama.cpp, kv cache quantizado, janela de contexto llm, qwen 3.8 local gpu">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-contexto-256k-24gb">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Qwen3.8-27B com 256K de contexto em 24 GB: o guia do cache que cabe">
+    <meta property="og:description" content="262.144 tokens de contexto numa GPU de 24 GB, a 50,44 tok/s comprovados em produção real. A arquitetura que faz caber (48+16 camadas), o KV cache Q4 de ~4,25 GiB e os flags certos do llama.cpp.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-contexto-256k-24gb">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-19T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="contexto longo">
+    <meta property="article:tag" content="hardware">
+    <meta property="article:tag" content="modelos locais">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qwen3.8-27B com 256K de contexto em 24 GB: o guia do cache que cabe">
+    <meta name="twitter:description" content="50,44 tok/s com 262.144 tokens de contexto numa GPU de 24 GB. A conta do KV cache, a receita do llama.cpp e o que NÃO fazer na quantização.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Qwen3.8-27B com 256K de contexto em 24 GB: o guia do cache que cabe",
+          "description": "O contexto nativo de 262.144 tokens do Qwen3.8-27B cabe inteiro numa GPU de 24 GB (RTX PRO 4000 Blackwell, 432 GB/s): 50,44 tok/s de média em produção real (série de 10 runs, medição de terceiros), 12,61 tok/s com o cache realmente ocupado (261.500 tokens) e KV cache Q4 K+V de ~4,25 GiB — graças à arquitetura híbrida de 64 camadas (48 Gated DeltaNet + 16 full-attention). Receita completa do llama.cpp e as armadilhas da quantização.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-19",
+          "dateModified": "2026-08-19",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-contexto-256k-24gb",
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "llama.cpp com suporte a MTP (speculative decoding) e Gated DeltaNet; GGUF quantizado do Qwen3.8-27B; GPU NVIDIA com 24 GB para o perfil completo (medição de referência: RTX PRO 4000 Blackwell SFF)"
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o Qwen3.8-27B com 256K de contexto em uma GPU de 24 GB",
+          "description": "Configuração do llama.cpp (llama-server) para carregar o contexto nativo de 262.144 tokens do Qwen3.8-27B em 24 GB de VRAM: GGUF 4-bit de qualidade, KV cache quantizado em Q4_0, MTP embutido, flash attention e checkpoints recorrentes reduzidos.",
+          "totalTime": "PT30M",
+          "step": [
+            { "@type": "HowToStep", "name": "Escolher o GGUF certo", "text": "Use um 4-bit de qualidade com MTP embutido — o perfil de referência é um iMatrix-NVFP4-MTP custom (PPL 6,1197 no controle WikiText-2 do autor). Evite Q4_0 puro (PPL 6,3798 no mesmo controle) e o NVFP4-MEDIUM pronto que falhou no gate de qualidade (PPL 6,4949)." },
+            { "@type": "HowToStep", "name": "Quantizar o KV cache", "text": "No llama-server, use --cache-type-k q4_0 e --cache-type-v q4_0 com --flash-attn on. Só as 16 camadas full-attention do modelo crescem o KV cache: no limite de 262.144 tokens isso custa ~4,25 GiB." },
+            { "@type": "HowToStep", "name": "Ligar o MTP embutido", "text": "Speculative decoding com o drafter MTP do próprio modelo (--spec-type draft-mtp): 21,19 para 59,46 tok/s contra o greedy puro (2,81x) na medição de referência." },
+            { "@type": "HowToStep", "name": "Ajustar checkpoints recorrentes", "text": "Reduza --ctx-checkpoints de 32 (default) para 4: as 48 camadas Gated DeltaNet guardam estado recorrente, e checkpoints demais comem a VRAM que o cache 256K precisa." },
+            { "@type": "HowToStep", "name": "Validar com o cache ocupado", "text": "\"256K carregado\" não prova nada: preencha o contexto com input real (~261.500 tokens), gere a partir do cache quente e confira VRAM pós-preenchimento, throughput e ausência de truncamento. Referência: 12,61 tok/s no fim do cache de 261,5K sem OOM." }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Quantos tokens de contexto o Qwen3.8-27B suporta local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "262.144 tokens (256K) nativos, confirmados no config.json oficial (max_position_embeddings = 262144) — extensíveis a 1M com RoPE scaling. Em 24 GB de VRAM, o contexto completo cabe com quantização 4-bit do modelo e KV cache Q4: medição de referência de terceiros (RTX PRO 4000 Blackwell, piszczek.pl) sustenta os 262.144 tokens com 50,44 tok/s de média em produção."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto de VRAM o contexto de 256K do Qwen3.8-27B consome?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O KV cache do Qwen3.8-27B cresce em apenas 16 das 64 camadas (as full-attention) porque as outras 48 são Gated DeltaNet recorrentes, de memória constante. Com K e V quantizados em Q4_0, o cache de 262.144 tokens custa cerca de 4,25 GiB — cabe numa GPU de 24 GB junto com o modelo 4-bit (~16,3 GiB no perfil de referência)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual a velocidade do Qwen3.8-27B com 256K de contexto?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Na medição de referência (RTX PRO 4000 Blackwell de 24 GB, terceiros): 50,44 tok/s de média na série de 10 runs da tarefa de produção com o contexto completo habilitado; 12,61 tok/s no extremo de um cache realmente ocupado com 261.500 tokens; e 2,81x de aceleração com o MTP embutido (21,19 para 59,46 tok/s contra o greedy puro). Esses números são daquela GPU específica — não generalize para outros hardwares."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Dá para rodar 256K de contexto em GPU de 16 GB?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Não com folga: 16 GB comporta o modelo 4-bit (IQ4_XS = 15,71 GB) só em modo texto e contexto curto. Contexto de 256K exige KV cache Q4 (~4,25 GiB) + pesos + estado recorrente — o tier prático é 24 GB. Em 16 GB, reduza o --ctx-size e siga o guia do portal para GPUs de 16 GB."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que é o MTP e por que ele acelera o contexto longo?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "MTP (Multi-Token Prediction) é uma cabeça de predição treinada junto com o modelo que propõe vários tokens por passo — speculative decoding. No llama.cpp (--spec-type draft-mtp), o drafter embutido do Qwen3.8-27B multiplicou o throughput por 2,81x (21,19 para 59,46 tok/s) na medição de referência. Importante: o drafter precisa ser compatível com a quantização do alvo — dar mais precisão ao drafter derrubou o throughput de 50,44 para 37,02 tok/s."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Por que o KV cache do Qwen3.8-27B é tão pequeno para 256K?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Por causa da atenção híbrida: das 64 camadas do modelo, 48 são Gated DeltaNet (atenção linear/recorrente, de estado de tamanho fixo) e apenas 16 são full-attention convencionais — e só estas últimas acumulam KV cache proporcional ao tamanho do contexto. O padrão 3 recorrentes + 1 full-attention está no config.json oficial. Com K+V em Q4_0 (e apenas 4 KV heads de head_dim 256), 262.144 tokens custam ~4,25 GiB."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Qwen3.8-27B com 256K em 24 GB", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-contexto-256k-24gb" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --accent-4: #d2a8ff; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
+        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+        .stat-card .value.ok { color: var(--accent-2); }
+        .stat-card .value.warn { color: var(--accent-3); }
+        .src { font-size: 0.85rem; color: var(--text-muted); }
+        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B com 256K de contexto em 24 GB: o guia do cache que cabe</h1>
+        <p class="lead">A janela de 262.144 tokens do Qwen3.8-27B não é cifra de ficha técnica — é memória que dá para ocupar de verdade numa GPU de 24 GB, com 50,44 tok/s de média em produção real. Este guia decompõe a conta do KV cache, a receita do llama.cpp e as armadilhas que derrubam quem tenta copiar o setup às cegas.</p>
+    </header>
+
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="value">256K</div>
+            <div class="label">tokens de contexto nativos (262.144)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value ok">50,44</div>
+            <div class="label">tok/s de média em produção (10 runs)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">2,81×</div>
+            <div class="label">MTP embutido: 21,19 → 59,46 tok/s</div>
+        </div>
+        <div class="stat-card">
+            <div class="value warn">4,25</div>
+            <div class="label">GiB de KV cache Q4 no limite (262.144 tokens)</div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-dado">O dado: 256K ocupado de verdade em 24 GB</a></li>
+            <li><a href="#arquitetura">Por que cabe: 48+16 camadas e a conta do KV cache</a></li>
+            <li><a href="#receita">A receita completa: llama-server, GGUF e flags</a></li>
+            <li><a href="#benchmark-honesto">Como saber se "256K carregado" é verdade</a></li>
+            <li><a href="#voce-cabe">Cabe na sua GPU? 24 GB medido, 16 GB estimado</a></li>
+            <li><a href="#o-que-nao-fazer">O que NÃO fazer: armadilhas da quantização</a></li>
+            <li><a href="#voce-precisa">Você precisa de 256K? (e quando 32K basta)</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-dado">O dado: 256K ocupado de verdade em 24 GB</h2>
+    <p>Em 17 de agosto de 2026, Michał Piszczek (CTO da Archdesk) publicou o experimento que a comunidade local aguardava desde o lançamento do modelo: <strong>o contexto nativo de 262.144 tokens do Qwen3.8-27B rodando inteiro numa única GPU de 24 GB</strong> — uma RTX PRO 4000 Blackwell SFF (GDDR7, 432 GB/s de banda pico, arquitetura sm120a) — servindo uma carga de agente real, com visão, e sustentando <strong>50,44 tok/s de média numa série de 10 runs de produção</strong> (faixa 49,42–51,40).</p>
+    <p>O detalhe metodológico que separa esse benchmark dos "256K carregado" da internet: o cache não ficou só alocado. O teste de capacidade preencheu o slot com <strong>261.500 tokens de input reais</strong>, gerou a partir do cache quente e não deu OOM nem truncamento — <strong>12,61 tok/s no extremo do cache ocupado</strong>, com GPU a 99–100% de uso (o gargalo eram as 16 camadas full-attention lendo um cache gigante, não fallback de CPU escondido).</p>
+    <div class="leader">📊 <strong>Dado citável:</strong> o Qwen3.8-27B sustenta seus 262.144 tokens de contexto nativos numa GPU de 24 GB (RTX PRO 4000 Blackwell) com <strong>50,44 tok/s de média em produção</strong> (10 runs) e <strong>12,61 tok/s com o cache de fato ocupado</strong> (261.500 tokens input), no llama.cpp com quantização 4-bit de qualidade + KV cache Q4 + MTP embutido. Fonte: <a href="https://piszczek.pl/blog/qwen38-27b-256k-50-tps-24gb-gpu">piszczek.pl</a> (17/08, atualizado 18/08) — <strong>medição de terceiros</strong>; este portal não rodou o benchmark.</div>
+    <p>Contexto do portal: os números de throughput que compilamos no <a href="/guia/tokens-por-segundo-30b-hardware-real">guia de tokens por segundo</a> são majoritariamente de contexto curto (4K–40K). Este artigo cobre o outro extremo — o que acontece quando a janela inteira entra em jogo. São perguntas diferentes, com respostas diferentes.</p>
+
+    <h2 id="arquitetura">Por que cabe: 48+16 camadas e a conta do KV cache</h2>
+    <p>Num transformer convencional, contexto longo é sinônimo de estouro de VRAM: o KV cache cresce <strong>em todas as camadas</strong>, proporcional ao número de tokens. É por isso que 128K numa arquitetura clássica de 27B costuma exigir dezenas de GB só de cache.</p>
+    <p>O Qwen3.8-27B escapa disso por construção. O <a href="https://huggingface.co/Qwen/Qwen3.8-27B/blob/main/config.json">config.json oficial</a> mostra um modelo de <strong>64 camadas com padrão repetido: 3 camadas de linear_attention (Gated DeltaNet) + 1 camada de full_attention</strong> — ou seja, <strong>48 camadas recorrentes e apenas 16 de atenção convencional</strong>. As camadas Gated DeltaNet mantêm um estado recorrente de tamanho fixo (não cresce com o contexto); só as 16 full-attention acumulam KV cache.</p>
+    <p>A conta do cache no limite (todas as 16 camadas, 262.144 tokens, K+V em Q4_0):</p>
+    <pre><code>camadas full-attention:     16
+KV heads por camada:         4   (config oficial: num_key_value_heads=4)
+head_dim:                  256
+elementos K+V por token:  2 × 4 × 256 = 2.048 por camada
+                           16 × 2.048 = 32.768 por token
+Q4_0: ~4,5 bits/elemento ≈ 0,5625 byte
+cache total ≈ 262.144 × 32.768 × 0,5625 ≈ 4,6 GB brutos
+→ ~4,25 GiB no relatório do autor (com blocos Q4_0 reais)</code></pre>
+    <p>É esse número — e não mágica — que faz 256K caber em 24 GB: <strong>pesos 4-bit (~16,3 GiB no perfil final) + KV cache Q4 (~4,25 GiB) + estado recorrente + MTP + CUDA graphs</strong>, tudo dentro dos 24.467 MiB que a placa reporta. O autor resume: com Q4 K+V, o cache de 256K custa "grosseiramente 4,25 GiB antes do overhead do alocador".</p>
+    <p>Nota de honestidade sobre a trade-off: quantizar K e V para Q4 tem custo de qualidade (por isso o autor só o aceitou com um target de pesos mais preciso — ver a receita abaixo). Se você tem VRAM de sobra, K Q8/V Q8 reduz o custo em troco de mais consumo — aí o limite recai nos pesos, não no cache.</p>
+    <table>
+        <tr><th>Componente</th><th>Consumo no perfil 256K</th><th>Cresce com o contexto?</th></tr>
+        <tr><td>Pesos do modelo (4-bit custom)</td><td>~16,3 GiB</td><td>Não</td></tr>
+        <tr class="highlight"><td><strong>KV cache (16 camadas, Q4_0)</strong></td><td><strong>~4,25 GiB no limite</strong></td><td><strong>Sim — linear</strong></td></tr>
+        <tr><td>Estado recorrente (48 camadas GDN)</td><td>Fixo + checkpoints</td><td>Não (constante)</td></tr>
+        <tr><td>MTP embutido + CUDA graphs</td><td>poucos GiB no total</td><td>Não</td></tr>
+    </table>
+    <p class="src">Fonte: config.json oficial (64 camadas = 48 linear + 16 full, KV heads 4, head_dim 256) + perfil de produção do artigo do piszczek.pl. A conta de ~4,25 GiB é do autor, com blocos Q4_0 reais do llama.cpp.</p>
+
+    <h2 id="receita">A receita completa: llama-server, GGUF e flags</h2>
+    <p>O perfil de produção que sustentou os números usa llama.cpp com um GGUF custom (iMatrix-NVFP4 com MTP embutido) e flags específicas para o regime de contexto longo. Reproduzindo a fidelidade da fonte:</p>
+    <pre><code># 1. Download do GGUF do perfil (repositório cdiamond, citado no artigo)
+hf download cdiamond/Qwen3.8-27B-iMatrix-NVFP4-MTP-GGUF \
+  Qwen3.8-27B-iMatrix-NVFP4-MTP.gguf \
+  mmproj-Qwen3.8-27B-F16.gguf \
+  --local-dir ./qwen38
+
+# 2. Ambiente (visão na segunda GPU, cadeia de especulação, CUDA graphs)
+CUDA_VISIBLE_DEVICES=0,1 MTMD_BACKEND_DEVICE=CUDA1 \
+LLAMA_SPEC_CHAIN=1 GGML_CUDA_GRAPH_OPT=1
+
+# 3. llama-server no perfil de produção
+llama-server \
+  --model Qwen3.8-27B-iMatrix-NVFP4-MTP.gguf \
+  --device CUDA0 --n-gpu-layers 999 --fit off \
+  --ctx-size 262144 --parallel 1 --ctx-checkpoints 4 \
+  --flash-attn on \
+  --cache-type-k q4_0 --cache-type-v q4_0 \
+  --batch-size 512 --ubatch-size 256 \
+  --temp 0.6 \
+  --spec-type draft-mtp --spec-default \
+  --spec-draft-n-max 8 --spec-draft-n-min 0 --spec-draft-p-min 0 \
+  --spec-draft-type-k f16 --spec-draft-type-v f16 \
+  --spec-draft-backend-sampling \
+  --mmproj mmproj-Qwen3.8-27B-F16.gguf \
+  --reasoning-preserve --jinja --metrics</code></pre>
+    <p>Os flags que fazem a diferença no regime 256K:</p>
+    <ul>
+        <li><strong><code>--ctx-size 262144</code></strong>: a janela nativa inteira. É o config oficial do modelo, não um stretch de RoPE.</li>
+        <li><strong><code>--cache-type-k q4_0 --cache-type-v q4_0</code></strong>: quantiza o KV cache. Sem isso, o cache em F16 custaria ~5× mais e não caberia. Requer <code>--flash-attn on</code>.</li>
+        <li><strong><code>--ctx-checkpoints 4</code></strong>: as 48 camadas Gated DeltaNet fazem checkpoint do estado recorrente; o default (32) "gastava memória que eu precisava em outro lugar", nas palavras do autor. 4 foi o mínimo útil.</li>
+        <li><strong><code>--spec-type draft-mtp --spec-default</code></strong>: liga o drafter MTP embutido no GGUF + especulação n-gram. O MTP é o multiplicador de throughput (2,81× vs greedy puro); o n-gram ajuda em sessões de agente que repetem código e prefixos de prompt — e não entra nos números comparativos do benchmark.</li>
+        <li><strong><code>--mmproj ... --device CUDA0 ... MTMD_BACKEND_DEVICE=CUDA1</code></strong>: o projeto de visão (982 MiB em F16) fica na segunda GPU (uma RTX 2000 Ada de 16 GB no setup original) — detalhe que libera quase 1 GiB na GPU principal. Sem segunda GPU, o 256K completo + visão F16 fica apertado em 24 GB.</li>
+        <li><strong><code>--fit off</code></strong>: impede o servidor de "se ajustar" reduzindo contexto por conta própria quando a memória aperta — você quer falhar alto e claro, não um 256K silenciosamente virar 200K.</li>
+    </ul>
+    <div class="callout">
+        <strong>Simplificação para 24 GB sem segunda GPU:</strong> o mesmo esqueleto funciona sem a segunda placa se você abrir mão do mmproj F16 (modo texto puro) ou usar um projetor quantizado — sobra folga para o cache. A segunda GPU do setup original serve a carga <em>multimodal</em> de produção, não o throughput de texto.
+    </div>
+    <p>Para os presets por nível de hardware (16 GB, 24 GB, memória unificada) e o básico de Ollama, veja o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16 GB</a> e o <a href="/guia/como-rodar">guia geral de instalação</a>. No Ollama, o mesmo modelo chega via <code>ollama run qwen3.8:27b</code> (18 GB, 256K declarados) — mas atenção: alocar não é ocupar; ajuste <code>num_ctx</code> conforme a VRAM real e trate os 256K como teto, não default.</p>
+
+    <h2 id="benchmark-honesto">Como saber se "256K carregado" é verdade</h2>
+    <p>A parte mais exportável do artigo é o método. O autor baniu "262K carregado" da tabela de resultados depois de descobrir que carregar o contexto não prova nada — buffers de KV, CUDA graphs e estado recorrente se comportam diferente com o slot <em>ocupado</em>. Um claim de contexto longo honesto precisa incluir:</p>
+    <ul>
+        <li><strong>Preenchimento real de tokens</strong> (o teste usou 261.500 de input, não zeros de aligação);</li>
+        <li><strong>VRAM depois do preenchimento</strong> (não só após o load);</li>
+        <li><strong>Decode com cache quente</strong> — a velocidade no fim do cache (12,61 tok/s) é a que importa, não a do início;</li>
+        <li><strong>Estado de truncamento</strong> e um hash de saída para verificar que nada foi descartado silenciosamente.</li>
+    </ul>
+    <p class="src">Por que isso importa para você: benchmarks que só mostram "256K alocado" escondem tanto OOM quanto trapaça de truncamento. Ao comparar claims de contexto longo, procure a velocidade com o cache ocupado — é o número que separa demonstração de produção.</p>
+
+    <h2 id="voce-cabe">Cabe na sua GPU? 24 GB medido, 16 GB estimado</h2>
+    <p>Transparência total sobre o que é medição e o que é estimativa:</p>
+    <table>
+        <tr><th>Tier de VRAM</th><th>Contexto 256K completo</th><th>Status</th></tr>
+        <tr class="highlight"><td><strong>24 GB (RTX 3090/4090/PRO 4000)</strong></td><td><strong>Sim — medição de terceiros</strong> (RTX PRO 4000 Blackwell: 50,44 tok/s produção; 12,61 tok/s cache cheio)</td><td><strong>MEDIDO</strong></td></tr>
+        <tr><td>16 GB (5060 Ti/4060 Ti/5080 Laptop)</td><td>Não de forma confortável — modelo IQ4_XS 15,71 GB não sobra ~4,25 GiB para cache + estado; reduza --ctx-size (32K–96K) e siga o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia 16 GB</a></td><td>ESTIMATIVA do portal</td></tr>
+        <tr><td>Memória unificada (Strix Halo 128 GB, Mac 32 GB+)</td><td>Cabe com folga de capacidade (nosso Strix Halo roda o modelo inteiro em Q5), mas o throughput de decode do denso é o gargalo (10,6 tok/s no nosso Q5_K_M)</td><td>MEDIÇÃO PRÓPRIA (capacidade) / sem medição 256K ocupado</td></tr>
+        <tr><td>12 GB ou menos</td><td>Não — contexto curto obrigatório (veja FAQ)</td><td>Consolidado do portal</td></tr>
+    </table>
+    <p><strong>Não generalize os 50,44 tok/s para outras placas de 24 GB.</strong> São o resultado de: banda de 432 GB/s da GDDR7, kernels CUDA do llama.cpp na arquitetura sm120a, um build custom com patches de performance (+21,97% vs master: 55,40 vs 45,42 tok/s em A/B estrito) e o MTP embutido. Numa 3090/4090 de 24 GB o mesmo perfil deve ter throughput diferente — o <em>fit</em> de memória é o que transfere, a velocidade é específica daquele hardware. Os números de contexto curto por placa continuam no <a href="/guia/tokens-por-segundo-30b-hardware-real">guia de throughput</a>.</p>
+
+    <h2 id="o-que-nao-fazer">O que NÃO fazer: armadilhas da quantização</h2>
+    <p>A seção mais valiosa do artigo-prima é o catálogo de erros. Cada armadilha abaixo tem número medido:</p>
+    <h3>1. Confundir rótulo de quant com performance real</h3>
+    <p>No speed test com contexto 40K, <strong>Q4_0 venceu em velocidade</strong> (44,95 tok/s vs 34,40 do IQ4_XS com iMatrix) — mas perdeu em qualidade: no controle WikiText-2, <strong>IQ4_XS marcou PPL 6,1175 e Q4_0 marcou 6,3798</strong>. O rótulo do quant não prevê qual kernel CUDA será rápido no SEU hardware; e o quant mais rápido pode ser o mais sujo. (Q4_1, o melhor PPL do controle com 6,1127, nem chegou a disputar: o footprint não cabia com 256K + visão F16.)</p>
+    <h3>2. Apostar no NVFP4 pronto "porque Blackwell tem FP4 nativo"</h3>
+    <p>A receita pronta NVFP4-MEDIUM parecia o caminho óbvio numa placa sm120a — e <strong>falhou no gate de qualidade: PPL 6,4949, pior que Q4_0</strong>, apesar de 40,46 tok/s e caber com ~1.055 MiB livres. O problema era a receita de conversão (o checkpoint FP8 expandido e requantizado em NVFP4 perdeu precisão nos detalhes). A solução do autor foi um build custom iMatrix-NVFP4 com MTP embutido: PPL 6,1197 — dentro do ruído do controle (0,11% abaixo do Q4_1) e aprovado no gate.</p>
+    <h3>3. Dar "precisão demais" ao drafter MTP</h3>
+    <p>O experimento que dá título ao artigo: ao trocar o drafter MTP para Q5_K (+50,6 MiB) o throughput caiu 3,39% (50,44 → 48,73 tok/s); com Q6_K nas camadas críticas (+69,2 MiB) despencou para <strong>37,02 tok/s (−26,6%)</strong>. O drafter mais preciso estava "mais próximo do alvo BF16" — mas o alvo real é um híbrido NVFP4/Q5/Q6, e a <strong>compatibilidade com o alvo quantizado importou mais que a precisão isolada</strong>. Lição do autor: "o melhor setup raramente é feito das melhores partes isoladas".</p>
+    <h3>4. Usar um drafter externo porque "tem uma GPU sobrando"</h3>
+    <p>O DSpark (drafter de difusão de 1,36B) rodando na segunda GPU fez 26,49 tok/s (vs 19,70 do alvo sozinho) — mas o MTP <strong>embutido</strong> fez 49,61 tok/s na mesma comparação: DSpark foi 46,6% mais lento e consumiu mais VRAM agregada. O drafter foi treinado contra um alvo FP8; o alvo daquele setup era quantizado. De novo: compatibilidade &gt; spec sheet.</p>
+    <h3>5. Tratar "cabe na memória" como "está pronto"</h3>
+    <p>Os testes de capacidade iniciais passaram (Q4_0 + MTP + KV Q4 + 4 checkpoints + mmproj F16, tudo alocado em 262.144) — e o autor decretou que isso não prova nada. Só o preenchimento real (261.500 tokens) + decode no cache quente validou o perfil. "Estimativa de capacidade é só bilhete de entrada. O teste real começa depois do load."</p>
+    <div class="callout-warn">
+        <strong>Resumo operacional:</strong> (1) escolha o quant pelo gate de qualidade no SEU contexto, não pelo rótulo; (2) NVFP4 pronto ≠ NVFP4 bem feito — a receita de conversão importa; (3) o drafter MTP tem que casar com a quantização do alvo (o embutido já nasce casado); (4) drafter externo só se for compatível; (5) valide com o cache ocupado.
+    </div>
+    <p>Contexto de ecossistema: a comunidade está afiada no tuning desse modelo — no mesmo dia 19/08, um <a href="https://github.com/ggml-org/llama.cpp">PR no llama.cpp</a> propondo <code>medium</code> como default de reasoning no lugar de <code>xhigh</code> ganhava tração no Hacker News. Para o lado "quanto custa cada quant em GB", a referência do portal é a <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">tabela GGUF medida</a>; para domar o overthinking, o <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning</a>.</p>
+
+    <h2 id="voce-precisa">Você precisa de 256K? (e quando 32K basta)</h2>
+    <p>Contexto enorme é um custo, não um prêmio: prefill de 261 mil tokens é minuto(s) de processamento mesmo em hardware rápido, e o decode no cache cheio roda a 12,61 tok/s na referência — 4× mais lento que a média de produção. O 256K nativo faz sentido quando a carga <em>é</em> horizonte longo: codebases inteiras, sessões de agente acumuladas, dossiês, transcrições de horas. Para chat comum, RAG com janela curta e prompts pontuais, 32K–128K com o resto da VRAM investido em quant de qualidade é a troca melhor.</p>
+    <p>O que o dado deste artigo muda: até aqui, "contexto de 256K local" era claim de ficha técnica — agora existe um perfil público, reproduzível e validado sob carga que mostra o custo real (cache Q4 de 4,25 GiB) e o throughput real (50,44 média / 12,61 no limite). A decisão de usar os 256K virou engenharia, não aposta.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Quantos tokens de contexto o Qwen3.8-27B suporta local?</h3>
+        <p>262.144 tokens (256K) nativos — confirmados no config.json oficial (max_position_embeddings=262144) — extensíveis a 1M com RoPE scaling. Em 24 GB de VRAM, o contexto completo cabe com quantização 4-bit do modelo e KV cache Q4: medição de referência de terceiros (RTX PRO 4000 Blackwell, piszczek.pl) sustenta os 262.144 tokens com 50,44 tok/s de média em produção.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto de VRAM o contexto de 256K consome?</h3>
+        <p>Só 16 das 64 camadas do modelo crescem o KV cache (as full-attention) — as outras 48 são Gated DeltaNet recorrentes, de memória constante. Com K e V em Q4_0, o cache de 262.144 tokens custa ~4,25 GiB. Somado ao modelo 4-bit (~16,3 GiB no perfil de referência), cabe nos 24 GB de uma RTX 3090/4090/PRO 4000.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual a velocidade com 256K de contexto ocupado?</h3>
+        <p>Na referência (RTX PRO 4000 Blackwell): 50,44 tok/s de média na tarefa de produção (10 runs), 12,61 tok/s no extremo do cache realmente preenchido (261.500 tokens) e 2,81× de aceleração com MTP (21,19→59,46 tok/s vs greedy puro). Números daquele hardware específico — não generalize para outras GPUs.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Dá para rodar 256K em GPU de 16 GB?</h3>
+        <p>Não de forma confortável: o IQ4_XS (15,71 GB) não deixa os ~4,25 GiB do cache Q4 + estado recorrente caberem juntos. Em 16 GB, reduza o --ctx-size (32K–96K é o range prático da comunidade) — o passo a passo está no nosso guia de 16 GB.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O que é o MTP e por que ele acelera o contexto longo?</h3>
+        <p>MTP (Multi-Token Prediction) é uma cabeça de predição treinada junto com o modelo que propõe múltiplos tokens por passo (speculative decoding). No llama.cpp (--spec-type draft-mtp), o drafter embutido do Qwen3.8-27B entregou 2,81× (21,19→59,46 tok/s) na referência. Cuidado: o drafter precisa casar com a quantização do alvo — dar mais precisão a ele derrubou o throughput para 37,02 tok/s.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Por que o KV cache deste modelo é tão pequeno para 256K?</h3>
+        <p>Atenção híbrida: 48 camadas Gated DeltaNet (estado recorrente de tamanho fixo) + apenas 16 full-attention com KV cache proporcional ao contexto — padrão 3+1 repetido 16 vezes, documentado no config.json. Com só 4 KV heads (head_dim 256) e K+V em Q4_0, 262.144 tokens custam ~4,25 GiB.</p>
+    </div>
+
+    <div class="callout">
+        <strong>Continue por aqui:</strong> <a href="/guia/tokens-por-segundo-30b-hardware-real">throughput medido por hardware</a> (contexto curto) · <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">tabela GGUF com GB medidos</a> · <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia 16 GB de VRAM</a> · <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">domando o overthinking</a> · <a href="/guia/qwen3-8-27b-visao-videos-local">visão e vídeo locais</a> · <a href="/hardware">guia de hardware</a>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — Qwen3.8-27B com 256K de contexto em 24 GB | Fontes: artigo "Qwen3.8 27B at 256K: 50 TPS on a 24 GB GPU" de Michał Piszczek (piszczek.pl, publicado 17/08/2026, atualizado 18/08/2026 — lido integralmente e verificado em 19/08/2026; setup RTX PRO 4000 Blackwell SFF 24 GB + RTX 2000 Ada; GGUF cdiamond/Qwen3.8-27B-iMatrix-NVFP4-MTP-GGUF), config.json oficial Qwen/Qwen3.8-27B no Hugging Face (max_position_embeddings=262144; 64 camadas = 48 linear_attention + 16 full_attention; num_key_value_heads=4; head_dim=256), geração deste conteúdo assistida por IA e revisada. Nota de transparência: todos os números de throughput e PPL citados são medição de terceiros naquele hardware; este portal não rodou o benchmark.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens/s</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>

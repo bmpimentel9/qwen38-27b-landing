@@ -39,6 +39,51 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-19] — Artigo: Qwen3.8-27B com 256K de contexto em 24 GB
+
+### Added
+- **Artigo "Qwen3.8-27B com 256K de contexto em 24 GB: o guia do cache
+  que cabe"** (`guia/qwen3-8-27b-contexto-256k-24gb/`, task kanban
+  `t_2620c693`, Tema 2 do daily 19/08 — discovery `t_9be84165`): primeiro
+  guia dedicado a contexto longo/256K do portal (gap: 11 menções espalhadas
+  em 15 páginas, 0 páginas-destino). Ancorado no benchmark de produção de
+  Michał Piszczek (piszczek.pl, 17-18/08) — lido integralmente e
+  re-verificado ao vivo em 19/08.
+  - Verificações obrigatórias do card cumpridas: (1) ctx nativo 262.144
+    confirmado ao vivo no config.json oficial (max_position_embeddings=262144,
+    64 camadas = 48 linear_attention + 16 full_attention, num_key_value_heads=4,
+    head_dim=256); (2) todos os números citam "RTX PRO 4000 Blackwell,
+    medição de terceiros (piszczek.pl)" — o portal não rodou o benchmark;
+    (3) tabela de tiers declara 24 GB = MEDIDO vs 16 GB = ESTIMATIVA (link
+    para o guia 16GB VRAM existente).
+  - Correção factual vs. dados-âncora do card: no controle WikiText-2 do
+    artigo, Q4_0 marcou PPL 6,3798 (perdeu para IQ4_XS, 6,1175) — Q4_0
+    venceu em VELOCIDADE (44,95 vs 34,40 tok/s), não em PPL; o PPL 6,1127
+    é do Q4_1 (melhor PPL, footprint não cabia com 256K+visão). O artigo
+    declara esses números com precisão.
+  - Conteúdo: a conta do KV cache (16 camadas × 4 KV heads × 256 head_dim ×
+    2 × 262.144 tokens × ~0,5625 B/elemento Q4_0 ≈ 4,25 GiB); receita
+    completa llama-server (ctx 262144, cache q4_0, flash-attn, MTP
+    draft-mtp com spec-draft f16, ctx-checkpoints 4, fit off, mmproj na
+    GPU auxiliar); seção "o que NÃO fazer" com 5 armadilhas medidas (Q4_0
+    rápido-mais-sujado; NVFP4-MEDIUM pronto PPL 6,4949; drafter MTP
+    +69,2 MiB → 50,44→37,02 tok/s; DSpark externo 46,6% mais lento;
+    "alocado ≠ ocupado"); método de benchmark honesto (261.500 tokens
+    reais, VRAM pós-fill, decode no cache quente); tabela por tier de
+    VRAM; "você precisa de 256K?"; cross-refs para tokens-por-segundo
+    (números short-context diferenciados), quantização GGUF, reasoning,
+    16GB VRAM, visão e /hardware.
+  - JSON-LD: TechArticle + HowTo (5 steps) + FAQPage (6 perguntas) +
+    BreadcrumbList; GA4 G-016TVX8LEE com scroll_depth; canonical/OG/Twitter;
+    title ≤60 chars e meta description ≤155.
+  - Companions: sitemap (23→24 URLs), llms.txt (3 stats citáveis + página
+    na lista + Q&A nova "Quantos tokens de contexto o Qwen3.8-27B suporta
+    local?" substituindo a Q&A antiga de tamanho de contexto), card no
+    `/guia` (tag-hw Contexto longo, BOFU · Novo 19/08), Q&A nova na FAQ do
+    portal (HTML + JSON-LD, 27→28 perguntas).
+
+---
+
 ## [2026-08-18] — Artigo: Qwen3.8-27B no Artificial Analysis (52 no AAII)
 
 ### Added
