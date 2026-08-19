@@ -5,7 +5,7 @@
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma</title>
-    <meta name="description" content="Qwen3.8-27B lento? O decode é igual ao do 3.6 (73,6 vs 73,4 t/s). O vilão: reasoning default, MTP com flag renomeada ou VRAM estourada — fix de cada causa.">
+    <meta name="description" content="Qwen3.8-27B lento? O decode é igual ao do 3.6 (73,6 vs 73,4 t/s). O vilão: reasoning default, MTP desligado ou VRAM estourada — fix de cada causa.">
     <meta name="keywords" content="qwen 3.8 lento, qwen3.8-27b lento, qwen 3.8 lento fix, qwen 3.8 tokens por segundo, qwen 3.8 mtp, llama.cpp spec-type draft-mtp, qwen 3.8 mais lento que 3.6, kv cache q4_0, qwen 3.8 vulkan rocm, acelerar llm local">
     <meta name="author" content="Bruno Pimentel">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -14,7 +14,7 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
     <meta property="og:title" content="Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma">
-    <meta property="og:description" content="2× R9700: 55 t/s no Qwen3.6, metade disso no 3.8 com a mesma config. Os dados mostram outra coisa: decode igual (73,6 vs 73,4 t/s), raciocínio ligado por padrão e flag de MTP renomeada em silêncio.">
+    <meta property="og:description" content="2× R9700: 55 t/s no Qwen3.6, metade disso no 3.8 com a mesma config. Os dados mostram outra coisa: decode igual (73,6 vs 73,4 t/s), raciocínio ligado por padrão e MTP nunca ativado.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lento-causas-fixes">
     <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
     <meta property="article:published_time" content="2026-08-19T00:00:00-03:00">
@@ -51,7 +51,7 @@
         {
           "@type": "TechArticle",
           "headline": "Qwen3.8-27B está lento? As 6 causas reais e o fix de cada uma",
-          "description": "Diagnóstico baseado em relatos do r/LocalLLaMA, benchmarks de 45 configurações e medições próprias: o decode do Qwen3.8-27B é igual ao do Qwen3.6-27B (73,6 vs 73,4 tok/s com thinking off); a lentidão percebida vem do raciocínio ligado por padrão (xhigh), do MTP desligado por renomeação silenciosa de flag no llama.cpp e do contexto estourando a VRAM. Tabela causa-sintoma-fix com ganho medido de cada correção.",
+          "description": "Diagnóstico baseado em relatos do r/LocalLLaMA, benchmarks de 45 configurações e medições próprias: o decode do Qwen3.8-27B é igual ao do Qwen3.6-27B (73,6 vs 73,4 tok/s com thinking off); a lentidão percebida vem do raciocínio ligado por padrão (xhigh), do MTP desligado (a especulação não vem ativa por padrão) e do contexto estourando a VRAM. Tabela causa-sintoma-fix com ganho medido de cada correção.",
           "inLanguage": "pt-BR",
           "datePublished": "2026-08-19",
           "dateModified": "2026-08-19",
@@ -72,7 +72,7 @@
           ],
           "step": [
             { "@type": "HowToStep", "position": 1, "name": "Meça decode e thinking separados", "text": "Antes de mexer em qualquer coisa, separe as duas velocidades: tokens de raciocínio antes da primeira palavra e tokens por segundo do decode. Um benchmark de 45 configurações na RTX 5090 (KGP Talkie, 16/08) mostrou decode de 73,6 tok/s com thinking ligado e 73,4 com desligado — o decode não muda; o que muda é o tempo até a primeira palavra (2,18s contra 0,18s). Se a espera está antes da resposta, é a causa 1 (xhigh-trap)." },
-            { "@type": "HowToStep", "position": 2, "name": "Confira se o MTP está realmente ativo", "text": "Em 13/05/2026 o llama.cpp renomeou a flag de speculative decoding; a grafia antiga continua aceita e é ignorada em silêncio — a geração roda, a especulação não. Suba com --spec-type draft-mtp e --spec-draft-n-max 2 e confira no log de inicialização a linha do draft. Na RTX 3090, o mesmo setup saiu de ~31,6 para 74 t/s (+134,5%) com a flag certa (r/LocalLLaMA 1vqjeub)." },
+            { "@type": "HowToStep", "position": 2, "name": "Confira se o MTP está realmente ativo", "text": "O MTP não vem ativo por padrão: suba com --spec-type draft-mtp e --spec-draft-n-max 2 (no llama.cpp desde 16/05/2026, PR #22673) e confira no log de inicialização a linha do draft. Grafia errada derruba o llama-server na hora com erro fatal — em 13/05/2026 o PR #22964 renomeou as demais flags de speculative decoding (draft→draft-simple, eagle3→draft-eagle3); o MTP entrou três dias depois já como draft-mtp. Na RTX 3090, o mesmo setup saiu de ~31,6 para 74 t/s (+134,5%) (r/LocalLLaMA 1vqjeub)." },
             { "@type": "HowToStep", "position": 3, "name": "Faça a conta do contexto na VRAM", "text": "32K de contexto consumiram 2,5 GB de VRAM num relato na 20 GB; 128K não coube nem com a projeção V em Q4_0. E MTP também come VRAM: o dono da 3090 acima precisou reduzir o contexto para 96K. Meça a VRAM com o contexto real de uso — se estiver estourando para a RAM do sistema, quantize o KV cache com -ctk q4_0 -ctv q4_0 e reduza o --ctx-size." },
             { "@type": "HowToStep", "position": 4, "name": "Escolha a quant que cabe", "text": "IQ4_XS (15,71 GB) é o maior 4-bit que cabe inteiro numa GPU de 16 GB, em modo texto; Q4_K_M (17,11 GB) pede 24 GB (ou offload parcial). Os tamanhos medidos estão no guia de quantização GGUF do portal. Quant errada para o hardware = camadas derramadas na RAM e 12 t/s onde caberiam 40." },
             { "@type": "HowToStep", "position": 5, "name": "Revise o backend e o térmico", "text": "No R9700, relato direto do fórum: Vulkan supera o ROCm hoje ('rocm as of now is inferior to vulkan'). Prefill travado em trabalho agêntico? vLLM entrega 3.000-4.000 t/s de prefill onde o llama.cpp faz ~1.000. E antes de culpar o modelo, cheque o clock da GPU: um usuário rodava a &lt;500 MHz por throttling térmico e subiu para ~1.400 MHz consertando o airflow." }
@@ -102,7 +102,7 @@
               "name": "Qual é a flag certa do MTP no llama.cpp hoje?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "--spec-type draft-mtp (com --spec-draft-n-max 2 como ponto de partida). Atenção: em 13/05/2026 o llama.cpp renomeou a flag de speculative decoding e a grafia antiga passou a ser aceita e silenciosamente ignorada — a linha de comando parece correta, a geração roda, mas a especulação não acontece (Cloud Codes, 17/08/2026). Confirme no log de inicialização que o draft carregou. O nome muda por stack: no vLLM fica num JSON de serving config, no SGLang é um speculative algorithm, e no Ollama não há flag — vem da tag do modelo. No LM Studio em hardware AMD, o blog oficial manda ativar MTP com 4 draft tokens no Ryzen AI Max+ e 2 no Radeon AI PRO R9700, e desmarcar 'Try mmap'."
+                "text": "--spec-type draft-mtp (com --spec-draft-n-max 2 como ponto de partida), no llama.cpp desde 16/05/2026 (PR #22673). O MTP não vem ativo por padrão, e grafia errada derruba o llama-server na inicialização com erro fatal (“unknown speculative type”) — nada roda em silêncio. Confirme no log de inicialização que o draft carregou. O nome muda por stack: no vLLM fica num JSON de serving config, no SGLang é um speculative algorithm, e no Ollama não há flag — vem da tag do modelo. No LM Studio em hardware AMD, o blog oficial manda ativar MTP com 4 draft tokens no Ryzen AI Max+ e 2 no Radeon AI PRO R9700, e desmarcar 'Try mmap'."
               }
             },
             {
@@ -210,7 +210,7 @@
             <a href="/guia/faq">FAQ</a>
         </nav>
         <h1>Qwen3.8-27B está lento? As 6 causas reais e o fix de cada uma</h1>
-        <p class="lead">Dono de duas Radeon R9700 resume o pesadelo em uma frase: ~55 t/s no Qwen3.6-27B, e o 3.8 marchando na metade disso com config quase idêntica. Os dados dizem outra coisa. O decode do 3.8 é igual ao do 3.6 (73,6 contra 73,4 t/s no mesmo benchmark). O que mudou foram três coisas ao redor do modelo: ele pensa antes de responder por padrão, a flag que o acelerava trocou de nome em silêncio, e o contexto dele come mais VRAM do que a sua conta mandava. Diagnóstico com números medidos, stack por stack.</p>
+        <p class="lead">Dono de duas Radeon R9700 resume o pesadelo em uma frase: ~55 t/s no Qwen3.6-27B, e o 3.8 marchando na metade disso com config quase idêntica. Os dados dizem outra coisa. O decode do 3.8 é igual ao do 3.6 (73,6 contra 73,4 t/s no mesmo benchmark). O que mudou foram três coisas ao redor do modelo: ele pensa antes de responder por padrão, a especulação que o acelerava nunca foi ativada, e o contexto dele come mais VRAM do que a sua conta mandava. Diagnóstico com números medidos, stack por stack.</p>
     </header>
 
     <div class="toc">
@@ -219,7 +219,7 @@
             <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
             <li><a href="#o-caso">O caso que abriu o buraco: 2× R9700 e a thread de 55 t/s</a></li>
             <li><a href="#causa-1">Causa 1 — xhigh-trap: o modelo pensando antes de responder</a></li>
-            <li><a href="#causa-2">Causa 2 — MTP desligado (ou com a flag renomeada)</a></li>
+            <li><a href="#causa-2">Causa 2 — MTP desligado (nunca configurado)</a></li>
             <li><a href="#causa-3">Causa 3 — Contexto estourando a VRAM</a></li>
             <li><a href="#causa-4">Causa 4 — Quant errada para o hardware</a></li>
             <li><a href="#causa-5">Causa 5 — Backend e térmico: Vulkan, prefill e airflow</a></li>
@@ -235,11 +235,11 @@
     </div>
 
     <h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
-    <p><strong>Se o Qwen3.8-27B está lento, na maioria dos casos não é o modelo — é o entorno.</strong> O decode dele é igual ao do Qwen3.6-27B com thinking desligado (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações), e em hardware real ele chega a ser mais rápido. Os três vilões, em ordem de frequência: raciocínio ligado por padrão (2,18 s até a primeira palavra contra 0,18 s desligado), MTP desligado porque a flag do llama.cpp foi renomeada em 13/05/2026 e a grafia antiga é aceita em silêncio, e contexto comendo VRAM até derramar na RAM do sistema.</p>
+    <p><strong>Se o Qwen3.8-27B está lento, na maioria dos casos não é o modelo — é o entorno.</strong> O decode dele é igual ao do Qwen3.6-27B com thinking desligado (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações), e em hardware real ele chega a ser mais rápido. Os três vilões, em ordem de frequência: raciocínio ligado por padrão (2,18 s até a primeira palavra contra 0,18 s desligado), MTP desligado porque a especulação não vem ativa por padrão (a flag certa é --spec-type draft-mtp), e contexto comendo VRAM até derramar na RAM do sistema.</p>
     <pre><code># o fix de 80% dos casos: reasoning dosado + MTP com a flag certa + KV enxuto
 llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
   --reasoning-effort medium \        # ou --reasoning off para tarefas simples
-  --spec-type draft-mtp \             # grafia atual; a antiga é ignorada em silêncio
+  --spec-type draft-mtp \             # MTP é opt-in: sem essa flag, sem especulação
   --spec-draft-n-max 2 \
   -ctk q4_0 -ctv q4_0 \               # KV cache menor = decode mais rápido
   --ctx-size 65536                    # o que cabe depois de somar pesos + MTP</code></pre>
@@ -272,8 +272,8 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
     </div>
     <p><strong>Fix:</strong> o controle completo está no nosso <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de configuração de reasoning</a>. Resumo operacional: <code>--reasoning off</code> para extração, OCR e tarefas mecânicas; <code>--reasoning-budget 16384</code> ou <code>--reasoning-effort medium</code> para o meio-termo do dia a dia (é a config que aparece nos presets de 3090 do subreddit); <code>"think": false</code> no Ollama. O ganho não é pequeno: 2,18 s → 0,18 s até a primeira palavra no bench da 5090, e 21 min → 137 s no caso do SVG.</p>
 
-    <h2 id="causa-2">Causa 2 — MTP desligado (ou com a flag renomeada)</h2>
-    <p>O Qwen3.8-27B tem speculative decoding nativo (MTP — o modelo carrega um "drafter" que adivinha vários tokens à frente e o corpo principal só verifica). É o maior multiplicador de decode disponível hoje, e ele tem um problema de adoção: em 13 de maio de 2026, três meses antes do lançamento do modelo, o llama.cpp <strong>renomeou a flag</strong> de speculative decoding. A grafia antiga não foi removida com erro — continua aceita e silenciosamente ignorada. A geração roda, a especulação não roda, a linha de comando parece correta e ninguém tem motivo para olhar.</p>
+    <h2 id="causa-2">Causa 2 — MTP desligado (nunca configurado)</h2>
+    <p>O Qwen3.8-27B tem speculative decoding nativo (MTP — o modelo carrega um "drafter" que adivinha vários tokens à frente e o corpo principal só verifica). É o maior multiplicador de decode disponível hoje, e ele tem um problema de adoção: <strong>não vem ativo por padrão</strong>. O suporte entrou no llama.cpp em 16 de maio de 2026 (PR #22673) já com o nome final <code>draft-mtp</code> — três dias depois do PR #22964 renomear as demais flags de speculative decoding (<code>draft</code>→<code>draft-simple</code>, <code>eagle3</code>→<code>draft-eagle3</code>), o que espalhou receitas desatualizadas. Mas o engine não falha em silêncio: grafia errada derruba o llama-server na inicialização com erro fatal (“unknown speculative type”).</p>
     <p>O resultado prático dessa armadilha apareceu no thread de throughput do r/LocalLLaMA (1vqjeub): o dono da RTX 3090 ajustou a config certa e foi de ~31,6 para <strong>74 t/s</strong> — aumento de 134,5% relatado por ele mesmo, com uma ressalva honesta: precisou reduzir o contexto para 96K porque o MTP aumenta o uso de VRAM.</p>
     <pre><code># grafia atual (verifique a linha do draft no log de inicialização)
 --spec-type draft-mtp --spec-draft-n-max 2
@@ -330,7 +330,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
         </thead>
         <tbody>
             <tr class="highlight"><td>1. xhigh de fábrica</td><td>Espera longa antes da 1ª palavra; resposta "vazando" raciocínio</td><td><code>--reasoning off / -budget / -effort</code>; <code>think:false</code> no Ollama</td><td>2,18s → 0,18s até a 1ª palavra; SVG 21min → 137s</td></tr>
-            <tr class="highlight"><td>2. MTP off (flag renomeada 13/05)</td><td>Decode "normal" 30-40 t/s na 3090, sem erro no log</td><td><code>--spec-type draft-mtp --spec-draft-n-max 2</code>; LM Studio AMD: 4/2 draft tokens, mmap off</td><td>~31,6 → 74 t/s (+134,5%) na 3090; 1,81× na 5090</td></tr>
+            <tr class="highlight"><td>2. MTP off (nunca configurado)</td><td>Decode "normal" 30-40 t/s na 3090; sem linha de draft no log de inicialização</td><td><code>--spec-type draft-mtp --spec-draft-n-max 2</code>; LM Studio AMD: 4/2 draft tokens, mmap off</td><td>~31,6 → 74 t/s (+134,5%) na 3090; 1,81× na 5090</td></tr>
             <tr><td>3. Contexto na VRAM</td><td>Começa rápido, degrada com o contexto; OOM; spill na RAM</td><td><code>-ctk q4_0 -ctv q4_0</code>, <code>--ctx-size</code> realista, conta do cache</td><td>KV q4_0: 125,5 → 136,7 t/s e −1.386 MiB (5090)</td></tr>
             <tr><td>4. Quant errada</td><td>Load lento/OOM; offload parcial crônico</td><td>IQ4_XS em 16 GB; Q4_K_M em 24 GB; UD-Q8 em 32 GB</td><td>~20 t/s em 16 GB; 41,5-74 t/s em 24 GB</td></tr>
             <tr><td>5. Backend/térmico</td><td>Agente "lendo" sem começar; clock baixo; ROCm lento</td><td>Vulkan no AMD; vLLM p/ prefill; airflow</td><td>&lt;500 MHz → 1.400 MHz; prefill 1k → 3-4k t/s (vLLM)</td></tr>
@@ -357,7 +357,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
     <p>Cada número tem dono e contexto. A tabela consolidada de throughput do portal — todos os hardwares, stacks e quantizações, com metodologia — está no guia <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo no hardware real</a>.</p>
 
     <h2 id="veredito">Veredito: o 3.8 é mais lento que o 3.6?</h2>
-    <p><strong>No decode puro, não: com thinking desligado, o Qwen3.8-27B gera à mesma velocidade do Qwen3.6-27B (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações na RTX 5090), e em hardware real chega a ser mais rápido — 17,3 contra 12,4 tok/s no Strix Halo e ~41,5 tok/s na RTX 3090 com "3.8 ≈ 3.6" no mesmo setup.</strong> A regressão existe em casos específicos (M5 Max de 128 GB: 20-25 contra 30-40 t/s a 64K) e é honesto registrá-la. Mas o que a maioria dos relatos de "lento" mede junto, sem querer, são os três impostos deste guia: raciocínio default (20.000 tokens onde o 3.6 gastava 2.000), MTP desligado por uma flag que trocou de nome, e contexto derramando da VRAM. Controlados os três, a pergunta vira outra: quanto do seu hardware você quer entregar ao contexto. Essa conta está no <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a> e no guia de <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>.</p>
+    <p><strong>No decode puro, não: com thinking desligado, o Qwen3.8-27B gera à mesma velocidade do Qwen3.6-27B (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações na RTX 5090), e em hardware real chega a ser mais rápido — 17,3 contra 12,4 tok/s no Strix Halo e ~41,5 tok/s na RTX 3090 com "3.8 ≈ 3.6" no mesmo setup.</strong> A regressão existe em casos específicos (M5 Max de 128 GB: 20-25 contra 30-40 t/s a 64K) e é honesto registrá-la. Mas o que a maioria dos relatos de "lento" mede junto, sem querer, são os três impostos deste guia: raciocínio default (20.000 tokens onde o 3.6 gastava 2.000), MTP desligado (nunca configurado), e contexto derramando da VRAM. Controlados os três, a pergunta vira outra: quanto do seu hardware você quer entregar ao contexto. Essa conta está no <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a> e no guia de <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>.</p>
 
     <h2 id="metodo">Como medir sem se enganar</h2>
     <p>Metodologia é o que separa o "está lento" do diagnóstico. Quatro regras que este portal segue e que os dados deste guia reforçam:</p>
@@ -390,7 +390,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
 
     <h2 id="erros">Erros comuns e como resolver</h2>
     <ul>
-        <li><strong>"Liguei o MTP e nada mudou"</strong> — a grafia antiga da flag foi renomeada em 13/05/2026 e é aceita em silêncio. Confirme a linha do draft no log de inicialização do llama-server; se não aparece, a especulação não está rodando.</li>
+        <li><strong>"Liguei o MTP e nada mudou"</strong> — ou a flag não está na linha de comando (MTP é opt-in), ou o servidor nem teria subido: grafia errada é erro fatal na inicialização, não silêncio. Confirme a linha do draft no log de inicialização do llama-server; se não aparece, a especulação não está rodando.</li>
         <li><strong>"O ganho de MTP sumiu quando o contexto cresceu"</strong> — é o trade-off documentado: MTP ocupa VRAM que o contexto disputa (3090: 128K → 96K). Reequilibre com KV q4_0 antes de desistir do MTP.</li>
         <li><strong>"Fica rápido e depois degrada"</strong> — spill de VRAM para a RAM conforme o contexto cresce. Reduza <code>--ctx-size</code>, quantize o KV, ou aceite a curva do seu hardware (10-15 t/s a 200K é o teto documentado do M5 Max de 128 GB).</li>
         <li><strong>"Meu agente fica lendo e nunca começa"</strong> — prefill, não decode. vLLM entrega 3-4k t/s de prefill contra ~1k do llama.cpp; no 2× R9700 do Level1Techs foi isso que inviabilizou o uso agêntico até os PRs de follow-up.</li>
@@ -410,7 +410,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
     </div>
     <div class="faq-item">
         <h3>Qual é a flag certa do MTP no llama.cpp?</h3>
-        <p><code>--spec-type draft-mtp</code> com <code>--spec-draft-n-max 2</code> como ponto de partida. A grafia antiga foi renomeada em 13/05/2026 e continua aceita, mas é ignorada em silêncio — geração roda, especulação não. Confirme a linha do draft no log. No vLLM o MTP fica num JSON de serving config; no SGLang é um speculative algorithm; no Ollama vem da tag do modelo; no LM Studio AMD, draft tokens 4 (Ryzen AI Max+) ou 2 (R9700) com "Try mmap" desmarcado.</p>
+        <p><code>--spec-type draft-mtp</code> com <code>--spec-draft-n-max 2</code> como ponto de partida — no llama.cpp desde 16/05/2026 (PR #22673). O MTP não vem ativo por padrão, e grafia errada derruba o llama-server na inicialização com erro fatal, não em silêncio. Confirme a linha do draft no log. No vLLM o MTP fica num JSON de serving config; no SGLang é um speculative algorithm; no Ollama vem da tag do modelo; no LM Studio AMD, draft tokens 4 (Ryzen AI Max+) ou 2 (R9700) com "Try mmap" desmarcado.</p>
     </div>
     <div class="faq-item">
         <h3>MTP tem custo?</h3>

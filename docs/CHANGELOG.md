@@ -20,8 +20,8 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
   ao do 3.6 (73,6 vs 73,4 tok/s com thinking off, mesmo bench de 45
   configs — KGP Talkie 16/08; ~41,5 t/s na 3090 com "3.8 ≈ 3.6";
   17,3 vs 12,4 no Strix Halo, medição própria). As 6 causas: xhigh-trap
-  (2,18s → 0,18s até a 1ª palavra), MTP com flag renomeada em silêncio
-  no llama.cpp (13/05/2026; 3090: ~31,6 → 74 t/s, +134,5%), contexto
+  (2,18s → 0,18s até a 1ª palavra), MTP desligado (nunca configurado — especulação é opt-in no
+  llama.cpp; 3090: ~31,6 → 74 t/s, +134,5%), contexto
   estourando VRAM (32K = +2,5 GB; KV q4_0 136,7 vs 125,5 t/s), quant
   errada, backend/térmico (Vulkan > ROCm no R9700; prefill vLLM 3-4k
   t/s; throttling <500 MHz) e a regressão real documentada (M5 Max
