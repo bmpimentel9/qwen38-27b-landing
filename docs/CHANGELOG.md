@@ -9,6 +9,37 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ---
 
 
+## [2026-08-19] — Artigo: Qwen3.8-27B está lento? 6 causas e fixes
+
+### Added
+- **Artigo "Qwen3.8-27B está lento? As 6 causas reais e o fix de cada uma"**
+  (`guia/qwen3-8-27b-lento-causas-fixes/`, task kanban `t_1ced3026`, PO
+  card das threads r/LocalLLaMA 1voa3ch + 1vriwym): primeiro conteúdo do
+  portal dedicado à dor "por que está lento" (gap: 'lento' só aparecia em
+  menções espalhadas). Tese verificada por dados: o decode do 3.8 é igual
+  ao do 3.6 (73,6 vs 73,4 tok/s com thinking off, mesmo bench de 45
+  configs — KGP Talkie 16/08; ~41,5 t/s na 3090 com "3.8 ≈ 3.6";
+  17,3 vs 12,4 no Strix Halo, medição própria). As 6 causas: xhigh-trap
+  (2,18s → 0,18s até a 1ª palavra), MTP com flag renomeada em silêncio
+  no llama.cpp (13/05/2026; 3090: ~31,6 → 74 t/s, +134,5%), contexto
+  estourando VRAM (32K = +2,5 GB; KV q4_0 136,7 vs 125,5 t/s), quant
+  errada, backend/térmico (Vulkan > ROCm no R9700; prefill vLLM 3-4k
+  t/s; throttling <500 MHz) e a regressão real documentada (M5 Max
+  128 GB: 20-25 vs 30-40 t/s a 64K). Tabelas: causa→sintoma→fix→ganho
+  medido e antes/depois (8 setups com fonte). Fontes lidas via índice
+  de busca em 19/08 (Reddit bloqueia fetch direto): threads 1voa3ch,
+  1vriwym, 1vqjeub, 1vpuhov, 1voojjz, Level1Techs pág. 3, KGP Talkie,
+  blog AMD Day 0, dev.to jamilxt, Alibaba Cloud Medium, Cloud Codes
+  (YouTube), Simon Willison, InsiderLLM, PR #22673. JSON-LD: TechArticle
+  + HowTo (5 passos de diagnóstico) + FAQPage (7) + Breadcrumb.
+- **Companions**: sitemap 25→26 URLs; llms.txt (+7 stats citáveis, +1
+  página, +1 Q&A "Por que o Qwen3.8-27B parece mais lento que o
+  Qwen3.6-27B?"); card no /guia/index.html (tag-hw Troubleshooting,
+  BOFU, Novo 19/08); FAQ do portal +1 item (HTML e JSON-LD juntos — 30
+  no FAQPage).
+
+---
+
 ## [2026-08-19] — Artigo: LTX-2.5 local no ComfyUI (vídeo-gen open weights)
 
 ### Added

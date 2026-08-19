@@ -232,6 +232,14 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <h2 id="topicos">Guia Completo por Tópico</h2>
     <div class="card-grid">
+        <a class="card" href="/guia/qwen3-8-27b-lento-causas-fixes">
+            <h3>Qwen3.8-27B está lento? As 6 causas e os fixes</h3>
+            <p>2× R9700 a 55 t/s no 3.6 e o 3.8 na metade? O decode dos dois é igual (73,6 vs 73,4 t/s). O vilão é outro: xhigh de fábrica, MTP com flag renomeada e contexto estourando a VRAM. Tabela causa→fix com ganho medido.</p>
+            <div class="card-meta">
+                <span class="card-tag tag-hw">Troubleshooting</span>
+                BOFU · Novo 19/08
+            </div>
+        </a>
         <a class="card" href="/guia/qwen3-8-27b-contexto-256k-24gb">
             <h3>256K de Contexto em 24 GB</h3>
             <p>O guia do cache que cabe: 262.144 tokens numa GPU de 24 GB a 50,44 tok/s, a conta do KV cache Q4 (~4,25 GiB, 48+16 camadas), a receita do llama-server e as armadilhas da quantização.</p>

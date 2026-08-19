@@ -288,6 +288,14 @@
             "@type": "Answer",
             "text": "Setup oficial ComfyUI int8 soma ~50 GB em arquivos (transformer 21,50 + encoder 15,37 + VAEs 1,83 + upscaler 1,00 + prompt enhancer 10,28 GB); núcleo sem enhancer: 38,70 GB. É soma dos arquivos do repo — o pico de VRAM em inferência pode ser diferente. Rota comunitária em 24 GB: GGUF Q4_K_M (transformer 15,09 + encoder 9,51 GB). Fonte: tree HF API Lightricks/LTX-2.5 + docs.comfy.org (19/08/2026). Guia: /guia/ltx-2-5-video-local-comfyui."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Por que o Qwen3.8-27B parece mais lento que o Qwen3.6-27B?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No decode puro não é: com thinking off, o 3.8 gera à mesma velocidade do 3.6 (73,6 vs 73,4 tok/s no mesmo benchmark de 45 configs na RTX 5090; na 3090 os decodes são equivalentes a ~41,5 t/s; no Strix Halo o 3.8 é mais rápido, 17,3 vs 12,4 t/s). A lentidão percebida tem três causas: raciocínio xhigh por padrão (2,18 s vs 0,18 s até a primeira palavra), MTP desligado pela renomeação silenciosa da flag no llama.cpp (13/05/2026 — RTX 3090 foi de ~31,6 para 74 t/s com --spec-type draft-mtp) e contexto estourando a VRAM (32K = +2,5 GB; 128K não coube em GPU de 20 GB). Regressão real documentada: M5 Max 128 GB (20-25 vs 30-40 t/s a 64K). Fonte: KGP Talkie 45 configs, r/LocalLLaMA 1vqjeub, dev.to, medições próprias (19/08/2026). Diagnóstico completo: /guia/qwen3-8-27b-lento-causas-fixes."
+          }
         }
       ]
     }
@@ -457,6 +465,12 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <h3 id="enxerga-imagens">O Qwen3.8-27B enxerga imagens?</h3>
         <p>Sim — é uma <strong>VLM nativa</strong> (<code>pipeline_tag: image-text-to-text</code> no Hugging Face): a torre de visão faz parte do modelo, não é um adaptador posterior. Para usar localmente falta só o <strong>mmproj</strong>: 0,93 GB (BF16) ou 0,63 GB (Q8_0) no repositório oficial <code>ggml-org/Qwen3.8-27B-GGUF</code>. No llama.cpp ele é carregado com <code>--mmproj arquivo.gguf</code> ou detectado automaticamente com <code>-hf</code>; no Ollama, a tag <code>qwen3.8:27b</code> já aceita imagens (entrada Text, Image). Vídeo, até escala de hora, é suportado no llama.cpp.</p>
         <p>Guia completo: <a href="/guia/qwen3-8-27b-visao-videos-local" style="color:var(--accent)">Qwen3.8-27B enxerga — visão, vídeo e OCR no llama.cpp e Ollama</a>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3 id="lento-vs-36">Por que o Qwen3.8-27B parece mais lento que o Qwen3.6-27B?</h3>
+        <p>No decode puro, não é: com thinking off, o 3.8 gera à mesma velocidade do 3.6 — <strong>73,6 vs 73,4 tok/s</strong> no mesmo benchmark de 45 configs na RTX 5090; na 3090 os decodes são equivalentes (~41,5 t/s); no Strix Halo o 3.8 é mais rápido (17,3 vs 12,4 t/s). A lentidão percebida tem três causas: <strong>raciocínio xhigh por padrão</strong> (2,18 s vs 0,18 s até a primeira palavra), <strong>MTP desligado</strong> pela renomeação silenciosa da flag no llama.cpp (13/05/2026 — uma 3090 foi de ~31,6 para 74 t/s com <code>--spec-type draft-mtp</code>) e <strong>contexto estourando a VRAM</strong> (32K = +2,5 GB; 128K não coube em GPU de 20 GB). Regressão real documentada: M5 Max 128 GB (20-25 vs 30-40 t/s a 64K).</p>
+        <p>Diagnóstico completo: <a href="/guia/qwen3-8-27b-lento-causas-fixes" style="color:var(--accent)">Qwen3.8-27B está lento? As 6 causas reais e o fix de cada uma</a>.</p>
     </div>
 
     <div class="faq-item">
