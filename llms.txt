@@ -40,6 +40,10 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - LTX-2.5 LTX-2.x Community License (11/08/2026): uso comercial grátis abaixo de US$ 10M de receita anual agregada, sem branding obrigatório; derivados herdam a licença; output pertence ao usuário (LICENSE.md Lightricks/LTX-2 + ltx.io).
 - LTX-2.5 benchmark próprio da Lightricks: 2× GB200 gera clipe de 10s a 720p em 6,8 s — mais rápido que tempo real, hardware de datacenter, sem números independentes em consumidor ainda (ltx.io).
 
+- 256K de contexto em 24 GB (RTX PRO 4000 Blackwell, medição de terceiros piszczek.pl 17-18/08/2026): 50,44 tok/s de média em produção (10 runs, faixa 49,42–51,40) com os 262.144 tokens nativos habilitados; 12,61 tok/s no extremo do cache realmente ocupado (261.500 tokens input, sem OOM); MTP embutido 21,19→59,46 tok/s (2,81× vs greedy); build custom 55,40 vs master 45,42 tok/s (+21,97% em A/B estrito).
+- KV cache 256K do Qwen3.8-27B: só 16 das 64 camadas são full-attention (48 Gated DeltaNet recorrentes de estado fixo) — com K+V em q4_0, o cache de 262.144 tokens custa ~4,25 GiB; conta: 16 camadas × 4 KV heads × head_dim 256 × 2 (K+V) × 262.144 tokens × ~0,5625 byte/elemento (config.json oficial + artigo piszczek.pl).
+- Armadilhas do 256K local (medições piszczek.pl): Q4_0 venceu o speed test (44,95 vs 34,40 tok/s do IQ4_XS) mas perdeu em PPL (6,3798 vs 6,1175 no WikiText-2); NVFP4-MEDIUM pronto falhou no gate de qualidade (PPL 6,4949); dar precisão demais ao drafter MTP (Q6_K crítico, +69,2 MiB) derrubou o throughput de 50,44 para 37,02 tok/s (−26,6%); drafter externo DSpark (Q8_0 na 2ª GPU) perdeu por 46,6% para o MTP embutido (26,49 vs 49,61 tok/s).
+
 ## Páginas do portal
 
 - [Landing page principal](https://qwen38-27b-landing.vercel.app/) — especificações, gráficos de benchmark, throughput medido, timeline
@@ -62,6 +66,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Como rodar localmente](https://qwen38-27b-landing.vercel.app/guia/como-rodar) — Ollama, llama.cpp, vLLM, HuggingFace, MLX
 - [SGLang + FP8 oficial](https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b) — tutorial completo do servidor SGLang com o checkpoint Qwen3.8-27B-FP8 (30,89 GB): instalação uv/Docker, flags de contexto, MTP via EAGLE, benchmark bench_serving e quando SGLang × llama.cpp/Ollama; 206,1 tok/s na RTX 5090
 - [Qwen3.8-27B no Artificial Analysis](https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis) — 52 no Artificial Analysis Intelligence Index (verificado 18/08/2026): o que o índice independente mede (9 avaliações, v4.1.1), placar ao vivo vs GPT-5.6 Luna/DeepSeek V4 Pro/GLM-5.3, #1 entre open weights ≤40B, o preço escondido (160M tokens de verbosidade) e o que o dado não diz
+- [Qwen3.8-27B com 256K de contexto em 24 GB](https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-contexto-256k-24gb) — o guia do cache que cabe: 262.144 tokens nativos numa GPU de 24 GB a 50,44 tok/s (medição de terceiros, RTX PRO 4000 Blackwell), a conta do KV cache Q4 (~4,25 GiB, só 16 de 64 camadas são full-attention), receita completa do llama-server (ctx 262144, cache q4_0, MTP, checkpoints 4) e as armadilhas da quantização
 - [Comunidade e casos de uso](https://qwen38-27b-landing.vercel.app/guia/comunidade-casos-uso) — reações do Hacker News, r/LocalLLaMA e X
 - [FAQ](https://qwen38-27b-landing.vercel.app/guia/faq) — perguntas frequentes
 
@@ -95,9 +100,6 @@ Denso: os 27 bilhões de parâmetros ativam a cada token, o que dá mais qualida
 ### Quantos tokens por segundo roda o Qwen3.8-27B?
 Depende do stack e do hardware: RTX 5090 com SGLang + NVFP4 + DSpark chega a 206,1 tok/s; RTX 3090 com llama.cpp UD-Q4_K_XL entrega ~41,5 tok/s; Strix Halo com Ollama/Vulkan Q4_K_M, 17,3 tok/s; RTX 3060 12GB com offload FFN + MTP, ~9,7 tok/s com 96K de contexto. Decode de denso é limitado por banda de memória ÷ bytes por token; speculative decoding (MTP/DSpark) multiplica 1,4–3× conforme o gargalo. Fonte: SGLang/Qwen oficiais, InsiderLLM, HF discussion #61 e medições próprias (compilado em /guia/tokens-por-segundo-30b-hardware-real).
 
-### Qual o tamanho de contexto do Qwen3.8-27B?
-262.144 tokens nativos, extensíveis a 1.000.000 com RoPE scaling; em NVFP4 (Blackwell), o modelo ocupa 24,6 GiB e roda 1M de contexto em uma única GPU. Fonte: model card oficial.
-
 ### Qual a licença do Qwen3.8-27B? Posso usar comercialmente?
 Apache 2.0: pesos abertos, uso comercial e modificação permitidos, sem restrições. Fonte: repositório oficial no Hugging Face (Qwen/Qwen3.8-27B).
 
@@ -121,6 +123,8 @@ Sim — é uma VLM nativa (pipeline_tag image-text-to-text no Hugging Face): a t
 
 ### O LTX-2.5 roda em quantos GB?
 Setup oficial ComfyUI int8 soma ~50 GB em arquivos: transformer 21,50 + encoder 15,37 + VAEs de vídeo e áudio 1,83 + upscaler 1,00 + prompt enhancer gemma4_e2b 10,28 GB; o núcleo sem enhancer soma 38,70 GB. Importante: é soma dos arquivos do repo — o pico de VRAM em inferência pode ser diferente e ainda não foi medido/publicado. Rota comunitária em 24 GB: transformer GGUF Q4_K_M (15,09 GB) + encoder GGUF Q5_K_M (9,51 GB) + VAEs ≈ 28 GB. Fonte: tree HF API de Lightricks/LTX-2.5 + docs.comfy.org/tutorials/video/ltx/ltx-2-5 + repos GGUF comunitários (19/08/2026). Guia: /guia/ltx-2-5-video-local-comfyui.
+### Quantos tokens de contexto o Qwen3.8-27B suporta local?
+262.144 tokens (256K) nativos, confirmados no config.json oficial (max_position_embeddings=262144), extensíveis a 1M com RoPE scaling. Em 24 GB de VRAM o contexto completo cabe com modelo 4-bit + KV cache Q4: medição de terceiros (RTX PRO 4000 Blackwell, piszczek.pl) sustenta 50,44 tok/s de média em produção com os 262.144 tokens e 12,61 tok/s com o cache ocupado (261.500 tokens). Em 16 GB, reduza o contexto — o guia completo está em /guia/qwen3-8-27b-contexto-256k-24gb. Fonte: config.json oficial + piszczek.pl (17-18/08/2026).
 
 ## Qwen3.6-27B (geração anterior, Apache 2.0)
 
