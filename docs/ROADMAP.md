@@ -35,10 +35,12 @@ Locais de 30B**. A seção "Concluído" registra o que já foi entregue.
 
 ## Curto prazo (próximos 7 dias)
 
-- [ ] **Dashboard Looker Studio** — conectar o GA4 (`G-016TVX8LEE`) e criar
-  visualização de tráfego (tentativa anterior do atlas travou na UI).
-- [ ] **Configurar metas no GA4** — 1k visitas/mês, bounce < 50%, tempo
-  médio > 2 min.
+- ✅ **Dashboard Looker Studio** — GA4 (`G-016TVX8LEE`) conectado, dashboard
+  de tráfego ao vivo com sessões, bounce, tempo médio e top páginas
+  (2026-08-18): https://datastudio.google.com/reporting/0b96b952-515e-4ec1-ab74-8b03bdeede97
+- ✅ **Configurar metas no GA4** — key events `scroll_depth` e `click`
+  marcados via Admin (2026-08-18); metas de tráfego (1k visitas/mês, bounce
+  < 50%, tempo médio > 2 min) registradas na tabela "Métricas de sucesso".
 - ✅ 2 artigos publicados: Muse Glimmer 30B + quantização GGUF (2026-08-15) — *removido do curto prazo*
 - ✅ **Sitemap submetido no Search Console** (16/08 13:56 UTC, 15 URLs, 0 erros;
   re-submetido 17/08 com 16 URLs e lastmod=2026-08-17 via PR t_d36048c1).
