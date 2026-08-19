@@ -5,7 +5,7 @@
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma</title>
-    <meta name="description" content="Qwen3.8-27B lento? O decode é igual ao do 3.6 (73,6 vs 73,4 t/s). O vilão: reasoning default, MTP desligado ou VRAM estourada — fix de cada causa.">
+    <meta name="description" content="Qwen3.8-27B lento? O decode é igual ao do 3.6. O vilão: reasoning default, MTP desligado ou VRAM estourada — fix de cada causa com ganho medido.">
     <meta name="keywords" content="qwen 3.8 lento, qwen3.8-27b lento, qwen 3.8 lento fix, qwen 3.8 tokens por segundo, qwen 3.8 mtp, llama.cpp spec-type draft-mtp, qwen 3.8 mais lento que 3.6, kv cache q4_0, qwen 3.8 vulkan rocm, acelerar llm local">
     <meta name="author" content="Bruno Pimentel">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -14,7 +14,7 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
     <meta property="og:title" content="Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma">
-    <meta property="og:description" content="2× R9700: 55 t/s no Qwen3.6, metade disso no 3.8 com a mesma config. Os dados mostram outra coisa: decode igual (73,6 vs 73,4 t/s), raciocínio ligado por padrão e MTP nunca ativado.">
+    <meta property="og:description" content="2× R9700: 55 t/s no Qwen3.6, metade disso no 3.8 com a mesma config. Os dados mostram outra coisa: decode igual nos dois, raciocínio ligado por padrão e MTP nunca ativado.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lento-causas-fixes">
     <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
     <meta property="article:published_time" content="2026-08-19T00:00:00-03:00">
@@ -25,7 +25,7 @@
     <meta property="article:tag" content="MTP">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma">
-    <meta name="twitter:description" content="Decode do 3.8 = decode do 3.6 (73,6 vs 73,4 t/s). O que trava é reasoning default, MTP desligado e contexto na VRAM. Diagnóstico com números medidos, stack por stack.">
+    <meta name="twitter:description" content="Decode do 3.8 = decode do 3.6. O que trava é reasoning default, MTP desligado e contexto na VRAM. Diagnóstico com números medidos, stack por stack.">
     <meta name="twitter:site" content="@bmpimentel9">
     <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
@@ -51,7 +51,7 @@
         {
           "@type": "TechArticle",
           "headline": "Qwen3.8-27B está lento? As 6 causas reais e o fix de cada uma",
-          "description": "Diagnóstico baseado em relatos do r/LocalLLaMA, benchmarks de 45 configurações e medições próprias: o decode do Qwen3.8-27B é igual ao do Qwen3.6-27B (73,6 vs 73,4 tok/s com thinking off); a lentidão percebida vem do raciocínio ligado por padrão (xhigh), do MTP desligado (a especulação não vem ativa por padrão) e do contexto estourando a VRAM. Tabela causa-sintoma-fix com ganho medido de cada correção.",
+          "description": "Diagnóstico baseado em relatos do r/LocalLLaMA, benchmarks de 45 configurações e medições próprias: o decode do Qwen3.8-27B é igual ao do Qwen3.6-27B — ~41,5 t/s para os dois na RTX 3090 (InsiderLLM) e 17,3 contra 12,4 tok/s no Strix Halo (medição própria); e o bench de 45 configs mostra que o raciocínio não muda o decode do 3.8 (73,6 tok/s com thinking on, 73,4 off), só o tempo até a primeira palavra (2,18s → 0,18s); a lentidão percebida vem do raciocínio ligado por padrão (xhigh), do MTP desligado (a especulação não vem ativa por padrão) e do contexto estourando a VRAM. Tabela causa-sintoma-fix com ganho medido de cada correção.",
           "inLanguage": "pt-BR",
           "datePublished": "2026-08-19",
           "dateModified": "2026-08-19",
@@ -86,7 +86,7 @@
               "name": "O Qwen3.8-27B é mais lento que o Qwen3.6-27B?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No decode puro, não: com thinking desligado, o Qwen3.8-27B gera à mesma velocidade do Qwen3.6-27B — 73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações na RTX 5090 (KGP Talkie, 16/08/2026); na RTX 3090 com llama.cpp os números de decode dos dois modelos são equivalentes (~41,5 t/s, InsiderLLM), e no Strix Halo o 3.8 chega a ser mais rápido (17,3 contra 12,4 tok/s, medição própria). Existe regressão real em caso isolado: MacBook M5 Max 128 GB relatou 20-25 t/s no 3.8 contra 30-40 no 3.6 a 64K de contexto (r/LocalLLaMA 1vqjeub). O que a maioria sente como 'lento' é o raciocínio ligado por padrão, o MTP desligado e o contexto estourando a VRAM — não o decode do modelo."
+                "text": "No decode puro, não: o Qwen3.8-27B gera à mesma velocidade do Qwen3.6-27B — na RTX 3090 com llama.cpp os números de decode dos dois modelos são equivalentes (~41,5 t/s, InsiderLLM), e no Strix Halo o 3.8 chega a ser mais rápido (17,3 contra 12,4 tok/s, medição própria). O benchmark de 45 configurações na RTX 5090 (KGP Talkie, 16/08/2026), que testou apenas o 3.8, mostra o que engana: com thinking ligado o decode é de 73,6 tok/s, e desligado, 73,4 — o raciocínio não muda a velocidade, muda o tempo até a primeira palavra. Existe regressão real em caso isolado: MacBook M5 Max 128 GB relatou 20-25 t/s no 3.8 contra 30-40 no 3.6 a 64K de contexto (r/LocalLLaMA 1vqjeub). O que a maioria sente como 'lento' é o raciocínio ligado por padrão, o MTP desligado e o contexto estourando a VRAM — não o decode do modelo."
               }
             },
             {
@@ -210,7 +210,7 @@
             <a href="/guia/faq">FAQ</a>
         </nav>
         <h1>Qwen3.8-27B está lento? As 6 causas reais e o fix de cada uma</h1>
-        <p class="lead">Dono de duas Radeon R9700 resume o pesadelo em uma frase: ~55 t/s no Qwen3.6-27B, e o 3.8 marchando na metade disso com config quase idêntica. Os dados dizem outra coisa. O decode do 3.8 é igual ao do 3.6 (73,6 contra 73,4 t/s no mesmo benchmark). O que mudou foram três coisas ao redor do modelo: ele pensa antes de responder por padrão, a especulação que o acelerava nunca foi ativada, e o contexto dele come mais VRAM do que a sua conta mandava. Diagnóstico com números medidos, stack por stack.</p>
+        <p class="lead">Dono de duas Radeon R9700 resume o pesadelo em uma frase: ~55 t/s no Qwen3.6-27B, e o 3.8 marchando na metade disso com config quase idêntica. Os dados dizem outra coisa. O decode do 3.8 é igual ao do 3.6 — ~41,5 t/s para os dois na 3090, e no Strix Halo o 3.8 é até mais rápido — e o bench de 45 configurações mostra que nem o raciocínio muda esse decode: 73,6 com thinking on, 73,4 off, o que muda é o tempo até a primeira palavra. O que mudou foram três coisas ao redor do modelo: ele pensa antes de responder por padrão, a especulação que o acelerava nunca foi ativada, e o contexto dele come mais VRAM do que a sua conta mandava. Diagnóstico com números medidos, stack por stack.</p>
     </header>
 
     <div class="toc">
@@ -235,7 +235,7 @@
     </div>
 
     <h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
-    <p><strong>Se o Qwen3.8-27B está lento, na maioria dos casos não é o modelo — é o entorno.</strong> O decode dele é igual ao do Qwen3.6-27B com thinking desligado (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações), e em hardware real ele chega a ser mais rápido. Os três vilões, em ordem de frequência: raciocínio ligado por padrão (2,18 s até a primeira palavra contra 0,18 s desligado), MTP desligado porque a especulação não vem ativa por padrão (a flag certa é --spec-type draft-mtp), e contexto comendo VRAM até derramar na RAM do sistema.</p>
+    <p><strong>Se o Qwen3.8-27B está lento, na maioria dos casos não é o modelo — é o entorno.</strong> O decode dele é igual ao do Qwen3.6-27B — ~41,5 t/s para os dois na 3090 (InsiderLLM) e mais rápido no Strix Halo — e no bench de 45 configurações nem o raciocínio muda esse decode: 73,6 com thinking on contra 73,4 off. Os três vilões, em ordem de frequência: raciocínio ligado por padrão (2,18 s até a primeira palavra contra 0,18 s desligado), MTP desligado porque a especulação não vem ativa por padrão (a flag certa é --spec-type draft-mtp), e contexto comendo VRAM até derramar na RAM do sistema.</p>
     <pre><code># o fix de 80% dos casos: reasoning dosado + MTP com a flag certa + KV enxuto
 llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
   --reasoning-effort medium \        # ou --reasoning off para tarefas simples
@@ -243,7 +243,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
   --spec-draft-n-max 2 \
   -ctk q4_0 -ctv q4_0 \               # KV cache menor = decode mais rápido
   --ctx-size 65536                    # o que cabe depois de somar pesos + MTP</code></pre>
-    <p>Medição de referência (RTX 5090, benchmark de 45 configurações da KGP Talkie, 16/08): com thinking ligado e sem MTP, a primeira palavra sai em 2,18 s; com thinking off e MTP n=2, em 0,21 s — e o decode sobe de 73,6 para 151,2 tok/s. Nenhum desses ganhos veio de trocar o modelo.</p>
+    <p>Medição de referência (RTX 5090, benchmark de 45 configurações da KGP Talkie, 16/08): com thinking ligado e sem MTP, a primeira palavra sai em 2,18 s; com thinking off e MTP n=2, em 0,21 s — e o decode sobe de 73,4 para 151,2 tok/s (2,06×). Nenhum desses ganhos veio de trocar o modelo.</p>
 
     <h2 id="o-caso">O caso que abriu o buraco: 2× R9700 e a thread de 55 t/s</h2>
     <p>A thread de lançamento no r/LocalLLaMA (1voa3ch, "Qwen 3.8 27B Released! Please Share Your Experience") trouxe o relato que se repetiu a semana inteira: um usuário com duas Radeon R9700 rodando ~55 t/s no Qwen3.6-27B e um 3.8 visivelmente mais lento com configuração quase idêntica. No Level1Techs, o dono de outro par de R9700s contou a mesma história com números abertos: o 3.6 com o PR de MTP do llama.cpp decodifica a 55-60 t/s nas duas placas; o 3.8 no container de vLLM saiu de 30 para 55 t/s depois de uma leva de PRs, mas com um prefill que ele classificou como inutilizável para trabalho agêntico.</p>
@@ -251,7 +251,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
     <div class="stat-row">
         <div class="stat-card">
             <div class="value">73,6 vs 73,4</div>
-            <div class="label">tok/s decode 3.8 vs 3.6, thinking off, mesmo bench (KGP Talkie)</div>
+            <div class="label">tok/s decode do 3.8, thinking on vs off — o raciocínio não muda o decode (KGP Talkie)</div>
         </div>
         <div class="stat-card">
             <div class="value ok">+134,5%</div>
@@ -284,7 +284,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
 # SGLang:    speculative algorithm (EAGLE/DSpark)
 # Ollama:    sem flag — vem da tag do modelo
 # LM Studio (AMD): MTP on, draft tokens 4 (Ryzen AI Max+) ou 2 (R9700), "Try mmap" OFF</code></pre>
-    <p>Os ganhos medidos com MTP ativo, para calibrar expectativa: 1,81× de decode no sweep da 5090 (73,4 → 151,2 t/s com thinking off); 2,81× embutido no benchmark de produção de 256K de contexto (21,19 → 59,46 t/s, piszczek.pl); ~1,85× nos testes do PR #22673 do llama.cpp (22,97 → 42,45 t/s no decode); +72% no DGX Spark no review do Simon Willison; e 1,46× num MacBook M5 de 24 GB (7,16 → 10,47 t/s). Dois avisos que vêm junto: o prefill cai para ~0,51× no mesmo caminho do PR #22673, e a taxa de aceitação depende da configuração — 0,863 com draft-n 2 e thinking off contra 0,674 com draft-n 3 e thinking ligado. No mesmo thread do subreddit, a resposta seca para quem ainda estava lento depois do MTP: "try mtplx" — o spec-type alternativo vale o teste quando o draft-mtp não rende aceitação boa no seu caso.</p>
+    <p>Os ganhos medidos com MTP ativo, para calibrar expectativa: 2,06× de decode no sweep da 5090 (73,4 → 151,2 t/s com draft n=2 e thinking off); 2,81× embutido no benchmark de produção de 256K de contexto (21,19 → 59,46 t/s, piszczek.pl); ~1,85× nos testes do PR #22673 do llama.cpp (22,97 → 42,45 t/s no decode); +72% no DGX Spark no review do Simon Willison; e 1,46× num MacBook M5 de 24 GB (7,16 → 10,47 t/s). Dois avisos que vêm junto: o prefill cai para ~0,51× no mesmo caminho do PR #22673, e a taxa de aceitação depende da configuração — 0,863 com draft-n 2 e thinking off contra 0,674 com draft-n 3 e thinking ligado. No mesmo thread do subreddit, a resposta seca para quem ainda estava lento depois do MTP: "try mtplx" — o spec-type alternativo vale o teste quando o draft-mtp não rende aceitação boa no seu caso.</p>
     <p>Hardware AMD tem regra própria, direto do blog oficial do dia do lançamento: no LM Studio, draft tokens 4 no Ryzen AI Max+ e 2 no Radeon AI PRO R9700 — e desmarcar "Try mmap" nas opções avançadas de carga. O blog da AMD mede 24,5 t/s no Ryzen AI Max+ 395 e 51,8 t/s numa única R9700.</p>
 
     <h2 id="causa-3">Causa 3 — Contexto estourando a VRAM</h2>
@@ -321,7 +321,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
 
     <h2 id="causa-6">Causa 6 — A regressão real (quando ela existe)</h2>
     <p>Existe, sim, relato de regressão genuína 3.6 → 3.8, e este guia não ia escondê-lo: no MacBook M5 Max de 128 GB (UD-Q8_K_XL, KV 8-bit, MTP ligado, llama.cpp), o mesmo usuário mediu 20-25 t/s a 64K no 3.8 contra 30-40 t/s no 3.6, caindo para 10-15 t/s a ~200K. Ele chamou os próprios números de "pretty abysmal". O 3.8 é mais pesado por token emitido — visão nativa e comportamento de long-contexto têm custo — e em machines de memória unificada isso aparece direto no decode.</p>
-    <p>Só que a regressão não é a regra. No mesmo fôlego em que ela é relatada, os dados do outro lado: decode 73,6 vs 73,4 t/s entre 3.8 e 3.6 com thinking off no bench de 45 configs; ~41,5 t/s na 3090 com "3.8 ≈ 3.6" no mesmo setup (InsiderLLM); e no Strix Halo do portal, o 3.8 é <em>mais rápido</em>: 17,3 contra 12,4 t/s. A síntese honesta: o decode do 3.8 é no pior caso marginalmente pior e em vários hardwares melhor; o que explodiu entre gerações não foi o custo por token, foi o número de tokens que o modelo emite antes de te responder (20.000 onde o 3.6 gastava 2.000 em xhigh) e o apetite de contexto. Quem controla os dois, não sente regressão nenhuma.</p>
+    <p>Só que a regressão não é a regra. No mesmo fôlego em que ela é relatada, os dados do outro lado: no bench de 45 configs o decode do 3.8 é 73,6 t/s com thinking on e 73,4 off — o raciocínio não muda o decode; ~41,5 t/s na 3090 com "3.8 ≈ 3.6" no mesmo setup (InsiderLLM); e no Strix Halo do portal, o 3.8 é <em>mais rápido</em>: 17,3 contra 12,4 t/s. A síntese honesta: o decode do 3.8 é no pior caso marginalmente pior e em vários hardwares melhor; o que explodiu entre gerações não foi o custo por token, foi o número de tokens que o modelo emite antes de te responder (20.000 onde o 3.6 gastava 2.000 em xhigh) e o apetite de contexto. Quem controla os dois, não sente regressão nenhuma.</p>
 
     <h2 id="tabela">A tabela: causa, sintoma, fix e ganho medido</h2>
     <table>
@@ -330,7 +330,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
         </thead>
         <tbody>
             <tr class="highlight"><td>1. xhigh de fábrica</td><td>Espera longa antes da 1ª palavra; resposta "vazando" raciocínio</td><td><code>--reasoning off / -budget / -effort</code>; <code>think:false</code> no Ollama</td><td>2,18s → 0,18s até a 1ª palavra; SVG 21min → 137s</td></tr>
-            <tr class="highlight"><td>2. MTP off (nunca configurado)</td><td>Decode "normal" 30-40 t/s na 3090; sem linha de draft no log de inicialização</td><td><code>--spec-type draft-mtp --spec-draft-n-max 2</code>; LM Studio AMD: 4/2 draft tokens, mmap off</td><td>~31,6 → 74 t/s (+134,5%) na 3090; 1,81× na 5090</td></tr>
+            <tr class="highlight"><td>2. MTP off (nunca configurado)</td><td>Decode "normal" 30-40 t/s na 3090; sem linha de draft no log de inicialização</td><td><code>--spec-type draft-mtp --spec-draft-n-max 2</code>; LM Studio AMD: 4/2 draft tokens, mmap off</td><td>~31,6 → 74 t/s (+134,5%) na 3090; 2,06× na 5090</td></tr>
             <tr><td>3. Contexto na VRAM</td><td>Começa rápido, degrada com o contexto; OOM; spill na RAM</td><td><code>-ctk q4_0 -ctv q4_0</code>, <code>--ctx-size</code> realista, conta do cache</td><td>KV q4_0: 125,5 → 136,7 t/s e −1.386 MiB (5090)</td></tr>
             <tr><td>4. Quant errada</td><td>Load lento/OOM; offload parcial crônico</td><td>IQ4_XS em 16 GB; Q4_K_M em 24 GB; UD-Q8 em 32 GB</td><td>~20 t/s em 16 GB; 41,5-74 t/s em 24 GB</td></tr>
             <tr><td>5. Backend/térmico</td><td>Agente "lendo" sem começar; clock baixo; ROCm lento</td><td>Vulkan no AMD; vLLM p/ prefill; airflow</td><td>&lt;500 MHz → 1.400 MHz; prefill 1k → 3-4k t/s (vLLM)</td></tr>
@@ -345,7 +345,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
         </thead>
         <tbody>
             <tr class="highlight"><td>RTX 3090 (24 GB)</td><td>~31,6 t/s</td><td>74 t/s</td><td>Flag de MTP certa; contexto 128K → 96K</td><td>r/LocalLLaMA 1vqjeub</td></tr>
-            <tr class="highlight"><td>RTX 5090 (32 GB)</td><td>2,18s até a 1ª palavra</td><td>0,21s</td><td>Thinking off + MTP n=2 (decode 73,6 → 151,2 t/s)</td><td>KGP Talkie, 45 configs</td></tr>
+            <tr class="highlight"><td>RTX 5090 (32 GB)</td><td>2,18s até a 1ª palavra</td><td>0,21s</td><td>Thinking off + MTP n=2 (decode 73,4 → 151,2 t/s)</td><td>KGP Talkie, 45 configs</td></tr>
             <tr><td>RTX 5090 (32 GB)</td><td>125,5 t/s (KV f16)</td><td>136,7 t/s</td><td>KV cache f16 → q4_0 (−1.386 MiB)</td><td>KGP Talkie</td></tr>
             <tr><td>M5 Max (LM Studio)</td><td>21 min para um SVG</td><td>137 s</td><td>Reasoning off</td><td>Simon Willison, 16/08</td></tr>
             <tr><td>2× R9700 (vLLM)</td><td>30 t/s</td><td>55 t/s</td><td>PRs de follow-up do MTP (prefill segue ruim p/ agentes)</td><td>Level1Techs</td></tr>
@@ -357,7 +357,7 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
     <p>Cada número tem dono e contexto. A tabela consolidada de throughput do portal — todos os hardwares, stacks e quantizações, com metodologia — está no guia <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo no hardware real</a>.</p>
 
     <h2 id="veredito">Veredito: o 3.8 é mais lento que o 3.6?</h2>
-    <p><strong>No decode puro, não: com thinking desligado, o Qwen3.8-27B gera à mesma velocidade do Qwen3.6-27B (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configurações na RTX 5090), e em hardware real chega a ser mais rápido — 17,3 contra 12,4 tok/s no Strix Halo e ~41,5 tok/s na RTX 3090 com "3.8 ≈ 3.6" no mesmo setup.</strong> A regressão existe em casos específicos (M5 Max de 128 GB: 20-25 contra 30-40 t/s a 64K) e é honesto registrá-la. Mas o que a maioria dos relatos de "lento" mede junto, sem querer, são os três impostos deste guia: raciocínio default (20.000 tokens onde o 3.6 gastava 2.000), MTP desligado (nunca configurado), e contexto derramando da VRAM. Controlados os três, a pergunta vira outra: quanto do seu hardware você quer entregar ao contexto. Essa conta está no <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a> e no guia de <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>.</p>
+    <p><strong>No decode puro, não: o Qwen3.8-27B gera à mesma velocidade do Qwen3.6-27B — mesmo tamanho de pesos e mesma arquitetura (dev.to), ~41,5 tok/s para os dois na RTX 3090 com "3.8 ≈ 3.6" no mesmo setup, e em hardware real chega a ser mais rápido: 17,3 contra 12,4 tok/s no Strix Halo. O benchmark de 45 configurações na RTX 5090, que testou só o 3.8, fecha a conta: 73,6 tok/s com thinking ligado, 73,4 desligado — o raciocínio não muda o decode, só adia a primeira palavra.</strong> A regressão existe em casos específicos (M5 Max de 128 GB: 20-25 contra 30-40 t/s a 64K) e é honesto registrá-la. Mas o que a maioria dos relatos de "lento" mede junto, sem querer, são os três impostos deste guia: raciocínio default (20.000 tokens onde o 3.6 gastava 2.000), MTP desligado (nunca configurado), e contexto derramando da VRAM. Controlados os três, a pergunta vira outra: quanto do seu hardware você quer entregar ao contexto. Essa conta está no <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a> e no guia de <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>.</p>
 
     <h2 id="metodo">Como medir sem se enganar</h2>
     <p>Metodologia é o que separa o "está lento" do diagnóstico. Quatro regras que este portal segue e que os dados deste guia reforçam:</p>
@@ -396,36 +396,36 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
         <li><strong>"Meu agente fica lendo e nunca começa"</strong> — prefill, não decode. vLLM entrega 3-4k t/s de prefill contra ~1k do llama.cpp; no 2× R9700 do Level1Techs foi isso que inviabilizou o uso agêntico até os PRs de follow-up.</li>
         <li><strong>"ROCm mais lento que o esperado no AMD"</strong> — troque para Vulkan no llama.cpp antes de qualquer outra coisa; é o consenso atual dos relatos de R9700.</li>
         <li><strong>"Tudo lento sem motivo aparente"</strong> — cheque o clock sustentado da GPU. Throttling térmico derrubou uma máquina para &lt;500 MHz com temperatura pico dentro do normal; airflow resolveu (→ ~1.400 MHz).</li>
-        <li><strong>"Comparei com o 3.6 e o 3.8 perdeu feio"</strong> — verifique se o 3.6 estava com thinking off e o 3.8 em xhigh. No mesmo estado de reasoning, o decode é equivalente (73,6 vs 73,4 t/s no bench controlado).</li>
+        <li><strong>"Comparei com o 3.6 e o 3.8 perdeu feio"</strong> — verifique se o 3.6 estava com thinking off e o 3.8 em xhigh. No mesmo estado de reasoning, o decode é equivalente — ~41,5 t/s para os dois na 3090 (InsiderLLM) e o 3.8 na frente no Strix Halo (17,3 vs 12,4 t/s).</li>
     </ul>
 
     <h2 id="faq">Perguntas frequentes</h2>
     <div class="faq-item">
         <h3>O Qwen3.8-27B é mais lento que o Qwen3.6-27B?</h3>
-        <p>No decode puro, não: com thinking desligado, o 3.8 gera à mesma velocidade do 3.6 (73,6 contra 73,4 tok/s no mesmo benchmark de 45 configs na RTX 5090); na 3090 o decode dos dois é equivalente (~41,5 t/s) e no Strix Halo o 3.8 é mais rápido (17,3 contra 12,4 t/s). Existe regressão isolada documentada no M5 Max de 128 GB (20-25 contra 30-40 t/s a 64K). O que a maioria sente como lento são os impostos de raciocínio default, MTP desligado e contexto na VRAM.</p>
+        <p>No decode puro, não: o 3.8 gera à mesma velocidade do 3.6 — na 3090 o decode dos dois é equivalente (~41,5 t/s) e no Strix Halo o 3.8 é mais rápido (17,3 contra 12,4 t/s) — e o bench de 45 configs na 5090 mostra que nem o thinking muda o decode do 3.8: 73,6 com thinking on contra 73,4 off. Existe regressão isolada documentada no M5 Max de 128 GB (20-25 contra 30-40 t/s a 64K). O que a maioria sente como lento são os impostos de raciocínio default, MTP desligado e contexto na VRAM.</p>
     </div>
     <div class="faq-item">
-        <h3>Por que ele demora para começar a responder?</h3>
+        <h3>Por que o Qwen3.8-27B demora para começar a responder?</h3>
         <p>Porque sai de fábrica raciocinando em xhigh: 106 tokens de thinking antes da primeira palavra no bench de referência — 2,18 s contra 0,18 s com reasoning off (~12× mais rápido para começar). No extremo, um SVG de 3.223 tokens consumiu 22.276 tokens de raciocínio e 21 minutos; desligado, 137 segundos.</p>
     </div>
     <div class="faq-item">
-        <h3>Qual é a flag certa do MTP no llama.cpp?</h3>
+        <h3>Qual é a flag certa do MTP no llama.cpp hoje?</h3>
         <p><code>--spec-type draft-mtp</code> com <code>--spec-draft-n-max 2</code> como ponto de partida — no llama.cpp desde 16/05/2026 (PR #22673). O MTP não vem ativo por padrão, e grafia errada derruba o llama-server na inicialização com erro fatal, não em silêncio. Confirme a linha do draft no log. No vLLM o MTP fica num JSON de serving config; no SGLang é um speculative algorithm; no Ollama vem da tag do modelo; no LM Studio AMD, draft tokens 4 (Ryzen AI Max+) ou 2 (R9700) com "Try mmap" desmarcado.</p>
     </div>
     <div class="faq-item">
-        <h3>MTP tem custo?</h3>
+        <h3>Ativar MTP tem algum custo?</h3>
         <p>Dois: VRAM (o caso da 3090 precisou baixar o contexto para 96K para caber) e prefill (~0,51× no caminho do PR #22673, contra ~1,85× no decode). A taxa de aceitação também cai se mal configurada: 0,863 com n=2 e thinking off contra 0,674 com n=3 e thinking ligado.</p>
     </div>
     <div class="faq-item">
-        <h3>KV q4_0 não piora a qualidade?</h3>
+        <h3>Quantizar o KV cache para q4_0 não deixa a resposta pior?</h3>
         <p>No teste de 45 configs, não houve perda mensurável (100% nos needles) — e o decode ficou mais rápido (136,7 contra 125,5 t/s) porque cache menor lê menos por token. O trade-off fino de perplexidade está no guia de 256K em 24 GB.</p>
     </div>
     <div class="faq-item">
-        <h3>ROCm ou Vulkan no AMD?</h3>
+        <h3>ROCm ou Vulkan para rodar o Qwen3.8-27B em GPU AMD?</h3>
         <p>Vulkan, hoje, para o 3.8 no R9700 — "rocm as of now is inferior to vulkan", no relato direto do thread de throughput. E verifique o térmico antes de trocar qualquer coisa: throttling derrubou uma GPU para &lt;500 MHz até o airflow ser corrigido.</p>
     </div>
     <div class="faq-item">
-        <h3>Quantos t/s devo esperar?</h3>
+        <h3>Quantos tokens por segundo devo esperar do Qwen3.8-27B?</h3>
         <p>Com MTP ativo: 206 t/s no teto (5090 + SGLang + NVFP4), 120 na RTX Pro 6000 (FP8 + DSpark), 41,5-74 na 3090, 50+ no R9700 com vLLM, 17,3 no Strix Halo, ~9,7 na 3060 de 12 GB. Tabela completa com fontes no guia <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo no hardware real</a>.</p>
     </div>
 
