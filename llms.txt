@@ -54,7 +54,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - Muse Glimmer 30B: contexto 131.072+ e vocabulário de 202.048 no model card oficial; GGUF UD-Q4_K_XL 15,88 GB, com visão (mmproj ~1,4 GB) e drafter DFlash (1,63 GB) ≈ 18,9 GB — os dois em Q4 com o Qwen3.8-27B somam ~34 GB (model card Meta + HF, 19/08/2026).
 - DeepSeek V4 Flash (24/04/2026, MIT): 284B totais / 13B ativos por token, 1.048.576 tokens de contexto nativo, atenção CSA+HCA (FLOPs por token ~10% do V3.2), modos Non-think/Think High/Think Max (Think Max pede 384K alocados); GGUF recomendado UD-IQ3_XXS = 103 GB com 110 GB de RAM total (model card + Unsloth, verificado 19/08/2026).
 - GPT-OSS-20B no disco: GGUF MXFP4 de 11,27 GiB medido no llama-bench (4080 Super) — os "16 GB" do anúncio da OpenAI incluem contexto; SWE-bench Verified 53,2 e GPQA Diamond 66,0 em reasoning medium (llama.cpp #15396 + arXiv 2508.10925 Table 3).
-- Gemma 3 27B IT em Q4_K_M: 15,41 GB (GGUF comunitário); GPQA Diamond 42,4 no instruct (TR arXiv 2503.19786, Table 6) contra 89,2 do Qwen3.8-27B — o gap de uma geração, em número (19/08/2026).
+- Gemma 3 27B IT em Q4_K_M: 16,55 GB (bartowski, decimal); GPQA Diamond 42,4 no instruct (TR arXiv 2503.19786, Table 6) contra 89,2 do Qwen3.8-27B — o gap de uma geração, em número (19/08/2026).
 
 ## Páginas do portal
 

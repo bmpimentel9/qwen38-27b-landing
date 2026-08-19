@@ -26,7 +26,7 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 - **Fontes novas verificadas 19/08**: Muse Glimmer context length
   131.072+ e vocab 202.048 (model card); DeepSeek V4 Flash 284B/13B, 1M
   contexto, UD-IQ3_XXS 103 GB / 110 GB RAM mín (Unsloth); GPT-OSS-20B
-  GGUF 11,27 GiB (llama.cpp #15396); Gemma 3 27B Q4_K_M 15,41 GB.
+  GGUF 11,27 GiB (llama.cpp #15396); Gemma 3 27B Q4_K_M 16,55 GB (bartowski, decimal — corrigido na revisão R1: 15,41 era GiB rotulado como GB).
 
 ### Decisions
 - DeepSeek V4 Flash entra por paridade de ativos/token (13B), não de
