@@ -321,7 +321,7 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
     <h3>LM Studio</h3>
     <p>O GGUF da unsloth no LM Studio preserva o default xhigh de fábrica — e o contexto inicial de 8.192 tokens da ferramenta transforma overthinking em erro de contexto. Dois ajustes: suba o contexto (o modelo aguenta 262.144 nativos) e reduza o reasoning effort nas configurações do modelo. Para controle fino (budget em tokens, MTP), o caminho é o llama-server direto.</p>
     <h3>API OpenAI-compatível (vLLM, provedores)</h3>
-    <p>Servidores que expõem a API OpenAI-compatível repassam o parâmetro <code>reasoning_effort</code> do request. No vLLM, sirva com <code>--reasoning-parser qwen3</code> (vLLM ≥ 0.27.2) e ajuste o esforço por chamada — o nosso <a href="/guia/como-rodar">guia de execução</a> cobre o setup completo.</p>
+    <p>Servidores que expõem a API OpenAI-compatível repassam o parâmetro <code>reasoning_effort</code> do request. No vLLM, sirva com <code>--reasoning-parser qwen3</code> (vLLM ≥ 0.27.1) e ajuste o esforço por chamada — o nosso <a href="/guia/como-rodar">guia de execução</a> cobre o setup completo.</p>
 
     <h2 id="effort">reasoning_effort: xhigh, medium, low ou off?</h2>
     <p>Não existe resposta única — existe a resposta por tarefa. O modelo foi construído para <em>long-horizon agentic tasks</em> (o model card mostra os maiores saltos justamente aí: DeepSWE +28,9, QwenSWEBench +29,7), então o thinking é ferramenta, não defeito. O defeito é o default:</p>
