@@ -258,6 +258,14 @@
         },
         {
           "@type": "Question",
+          "name": "Vale a pena rodar gpt-oss em 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depende do hardware. Em GPUs de 12–16 GB, o gpt-oss-20b (GGUF MXFP4 de 11,27 GiB medidos) continua sendo o pick do portal — a nova geração da classe 27B precisa de 24 GB para o modelo 4-bit + cache. Em 24 GB+, o Qwen3.8-27B domina: 52 no Artificial Analysis Intelligence Index (medição independente), visão nativa e contexto 256K. E o gpt-oss segue longe de legado: 12.270.859 downloads/mês somados um ano após o lançamento (7.590.370 no 20b + 4.680.489 no 120b, HF API de 20/08/2026). Fonte: Hugging Face API + dossiê do portal (20/08/2026); retrospectiva em /guia/1-ano-gpt-oss-modelos-locais-2026."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Qwen3.8-27B vs ChatGPT: qual é melhor?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -548,6 +556,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="faq-item">
         <h3>Qwen3.8-27B vs GPT-OSS-20B?</h3>
         <p>O Qwen3.8-27B tem contexto nativo 2× maior (262.144 vs 128K tokens), multimodalidade nativa e thinking mode; o GPT-OSS-20B é menor e mais rápido (20B totais, ~3,6B ativos). Para raciocínio agêntico e contexto longo, o Qwen3.8-27B é superior.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3 id="gpt-oss-2026">Vale a pena rodar gpt-oss em 2026?</h3>
+        <p>Depende do hardware. Em GPUs de <strong>12–16 GB</strong>, o gpt-oss-20b (GGUF MXFP4 de 11,27 GiB medidos) continua sendo o pick do portal — a nova geração da classe 27B precisa de 24 GB para o modelo 4-bit + cache. Em <strong>24 GB+</strong>, o Qwen3.8-27B domina: 52 no Artificial Analysis Intelligence Index (medição independente), visão nativa e contexto 256K. E o gpt-oss segue longe de legado: <strong>12.270.859 downloads/mês somados</strong> um ano após o lançamento (7.590.370 no 20b + 4.680.489 no 120b, HF API de 20/08/2026). Retrospectiva completa: <a href="/guia/1-ano-gpt-oss-modelos-locais-2026">1 ano de gpt-oss</a>.</p>
     </div>
 
     <div class="faq-item">

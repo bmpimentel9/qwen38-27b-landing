@@ -8,6 +8,59 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-20] — Artigo: 1 ano de gpt-oss (retrospectiva de adoção)
+
+### Added
+- **Artigo "1 ano de gpt-oss: 12 milhões de downloads/mês — e o que
+  mudou no hardware local desde então"** (`guia/1-ano-gpt-oss-modelos-locais-2026/`,
+  task kanban `t_01a0f16e`, Tema 2 do daily 20/08 — discovery `t_0b9e4ef4`):
+  primeira retrospectiva do portal (gap: 2 menções passivas a gpt-oss no
+  llms.txt, 0 artigos dedicados; 0 artigos no nicho comparando gerações
+  anuais). Ancorada no aniversário exato (criado 2025-08-04 na HF API) e no
+  post de William Callahan (19/08) que reacendeu o tema.
+  - Dados-âncora re-verificados ao vivo na HF API em 20/08/2026 antes da
+    escrita: gpt-oss-20b 7.590.370 dl/mês + 4.934 likes; gpt-oss-120b
+    4.680.489 dl/mês + 5.114 likes (soma 12.270.859/mês); Qwen3.8-27B
+    1.373.584 dl/mês + 11.733 likes (criado 2026-08-05). Post do
+    williamcallahan re-lido integralmente (citação exata + fleet metrics
+    Strix Halo ~29 / 5090 ~106 / M1 Ultra ~15 tok/s).
+  - Regra anti-invenção do card cumprida: "2× mais inteligente" é sempre
+    atribuído como PERCEPÇÃO de williamcallahan (blockquote com link),
+    contraposto no mesmo fôlego pelo AAII 52 (medido, Artificial Analysis);
+    seção dedicada "Downloads e likes não provam nada sobre qualidade"
+    (downloads ≠ qualidade; likes ≠ qualidade; n=1 ≠ benchmark; geração-2025
+    × geração-2026 sem benchmark cruzado publicado — lacuna declarada, não
+    preenchida por estimativa).
+  - Verificação adicional: configs oficiais dos 3 modelos (gpt-oss MoE
+    32/128 especialistas, 4 ativos, MXFP4, 128K — vs Qwen3.8-27B denso
+    híbrido 48+16, 256K) puxados ao vivo na escrita.
+  - Conteúdo: tabela de adoção (downloads/likes com datas); citação
+    traduzida; percepção vs medição; tabela comparativa de engenharia
+    2025→2026 (4 mudanças estruturais); veredito por hardware (12–16 GB →
+    gpt-oss-20b segue o pick; 24 GB+ → Qwen3.8-27B; RAM unificada → 120b
+    ou 27B por multimodalidade/contexto/velocidade); callout de
+    transparência das fontes; cross-refs para AAII, comparativo geracional,
+    melhores ≤30B, 256K, tokens/s, guia-rapido, quantização, FAQ.
+  - JSON-LD: TechArticle + 2× SoftwareApplication (gpt-oss-20b/120b,
+    applicationCategory AIModel — ADR-008) + FAQPage (7 perguntas) +
+    BreadcrumbList; GA4 G-016TVX8LEE com scroll_depth; canonical/OG/Twitter.
+  - Companions: sitemap (27→28 URLs), llms.txt (+2 stats citáveis + página
+    na lista + Q&A nova "Vale a pena rodar gpt-oss em 2026?"), card no
+    `/guia` (primeiro da grade, tag-bench Retrospectiva, MOFU · Novo 20/08),
+    Q&A nova na FAQ do portal (HTML + JSON-LD, "Comparações").
+
+### Fixed
+- **sitemap.xml malformado (preexistente)**: o bloco da URL do
+  contexto-256k tinha dois `<loc>` sem o `</url><url>` de separação —
+  parsers XML estritos descartavam a URL (27 `<loc>` no arquivo, 26
+  parseados). Corrigido: 28 URLs agora parseiam limpas; a página do
+  contexto-256k volta a constar no sitemap válido.
+- **Card duplicado no `/guia` (preexistente)**: bloco do reasoning
+  ("Configuração de reasoning: desativar o overthinking") aparecia 2× na
+  grade de cards (idênticos). Removida a segunda ocorrência.
+
+---
+
 ## [2026-08-20] — Artigo "Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias" (t_a5fe3174)
 
 ### Added
