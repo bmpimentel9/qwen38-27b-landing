@@ -8,6 +8,16 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+
+## [2026-08-20] — Atualização diária
+
+
+### Added
+- Auto-cura: corrigir 28 customização(ões) perdida(s) pós-update (programadora)
+- 🌅 Daily Content 20/08 — modelos locais ≤30B (discovery)
+
+---
+
 ## [2026-08-19] — Pilar "Melhores modelos locais de 30B" (t_f81bb139)
 
 ### Added
