@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias (guia 2026)</title>
+    <meta name="description" content="Recusas 98→12/100 com KL 0,1191 e MMLU −0,2: como o Heretic abliterated o Qwen3.8-27B quase sem perda, o re-enxerto do MTP e a escolha de quant (PPL real do wikitext-2).">
+    <meta name="keywords" content="qwen 3.8 uncensored, qwen 3.8 abliterated, modelo local sem censura, heretic llm, uncensored gguf, abliterated, refusal direction, qwen3.8-27b uncensored gguf, decensored, mtp speculative decoding, quantização gguf 30b">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência">
+    <meta property="og:description" content="O GGUF abliterated com Heretic que fez 979.768 downloads em 6 dias: recusas 98→12/100 com KL 0,1191, MMLU 83,4→83,3, MTP re-enxertado e verificado arquivo por arquivo, e a tabela PPL real por quant.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-20T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="modelos locais">
+    <meta property="article:tag" content="quantização">
+    <meta property="article:tag" content="ecossistema">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda">
+    <meta name="twitter:description" content="Recusas 98→12/100, KL 0,1191, MMLU −0,2 e o MTP re-enxertado: a anatomia técnica do abliterated mais baixado do Qwen3.8-27B — e como escolher o quant pelo PPL real.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência",
+          "description": "Anatomia técnica do ecossistema abliterated do Qwen3.8-27B: o GGUF de JonathanColetti fez 979.768 downloads em 6 dias removendo direções de recusa com o Heretic (recusas 98/100 → 12/100 em 100 prompts nocivos held-out, KL de primeiro token 0,1191 vs base), com MMLU 83,4→83,3 e demais deltas dentro do erro-padrão. Detalhe exclusivo: a abliteration derruba os tensores mtp.*, que o autor re-enxerta do checkpoint base e verifica arquivo por arquivo. Inclui a fronteira de Pareto publicada (23 pontos não-dominados em 200 trials), a tabela de PPL wikitext-2 por quant com o aviso de não-ordenabilidade e o guia de escolha de quant.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-20",
+          "dateModified": "2026-08-20",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated",
+          "about": [
+            { "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#uncensored-gguf" },
+            { "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#heretic" }
+          ],
+          "proficiencyLevel": "Advanced",
+          "dependencies": "llama.cpp com suporte a MTP speculative decoding (PR #22673); GGUF do JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (IQ2_M a Q8_0); GPU com 10,6–29 GB conforme o quant escolhido"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#uncensored-gguf",
+          "name": "Qwen3.8-27B-Uncensored-GGUF",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, Windows, macOS",
+          "softwareVersion": "GGUF",
+          "description": "Derivado abliterated do Qwen3.8-27B publicado por JonathanColetti em 14/08/2026: direções de recusa removidas com Heretic (recusas 98/100 → 12/100, KL 0,1191), MTP re-enxertado do checkpoint base e verificado arquivo por arquivo, imatrix de wikitext-2 publicada, quants de IQ2_M (10,6 GB) a Q8_0 (29,0 GB) e vision-f16 preservado. 979.768 downloads em 6 dias (verificado 20/08/2026).",
+          "url": "https://huggingface.co/JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+          "author": { "@type": "Person", "name": "JonathanColetti" },
+          "license": "https://www.apache.org/licenses/LICENSE-2.0",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "isAccessibleForFree": true
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#heretic",
+          "name": "Heretic",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, Windows, macOS",
+          "description": "Ferramenta de código aberto (27.920 stars, push 17/08/2026) que automatiza a abliteration de LLMs: calcula direções de recusa (método de Arditi et al. 2024, arXiv 2406.11717) e otimiza a intensidade da remoção por TPE/Optuna, co-minimizando o número de recusas contra a divergência KL em relação ao modelo base. Produz ablations com KL bem menor que as abliterations manuais.",
+          "url": "https://github.com/p-e-w/heretic",
+          "author": { "@type": "Person", "name": "p-e-w" },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "isAccessibleForFree": true
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como escolher o quant do Qwen3.8-27B-Uncensored pelo PPL medido",
+          "description": "Roteiro para escolher a quantização do GGUF abliterated com base na tabela de perplexidade medida e nas recomendações do próprio repositório.",
+          "totalTime": "PT10M",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Comece pelo teto de VRAM", "text": "Defina o orçamento de memória antes do quant: IQ2_M ocupa 10,6 GB; IQ4_XS 15,3 GB; Q4_K_M 16,8 GB; Q5_K_M 19,5 GB; Q6_K 22,4 GB; Q8_0 29,0 GB. Para a tabela de GB por quant do modelo base (com mmproj e drafter), use o guia de quantização do portal." },
+            { "@type": "HowToStep", "position": 2, "name": "Leia a tabela de PPL com honestidade estatística", "text": "No wikitext-2 (baseline f16 7,1557): Q5_K_M 7,1573 · IQ4_XS 7,1583 · Q6_K 7,1689 · Q8_0 7,1764 · Q4_K_M 7,1814 — todas com erro-padrão ~0,25. O próprio README adverte: a ordem entre elas é ruído; não conclua que Q5_K_M é melhor que Q8_0." },
+            { "@type": "HowToStep", "position": 3, "name": "Trate IQ2_M como classe separada", "text": "IQ2_M mede PPL 7,8581 — cerca de 2,8 erros-padrão acima do baseline, o único arquivo estatisticamente separável. O README é explícito: não avalie o comportamento perto da antiga fronteira de recusa em 2-bit; avalie em Q6_K ou Q8_0." },
+            { "@type": "HowToStep", "position": 4, "name": "Só use quants com MTP verificado", "text": "A família fused (arquivo único com MTP embutido) marca 65/65 blocos na inspeção pós-quantização; as variantes noMTP marcam 64/64 e exigem o draft-Q8_0 separado (3,2 GB). Builds do llama.cpp anteriores ao PR #22673 carregam o arquivo e silenciosamente ignoram os tensores MTP." },
+            { "@type": "HowToStep", "position": 5, "name": "Sweep do tamanho de draft", "text": "Com o MTP ligado (--spec-type draft-mtp), --spec-draft-n-max padrão 3 nem sempre é o mais rápido: medido na H200, n_max 1 deu o melhor ganho em prose (1,19×) e code (1,28×), e n_max 2 é o recomendado do próprio exemplo de uso. Varra 1 a 3 no seu hardware com o dataset qwen3.8-spec-decode-bench do autor." }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O que é um modelo abliterated?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Um LLM cujo comportamento de recusa foi reduzido removendo-se matematicamente as 'direções de recusa' dos pesos — sem fine-tuning e sem dados adicionais. O método (Arditi et al. 2024, arXiv 2406.11717) mostra que a recusa de modelos alinhados é majoritariamente linear: ela acontece ao longo de poucas direções no espaço de ativações, e projetar essas direções para fora dos pesos reduz a recusa com perturbação pequena no restante do comportamento. Ferramentas como o Heretic automatizam o cálculo das direções e a intensidade da remoção, otimizando a troca entre menos recusas e menos dano ao modelo (divergência KL vs base). Importante: 'reduzida, não eliminada' — e os benchmarks de capacidade medem o que sobrou de inteligência, não o que o modelo agora aceita fazer."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B-Uncensored perde inteligência?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Na medição publicada, quase nada: MMLU 83,4→83,3 (−0,2), ARC-Challenge 58,9→57,7 (−1,2), HellaSwag 82,8→82,9 (+0,1) e Winogrande 76,1→75,3 (−0,8), média −0,5 — todos dentro ou próximos do erro-padrão reportado (MMLU ±0,30; ARC ±1,44; HellaSwag ±0,38; Winogrande ±1,21), ou seja, não separáveis do ruído run-to-run. São escores 0-shot no lm-evaluation-harness em bf16, na mesma sessão para base e derivado — não comparáveis aos números few-shot publicados pela Qwen. O que a medição não cobre: nenhuma avaliação generativa (GSM8K, HumanEval), nada de matemática, código ou multilíngue, e o harness carrega só o stack de texto — visão e MTP não foram medidos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que é o Heretic e por que ele é diferente de uma abliteration manual?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Heretic (github.com/p-e-w/heretic, 27.920 stars) é uma ferramenta open-source que automatiza a abliteration: em vez de remover uma direção de recusa à mão com intensidade fixa, ele executa uma busca (TPE via Optuna, ~200 trials) que co-minimiza o número de recusas contra a divergência KL em relação ao modelo base, retornando uma fronteira de Pareto de opções. A referência de qualidade do projeto: gemma-3-12b-it saiu de 97/100 para 3/100 recusas com KL 0,16 — contra KL 0,45–1,04 das abliterations manuais documentadas. No caso do Qwen3.8-27B, os 200 trials produziram 23 pontos não-dominados; o publicado (12/100, KL 0,1191) é uma escolha nessa fronteira, não um ótimo global."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Por que o MTP precisou ser re-enxertado no Qwen3.8-27B-Uncensored?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A abliteration re-salva o modelo pelo transformers, que não carrega a cabeça de Multi-Token Prediction (os tensores mtp.*) — mas o config.json continuaria anunciando-a. O autor do GGUF copia os tensores mtp.* verbatim do checkpoint base após o merge e inspeciona cada arquivo pós-quantização (bloco 65/65 presente = MTP intacto; 64/64 = não). Isso importa porque o MTP é o mecanismo de speculative decoding do Qwen3.8-27B: sem ele, perde-se a aceleração de 1,2–1,3× medida nesse repo (H200: 74,8→95,4 tok/s em código). Detalhe: como o draft head foi treinado contra o modelo não-modificado, a taxa de aceitação pode cair levemente — mas o speculative decoding verifica cada token contra o alvo, então a qualidade do output não é afetada."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual quant do Qwen3.8-27B-Uncensored-GGUF escolher?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Pelo PPL wikitext-2 medido (baseline f16 7,1557): Q5_K_M 7,1573, IQ4_XS 7,1583, Q6_K 7,1689, Q8_0 7,1764 e Q4_K_M 7,1814 estão todos dentro do erro-padrão (~0,25) — a ordenação entre eles é ruído e não deve guiar a escolha. IQ2_M (7,8581) é o único separável, ~2,8σ acima. A decisão prática é pelo hardware: IQ2_M 10,6 GB, IQ4_XS 15,3 GB, Q4_K_M 16,8 GB, Q5_K_M 19,5 GB, Q6_K 22,4 GB, Q8_0 29,0 GB. Recomendação do próprio repo: avaliar comportamento em Q6_K ou Q8_0, nunca em 2-bit — e o README adverte que quants menores compõem a instabilidade perto da antiga fronteira de recusa."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B-Uncensored é igual ao base com recusa removida?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Em arquitetura e licença, sim: mesmos 64 camadas, vocabulário 248.320, contexto 262.144, visão nativa, Apache 2.0 herdada. Em comportamento, não exatamente: recusas em 100 prompts nocivos held-out caíram de 98/100 para 12/100 (medidas em modo non-thinking; com thinking ligado o número pode diferir), a divergência KL de primeiro token vs base é 0,1191, o comportamento perto da antiga fronteira de recusa é menos estável que o do base, e recusas foram 'substancialmente reduzidas, não eliminadas, e não redirecionadas'. A licença e a política de uso aceitável do modelo base seguem valendo para o derivado."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Qwen3.8-27B-Uncensored: ecossistema abliterated", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --accent-4: #d2a8ff; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
+        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+        .stat-card .value.ok { color: var(--accent-2); }
+        .stat-card .value.warn { color: var(--accent-3); }
+        .src { font-size: 0.85rem; color: var(--text-muted); }
+        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência</h1>
+        <p class="lead">A história de ecossistema mais quente do Qwen3.8-27B não saiu da Qwen: saiu de um GGUF publicado em 14/08 que removeu as direções de recusa do modelo com otimização matemática — recusas 98→12/100 com KL 0,1191 e MMLU −0,2. Este artigo destrincha o método (Heretic + abliteration direcional), o detalhe técnico que quase ninguém notou (o re-enxerto dos tensores MTP) e como escolher o quant pela tabela de PPL real, com os avisos de honestidade que o próprio README publica.</p>
+    </header>
+
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="value">979.768</div>
+            <div class="label">downloads do GGUF em 6 dias (14→20/08, HF API)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value ok">98→12</div>
+            <div class="label">recusas em 100 prompts nocivos held-out</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">0,1191</div>
+            <div class="label">KL vs base (primeiro token) — fronteira de Pareto</div>
+        </div>
+        <div class="stat-card">
+            <div class="value ok">−0,2</div>
+            <div class="label">MMLU 83,4→83,3 (dentro do erro-padrão ±0,30)</div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#o-fenomeno">O fenômeno: 1 milhão de downloads em cima de um modelo de 6 dias</a></li>
+            <li><a href="#o-que-e-abliteration">O que é abliteration (e por que quase não dói)</a></li>
+            <li><a href="#heretic">O Heretic: abliteration virou problema de otimização</a></li>
+            <li><a href="#pareto">A fronteira de Pareto publicada: recusas × KL</a></li>
+            <li><a href="#custo">O custo medido: −0,5 ponto de média, dentro do ruído</a></li>
+            <li><a href="#mtp">O detalhe que quase passou: MTP re-enxertado e verificado</a></li>
+            <li><a href="#quant">Qual quant escolher: a tabela PPL real (e o que ela não diz)</a></li>
+            <li><a href="#ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</a></li>
+            <li><a href="#limites">O que esses números NÃO dizem (limitações explícitas)</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="o-fenomeno">O fenômeno: 1 milhão de downloads em cima de um modelo de 6 dias</h2>
+    <p>O Qwen3.8-27B foi publicado em 14 de agosto de 2026. Seis dias depois, um derivado dele — o <a href="https://huggingface.co/JonathanColetti/Qwen3.8-27B-Uncensored-GGUF">Qwen3.8-27B-Uncensored-GGUF</a> de JonathanColetti — já tinha <strong>979.768 downloads</strong> (verificado na HF API em 20/08), com 510 likes. Somando os derivados <em>Uncensored</em> publicados em seguida — o <a href="https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-MLX">MLX para Apple Silicon</a> (2.628 downloads) e o <a href="https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-FP8">FP8</a> (76.109 downloads) — o ecossistema passa de <strong>1,05 milhão de downloads em menos de uma semana</strong>, com dois dos três repos atualizados no próprio dia 20/08.</p>
+    <p>Para dar escala: o modelo base levou 15 dias para chegar a 1,37 milhão de downloads mensais. Um derivado não-oficial, feito por um autor da comunidade, está colando nesse ritmo — em downloads de arquivo, não em visitantes de página.</p>
+    <div class="leader">📊 <strong>Dado citável:</strong> 3 repos derivados do Qwen3.8-27B na família Uncensored somam <strong>1.058.505 downloads</strong> até 20/08/2026 (GGUF 979.768 + FP8 76.109 + MLX 2.628; HF API). O GGUF do JonathanColetti tem <strong>98/100 → 12/100 recusas</strong> (100 prompts nocivos held-out) com <strong>KL 0,1191</strong> vs base e <strong>MMLU −0,2</strong> — medições publicadas no README do próprio repo.</div>
+    <p>Não é um caso isolado: é o comportamento padrão do ecossistema local a cada lançamento grande. O que mudou desta vez é a <em>qualidade da execução</em> — e é aí que este artigo entra. Este não é um tutorial de uso nocivo; é a anatomia técnica de como a abliteration moderna funciona, o que ela preserva, o que ela não mede e como escolher o arquivo certo se você decide usá-la para pesquisa, red-teaming ou uso que o modelo base recusa indevidamente.</p>
+
+    <h2 id="o-que-e-abliteration">O que é abliteration (e por que quase não dói)</h2>
+    <p><strong>Abliteration</strong> é remover o comportamento de recusa de um LLM editando pesos, sem fine-tuning e sem dados de treino adicionais. A base é o achado de <a href="https://arxiv.org/abs/2406.11717">Arditi et al. 2024</a> (arXiv 2406.11717): em modelos alinhados com RLHF, a recusa é majoritariamente <strong>linear</strong> — ela acontece ao longo de uma direção (ou poucas) no espaço de ativações, direção essa que é consistentemente a mesma em prompts benignos e nocivos.</p>
+    <p>Se a recusa mora numa direção, dá para removê-la com ortogonalização: projetar a direção para fora das matrizes de peso relevantes (no caso do Qwen3.8-27B, o Heretic edita <code>attn.o_proj</code> e <code>mlp.down_proj</code>). O resto do comportamento do modelo — raciocínio, conhecimento, estilo — vive majoritariamente fora dessa direção, por isso o dano colateral pode ser pequeno.</p>
+    <p>O "pode" é a parte difícil. Remova pouco: o modelo continua recusando. Remova demais: o modelo vira mingau. As abliterations manuais de 2024/2025 erravam nessa dosagem — o resultado era ou "ainda recusa" ou "recusa zero mas o modelo fala besteira". O diferencial do ecossistema 2026 é ter transformado a dosagem em <em>problema de otimização</em>.</p>
+
+    <h2 id="heretic">O Heretic: abliteration virou problema de otimização</h2>
+    <p><a href="https://github.com/p-e-w/heretic">Heretic</a> (p-e-w, <strong>27.920 stars</strong>, último push 17/08/2026) é a ferramenta por trás do Qwen3.8-27B-Uncensored. O pipeline dele:</p>
+    <ol style="margin-left:25px; margin-bottom:15px;">
+        <li><strong>Coleta de ativações:</strong> roda um conjunto de prompts nocivos e benignos pelo modelo e registra as ativações nas camadas candidatas.</li>
+        <li><strong>Cálculo da direção de recusa:</strong> separa as ativações nocivas das benignas e acha a direção que melhor as discrimina (método de Arditi et al.).</li>
+        <li><strong>Busca TPE via Optuna:</strong> em vez de uma intensidade fixa de remoção, varre a intensidade (e hiperparâmetros de camada) com ~200 trials, medindo em cada ponto <em>quantas recusas sobraram</em> e <em>quanto o modelo se afastou do original</em> (divergência KL de primeiro token vs base).</li>
+        <li><strong>Saída:</strong> uma fronteira de Pareto — a lista de pontos não-dominados entre "menos recusas" e "menos dano", para o autor escolher.</li>
+    </ol>
+    <p>A referência de qualidade do próprio projeto Heretic: no gemma-3-12b-it, a busca levou as recusas de 97/100 para <strong>3/100 com KL 0,16</strong> — contra KL 0,45–1,04 das abliterations manuais documentadas para modelos comparáveis. Ou seja: mais recusa removida <em>e</em> menos dano, ao mesmo tempo. É isso que explica o "quase não perde inteligência" do título.</p>
+    <p>No caso do Qwen3.8-27B: a abliteration roda em bf16 (não sobre um quant), o LoRA resultante é mergeado no bf16 base, e o arquivo publicado não é um round-trip quantizado. Os pesos que você baixa são derivados do merge bf16 — a quantização vem depois, como camada separada e mensurada.</p>
+
+    <h2 id="pareto">A fronteira de Pareto publicada: recusas × KL</h2>
+    <p>O README do GGUF publica a tabela inteira da busca Heretic: 200 trials, <strong>23 pontos não-dominados</strong>. O modelo publicado é um ponto nessa fronteira — uma escolha, não um ótimo global. Amostra (recusas / KL de primeiro token):</p>
+    <table>
+        <tr><th>Recusas (de 100)</th><th>KL vs base</th><th></th></tr>
+        <tr class="highlight"><td>12</td><td>0,1191</td><td>← publicado</td></tr>
+        <tr><td>13</td><td>0,1052</td><td></td></tr>
+        <tr><td>19</td><td>0,0722</td><td></td></tr>
+        <tr><td>23</td><td>0,0635</td><td></td></tr>
+        <tr><td>36</td><td>0,0387</td><td></td></tr>
+        <tr><td>60</td><td>0,0290</td><td></td></tr>
+        <tr><td>98</td><td>0,0004</td><td>≈ o modelo base, sem edição</td></tr>
+    </table>
+    <p>Como ler: o autor escolheu o ponto mais agressivo da fronteira (12 recusas restantes) aceitando o maior KL do conjunto publicável. Se o objetivo fosse "recusas na metade" (por volta de 50), o KL cairia para ~0,03 — um quarto do dano. A fronteira permite essa escolha explícita; a diferença contra a era manual é que agora ela é <em>documentada</em>.</p>
+    <div class="callout"><strong>Metodologia da medição de recusas:</strong> 100 prompts held-out do dataset <code>mlabonne/harmful_behaviors</code> (split de teste) — pedidos explicitamente nocivos, não benignos. O número <em>não</em> mede over-refusal (quantas vezes o modelo recusa trabalho legítimo); mede quanto do comportamento de segurança original sobre pedidos nocivos permanece. KL é divergência de primeiro token vs o modelo base não-modificado — o proxy do otimizador para "quanto dano causamos"; baixo KL não certifica que raciocínio ou código sobreviveram.</div>
+
+    <h2 id="custo">O custo medido: −0,5 ponto de média, dentro do ruído</h2>
+    <p>O README compara base e derivado nos <strong>mesmos settings, mesma sessão, bf16, 0-shot</strong> via lm-evaluation-harness:</p>
+    <table>
+        <tr><th>Task</th><th>Base</th><th>Uncensored</th><th>Δ</th><th>Erro-padrão</th></tr>
+        <tr><td>MMLU</td><td>83,4</td><td>83,3</td><td>−0,2</td><td>±0,30</td></tr>
+        <tr><td>ARC-Challenge</td><td>58,9</td><td>57,7</td><td>−1,2</td><td>±1,44</td></tr>
+        <tr><td>HellaSwag</td><td>82,8</td><td>82,9</td><td>+0,1</td><td>±0,38</td></tr>
+        <tr><td>Winogrande</td><td>76,1</td><td>75,3</td><td>−0,8</td><td>±1,21</td></tr>
+        <tr class="highlight"><td><strong>Média</strong></td><td></td><td></td><td><strong>−0,5</strong></td><td></td></tr>
+    </table>
+    <p>Todo delta está dentro ou perto do erro-padrão reportado — <strong>nenhum é claramente separável do ruído run-to-run</strong>. Esse é o dado que sustenta o "quase não perde inteligência" do título. Dois avisos de honestidade que o próprio README faz questão de dar:</p>
+    <ul>
+        <li><strong>São escores 0-shot e não são comparáveis aos números few-shot publicados pela Qwen</strong> no model card do 3.8. Comparáveis entre si (base vs derivado, mesma sessão) — que é o que isola o custo da edição. O ARC baixo para um modelo desse MMLU é sensibilidade de formato em modelo reasoning-tuned, presente também no base (58,9 nos mesmos settings).</li>
+        <li><strong>O que não foi medido:</strong> nenhuma avaliação generativa (GSM8K, HumanEval), nada de matemática, código ou multilíngue, e o harness carrega só o stack de texto — nem a torre de visão nem o MTP passaram por benchmark. "Dentro do ruído em 4 benchmarks de múltipla escolha" é o escopo exato do claim.</li>
+    </ul>
+    <p>Contexto do portal: os benchmarks oficiais do Qwen3.8-27B (26 no total, do model card) estão no nosso <a href="/guia/benchmarks-comparativos">guia de benchmarks comparativos</a>. A tabela acima é outra coisa — não mede o modelo contra o mercado, mede a edição contra o original.</p>
+
+    <h2 id="mtp">O detalhe que quase passou: MTP re-enxertado e verificado</h2>
+    <p>Aqui está o detalhe técnico mais interessante do repo, e o motivo de ele estar num portal sobre o Qwen3.8-27B "de fábrica": <strong>a abliteration derruba os tensores <code>mtp.*</code></strong>.</p>
+    <p>Motivo: o processo re-salva o modelo através do transformers — que não carrega a cabeça de Multi-Token Prediction do Qwen3.8-27B. O resultado seria um GGUF onde o <code>config.json</code> continua anunciando MTP, mas os tensores não existem mais: o speculative decoding silenciosamente não aconteceria, e ninguém receberia erro algum. É a classe de bug silencioso que descobre semanas depois, comparando throughput.</p>
+    <p>O autor resolveu explicitamente:</p>
+    <ul>
+        <li>Os tensores <code>mtp.*</code> são <strong>copiados verbatim do checkpoint base</strong> após o merge — a abliteration nunca os toca (edita <code>attn.o_proj</code> e <code>mlp.down_proj</code> do stack principal).</li>
+        <li>Cada arquivo é <strong>inspecionado pós-quantização</strong>: um script (<code>quantize.py inspect</code>) confere bloco a bloco; fused = 65/65 blocos com <code>has_mtp: true</code>, noMTP = 64/64.</li>
+        <li>O <strong>draft head fica sempre em Q8_0</strong> (3,2 GB em arquivo separado) — quantizá-lo mais duro custa taxa de aceitação por quase nada de disco. O MTP embutido nos arquivos fused é pinado em q8_0 exatamente por isso (no IQ2_M, o bloco MTP sobrevive a 2-bit por causa do pin).</li>
+        <li>Aviso honesto do próprio repo: o draft head foi treinado contra o modelo <em>não-modificado</em>, então a taxa de aceitação pode cair um pouco — mas speculative decoding verifica cada token contra o alvo, <strong>a qualidade do output não é afetada</strong>.</li>
+    </ul>
+    <p>Quanto vale o MTP aqui? Medido na H200 NVL pelo próprio autor (256 tokens gerados, mediana de 3): sem especulação ~74,8 tok/s em prose; com <code>draft-mtp n_max=1</code>, 89,0 (1,19×); em código, 74,7→95,4 (1,28×). Curioso: <code>n_max</code> alto <em>derruba</em> o throughput nesse modelo (n_max 7 em prose: 0,67×) — a aceitação do draft não sustenta drafts longos, e o sweep de 1 a 3 é obrigatório por hardware. O contexto completo do MTP no llama.cpp (flags, VRAM, o que ganha em cada GPU) está no nosso <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning e configuração ideal</a>.</p>
+    <pre><code># uso publicado no README (llama.cpp com MTP merged no arquivo)
+llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
+  --spec-type draft-mtp --spec-draft-n-max 2 \
+  -ngl 99 -c 8192</code></pre>
+
+    <h2 id="quant">Qual quant escolher: a tabela PPL real (e o que ela não diz)</h2>
+    <p>O repo publica perplexidade wikitext-2 para cada arquivo, medida na mesma sessão, com erro-padrão (baseline f16: 7,1557):</p>
+    <table>
+        <tr><th>Quant</th><th>Tamanho</th><th>PPL wikitext-2</th><th>vs f16</th></tr>
+        <tr><td>Q5_K_M</td><td>19,5 GB</td><td>7,1573 ± 0,25055</td><td>+0,0016</td></tr>
+        <tr><td>IQ4_XS</td><td>15,3 GB</td><td>7,1583 ± 0,25019</td><td>+0,0026</td></tr>
+        <tr><td>Q6_K</td><td>22,4 GB</td><td>7,1689 ± 0,25149</td><td>+0,0132</td></tr>
+        <tr><td>Q8_0</td><td>29,0 GB</td><td>7,1764 ± 0,25195</td><td>+0,0207</td></tr>
+        <tr><td>Q4_K_M</td><td>16,8 GB</td><td>7,1814 ± 0,25227</td><td>+0,0257</td></tr>
+        <tr class="highlight"><td>IQ2_M</td><td>10,6 GB</td><td>7,8581 ± 0,27481</td><td>+0,7024 (~2,8σ)</td></tr>
+    </table>
+    <p>A leitura que o próprio README manda fazer (e a maioria dos agregadores ignora): <strong>os cinco quants de Q4 a Q8 têm PPL dentro do erro-padrão uns dos outros — a ordenação entre eles é ruído</strong>. Não conclua que Q5_K_M é melhor que Q8_0 porque mediu 0,009 a menos; o span de 0,026 contra erro de ~0,25 não separa nada. O único arquivo estatisticamente separável é o IQ2_M, ~2,8 erros-padrão acima do baseline.</p>
+    <p>Decisão prática, então, é hardware puro — e aqui o repo é explícito sobre o risco comportamental:</p>
+    <ul>
+        <li><strong>24 GB:</strong> Q4_K_M (16,8 GB) ou Q5_K_M (19,5 GB) com contexto folgado; Q6_K (22,4 GB) cabe justo em texto.</li>
+        <li><strong>16 GB:</strong> IQ4_XS (15,3 GB), modo texto, contexto curto — mesmo perfil do guia do portal para <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">16 GB de VRAM</a>.</li>
+        <li><strong>12 GB:</strong> IQ2_M (10,6 GB) — mas o README avisa: <em>expect the loss to land hardest on the thing this model is used for</em>. A instabilidade perto da antiga fronteira de recusa é a propriedade menos estável do modelo, e 2-bit compõe exatamente ela. "Avalie comportamento em Q6_K ou Q8_0, nunca em 2-bit" — recomendação literal.</li>
+    </ul>
+    <p>Um detalhe de engenharia que diferencia o repo: a <strong>imatrix</strong> (matriz de importância para a quantização) é calculada direto do f16 — não de um quant intermediário — com wikitext-2 raw, 200 chunks, e é publicada junto (13,6 MB) para quem quiser construir tamanhos que o repo não publica. A tabela de GB por quant do modelo base (com mmproj e drafter para comparação) está no nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização</a>.</p>
+
+    <h2 id="ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</h2>
+    <p>O GGUF do JonathanColetti é a âncora, mas o ecossistema Uncensored do Qwen3.8-27B tem três repos ativos:</p>
+    <table>
+        <tr><th>Repo</th><th>Formato</th><th>Downloads (20/08)</th><th>Likes</th><th>Estado</th></tr>
+        <tr class="highlight"><td>JonathanColetti/…-GGUF</td><td>GGUF IQ2_M–Q8_0</td><td>979.768</td><td>510</td><td>Criado 14/08, última alteração 16/08</td></tr>
+        <tr><td>orcarouter/…-FP8</td><td>FP8 (vLLM/SGLang)</td><td>76.109</td><td>675</td><td>Criado 15/08, atualizado 20/08 08:41</td></tr>
+        <tr><td>orcarouter/…-MLX</td><td>MLX 2/4/6/8-bit</td><td>2.628</td><td>708</td><td>Criado 17/08, atualizado 20/08 08:36</td></tr>
+    </table>
+    <p>Sobre o MLX (Apple Silicon): publicado pelo orcarouter com quants de 2 a 8-bit, <strong>visão preservada em BF16</strong> e as tags <code>ai-red-team</code> / <code>red-teaming</code> — o posicionamento declarado do repo é ferramenta de segurança, não produto de consumo. É o caminho para Mac (o guia de visão multimodal do portal, que cobre o modelo base no llama.cpp/Ollama, está <a href="/guia/qwen3-8-27b-visao-videos-local">aqui</a>).</p>
+    <p>Sobre o FP8: 76.109 downloads e 675 likes — mas o repo é <strong>gated</strong> (exige login e aceite de termos para ver o conteúdo). Por isso este artigo cita apenas os metadados públicos dele (downloads, likes, tags, datas); nada do que está escrito no readme dele foi lido ou verificado por este portal. Se você precisa de FP8 non-gated do modelo base, o checkpoint oficial <code>Qwen/Qwen3.8-27B-FP8</code> tem nosso <a href="/guia/como-rodar-sglang-qwen3-8-27b">guia completo de SGLang</a>.</p>
+
+    <h2 id="limites">O que esses números NÃO dizem (limitações explícitas)</h2>
+    <p>O README do GGUF é incomum na quantidade de caveats que publica — e é justo reportá-las, porque elas definem o alcance real de cada claim:</p>
+    <ul>
+        <li><strong>"Reduzida, não eliminada, e não redirecionada."</strong> 12/100 ainda recusam; e o modelo não ganhou nenhum comportamento novo — só perdeu parte da recusa. O README também nota que uma fração significativa dos pedidos que o base recusa continua recusada.</li>
+        <li><strong>Recusas medidas em modo non-thinking.</strong> O template de chat abre um bloco <code>&lt;think&gt;</code>; a avaliação o fecha explicitamente para pontuar respostas. Com thinking ligado, a taxa pode diferir — em qualquer direção.</li>
+        <li><strong>100 prompts de um único dataset.</strong> Generaliza para aquela distribuição de pedidos nocivos e nada além. Comportamento de recusa em outros tópicos: não caracterizado.</li>
+        <li><strong>PPL wikitext-2 detecta dano bruto de quantização</strong> — não perda de capacidade em raciocínio, código ou multilíngue.</li>
+        <li><strong>Quants compõem tudo.</strong> As medições de recusa/KL/benchmarks são do merge bf16; os arquivos de download são quantizados. E IQ2_M compõe mais ainda.</li>
+        <li><strong>Licença:</strong> Apache 2.0 herdada — mas o README lembra que a licença e a política de uso aceitável do modelo base seguem valendo para o derivado. "Uso pretendido: inferência local. Não pretendido para deploy para terceiros sem a sua própria camada de segurança."</li>
+    </ul>
+    <div class="callout-warn"><strong>Posição editorial deste portal:</strong> nenhum desses números é endosso. Reportamos o que o README mede, do jeito que ele mede, porque dados de qualidade sobre esse segmento são raros e a conversa técnica fica melhor com eles na mesa. Quem opera modelos assim em produção carrega a responsabilidade do que o modelo agora atende — o README do próprio repo diz o mesmo.</div>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O que é um modelo abliterated?</h3>
+        <p>Um LLM cujo comportamento de recusa foi reduzido removendo-se matematicamente as "direções de recusa" dos pesos — sem fine-tuning e sem dados adicionais. O método (Arditi et al. 2024, arXiv 2406.11717) mostra que a recusa de modelos alinhados é majoritariamente linear: ela acontece ao longo de poucas direções no espaço de ativações, e projetar essas direções para fora dos pesos reduz a recusa com perturbação pequena no restante do comportamento. Ferramentas como o Heretic automatizam o cálculo das direções e a intensidade da remoção, otimizando a troca entre menos recusas e menos dano ao modelo (divergência KL vs base).</p>
+    </div>
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B-Uncensored perde inteligência?</h3>
+        <p>Na medição publicada, quase nada: MMLU 83,4→83,3 (−0,2), ARC-C −1,2, HellaSwag +0,1 e Winogrande −0,8 — média −0,5, todos dentro ou próximos do erro-padrão reportado (MMLU ±0,30; ARC ±1,44; HellaSwag ±0,38; Winogrande ±1,21). São escores 0-shot no lm-evaluation-harness em bf16, mesma sessão para base e derivado — não comparáveis aos few-shot da Qwen. Não houve avaliação generativa (GSM8K, HumanEval), nem matemática, código, multilíngue, visão ou MTP.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O que é o Heretic e por que ele é diferente de uma abliteration manual?</h3>
+        <p>Heretic (github.com/p-e-w/heretic, 27.920 stars) automatiza a abliteration: em vez de remover uma direção de recusa à mão com intensidade fixa, ele executa uma busca TPE via Optuna (~200 trials) que co-minimiza recusas × divergência KL vs base, retornando uma fronteira de Pareto. Referência do projeto: gemma-3-12b-it saiu de 97/100 para 3/100 recusas com KL 0,16 — contra KL 0,45–1,04 das abliterations manuais. No Qwen3.8-27B: 200 trials, 23 pontos não-dominados; o publicado (12/100, KL 0,1191) é uma escolha nessa fronteira.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Por que o MTP precisou ser re-enxertado?</h3>
+        <p>A abliteration re-salva o modelo pelo transformers, que não carrega a cabeça MTP (tensores mtp.*) — enquanto o config.json continuaria anunciando-a. O autor copia os tensores mtp.* verbatim do checkpoint base após o merge e inspeciona cada arquivo pós-quantização (65/65 blocos = MTP intacto). Sem isso, o speculative decoding silenciosamente não aconteceria. O draft head fica sempre em Q8_0; como foi treinado contra o modelo original, a taxa de aceitação pode cair levemente — mas cada token é verificado contra o alvo, então a qualidade do output não muda.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qual quant escolher?</h3>
+        <p>Pelo PPL (baseline f16 7,1557): Q5_K_M 7,1573 · IQ4_XS 7,1583 · Q6_K 7,1689 · Q8_0 7,1764 · Q4_K_M 7,1814 — todos dentro do erro-padrão (~0,25); a ordenação entre eles é ruído. IQ2_M (7,8581, ~2,8σ) é o único separável. A escolha é pelo hardware: 24 GB → Q4_K_M/Q5_K_M; 16 GB → IQ4_XS modo texto; 12 GB → IQ2_M, com o aviso do repo de avaliar comportamento em Q6_K/Q8_0, nunca em 2-bit.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O derivado é igual ao base com recusa a menos?</h3>
+        <p>Em arquitetura e licença, sim: 64 camadas, vocab 248.320, contexto 262.144, visão nativa, Apache 2.0. Em comportamento, não exatamente: recusas 98→12/100 (em modo non-thinking), KL 0,1191, comportamento menos estável perto da antiga fronteira de recusa, e "substancialmente reduzida, não eliminada, e não redirecionada". A política de uso aceitável do base segue valendo.</p>
+    </div>
+
+    <div class="callout">
+        <strong>Continue por aqui:</strong> <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">tabela GGUF com GB medidos</a> · <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning e MTP</a> · <a href="/guia/qwen3-8-27b-visao-videos-local">visão e vídeo locais</a> · <a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang + FP8 oficial</a> · <a href="/guia/faq">FAQ do portal</a>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — Qwen3.8-27B-Uncensored e o ecossistema abliterated | Fontes: README integral de JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (Hugging Face, lido integralmente e verificado em 20/08/2026 — recusas 98→12/100, KL 0,1191, Pareto de 23 pontos, MMLU/ARC/HellaSwag/Winogrande com erros-padrão, PPL por quant, verificação MTP 65/65, bench MTP na H200), HF API (downloads/likes/datas de JonathanColetti GGUF, orcarouter MLX e FP8 — metadados públicos apenas para o FP8 gated; nada do readme dele foi acessado), GitHub API p-e-w/heretic (27.920 stars, push 17/08/2026), Arditi et al. 2024 (arXiv 2406.11717). Nota de transparência: este portal não rodou nenhuma das medições citadas — todas são do autor do repo ou do projeto Heretic; a posição editorial é reportar os dados com suas limitações, não endossar usos. Geração deste conteúdo assistida por IA e revisada.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
