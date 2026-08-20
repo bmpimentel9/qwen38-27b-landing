@@ -8,9 +8,36 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-20] — Artigo "Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias" (t_a5fe3174)
+
+### Added
+- **Artigo `/guia/qwen3-8-27b-uncensored-abliterated`** (Tema 1 do daily
+  20/08, discovery t_0b9e4ef4): história de ecossistema + guia técnico do
+  abliterated. Gap fechado: 0 menções a uncensored/abliterated/heretic em
+  todo o portal, enquanto 3 repos derivados somam 1.058.505 downloads e 2
+  foram atualizados no dia 20/08. Âncoras (verificadas ao vivo 20/08, README
+  do JonathanColetti lido integralmente): 979.768 downloads em 6 dias;
+  recusas 98/100 → 12/100 (100 prompts nocivos held-out, modo non-thinking)
+  com KL de primeiro token 0,1191; MMLU 83,4→83,3 e demais deltas dentro do
+  erro-padrão (0-shot, lm-eval-harness, bf16, mesma sessão); fronteira de
+  Pareto publicada (200 trials Heretic, 23 pontos não-dominados); MTP
+  re-enxertado do checkpoint base e verificado arquivo por arquivo (65/65
+  blocos); tabela PPL wikitext-2 por quant com o aviso de não-ordenabilidade
+  (IQ2_M único separável, ~2,8σ). Heretic: 27.920 stars (GitHub API).
+  JSON-LD: TechArticle + 2× SoftwareApplication (AIModel, ADR-008) + HowTo +
+  FAQPage (6) + BreadcrumbList. Tom: técnico, sem tutorial de uso nocivo,
+  limitações do README reportadas na íntegra (incluindo "reduzida, não
+  eliminada"); FP8 gated citado apenas por metadados públicos.
+- **FAQ do portal**: nova Q&A "O que é um modelo abliterated?" (HTML +
+  JSON-LD, 31→32 perguntas) com cross-ref para o artigo novo.
+- **Companions**: sitemap.xml (28 URLs; +fix de `</url>` faltante na entrada
+  do LTX-2.5 herdado de main), llms.txt (3 blocos de stats citáveis + página
+  + Q&A), card "Análise" no topo do /guia.
+- **Cross-refs**: quantizacao-gguf-30b, qwen3-8-27b-reasoning-configuracao-ideal
+  (MTP), qwen3-8-27b-visao-videos-local, como-rodar-sglang (FP8 oficial),
+  qwen38-27b-16gb-vram.
 
 ## [2026-08-20] — Atualização diária
-
 
 ### Added
 - Auto-cura: corrigir 28 customização(ões) perdida(s) pós-update (programadora)

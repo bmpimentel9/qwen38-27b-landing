@@ -303,6 +303,14 @@
             "@type": "Answer",
             "text": "Depende do trabalho. Código e engenharia agêntica: Qwen3.8-27B (LiveCodeBench v6 90,3; OSWorld-Verified 84,3; SWE-bench Pro 61,7 — model card oficial). Agente 24/7 com ferramentas MCP: Muse Glimmer 30B (MCP Atlas 75,5). GPU de 12–16 GB: GPT-OSS-20B (GGUF MXFP4 de 11,27 GiB). Contexto de 1M com 110 GB+ de memória unificada: DeepSeek V4 Flash (284B totais / 13B ativos, UD-IQ3_XXS 103 GB). Fontes: model cards oficiais e dossiê do portal (19/08/2026); página completa em /guia/melhores-modelos-locais-30b."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "O que é um modelo abliterated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Um LLM cujo comportamento de recusa foi reduzido removendo-se as \"direções de recusa\" dos pesos — sem fine-tuning e sem dados adicionais. O método (Arditi et al. 2024, arXiv 2406.11717) mostra que a recusa de modelos alinhados é majoritariamente linear no espaço de ativações; projetar essas direções para fora dos pesos reduz a recusa com perturbação pequena no restante do comportamento. Ferramentas como o Heretic (github.com/p-e-w/heretic, 27.920 stars) automatizam o cálculo das direções e a intensidade da remoção, otimizando a troca entre menos recusas e menos dano (divergência KL vs base). Exemplo medido no Qwen3.8-27B: o derivado Uncensored-GGUF (979.768 downloads em 6 dias) derrubou as recusas de 98/100 para 12/100 em 100 prompts nocivos held-out, com KL 0,1191 e MMLU 83,4→83,3 (−0,2, dentro do erro-padrão). Importante: recusa \"substancialmente reduzida, não eliminada\" — e a medição cobre 4 benchmarks de múltipla escolha, não código, matemática ou visão. Análise técnica completa em /guia/qwen3-8-27b-uncensored-abliterated (fonte: README JonathanColetti/Qwen3.8-27B-Uncensored-GGUF + Heretic, verificado 20/08/2026)."
+          }
         }
       ]
     }
@@ -488,6 +496,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <h2 id="modelo">Sobre o Modelo</h2>
+
+    <div class="faq-item">
+        <h3>O que é um modelo abliterated?</h3>
+        <p>Um LLM cujo comportamento de recusa foi reduzido removendo-se as <strong>direções de recusa</strong> dos pesos — sem fine-tuning e sem dados adicionais (método de Arditi et al. 2024, arXiv 2406.11717). Ferramentas como o Heretic automatizam o cálculo e a intensidade, otimizando a troca entre menos recusas e menos dano (KL vs base). No Qwen3.8-27B-Uncensored-GGUF: recusas 98→12/100 com MMLU −0,2. Análise completa em <a href="/guia/qwen3-8-27b-uncensored-abliterated">/guia/qwen3-8-27b-uncensored-abliterated</a>.</p>
+    </div>
 
     <div class="faq-item">
         <h3>Qual a licença do Qwen3.8-27B?</h3>
