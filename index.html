@@ -128,7 +128,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         "price": "0",
         "priceCurrency": "USD"
       },
-      "softwareRequirements": "vLLM >= 0.27.2, GGUF via llama.cpp/Ollama, ~17 GB VRAM em 4 bits, ~27 GB em FP8, ~54 GB em BF16",
+      "softwareRequirements": "vLLM >= 0.27.1, GGUF via llama.cpp/Ollama, ~17 GB VRAM em 4 bits, ~27 GB em FP8, ~54 GB em BF16",
       "featureList": [
         "27B parâmetros densos",
         "Atenção híbrida (Gated DeltaNet + Gated Attention)",
@@ -202,7 +202,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
           "name": "Como rodar o Qwen3.8-27B localmente?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "O caminho mais curto é 'ollama run qwen3.8:27b'. Com llama.cpp: 'llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144 --temp 1.0 --top-p 0.95 --top-k 20'. Com vLLM (>= 0.27.2): 'vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3'."
+            "text": "O caminho mais curto é 'ollama run qwen3.8:27b'. Com llama.cpp: 'llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144 --temp 1.0 --top-p 0.95 --top-k 20'. Com vLLM (>= 0.27.1): 'vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3'."
           }
         },
         {
@@ -677,7 +677,7 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
           <div class="sp"><span class="k">FP8</span><span class="v mono">~27 GB</span></div>
           <div class="sp"><span class="k">GGUF 4 bits</span><span class="v mono ok">~14–17 GB</span></div>
           <div class="sp"><span class="k">NVFP4 (Blackwell)</span><span class="v mono">24,6 GiB · 6,6M tokens de KV</span></div>
-          <div class="sp"><span class="k">Requisito vLLM</span><span class="v mono">≥ 0.27.2</span></div>
+          <div class="sp"><span class="k">Requisito vLLM</span><span class="v mono">≥ 0.27.1</span></div>
           <div class="sp"><span class="k">Quantizações no lançamento</span><span class="v">Unsloth (GGUF)</span></div>
         </div>
       </div>
@@ -940,7 +940,7 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
       </div>
       <div class="tier">
         <div class="lbl">Blackwell</div><div class="n">24,6 GiB</div>
-        <div class="d">NVFP4 com 6,6M tokens de KV a 1M de contexto, via vLLM 0.27.2+.</div>
+        <div class="d">NVFP4 com 6,6M tokens de KV a 1M de contexto, via vLLM 0.27.1+.</div>
         <div class="foot">1M de contexto em uma GPU</div>
       </div>
     </div>
@@ -982,7 +982,7 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
         </div>
         <div class="code" style="border:none;border-top:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);flex:1">
           <div class="code-head"><span class="t">vLLM · servidor OpenAI</span><button class="copy" type="button" data-copy="vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3">copiar</button></div>
-          <pre><span class="c"># exige vLLM 0.27.2 ou superior</span>
+          <pre><span class="c"># exige vLLM 0.27.1 ou superior</span>
 <span class="k">vllm</span> serve Qwen/Qwen3.8-27B \
   --max-model-len 262144 \
   --reasoning-parser qwen3</pre>
