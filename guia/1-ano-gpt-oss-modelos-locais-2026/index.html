@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 ano de gpt-oss: 12M downloads/mês e o que mudou (2026)</title>
+    <meta name="description" content="gpt-oss faz 1 ano com 12,27M downloads/mês ainda hoje (HF API). Qwen3.8-27B chegou 15 dias depois. O claim de '2× mais inteligente', examinado.">
+    <meta name="keywords" content="gpt-oss um ano, gpt-oss vs qwen 3.8, gpt-oss 120b downloads, gpt-oss 20b downloads, modelos locais 2026, progresso modelos abertos 2026, gpt-oss 2026, open weights 2026, retrospectiva gpt-oss, qwen3.8 vs gpt-oss">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então">
+    <meta property="og:description" content="gpt-oss completa 1 ano em 04/08 com 12,27M downloads/mês ainda hoje (7,59M no 20B + 4,68M no 120B, HF API). O Qwen3.8-27B chegou 15 dias depois com 11.733 likes. O que os dados dizem sobre o progresso dos open weights em 12 meses.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-20T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="modelos locais">
+    <meta property="article:tag" content="open weights">
+    <meta property="article:tag" content="retrospectiva">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="1 ano de gpt-oss: 12M downloads/mês e o dobro de inteligência no mesmo hardware?">
+    <meta name="twitter:description" content="Retrospectiva com dados de adoção da HF API: 12,27M downloads/mês um ano depois, 11.733 likes do Qwen3.8-27B em 15 dias — e o que é percepção vs medição.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então",
+          "description": "Retrospectiva de 12 meses do gpt-oss (openai/gpt-oss-20b e gpt-oss-120b, lançados em 04/08/2025) com dados de adoção da Hugging Face API em 20/08/2026: 7.590.370 downloads/mês no 20B e 4.680.489 no 120B — 12,27 milhões/mês combinados um ano após o lançamento — além de 4.934 e 5.114 likes. O sucessor de classe, Qwen3.8-27B (lançado 05/08/2026), soma 1.373.584 downloads/mês e 11.733 likes em 15 dias. Inclui a percepção 'duas vezes mais inteligente no mesmo hardware' do engenheiro William Callahan (19/08/2026), o contraponto medido do Artificial Analysis Intelligence Index (52 pontos) e o que mudou na engenharia dos modelos locais em 12 meses.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-20",
+          "dateModified": "2026-08-20",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026",
+          "proficiencyLevel": "Intermediate",
+          "dependencies": "Nenhum — artigo retrospectivo de adoção; nenhum benchmark foi executado por este portal"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "gpt-oss-20b",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, macOS, Windows",
+          "softwareVersion": "20B (MoE, ~3,6B ativos)",
+          "license": "https://spdx.org/licenses/Apache-2.0.html",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "publisher": { "@type": "Organization", "name": "OpenAI" },
+          "releaseNotes": "Lançado em 04/08/2025 (HF: openai/gpt-oss-20b, createdAt 2025-08-04T22:33:29Z); 7.590.370 downloads/mês e 4.934 likes em 20/08/2026 (HF API)"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "gpt-oss-120b",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, macOS, Windows",
+          "softwareVersion": "120B (MoE, ~5,1B ativos)",
+          "license": "https://spdx.org/licenses/Apache-2.0.html",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "publisher": { "@type": "Organization", "name": "OpenAI" },
+          "releaseNotes": "Lançado em 04/08/2025 (HF: openai/gpt-oss-120b, createdAt 2025-08-04T22:33:06Z); 4.680.489 downloads/mês e 5.114 likes em 20/08/2026 (HF API)"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Vale a pena rodar gpt-oss em 2026?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Depende do hardware e do trabalho. Em GPUs de 12–16 GB, o gpt-oss-20b (GGUF MXFP4 de 11,27 GiB medidos) continua sendo o pick do portal em 2026 — a geração nova da classe 27B precisa de 24 GB para o modelo 4-bit + cache. Em 24 GB+, o Qwen3.8-27B domina: 52 no Artificial Analysis Intelligence Index (medido por terceiro), visão nativa e contexto 256K nativos. E os downloads confirmam que o gpt-oss segue relevante: 12,27 milhões/mês somados um ano após o lançamento (7,59M no 20B + 4,68M no 120B, HF API de 20/08/2026)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quantos downloads o gpt-oss tem por mês?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Em 20/08/2026 (Hugging Face API): 7.590.370 downloads/mês (janela de 30 dias) no openai/gpt-oss-20b e 4.680.489 no openai/gpt-oss-120b — 12.270.859/mês combinados, um ano após o lançamento em 04/08/2025."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O gpt-oss-120b é melhor que o Qwen3.8-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Não há benchmark cruzado publicado que compare os dois diretamente, e este portal não encontrou nenhum. O que existe: o Qwen3.8-27B pontua 52 no Artificial Analysis Intelligence Index (medição independente de 17/08/2026), o mesmo score do GPT-5.6 Luna e 1 ponto atrás do DeepSeek V4 Pro (1,7T) e do GLM-5.2 (753B); o gpt-oss-120b não consta na tabela de 135 open weights de até 40B porque tem 120B — está numa classe de tamanho diferente. Na prática local, o 27B é denso (todos os parâmetros ativos por token) e o 120B é MoE de 128 especialistas com ~5,1B ativos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que significa o '2× mais inteligente' do post do williamcallahan?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "É a percepção de uso de um engenheiro (William Callahan, 19/08/2026), não um benchmark: \"Using the same hardware as last year, the Qwen 3.8 27B parameter model is seemingly twice as intelligent and capable as those high-quality last-year models\". Trate como testemunho de uso diário — e contraponha com o número medido: 52 no Artificial Analysis Intelligence Index, o mesmo score do GPT-5.6 Luna."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Downloads e likes provam que um modelo é melhor?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Não. Downloads medem adoção (e dependem de tamanho de arquivo, tempo de existência, integrações em ferramentas como Ollama); likes são sinal de hype/comunidade. O gpt-oss-20b tem 5,5× os downloads/mês do Qwen3.8-27B (7,59M vs 1,37M em 20/08/2026) e é o recomendado do portal para 12–16 GB — mas em 24 GB+ o 27B é o pick de qualidade, com verificação independente (AAII 52) que o gpt-oss não tem nesse formato. Adoção popular e estado da arte são medidas diferentes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Por que o gpt-oss tem tanto download mesmo após 1 ano?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Porque ocupou o nicho de melhor modelo local pequeno antes de todos: 20B totais com ~3,6B ativos por token (MoE de 32 especialistas), MXFP4 nativo, GGUF de ~11 GiB que cabe em GPU de 12–16 GB, integração imediata em Ollama e LM Studio e licença Apache 2.0. Um ano depois, continua sendo a escolha racional quando a VRAM é o limite — os modelos da nova geração de 27B denso precisam de 24 GB para brilhar."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto de memória o gpt-oss-120b precisa para rodar local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O checkpoint oficial é MXFP4 nativo: o 120B ocupa ~60–65 GB (MoE de 128 especialistas, ~5,1B ativos) — tier de RAM unificada (Strix Halo 128 GB, Mac 64 GB+) ou 2× 24 GB, não de GPU única de consumo. O 20b é o herói local: ~11 GiB em GGUF MXFP4 (11,27 GiB medidos), rodando em 12–16 GB de VRAM."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "1 ano de gpt-oss", "item": "https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
+            --accent-4: #d2a8ff; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
+        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+        .stat-card .value.ok { color: var(--accent-2); }
+        .stat-card .value.warn { color: var(--accent-3); }
+        .src { font-size: 0.85rem; color: var(--text-muted); }
+        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+        blockquote { background: var(--surface); border-left: 3px solid var(--accent-4); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então</h1>
+        <p class="lead">O par open-weights da OpenAI completou um ano em 4 de agosto sem alarde — e segue com 12,27 milhões de downloads por mês. Quinze dias depois do aniversário, chegou o Qwen3.8-27B. Um engenheiro que rodou o gpt-oss-120b em produção por meses diz que o novato é "duas vezes mais inteligente no mesmo hardware". O que os dados de adoção, a medição independente e a engenharia de 12 meses dizem — separados por categoria.</p>
+    </header>
+
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="value">12,27M</div>
+            <div class="label">downloads/mês somados — gpt-oss um ano depois (HF API 20/08)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value ok">11.733</div>
+            <div class="label">likes do Qwen3.8-27B em 15 dias (vs 5.114 do gpt-oss-120b em 1 ano)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value warn">2,29×</div>
+            <div class="label">likes 15 dias vs 1 ano: Qwen 27B vs gpt-oss-120b (2,38× vs o 20b)</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">52</div>
+            <div class="label">AAII do Qwen3.8-27B (medido) — mesmo score do GPT-5.6 Luna</div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#adocao">Os dados: 12,27 milhões de downloads/mês um ano depois</a></li>
+            <li><a href="#o-post">O post do aniversário: "duas vezes mais inteligente"</a></li>
+            <li><a href="#medido-vs-percepcao">Percepção vs medição: o 52 do Artificial Analysis</a></li>
+            <li><a href="#12-meses">O que 12 meses fizeram com a engenharia local</a></li>
+            <li><a href="#leitura-honesta">Downloads e likes não provam nada sobre qualidade</a></li>
+            <li><a href="#vale-a-pena">Vale a pena rodar gpt-oss em 2026? Veredito por hardware</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="adocao">Os dados: 12,27 milhões de downloads/mês um ano depois</h2>
+    <p>Em 4 de agosto de 2025, a OpenAI publicou <strong>openai/gpt-oss-20b</strong> e <strong>openai/gpt-oss-120b</strong> no Hugging Face — MoEs de MXFP4 nativo licenciados em Apache 2.0. Doze meses depois, em 20 de agosto de 2026, a API do Hugging Face mostra um fenômeno raro em software: <strong>adoção que não decaiu</strong>.</p>
+    <table>
+        <tr><th>Modelo</th><th>Lançado</th><th>Downloads/mês (20/08/2026)</th><th>Likes (20/08/2026)</th></tr>
+        <tr><td>openai/gpt-oss-20b</td><td>2025-08-04</td><td>7.590.370</td><td>4.934</td></tr>
+        <tr><td>openai/gpt-oss-120b</td><td>2025-08-04</td><td>4.680.489</td><td>5.114</td></tr>
+        <tr class="highlight"><td><strong>Qwen/Qwen3.8-27B</strong></td><td>2026-08-05</td><td>1.373.584</td><td>11.733</td></tr>
+    </table>
+    <p class="src">Fonte: Hugging Face API (endpoint /api/models), consultada em 20/08/2026. Downloads = janela de 30 dias por repositório, incluindo pulls de ferramentas (Ollama, LM Studio etc.). Likes = total acumulado do repositório.</p>
+    <p>Algumas leituras imediatas:</p>
+    <ul>
+        <li><strong>7,59 milhões/mês no 20B</strong> um ano depois — o gpt-oss-20b segue sendo o "modelo local padrão" da classe pequena. Para contexto: são mais downloads mensais do que a maioria dos modelos abertos tem em toda a história.</li>
+        <li><strong>4,68 milhões/mês no 120B</strong> apesar do tamanho (checkpoint MXFP4 de ~60–65 GB): há uma base instalada séria de hardware intermediário — RAM unificada e multi-GPU — puxando o grande.</li>
+        <li><strong>Qwen3.8-27B: 11.733 likes em 15 dias</strong> contra 5.114 do gpt-oss-120b e 4.934 do 20b em doze meses. Em likes (sinal de comunidade, não de qualidade), o novato já supera os dois somados (10.048) — com um repositório 24× mais novo.</li>
+        <li><strong>1,37 milhão/mês de downloads em 15 dias de vida</strong> — trajetória de adoção acelerada, mas ainda 5,5× abaixo da demanda mensal consolidada do gpt-oss-20b.</li>
+    </ul>
+    <div class="leader">📊 <strong>Dado citável:</strong> um ano após o lançamento (04/08/2025 → 20/08/2026), o par gpt-oss soma <strong>12.270.859 downloads/mês</strong> na Hugging Face (7.590.370 no 20b + 4.680.489 no 120b) — e o Qwen3.8-27B, lançado 15 dias após o aniversário, acumula <strong>11.733 likes em 15 dias</strong>, 2,29× os likes do gpt-oss-120b acumulados em 1 ano. Fonte: HF API, 20/08/2026.</div>
+    <p>A razão de o gpt-oss continuar voando é simples: <strong>o nicho dele nunca foi preenchido</strong>. 20B totais com ~3,6B ativos por token (MoE de 32 especialistas, 4 ativos), MXFP4 nativo, GGUF de ~11 GiB que cabe em GPU de 12–16 GB, zero concorrência de qualidade nessa faixa de memória durante meses. O veredito do portal em <a href="/guia/melhores-modelos-locais-30b">Melhores modelos locais de 30B (ago/2026)</a> segue válido: em GPUs de 12–16 GB, o pick é gpt-oss-20b — a nova geração 27B precisa de 24 GB para brilhar.</p>
+
+    <h2 id="o-post">O post do aniversário: "duas vezes mais inteligente"</h2>
+    <p>O que reacendeu o tema no aniversário foi um post de <a href="https://williamcallahan.com/blog/qwen-3-8-27b-is-a-great-open-model">William Callahan</a> (19/08/2026), engenheiro de software e fundador do aVenture.vc em São Francisco — que usou o <strong>gpt-oss-120b por meses em pipelines de produção</strong> da própria rede de inferência antes de migrar para o Qwen3.8-27B. Nas palavras dele:</p>
+    <blockquote>
+        <p style="margin:0; font-style: italic; color: var(--text);">"What is astounding is how much progress we've made over the last year. Using the same hardware as last year, the Qwen 3.8 27B parameter model is <strong>seemingly twice as intelligent and capable</strong> as those high-quality last-year models."</p>
+        <p style="margin:8px 0 0; font-size:0.85rem; color: var(--text-muted);">— William Callahan, 19/08/2026 (tradução: "usando o mesmo hardware do ano passado, o Qwen 3.8 27B é aparentemente duas vezes mais inteligente e capaz que aqueles modelos de alta qualidade do ano passado")</p>
+    </blockquote>
+    <p>Ele é preciso sobre o que está comparando: os "modelos do ano passado" são o gpt-oss e a classe de 2025 — e o critério é <strong>uso diário real como substituto de fronteira</strong>. É o primeiro modelo open que ele usa no dia-a-dia no lugar dos drivers primários (Claude Fable/Opus, ChatGPT Sol), rodando harness de agente (Claude Code, Codex) num fleet próprio. Sobre o Kimi K3: "bastante bom, mas ainda um monstro de 2,8T parâmetros — não vou self-hostar tão cedo".</p>
+    <p>E o post traz <strong>fleet metrics reais</strong> do Qwen3.8-27B em três hardwares (1 sessão por vez, 256K de contexto, 65K tokens/mensagem):</p>
+    <table>
+        <tr><th>Hardware</th><th>Velocidade observada</th></tr>
+        <tr><td>AMD Strix Halo (128 GB)</td><td>~29 tok/s</td></tr>
+        <tr><td>NVIDIA RTX 5090 (32 GB)</td><td>~106 tok/s</td></tr>
+        <tr><td>Mac Studio (M1 Ultra, 128 GB)</td><td>~15 tok/s</td></tr>
+    </table>
+    <p class="src">Fonte: williamcallahan.com (19/08/2026), "Qwen 3.8 27B Is a Great Open Model" — métricas do fleet próprio do autor, sessão única, janela de 256K, 65K max tokens/mensagem. São números de uso em produção de agente, não benchmark controlado.</p>
+    <div class="callout">
+        <strong>Leitura correta do claim:</strong> "2× mais inteligente" é a <em>percepção de um engenheiro</em> com meses de gpt-oss-120b em produção — testemunho qualificado, não benchmark. A definição de inteligência aqui é "consegue dirigir meu harness de agente no dia-a-dia", não um score. O contraponto medido vem na seção seguinte.
+    </div>
+
+    <h2 id="medido-vs-percepcao">Percepção vs medição: o 52 do Artificial Analysis</h2>
+    <p>Se "duas vezes" é percepção, o que a medição independente diz? O <a href="/guia/qwen3-8-27b-benchmark-artificial-analysis">Artificial Analysis Intelligence Index</a> (v4.1.1, verificado pelo portal em 18/08/2026) pontuou o Qwen3.8-27B em <strong>52</strong> — mesmo score do GPT-5.6 Luna (max), 1 ponto atrás do DeepSeek V4 Pro 0813 (1,7T) e do GLM-5.2 (753B), e <strong>#1 entre os 135 open weights de até 40B</strong> avaliados. Em resumo: 27,8B denso e Apache 2.0 no mesmo quadrante de inteligência agregada dos modelos de fronteira de trilhão de parâmetros.</p>
+    <p>O gpt-oss não tem um número equivalente para 2026: <strong>não consta na tabela de open weights ≤40B do índice</strong> — o 120b excede o corte de 40B por muito, e o 20b deixou de ser tracking. A comparação direta "52 vs X" entre geração 2025 e 2026, portanto, <strong>não existe em medição independente publicada</strong> — e este portal não vai inventá-la. O que existe, e é citável:</p>
+    <ul>
+        <li><strong>Percepção (williamcallahan, 19/08):</strong> 2× a capacidade no mesmo hardware, no critério de uso diário como driver de agente.</li>
+        <li><strong>Medição (Artificial Analysis, 17/08):</strong> 52/100 agregado, mesmo quadrante da fronteira — com os asteriscos da verbosidade (160M tokens de saída contra mediana de 43M da classe) e de que o score é da versão reasoning.</li>
+        <li><strong>Hardware (fleet, 19/08):</strong> ~106 tok/s na 5090 com 256K de contexto — velocidade de fronteira em placa de consumo.</li>
+    </ul>
+    <p>Os três números dizem coisas diferentes sobre o mesmo modelo. Nenhum deles, isolado, prova "dobro de inteligência" — mas o conjunto (percepção qualificada + score medido + velocidade medida) explica por que 11.733 likes chegaram em 15 dias.</p>
+
+    <h2 id="12-meses">O que 12 meses fizeram com a engenharia local</h2>
+    <p>A distância percebida entre o gpt-oss e a classe de 2026 não é mágica — é engenharia empilhada. A anatomia dos dois pontos no tempo:</p>
+    <table>
+        <tr><th></th><th>gpt-oss (ago/2025)</th><th>Qwen3.8-27B (ago/2026)</th></tr>
+        <tr><td>Arquitetura</td><td>MoE (20b: 32 especialistas/4 ativos; 120b: 128/4)</td><td>Denso 27,8B, atenção híbrida 48 Gated DeltaNet + 16 full-attention</td></tr>
+        <tr><td>Parâmetros ativos por token</td><td>~3,6B (20b) / ~5,1B (120b)</td><td>27,8B — todos ativos</td></tr>
+        <tr><td>Contexto nativo</td><td>131.072 (128K)</td><td>262.144 (256K), 1M com RoPE</td></tr>
+        <tr><td>Quantização nativa</td><td>MXFP4</td><td>BF16 checkpoint + ecossistema GGUF IQ2–Q8</td></tr>
+        <tr><td>Multimodal</td><td>Não (texto)</td><td>VLM nativa (texto, imagem, vídeo, OCR)</td></tr>
+        <tr><td>Aceleração</td><td>—</td><td>MTP embutido (speculative decoding nativo; 2,81× no guia de 256K)</td></tr>
+        <tr><td>Licença</td><td>Apache 2.0</td><td>Apache 2.0</td></tr>
+    </table>
+    <p class="src">Fontes: config.json oficiais (openai/gpt-oss-20b, openai/gpt-oss-120b, Qwen/Qwen3.8-27B no Hugging Face, verificados em 20/08/2026) + base verificada do portal: guias <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>, <a href="/guia/qwen3-8-27b-visao-videos-local">visão local</a> e <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a>.</p>
+    <p>Quatro mudanças estruturais explicam o salto percebido:</p>
+    <ul>
+        <li><strong>Densidade vs esparsidade:</strong> o gpt-oss é MoE — rápido e barato por token, mas ~3,6–5,1B parâmetros ativos limitam o teto de raciocínio. O 27B de 2026 é denso: todos os 27,8B trabalham em cada token. É a troca que faz o mesmo hardware "sentir" o dobro.</li>
+        <li><strong>Atenção híbrida (48+16):</strong> 48 camadas Gated DeltaNet recorrentes + 16 full-attention dão contexto 256K com KV cache de ~4,25 GiB — o gpt-oss para em 128K com cache convencional. Guia completo: <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>.</li>
+        <li><strong>Visão nativa:</strong> o gpt-oss é texto. O Qwen3.8-27B nasce VLM — imagem, vídeo, OCR, bounding boxes — com mmproj de 0,9 GB no llama.cpp. Guia: <a href="/guia/qwen3-8-27b-visao-videos-local">visão e vídeo locais</a>.</li>
+        <li><strong>MTP embutido:</strong> speculative decoding com o drafter treinado junto ao modelo — 2,81× de throughput (21,19 → 59,46 tok/s) no perfil 256K medido por terceiros. No gpt-oss, não há equivalente.</li>
+    </ul>
+    <p>A ironia do aniversário: a OpenAI provou o mercado (12M downloads/mês é prova de demanda por open weights local-first em escala de infraestrutura) e a Qwen colheu a nova geração. Mas o gpt-oss segue imbatível no nicho para o qual foi construído — o que nos leva ao veredito.</p>
+
+    <h2 id="leitura-honesta">Downloads e likes não provam nada sobre qualidade</h2>
+    <p>Antes do veredito, honestidade metodológica — porque os números desta retrospectiva são fáceis de torcer:</p>
+    <ul>
+        <li><strong>Downloads medem adoção, não qualidade.</strong> 7,59M/mês no 20b refletem: arquivo pequeno (~11 GiB), 12 meses de existência, integração em Ollama/LM Studio, nicho de 12–16 GB sem concorrente. Um modelo melhor que exige 24 GB teria menos downloads por construção.</li>
+        <li><strong>Likes medem comunidade e momento, não qualidade.</strong> 11.733 em 15 dias é recorde da classe — mas likes correlacionam com hype de lançamento. O gpt-oss acumulou os seus ao longo de 12 meses sem picos comparáveis.</li>
+        <li><strong>Percepção de 1 engenheiro ≠ benchmark.</strong> O "2× mais inteligente" do williamcallahan é valioso exatamente porque é qualificado (meses de uso em produção do modelo antigo) — mas é um n=1 com critério próprio ("dirige meu harness de agente?").</li>
+        <li><strong>A única medição independente disponível é o AAII 52</strong> — e ela não compara gerações: não há score 2026 do gpt-oss na tabela atual do índice.</li>
+    </ul>
+    <p>O que os dados de adoção provam, de fato: <strong>a demanda por modelos locais abertos cresceu e não é nicho</strong> — 12M downloads/mês num único par de repositórios é escala de infraestrutura. Qual modelo é "melhor" continua sendo função de hardware e caso de uso. Veredito abaixo.</p>
+
+    <h2 id="vale-a-pena">Vale a pena rodar gpt-oss em 2026? Veredito por hardware</h2>
+    <p>A resposta curta: <strong>sim — na faixa de memória certa</strong>. O gpt-oss não virou legado; virou o padrão da classe 12–16 GB. A longa, em tabela:</p>
+    <table>
+        <tr><th>Seu hardware</th><th>Pick 2026</th><th>Por quê</th></tr>
+        <tr class="highlight"><td><strong>12–16 GB de VRAM</strong></td><td><strong>gpt-oss-20b</strong></td><td>GGUF MXFP4 de 11,27 GiB medido — o modelo de nível que cabe. O Qwen3.8-27B em 16 GB exige quant agressivo (IQ4_XS 15,71 GB) e contexto curto; em 12 GB, nem isso. Recomendação do portal em <a href="/guia/melhores-modelos-locais-30b">Melhores ≤30B</a>.</td></tr>
+        <tr><td>24 GB (3090/4090/PRO 4000)</td><td>Qwen3.8-27B</td><td>A classe mudou: denso 27,8B, 256K nativo, visão, MTP. 50,44 tok/s de média no perfil 256K medido por terceiros — <a href="/guia/qwen3-8-27b-contexto-256k-24gb">guia</a>. O gpt-oss-120b (checkpoint ~60–65 GB) não é nativo dessa faixa: exige offload.</td></tr>
+        <tr><td>RAM unificada 64 GB+</td><td>gpt-oss-120b ou Qwen3.8-27B</td><td>O 120b MoE (~5,1B ativos) roda fluido em Strix Halo/Mac; o 27B denso ~29 tok/s no Strix Halo (fleet 19/08). Escolha por multimodalidade (só o 27B tem), contexto (256K vs 128K) e velocidade (MoE mais rápido em memória unificada).</td></tr>
+        <tr><td>32 GB+ (RTX 5090)</td><td>Qwen3.8-27B</td><td>~106 tok/s com 256K observados no fleet de agente (19/08) — a nova fronteira local de velocidade × capacidade.</td></tr>
+    </table>
+    <div class="callout-warn">
+        <strong>Transparência sobre as fontes:</strong> downloads e likes são HF API 20/08/2026 (janela 30d e acumulado, respectivamente). O "2×" é percepção atribuída (williamcallahan, 19/08). O 52 é Artificial Analysis Intelligence Index v4.1.1 (17/08). Os ~106 tok/s são observação de fleet de agente em produção, não benchmark controlado. Nenhum benchmark controlado geração-2025 × geração-2026 foi publicado — as lacunas estão assinaladas no texto.
+    </div>
+    <p>Para quem chegou agora no local-first: a entrada em 2026 continua sendo o <a href="/guia-rapido">guia rápido de 5 minutos</a> com Ollama; a tabela de quantização por GPU está no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia GGUF</a>; o panorama da classe 30B está em <a href="/guia/melhores-modelos-locais-30b">Melhores modelos locais de 30B</a>.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>Vale a pena rodar gpt-oss em 2026?</h3>
+        <p>Depende do hardware e do trabalho. Em GPUs de 12–16 GB, o gpt-oss-20b (GGUF MXFP4 de 11,27 GiB medidos) continua sendo o pick do portal em 2026 — a geração nova da classe 27B precisa de 24 GB para o modelo 4-bit + cache. Em 24 GB+, o Qwen3.8-27B domina: 52 no Artificial Analysis Intelligence Index (medido por terceiro), visão nativa e contexto 256K nativos. E os downloads confirmam que o gpt-oss segue relevante: 12,27 milhões/mês somados um ano após o lançamento (7,59M no 20B + 4,68M no 120B, HF API de 20/08/2026).</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quantos downloads o gpt-oss tem por mês?</h3>
+        <p>Em 20/08/2026 (Hugging Face API): <strong>7.590.370 downloads/mês</strong> (janela de 30 dias) no openai/gpt-oss-20b e <strong>4.680.489</strong> no openai/gpt-oss-120b — <strong>12.270.859/mês combinados</strong>, um ano após o lançamento em 04/08/2025.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O gpt-oss-120b é melhor que o Qwen3.8-27B?</h3>
+        <p>Não há benchmark cruzado publicado que compare os dois diretamente, e este portal não encontrou nenhum. O que existe: o Qwen3.8-27B pontua 52 no Artificial Analysis Intelligence Index (medição independente de 17/08/2026), o mesmo score do GPT-5.6 Luna e 1 ponto atrás do DeepSeek V4 Pro (1,7T) e do GLM-5.2 (753B); o gpt-oss-120b não consta na tabela de 135 open weights de até 40B porque tem 120B — classe de tamanho diferente. Na prática local, o 27B é denso (todos os parâmetros ativos por token) e o 120B é MoE de 128 especialistas com ~5,1B ativos.</p>
+    </div>
+    <div class="faq-item">
+        <h3>O que significa o "2× mais inteligente" do post do williamcallahan?</h3>
+        <p>É a percepção de uso de um engenheiro (William Callahan, 19/08/2026), não um benchmark: <em>"Using the same hardware as last year, the Qwen 3.8 27B parameter model is seemingly twice as intelligent and capable as those high-quality last-year models"</em>. Trate como testemunho de uso diário — e contraponha com o número medido: 52 no Artificial Analysis Intelligence Index, o mesmo score do GPT-5.6 Luna.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Downloads e likes provam que um modelo é melhor?</h3>
+        <p>Não. Downloads medem adoção (e dependem de tamanho de arquivo, tempo de existência, integrações em ferramentas como Ollama); likes são sinal de hype/comunidade. O gpt-oss-20b tem 5,5× os downloads/mês do Qwen3.8-27B (7,59M vs 1,37M em 20/08/2026) e é o recomendado do portal para 12–16 GB — mas em 24 GB+ o 27B é o pick de qualidade, com verificação independente (AAII 52) que o gpt-oss não tem nesse formato. Adoção popular e estado da arte são medidas diferentes.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Por que o gpt-oss tem tanto download mesmo após 1 ano?</h3>
+        <p>Porque ocupou o nicho de melhor modelo local pequeno antes de todos: 20B totais com ~3,6B ativos por token (MoE de 32 especialistas), MXFP4 nativo, GGUF de ~11 GiB que cabe em GPU de 12–16 GB, integração imediata em Ollama e LM Studio e licença Apache 2.0. Um ano depois, continua sendo a escolha racional quando a VRAM é o limite — os modelos da nova geração de 27B denso precisam de 24 GB para brilhar.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto de memória o gpt-oss-120b precisa para rodar local?</h3>
+        <p>O checkpoint oficial é MXFP4 nativo: o 120B ocupa ~60–65 GB (MoE de 128 especialistas, ~5,1B ativos) — tier de RAM unificada (Strix Halo 128 GB, Mac 64 GB+) ou 2× 24 GB, não de GPU única de consumo. O 20b é o herói local: ~11 GiB em GGUF MXFP4 (11,27 GiB medidos), rodando em 12–16 GB de VRAM.</p>
+    </div>
+
+    <div class="callout">
+        <strong>Continue por aqui:</strong> <a href="/guia/qwen3-8-27b-benchmark-artificial-analysis">52 no Artificial Analysis explicado</a> · <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional Qwen</a> · <a href="/guia/melhores-modelos-locais-30b">melhores ≤30B de ago/2026</a> · <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a> · <a href="/guia/tokens-por-segundo-30b-hardware-real">tokens/s no hardware real</a> · <a href="/guia/faq">FAQ do portal</a>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — 1 ano de gpt-oss | Fontes: Hugging Face API (downloads janela 30d e likes por repositório, consultada 20/08/2026: openai/gpt-oss-20b 7.590.370 dl/mês + 4.934 likes; openai/gpt-oss-120b 4.680.489 dl/mês + 5.114 likes; Qwen/Qwen3.8-27B 1.373.584 dl/mês + 11.733 likes, criado 2026-08-05), config.json oficiais dos três repositórios (MoE 32/128 especialistas, 4 ativos, MXFP4, 128K — vs denso híbrido 48+16, 256K), post "Qwen 3.8 27B Is a Great Open Model" de William Callahan (williamcallahan.com, 19/08/2026 — lido integralmente; citação traduzida), Artificial Analysis Intelligence Index v4.1.1 via Simon Willison (17/08/2026) e verificação do portal (18/08/2026). "2× mais inteligente" é percepção de uso do autor citado, não benchmark. Downloads ≠ qualidade; likes ≠ qualidade. Geração deste conteúdo assistida por IA e revisada.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/melhores-modelos-locais-30b">Melhores 30B</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
