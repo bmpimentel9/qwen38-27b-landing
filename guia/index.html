@@ -207,7 +207,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">GGUF 4 bits</td><td style="padding: 10px 15px; border-top: 1px solid var(--border); color: var(--accent-2);"><strong>~14–17 GB</strong></td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">RTX 4090/5090, Strix Halo, Mac 32GB+</td></tr>
         <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">FP8</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">~27 GB</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">RTX 5090 32GB, 2× 3090, Strix Halo</td></tr>
         <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">BF16</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">~54 GB</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">A100/H100 80GB, 2× RTX 6000 Pro</td></tr>
-        <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">NVFP4 (Blackwell)</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">24,6 GiB</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">Blackwell + vLLM 0.27.2+</td></tr>
+        <tr><td style="padding: 10px 15px; border-top: 1px solid var(--border);">NVFP4 (Blackwell)</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">24,6 GiB</td><td style="padding: 10px 15px; border-top: 1px solid var(--border);">Blackwell + vLLM 0.27.1+</td></tr>
     </table>
     <p>Para detalhes completos de hardware, veja nosso <a href="/guia/hardware-local" style="color:var(--accent)">guia de hardware para rodar o Qwen3.8-27B</a>.</p>
 
@@ -227,7 +227,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="callout">
         <strong>Ollama (recomendado):</strong> <code>ollama run qwen3.8:27b</code> — puxa o modelo quantizado de 18GB, 256K de contexto, texto + imagem.
     </div>
-    <p>Outras opções: <code>llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144</code> ou <code>vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3</code> (requer vLLM ≥ 0.27.2).</p>
+    <p>Outras opções: <code>llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 262144</code> ou <code>vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3</code> (requer vLLM ≥ 0.27.1).</p>
     <p>Para o guia completo com troubleshooting, veja <a href="/guia/como-rodar" style="color:var(--accent)">como rodar o Qwen3.8-27B localmente</a>.</p>
 
     <h2 id="topicos">Guia Completo por Tópico</h2>
@@ -366,6 +366,14 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <div class="card-meta">
                 <span class="card-tag tag-guide">Tutorial</span>
                 BOFU · Novo 18/08
+            </div>
+        </a>
+        <a class="card" href="/guia/como-rodar-vllm-qwen3-8-27b">
+            <h3>vLLM em produção: prefix caching e bugs reais</h3>
+            <p>O guia do outro motor oficial: comando de produção flag por flag (0.27.1), prefix caching no híbrido Mamba, MTP com aceitação medida (0,77–0,90), contexto 262K→1M e os 6 bugs abertos — cada um com o workaround da issue.</p>
+            <div class="card-meta">
+                <span class="card-tag tag-guide">Tutorial</span>
+                BOFU · Novo 20/08
             </div>
         </a>
         <a class="card" href="/guia/minimax-music3-musica-local">

@@ -359,7 +359,7 @@ python3 -m sglang.bench_serving \
         <tr><td>GPU de 16-24 GB (4090, 5080, 4070 Ti Super)</td><td>llama.cpp</td><td>GGUF 4 bits (17,11 GB) ou <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">config de 16 GB</a> com KV cache quantizado</td></tr>
         <tr><td>Memória unificada (Strix Halo, Mac M-series)</td><td>Ollama/llama.cpp</td><td>Backends Vulkan/Metal — SGLang foca CUDA/Linux; a 128 GB unificados o GGUF Q5 roda a 10,6 tok/s</td></tr>
         <tr><td>Servidor headless com orquestração de containers</td><td>SGLang via Docker</td><td>Imagem lmsysorg/sglang:qwen38-27b pronta, sem gerenciar env CUDA</td></tr>
-        <tr><td>Heterogêneo/produção com vLLM já no stack</td><td>vLLM ≥ 0.27.2</td><td>Mesmo checkpoint FP8 serve nos dois; vLLM tem recipe oficial e NVFP4 em Blackwell</td></tr>
+        <tr><td>Heterogêneo/produção com vLLM já no stack</td><td>vLLM ≥ 0.27.1</td><td>Mesmo checkpoint FP8 serve nos dois; vLLM tem recipe oficial e NVFP4 em Blackwell</td></tr>
     </table>
     <p>O detalhe que costuma decidir: <strong>SGLang exige GPU NVIDIA dedicada com FP8</strong> (Ada/Blackwell ou datacenter) e Linux como plataforma primária. No resto do espectro — memória unificada, iGPU AMD, Mac — o ecossistema GGUF/llama.cpp é o caminho, e o portal tem os guias: <a href="/guia/como-rodar">como rodar localmente</a> cobre Ollama, llama.cpp, vLLM e MLX.</p>
 

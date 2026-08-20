@@ -193,8 +193,8 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
     <p>vLLM é a melhor opção para produção: alto throughput, suporte a NVFP4 em Blackwell e API OpenAI-compatible nativa.</p>
 
     <div class="step">
-        <h3><span class="step-number">1</span>Instalar vLLM (requer ≥ 0.27.2)</h3>
-        <pre><code>pip install vllm>=0.27.2</code></pre>
+        <h3><span class="step-number">1</span>Instalar vLLM (requer ≥ 0.27.1)</h3>
+        <pre><code>pip install vllm>=0.27.1</code></pre>
     </div>
 
     <div class="step">
@@ -218,7 +218,7 @@ vllm serve Qwen/Qwen3.8-27B \
     </div>
 
     <div class="callout">
-        <strong>NVFP4 em Blackwell:</strong> Em GPUs Blackwell, vLLM suporta NVFP4 com 24,6 GiB e 6,6M tokens de KV — permite rodar 1M de contexto em uma única GPU. Requer vLLM 0.27.2+.
+        <strong>NVFP4 em Blackwell:</strong> Em GPUs Blackwell, vLLM suporta NVFP4 com 24,6 GiB e 6,6M tokens de KV — permite rodar 1M de contexto em uma única GPU. Requer vLLM 0.27.1+.
     </div>
 
     <h2 id="huggingface">Método 4: HuggingFace Transformers</h2>

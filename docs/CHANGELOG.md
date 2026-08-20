@@ -8,6 +8,36 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-20] — Guia "Qwen3.8-27B no vLLM em produção" (t_dfd9c398)
+
+### Added
+- **Guia `/guia/como-rodar-vllm-qwen3-8-27b`**: o guia do segundo motor
+  oficial de serving (o SGLang já tinha o seu desde 18/08; o vLLM era
+  citado em 10 páginas sem guia dedicado). Comando de produção flag por
+  flag (0.27.1), prefix caching no híbrido Mamba (default True no global,
+  #50991 do caminho Mamba entrou após o corte da 0.27.1 — flag explícita
+  recomendada; armadilha multimodal #52583), MTP com aceitação medida por
+  precisão (FP8 0,771 / NVFP4-Inferact 0,897 / NVFP4-unsloth 0,788),
+  contexto 262K→1M (hf-overrides aninhado em text_config), hardware
+  verificado (GB300 TP4, 2× 5090 TP2, 1× 5090 eager 32K, 4× A5000,
+  Ascend 950PR) e tabela dos 6 bugs abertos com workaround (#52682,
+  #52583, #52564, #52475, MXFP4, #52734). JSON-LD: TechArticle + HowTo
+  (5 steps) + FAQPage (6) + BreadcrumbList.
+- **Companions**: sitemap 28→29 URLs; llms.txt +4 stats citáveis + link
+  da página; card no /guia (tag Tutorial, BOFU).
+
+### Fixed
+- **Erro factual de versão em 9 superfícies**: "requer vLLM ≥ 0.27.2"
+  não existe — PyPI vai de 0.27.1 (11/08) direto a 0.28.0rc1; exigência
+  real da recipe oficial é 0.17.0+. Corrigido em guia/index.html (×2),
+  faq (×2), como-rodar, hardware-local (×2), reasoning-config e
+  como-rodar-sglang. (Nota: a thread r/LocalLLaMA 1vspexl citada no
+  briefing estava inacessível — Reddit, espelhos redlib e PullPush
+  bloqueados; o guia foi construído sobre fontes primárias verificáveis:
+  recipe oficial recipes.vllm.ai, código da 0.27.1 e issues do GitHub.)
+
+---
+
 ## [2026-08-20] — Artigo: 1 ano de gpt-oss (retrospectiva de adoção)
 
 ### Added
