@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <title>Why is Qwen3.8-27B slow? The real fixes, with measured numbers</title>
+    <meta name="description" content="Qwen3.8-27B is dense: every token reads ~17 GB of weights. The real speed fixes — thinking off, MTP speculative decoding (it ships off), the right quant for your GPU, KV cache, Vulkan shaders — each one with measured tok/s.">
+    <meta name="keywords" content="qwen3.8-27b slow, qwen 3.8 27b speed, qwen3.8 tokens per second, llama.cpp mtp, speculative decoding qwen, qwen3.8-27b tok/s, fix slow local llm">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/en/why-is-qwen3-8-27b-slow">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Qwen3.8-27B — local 30B models portal">
+    <meta property="og:title" content="Why is Qwen3.8-27B slow? The real fixes, with measured numbers">
+    <meta property="og:description" content="Dense 27B is bandwidth-bound — but most 'slow' setups are fixable: xhigh thinking default, MTP speculative decoding off by default, wrong quant for your GPU, stale Vulkan shaders. Every fix with its tok/s.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/en/why-is-qwen3-8-27b-slow">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-19T08:00:00-03:00">
+    <meta property="article:section" content="Performance">
+    <meta property="article:tag" content="Throughput">
+    <meta property="article:tag" content="llama.cpp">
+    <meta property="article:tag" content="Qwen3.8-27B">
+    <meta property="article:tag" content="Local LLM">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Why is Qwen3.8-27B slow? The real fixes, with measured numbers">
+    <meta name="twitter:description" content="Same machine, same quant: 3.8 decodes FASTER than 3.6 (17.3 vs 12.4 tok/s). What's slow is the default thinking mode and speculative decoding you never turned on. Fixes with numbers.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Why is Qwen3.8-27B slow? The real fixes, with measured numbers",
+          "description": "Qwen3.8-27B is a dense 27B model: every generated token reads the full ~17 GB of 4-bit weights, so decode is capped by memory bandwidth. The fixes that actually move throughput: turning xhigh thinking off or down (2.18s to 0.21s per answer), enabling MTP speculative decoding, which ships off (1.42-1.81x in the sweep; 2.06x with thinking off), picking the quant the GPU accelerates, KV cache quantization, rebuilt Vulkan shaders, and SGLang memory fraction on unified memory.",
+          "inLanguage": "en",
+          "datePublished": "2026-08-19",
+          "dateModified": "2026-08-19",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/en/why-is-qwen3-8-27b-slow",
+          "proficiencyLevel": "Intermediate"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guide", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Why is Qwen3.8-27B slow? (EN)", "item": "https://qwen38-27b-landing.vercel.app/guia/en/why-is-qwen3-8-27b-slow" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Why is Qwen3.8-27B so slow?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Two reasons stack. First, physics: it is a dense 27B model, so every generated token reads the entire quantized weight file — about 17 GB at 4-bit — and decode speed is capped by memory bandwidth, not compute. Second, defaults: it ships with thinking mode at xhigh effort, which spends 106 reasoning tokens before a simple answer (and 22,276 tokens on a single documented SVG prompt), and most llama.cpp setups run without MTP speculative decoding: speculation is opt-in there, so if the flag was never passed, it was never on. On the same hardware and quant, Qwen3.8-27B actually decodes faster than Qwen3.6-27B: 17.3 vs 12.4 tok/s measured on a Strix Halo. Source: Qwen3.8-27B model card, Hugging Face discussion #113, and measurements compiled at qwen38-27b-landing.vercel.app."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I make Qwen3.8-27B faster?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "In order of payoff: turn thinking off or to medium (time-to-answer drops from 2.18s to 0.21s on simple prompts, and decode rises from 73.4 to 151.2 tok/s — 2.06x — because direct answers are easier for the draft head to predict); enable MTP speculative decoding — it is off by default (--spec-type draft-mtp; with thinking off, --spec-draft-n-max 2 is the practical best at 2.06x, and n=3 is the sweep peak at 1.81x); quantize the KV cache to q8_0; pick Q4 or Q8 quants on RDNA4 GPUs where mixed quants measurably underperform; rebuild Vulkan shaders with a current SDK on AMD; and on SGLang with unified memory, keep --mem-fraction-static at 0.50 — higher values silently skip CUDA graph capture and fall back to eager mode. Source: Hugging Face discussion #113, llama.cpp PR #22673, llama.cpp discussion #21043, NVIDIA developer forums."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many tokens per second does Qwen3.8-27B run at?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Measured decode throughput by setup: 206.1 tok/s on a single RTX 5090 with SGLang, NVFP4 and DSpark speculative decoding (official SGLang team number); 59.2 tok/s on a single Radeon AI PRO R9700 with llama.cpp Q8_0 + MTP, 64k context (community sweep, Vulkan); 41.5 tok/s on an RTX 3090 with llama.cpp UD-Q4_K_XL (InsiderLLM); 17.3 tok/s on Strix Halo integrated graphics with Ollama/Vulkan Q4_K_M (portal measurement); and about 9.7 tok/s on an RTX 3060 12GB with partial FFN offload, KV cache at Q4_0 and MTP at 96k context. Source: compiled with per-number sources at qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Qwen3.8-27B slower than Qwen3.6-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No — in raw decode on the same machine and quant it is faster: 17.3 vs 12.4 tok/s measured on a Strix Halo with Ollama/Vulkan Q4_K_M, a gap attributed to Unsloth's GGUF compilation. What makes 3.8 feel slower is behavior, not throughput: thinking defaults to xhigh effort on 3.8, so answers arrive after thousands of reasoning tokens. Turning reasoning off restores the raw speed difference. Source: portal measurements and Qwen model cards."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why is Qwen3.8-27B slower than a 35B MoE model?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Because dense and MoE pay different costs per token. Qwen3.8-27B activates all 27B parameters on every token; a MoE model like Qwen3.6-35B activates only about 3B per token, so it reads a fraction of the weights. On the same Strix Halo machine, the 27B dense decodes at 10.6 tok/s (Q5_K_M) while the 35B MoE hits 56.6 tok/s — 5.3x more. The dense model trades speed for quality-per-parameter and stronger agentic benchmarks. Source: portal measurements on identical hardware."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does MTP speculative decoding work in Ollama?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no flag to set in Ollama: MTP ships as separate model tags, so you pull a different tag rather than pass --spec-type. Two caveats: Ollama replaces the model's chat template with a generic one, which means reasoning_effort cannot be lowered through Ollama at all — that dial requires llama-server with --jinja. And in llama.cpp the MTP head is a separate GGUF file; the standard Q4_K_M download prints 'model has unused tensor blk.64.nextn' and skips it, so the speedup is off until you load the draft weights. Source: Ollama library, Hugging Face discussion #113, ofox.ai GGUF analysis."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is a good tok/s for a local LLM?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Reading speed is about 5-7 tok/s, so 10 tok/s already feels like text arriving at reading pace and 20+ tok/s feels fast for chat. Coding agents raise the bar: a 4090-class setup at 100+ tok/s spends less time waiting on the model and more on tool calls, while a 10 tok/s rig turns a 20,000-token thinking pass into a half-hour wait — which is exactly why the reasoning-effort dial matters more than raw tok/s. Source: community throughput reports compiled by the portal."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 14px; color: var(--text); }
+        a { color: var(--accent); }
+        ul, ol { margin: 0 0 16px 22px; }
+        li { margin-bottom: 8px; }
+        .lead { font-size: 1.1rem; color: var(--text); }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 0.85rem; }
+        .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 25px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { margin-bottom: 0; }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent-2); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 20px 0; }
+        .callout.warn { border-left-color: var(--accent-3); }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.92rem; }
+        @media (max-width: 640px) { table { display: block; overflow-x: auto; } }
+        th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: var(--surface); color: var(--accent); }
+        tr.highlight td { background: rgba(63,185,80,0.08); }
+        td.src { font-size: 0.82rem; color: var(--text-muted); }
+        code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-size: 0.88em; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; margin: 16px 0; }
+        pre code { background: none; border: none; padding: 0; }
+        .num { color: var(--accent-2); font-weight: 600; }
+        footer { border-top: 1px solid var(--border); margin-top: 40px; padding-top: 20px; font-size: 0.88rem; color: var(--text-muted); }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/guia">Guide</a>
+        <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+        <a href="/guia/hardware-local">Hardware</a>
+        <a href="/guia/como-rodar">Como Rodar</a>
+        <a href="/guia/comunidade-casos-uso">Comunidade</a>
+        <a href="/guia/faq">FAQ</a>
+    </nav>
+
+    <header>
+        <h1>Why is Qwen3.8-27B slow? The real fixes, with measured numbers</h1>
+        <p class="lead">You downloaded a 27B model that benchmarks like a frontier agent, and it's crawling at single-digit tok/s while your GPU sits half idle. The model isn't broken. It's dense, it thinks out loud by default, and your speculative decoding is probably off — it ships that way. Here is every fix that actually moves the number, each one with the tok/s to prove it.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>10×</strong> less waiting — thinking off (2.18s → 0.21s)</span>
+            <span class="badge"><strong>2.06×</strong> decode — MTP n=2 + thinking off (73.4 → 151.2)</span>
+            <span class="badge"><strong>+134%</strong> decode on a 3090 — MTP on (31.6 → 74 tok/s)</span>
+            <span class="badge"><strong>59.2</strong> tok/s — single R9700, fixed config</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Contents</h3>
+        <ul>
+            <li><a href="#answer">The 30-second answer</a></li>
+            <li><a href="#physics">The physics you can't fix (and the part that isn't physics)</a></li>
+            <li><a href="#fixes">The seven fixes</a></li>
+            <li><a href="#numbers">What the numbers look like when it's configured right</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </div>
+
+    <h2 id="answer">The 30-second answer</h2>
+    <p>Qwen3.8-27B generates every token by reading the entire weight file — about <span class="num">17 GB</span> at 4-bit — so decode speed is capped by memory bandwidth, not by your GPU's compute. That part is physics and no flag will change it. But two things about your setup are making it slower than it should be:</p>
+    <p><strong>1. It thinks at xhigh by default.</strong> Before a simple question gets one word of answer, the model spends <span class="num">106 reasoning tokens</span>. On a real workload it's worse: Simon Willison's test had a 3,223-token SVG request consume <span class="num">22,276 thinking tokens and 21 minutes</span>; with reasoning off, the same prompt finished in <span class="num">137 seconds</span>. Most "it's slow" reports about 3.8 are this, not throughput.</p>
+    <p><strong>2. MTP speculative decoding is off — it ships that way.</strong> Speculation is opt-in in llama.cpp: no flag on the command line, no speculation in the run, and no warning — because nothing is wrong. Turning it on took one RTX 3090 from <span class="num">~31.6 to 74 tok/s</span> (<span class="num">+134.5%</span>) with <code>--spec-type draft-mtp --spec-draft-n-max 2</code>.</p>
+    <p>Fix those two and pick the right quant for your GPU, and the same hardware does between 2× and 10× better. All numbers below are measured and sourced.</p>
+
+    <h2 id="physics">The physics you can't fix (and the part that isn't physics)</h2>
+    <p>Dense means every parameter works on every token. Qwen3.8-27B has 27B of them, all active. A MoE model like Qwen3.6-35B activates ~3B per token, which is why on the exact same machine — a Strix Halo with 128 GB unified memory, Ollama over Vulkan — the 27B dense decodes at <span class="num">10.6 tok/s</span> (Q5_K_M) while the 35B MoE does <span class="num">56.6 tok/s</span>. 5.3× more, by architecture. If you need dense-model quality at MoE-model speed, the honest answer is speculative decoding (fix #2), not wishful flags.</p>
+    <p>One thing the architecture gives back: hybrid attention. Only 16 of the 64 layers are full Gated Attention with a KV cache (4 KV heads, head dimension 256 — about 64 KiB per token at f16 across those layers). A conventional 64-layer model at this head config would need roughly 4× the cache. That's why a 27B with a 262,144-token window is a desktop proposition at all.</p>
+    <div class="callout">
+        <p><strong>The myth to kill first:</strong> "3.8 is slower than 3.6." Same machine, same quant family, raw decode: <span class="num">Qwen3.8-27B = 17.3 tok/s vs Qwen3.6-27B = 12.4 tok/s</span> (Strix Halo, Q4_K_M, Ollama/Vulkan — portal measurement). The 3.8 decodes <em>faster</em>. What grew is the wait: 3.8 ships with thinking at xhigh, so answers arrive after thousands of reasoning tokens. Your tokens-per-second didn't drop; your tokens-per-answer exploded.</p>
+    </div>
+    <p>Community data backs the reframe. On Radeon AI PRO R9700 hardware, the previous dense Qwen3.6-27B Q8 with MTP runs 40–67 tok/s at 131k context on a dual-GPU rig. The same class of hardware runs Qwen3.8-27B Q8_0 + MTP at <span class="num">59.2 tok/s</span> on a <em>single</em> R9700 — once the quant and the shader compiler are right (fixes #4 and #5). When a 3.8 setup reports numbers far below that, the cause has been one of the seven below, every time.</p>
+
+    <h2 id="fixes">The seven fixes</h2>
+
+    <h3>1. Turn thinking off — or down to medium</h3>
+    <p>The default is xhigh. Measured per simple answer, on Hugging Face discussion #113:</p>
+    <table>
+        <tr><th>Effort</th><th>Thinking tokens</th><th>Wait before answer</th></tr>
+        <tr><td><code>xhigh</code> (default)</td><td>106</td><td>1.44 s</td></tr>
+        <tr><td><code>medium</code></td><td>91</td><td>0.92 s</td></tr>
+        <tr><td><code>low</code></td><td>78</td><td>1.21 s</td></tr>
+        <tr class="highlight"><td><code>off</code></td><td>0</td><td><strong>0.21 s</strong></td></tr>
+    </table>
+    <p>Off cuts total time-to-answer from 2.18 s to 0.21 s — about 10× less waiting. Medium takes a third off with no measurable quality loss on the reporter's tasks. And there's a side effect most people miss: decode itself gets faster, <span class="num">73.4 → 151.2 tok/s (2.06×)</span>, because short direct answers are easier for the MTP draft head to predict than long reasoning prose. The two biggest fixes compound.</p>
+    <p>Two traps. Only <code>xhigh</code>, <code>medium</code> and <code>low</code> are valid for this model's template — <code>minimal</code>, <code>high</code> and <code>max</code> start fine and then fail every request. And <strong>Ollama cannot lower the effort at all</strong>: it swaps the model's chat template for a generic one, and the reasoning-effort setting lives in the template it throws away. You need <code>llama-server --jinja</code>. In llama.cpp: <code>--reasoning-effort medium</code>, or per-request <code>chat_template_kwargs: {"enable_thinking": false}</code>.</p>
+    <p>Budget note if you keep xhigh: one megathread run planned for ~86k tokens before acting, and a single webpage prompt ate 140k. The user's rule of thumb — give xhigh at least 200k of context budget or you hit a wall.</p>
+
+    <h3>2. Turn MTP on — it is off by default</h3>
+    <p>Qwen3.8 ships with a trained multi-token prediction head: a real extra layer (tensor <code>blk.64.nextn</code>) that drafts a few tokens cheaply while the full model verifies them in one pass. Accepted drafts are free. It is worth 1.4–1.9× on decode (2.06× combined with thinking off), and it is <strong>off until you explicitly enable it</strong>:</p>
+    <ul>
+        <li><strong>llama.cpp GGUF:</strong> the standard download prints <code>model has unused tensor blk.64.nextn</code> and skips the head. ggml-org ships the MTP weights as a separate file. If you want the speedup, you have to go looking for it.</li>
+        <li><strong>Flag spelling:</strong> MTP is opt-in and landed in llama.cpp on 16 May 2026 (PR #22673) already under its final name: <code>--spec-type draft-mtp --spec-draft-n-max N</code>. There is no grace period for stale spellings — a wrong type aborts llama-server at startup with a fatal <code>unknown speculative type</code> error. The stale recipes floating around come from the 13 May 2026 flag change (PR #22964: <code>draft</code>→<code>draft-simple</code>, <code>eagle3</code>→<code>draft-eagle3</code>) — three days before MTP existed at all.</li>
+        <li><strong>Ollama:</strong> no flag exists — MTP ships as separate model tags. You pull a different tag.</li>
+    </ul>
+    <p>How much is it worth? A published llama.cpp sweep (same machine, Q4_K_M-class quant):</p>
+    <table>
+        <tr><th>MTP setting</th><th>Decode tok/s</th><th>vs off</th><th>Accept rate</th></tr>
+        <tr><td>off (thinking on)</td><td>73.6</td><td>—</td><td>—</td></tr>
+        <tr><td>n=1</td><td>104.8</td><td>1.42×</td><td>0.860</td></tr>
+        <tr class="highlight"><td>n=2</td><td>125.5</td><td>1.70×</td><td>0.766</td></tr>
+        <tr class="highlight"><td><strong>n=3</strong></td><td><strong>133.6</strong></td><td><strong>1.81×</strong></td><td>0.674</td></tr>
+        <tr><td>n=4</td><td>119.5</td><td>1.62×</td><td>0.592</td></tr>
+        <tr><td>n=5</td><td>108.8</td><td>1.48×</td><td>0.520</td></tr>
+    </table>
+    <p>Base note: the sweep ran with thinking on — which is why the off row reads 73.6 tok/s. Thinking off alone decodes at 73.4 tok/s: the 73.6/73.4 pair is thinking on/off of the same model, not 3.8-vs-3.6, and reasoning changes time-to-first-token (2.18 s → 0.21 s), not decode. n=3 is the sweep peak at 1.81×; drafting deeper just lowers acceptance. The practical best combines thinking off with n=2: 73.4 → 151.2 tok/s — the 2.06× the source calls out. Independent confirmations: llama.cpp PR #22673 measured 22.97 → 42.45 tok/s (~1.85×) on a DGX Spark, +72% on another Spark setup, and 7.16 → 10.47 tok/s (1.46×) on a MacBook M5 24 GB. A 48 GB Apple laptop went 8.3 → 20.3 tok/s with a ported drafter — where 8-bit with drafting (20.3) beat 4-bit without it (14.6): a trade quantization alone never gives you.</p>
+    <p>Costs to know: the draft head holds roughly 2.5 GB resident, and prefill drops ~0.51× on the same path. On a 16 GB card the trade is real — one owner went from 32 tok/s at 128k context to 51 tok/s at half the context with MTP on: ~60% more speed bought with half the window.</p>
+
+    <h3>3. Stop letting the runtime hide the dials</h3>
+    <p>Every "why is it slow" thread has someone running Ollama at defaults. Ollama is the easiest on-ramp and the hardest place to debug: reasoning effort is unreachable (template swap, fix #1), MTP requires a different model tag, and context allocation happens without asking. If you're chasing throughput, run <code>llama-server</code> directly — the flags in fixes #1, #2 and #4 all live there. In LM Studio, watch one setting in particular: <strong>Context Size 0 reads the maximum from the GGUF</strong> — for this model that's the full 262,144 tokens allocated up front — and "Auto Increase Context" will happily push a build that just fit past your memory limit. Turn it off near the limit.</p>
+
+    <h3>4. Run the quant your GPU actually accelerates</h3>
+    <p>On RDNA4 (Radeon AI PRO R9700, Radeon 8060S-class), the silicon is built around INT4, INT8 and FP8 paths. The RDNA4 optimization sweep on llama.cpp is blunt about it: use <strong>Q4 or Q8 for weights and KV cache</strong>; Q6 and the mixed-precision UD-Q4_K_XL measurably underperform — "performance will suffer significantly... particularly when using the ROCm driver." One person's "3.8 is slow on my R9700" and another's "59.2 tok/s on one R9700" can be the same GPU with different quant files.</p>
+    <p>On NVIDIA the quant choice is about memory, not kernels — but don't go below Q4 on this model: multiple people report quality falling off a cliff harder than expected for a 27B, and aggressive KV-cache quantization broke at least one person's private eval outright. The measured floor that still works: RTX 3060 12 GB running Q4_K_S at 96k context with FFN offload on 46 layers, KV cache at Q4_0 and MTP — <span class="num">~9.7 tok/s</span>. Slow, but real, and it fits in 12 GB.</p>
+
+    <h3>5. Rebuild your Vulkan shaders (AMD's silent regression)</h3>
+    <p>The single most obscure fix on this page. Compiling llama.cpp's Vulkan shaders with the old system glslc (2023.8) caused a <strong>severe performance regression</strong> on RDNA4; rebuilding with Vulkan SDK 1.4.357.1 restored expected speed — same GPU, same model, same everything else. If your AMD numbers look nothing like community benchmarks, this is why. While you're at it: community sweeps through 2026 put llama.cpp's Vulkan path roughly 20–30% ahead of ROCm for token generation on consumer RDNA cards (ROCm wins prompt processing). Measure your own card rather than trusting either camp — but a vendor posting launch numbers measured on Vulkan rather than its own ROCm stack tells you something.</p>
+
+    <h3>6. On SGLang + unified memory: the memory fraction trap</h3>
+    <p>Running SGLang on a DGX Spark (128 GB unified) and wondering why 34 tok/s feels like 20? Check <code>--mem-fraction-static</code>. At 0.95 it reserves ~113 GB and leaves the host starving — CUDA graph capture then fails or gets skipped, and decode <strong>silently falls back to eager mode</strong>. That's the whole gap. 0.50 is the tested value that fixes it; high fractions have hard-frozen machines outright. Check your startup log for the "Capture" lines and watch <code>free -g</code> while it loads. Two smaller wins on the same rig: <code>--enable-torch-compile --torch-compile-max-bs 4</code> and <code>--num-continuous-decode-steps 2</code>, worth about +2 tok/s combined in A/B tests.</p>
+
+    <h3>7. Housekeeping: creep, swaps, and the desktop</h3>
+    <p>Three small ones that add up on long agentic runs. First, memory creep: a llama-server under agentic load grows about <strong>0.2 GB per hour</strong> — fine in practice since agents retry, but restart on a schedule for multi-day runs. Second, model swapping: every switch between models either reloads weights or splits VRAM; llama-swap gives you one stable OpenAI-compatible endpoint, hot-swaps backends without port churn, and unloads idle models on a TTL so your VRAM comes back. Third, if the GPU also drives your desktop, that's VRAM and bandwidth you paid for and can't use — the R9700 sweep above hit 59.2 tok/s <em>with</em> a desktop running on the card.</p>
+
+    <h2 id="numbers">What the numbers look like when it's configured right</h2>
+    <p>Every fix applied, this is the measured landscape for Qwen3.8-27B decode by hardware and stack (full table with per-number sources: <a href="/guia/tokens-por-segundo-30b-hardware-real">tokens per second on real hardware</a> — in Portuguese, the numbers are universal):</p>
+    <table>
+        <tr><th>Hardware</th><th>Stack / quant</th><th>Decode tok/s</th><th>Source</th></tr>
+        <tr class="highlight">
+            <td>RTX 5090 (32 GB)</td><td>SGLang + NVFP4 + DSpark</td><td><strong>206.1</strong></td>
+            <td class="src">SGLang team (official)</td>
+        </tr>
+        <tr>
+            <td>Radeon AI PRO R9700 (32 GB)</td><td>llama.cpp Vulkan, Q8_0 + MTP, 64k ctx</td><td><strong>59.2</strong></td>
+            <td class="src"><a href="https://github.com/ggml-org/llama.cpp/discussions/21043">llama.cpp #21043</a></td>
+        </tr>
+        <tr>
+            <td>RTX 3090 (24 GB)</td><td>llama.cpp, UD-Q4_K_XL</td><td>41.5</td>
+            <td class="src">InsiderLLM (llama-bench)</td>
+        </tr>
+        <tr>
+            <td>DGX Spark (128 GB)</td><td>SGLang + NVFP4 + DSpark</td><td>34–38</td>
+            <td class="src">NVIDIA dev forums</td>
+        </tr>
+        <tr>
+            <td>Strix Halo (128 GB unified)</td><td>Ollama/Vulkan, Q4_K_M</td><td>17.3</td>
+            <td class="src">Portal measurement</td>
+        </tr>
+        <tr>
+            <td>MacBook M5 (24 GB)</td><td>llama.cpp + MTP</td><td>10.47</td>
+            <td class="src">PR #22673 tests</td>
+        </tr>
+        <tr>
+            <td>RTX 3060 (12 GB)</td><td>llama.cpp Q4_K_S, offload + MTP, 96k ctx</td><td>~9.7</td>
+            <td class="src">HF discussion #61</td>
+        </tr>
+    </table>
+    <p>The spread is 20× between a 5090 with a serving stack and a 3060 at the edge of its memory — but every row is a usable setup, and every one of them got faster with fixes #1 and #2 before anyone bought hardware.</p>
+
+    <h2 id="faq">FAQ</h2>
+
+    <h3>Why is Qwen3.8-27B so slow?</h3>
+    <p>Two reasons stack. First, physics: it is a dense 27B model, so every generated token reads the entire quantized weight file — about 17 GB at 4-bit — and decode speed is capped by memory bandwidth, not compute. Second, defaults: it ships with thinking mode at xhigh effort, which spends 106 reasoning tokens before a simple answer (and 22,276 tokens on a single documented SVG prompt), and most llama.cpp setups run without MTP speculative decoding: speculation is opt-in there, so if the flag was never passed, it was never on. On the same hardware and quant, Qwen3.8-27B actually decodes faster than Qwen3.6-27B: 17.3 vs 12.4 tok/s measured on a Strix Halo. Source: Qwen3.8-27B model card, Hugging Face discussion #113, and measurements compiled by this portal.</p>
+
+    <h3>How do I make Qwen3.8-27B faster?</h3>
+    <p>In order of payoff: turn thinking off or to medium (time-to-answer drops from 2.18s to 0.21s on simple prompts, and decode rises from 73.4 to 151.2 tok/s — 2.06× — because direct answers are easier for the draft head to predict); enable MTP speculative decoding — it is off by default (<code>--spec-type draft-mtp</code>; with thinking off, <code>--spec-draft-n-max 2</code> is the practical best at 2.06×, and n=3 is the sweep peak at 1.81×); quantize the KV cache to q8_0; pick Q4 or Q8 quants on RDNA4 GPUs where mixed quants measurably underperform; rebuild Vulkan shaders with a current SDK on AMD; and on SGLang with unified memory, keep <code>--mem-fraction-static</code> at 0.50 — higher values silently skip CUDA graph capture and fall back to eager mode. Source: Hugging Face discussion #113, llama.cpp PR #22673, llama.cpp discussion #21043, NVIDIA developer forums.</p>
+
+    <h3>How many tokens per second does Qwen3.8-27B run at?</h3>
+    <p>Measured decode throughput by setup: 206.1 tok/s on a single RTX 5090 with SGLang, NVFP4 and DSpark speculative decoding (official SGLang team number); 59.2 tok/s on a single Radeon AI PRO R9700 with llama.cpp Q8_0 + MTP at 64k context (community sweep, Vulkan); 41.5 tok/s on an RTX 3090 with llama.cpp UD-Q4_K_XL (InsiderLLM); 17.3 tok/s on Strix Halo integrated graphics with Ollama/Vulkan Q4_K_M (portal measurement); and about 9.7 tok/s on an RTX 3060 12 GB with partial FFN offload, KV cache at Q4_0 and MTP at 96k context. Source: compiled with per-number sources at <a href="/guia/tokens-por-segundo-30b-hardware-real">the portal's throughput table</a>.</p>
+
+    <h3>Is Qwen3.8-27B slower than Qwen3.6-27B?</h3>
+    <p>No — in raw decode on the same machine and quant it is faster: 17.3 vs 12.4 tok/s measured on a Strix Halo with Ollama/Vulkan Q4_K_M, a gap attributed to Unsloth's GGUF compilation. What makes 3.8 feel slower is behavior, not throughput: thinking defaults to xhigh effort on 3.8, so answers arrive after thousands of reasoning tokens. Turning reasoning off restores the raw speed difference. Source: portal measurements and Qwen model cards.</p>
+
+    <h3>Why is Qwen3.8-27B slower than a 35B MoE model?</h3>
+    <p>Because dense and MoE pay different costs per token. Qwen3.8-27B activates all 27B parameters on every token; a MoE model like Qwen3.6-35B activates only about 3B per token, so it reads a fraction of the weights. On the same Strix Halo machine, the 27B dense decodes at 10.6 tok/s (Q5_K_M) while the 35B MoE hits 56.6 tok/s — 5.3× more. The dense model trades speed for quality-per-parameter and stronger agentic benchmarks. Source: portal measurements on identical hardware.</p>
+
+    <h3>Does MTP speculative decoding work in Ollama?</h3>
+    <p>There is no flag to set in Ollama: MTP ships as separate model tags, so you pull a different tag rather than pass <code>--spec-type</code>. Two caveats: Ollama replaces the model's chat template with a generic one, which means reasoning_effort cannot be lowered through Ollama at all — that dial requires llama-server with <code>--jinja</code>. And in llama.cpp the MTP head is a separate GGUF file; the standard Q4_K_M download prints "model has unused tensor blk.64.nextn" and skips it, so the speedup is off until you load the draft weights. Source: Ollama library, Hugging Face discussion #113, ofox.ai GGUF analysis.</p>
+
+    <h3>What is a good tok/s for a local LLM?</h3>
+    <p>Reading speed is about 5–7 tok/s, so 10 tok/s already feels like text arriving at reading pace and 20+ tok/s feels fast for chat. Coding agents raise the bar: a 4090-class setup at 100+ tok/s spends less time waiting on the model and more on tool calls, while a 10 tok/s rig turns a 20,000-token thinking pass into a half-hour wait — which is exactly why the reasoning-effort dial matters more than raw tok/s. Source: community throughput reports compiled by the portal.</p>
+
+    <h2>Where to go deeper</h2>
+    <ul>
+        <li><a href="/guia/tokens-por-segundo-30b-hardware-real">Every measured throughput number in one table</a> — hardware × stack × quant, each with its source (PT-BR)</li>
+        <li><a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">The complete reasoning configuration guide</a> — xhigh-trap, reasoning-budget, thinking off (PT-BR)</li>
+        <li><a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B on 16 GB of VRAM</a> — a real llama.cpp config: IQ4_XS, KV q8_0, speculative decoding (PT-BR)</li>
+        <li><a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang + FP8 official checkpoint tutorial</a> — 206 tok/s territory (PT-BR)</li>
+        <li><a href="/guia/qwen3.8-vs-qwen3.6-27b">Qwen3.8 vs Qwen3.6: all 26 benchmarks</a> (PT-BR)</li>
+    </ul>
+    <p>This portal's deep guides are in Portuguese — the commands, tables and numbers are universal. This page is the portal's first English article: if it helped, the <a href="/guia/faq">FAQ</a> and the <a href="/benchmarks">benchmarks page</a> translate trivially in any browser.</p>
+
+    <footer>
+        <p>Local 30B models portal — why Qwen3.8-27B is slow, and the fixes with measured numbers | Sources verified 2026-08-19: llama.cpp discussions #21043 and #27080, PR #22673, Hugging Face discussion #113, NVIDIA developer forums, Qwen model card, community sweeps.</p>
+        <p>Last updated: 2026-08-19 | <a href="/">Home</a> | <a href="/guia">Guide</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>

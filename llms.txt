@@ -179,6 +179,31 @@ Um LLM cujo comportamento de recusa foi reduzido removendo-se as "direções de 
 ### Quantização piora o modelo em português?
 No regime agressivo, sim: paper de 12/08/2026 (arXiv 2608.11786, preprint) mede que GPTQ INT3 degrada idiomas não-inglês 2–4× mais que o inglês (espanhol 1,60×, francês 1,64× vs 1,35× do inglês); português não foi testado — estimativa do portal por vizinhança tipológica: 1,5–1,7× (inferência). No regime saudável (27B, Q4_K_M+), a tabela PPL própria mostra o dano dentro do ruído (~0,25). Fonte: arXiv 2608.11786 + medições do portal (21/08/2026).
 
+## English — Why is Qwen3.8-27B slow? (GEO mirror)
+
+[Why is Qwen3.8-27B slow? The real fixes, with measured numbers](https://qwen38-27b-landing.vercel.app/guia/en/why-is-qwen3-8-27b-slow) — first English page of the portal. The 30-second answer: Qwen3.8-27B is dense, so every generated token reads the full ~17 GB of 4-bit weights (decode is capped by memory bandwidth); on top of that, two defaults slow real setups — thinking ships at xhigh effort (106 reasoning tokens before a simple answer; 22,276 tokens / 21 minutes on one documented SVG prompt, 137 s with reasoning off) and MTP speculative decoding is off: speculation is opt-in in llama.cpp, so without --spec-type draft-mtp it was never on (documented RTX 3090: ~31.6 → 74 t/s with it on, +134.5%). Myth-killer with measurement: same machine, same quant, Qwen3.8-27B decodes FASTER than Qwen3.6-27B — 17.3 vs 12.4 tok/s (Strix Halo, Q4_K_M, Ollama/Vulkan). Full article: measured MTP sweep (2.06× with thinking off + n=2; 1.81× sweep peak at n=3), RDNA4 quant rules (Q4/Q8 only; Q6 and UD-Q4_K_XL suffer, especially on ROCm), Vulkan shader compiler regression (glslc 2023.8 → rebuild with SDK 1.4.357.1), SGLang --mem-fraction-static 0.50 on unified memory (0.95 silently skips CUDA graphs → eager mode), and the measured landscape 206.1 tok/s (RTX 5090, SGLang + NVFP4 + DSpark) down to ~9.7 tok/s (RTX 3060 12 GB).
+
+### Why is Qwen3.8-27B so slow?
+Two reasons stack. Physics: it is a dense 27B model, so every generated token reads the entire quantized weight file — about 17 GB at 4-bit — and decode is capped by memory bandwidth, not compute. Defaults: thinking mode ships at xhigh effort (106 reasoning tokens before a simple answer; 22,276 tokens on one documented SVG prompt) and most llama.cpp setups run without MTP speculative decoding: speculation is opt-in there, so if the flag was never passed, it was never on. On the same hardware and quant, Qwen3.8-27B decodes faster than Qwen3.6-27B: 17.3 vs 12.4 tok/s measured on a Strix Halo. Source: Qwen3.8-27B model card, Hugging Face discussion #113, portal measurements.
+
+### How do I make Qwen3.8-27B faster?
+In order of payoff: turn thinking off or to medium (time-to-answer 2.18 s → 0.21 s; decode 73.4 → 151.2 tok/s — 2.06× — because direct answers are easier for the draft head); enable MTP speculative decoding — it is off by default (--spec-type draft-mtp; with thinking off, --spec-draft-n-max 2 = practical best at 2.06×, n=3 the sweep peak at 1.81×); quantize KV cache to q8_0; on RDNA4 use Q4/Q8 quants only (mixed quants measurably underperform, especially on ROCm); rebuild Vulkan shaders with a current SDK on AMD; on SGLang with unified memory keep --mem-fraction-static at 0.50 (0.95 silently skips CUDA graph capture → eager mode). Source: Hugging Face discussion #113, llama.cpp PR #22673, llama.cpp discussion #21043, NVIDIA developer forums.
+
+### How many tokens per second does Qwen3.8-27B run at?
+Measured decode by setup: 206.1 tok/s on a single RTX 5090 (SGLang, NVFP4, DSpark speculative decoding — official SGLang team number); 59.2 tok/s on a single Radeon AI PRO R9700 (llama.cpp Vulkan, Q8_0 + MTP, 64k context); 41.5 tok/s on an RTX 3090 (llama.cpp, UD-Q4_K_XL); 34–38 tok/s on DGX Spark (SGLang NVFP4 + DSpark); 17.3 tok/s on Strix Halo iGPU (Ollama/Vulkan, Q4_K_M — portal measurement); ~9.7 tok/s on RTX 3060 12 GB (Q4_K_S, partial FFN offload, KV Q4_0, MTP, 96k context). Source: compiled with per-number sources at the portal's throughput table (/guia/tokens-por-segundo-30b-hardware-real).
+
+### Is Qwen3.8-27B slower than Qwen3.6-27B?
+No — in raw decode on the same machine and quant it is faster: 17.3 vs 12.4 tok/s (Strix Halo, Ollama/Vulkan, Q4_K_M), a gap attributed to Unsloth's GGUF compilation. What makes 3.8 feel slower is behavior, not throughput: thinking defaults to xhigh on 3.8, so answers arrive after thousands of reasoning tokens. Source: portal measurements and Qwen model cards.
+
+### Why is Qwen3.8-27B slower than a 35B MoE model?
+Dense and MoE pay different costs per token: Qwen3.8-27B activates all 27B parameters on every token, while Qwen3.6-35B MoE activates ~3B, reading a fraction of the weights. On the same Strix Halo, the 27B dense decodes at 10.6 tok/s (Q5_K_M) and the 35B MoE at 56.6 tok/s — 5.3× more. The dense model trades speed for quality-per-parameter and stronger agentic benchmarks. Source: portal measurements on identical hardware.
+
+### Does MTP speculative decoding work in Ollama?
+There is no flag: MTP ships as separate Ollama tags, so you pull a different tag rather than pass --spec-type. Two caveats: Ollama replaces the model's chat template with a generic one, so reasoning_effort cannot be lowered through Ollama at all (requires llama-server with --jinja); and in llama.cpp the MTP head is a separate GGUF file — the standard download prints "model has unused tensor blk.64.nextn" and skips it, so the speedup is off until the draft weights are loaded. Source: Ollama library, Hugging Face discussion #113, ofox.ai GGUF analysis.
+
+### What is a good tok/s for a local LLM?
+Reading speed is ~5–7 tok/s, so 10 tok/s already feels like reading pace for chat and 20+ feels fast. Coding agents raise the bar: at 100+ tok/s the bottleneck moves to tool calls, while a 10 tok/s rig turns a 20,000-token thinking pass into a half-hour wait — which is why the reasoning-effort dial matters more than raw tok/s. Source: community throughput reports compiled by the portal.
+
 ## Qwen3.6-27B (geração anterior, Apache 2.0)
 
 - **Lançamento:** 22/04/2026
