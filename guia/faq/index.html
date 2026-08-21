@@ -234,6 +234,14 @@
         },
         {
           "@type": "Question",
+          "name": "Quantização piora o modelo em português?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No regime agressivo, sim: um paper de 12/08/2026 (arXiv 2608.11786, preprint) mede que GPTQ INT3 degrada idiomas não-inglês 2–4× mais que o inglês em perplexidade — espanhol 1,60× e francês 1,64× contra 1,35× do inglês. Português não foi testado; a estimativa por vizinhança tipológica é 1,5–1,7× (inferência, não dado do paper). No regime saudável — 27B em Q4_K_M ou melhor — a medição própria do portal mostra o dano dentro do ruído. Fonte: arXiv 2608.11786 (preprint, 12/08/2026) + medições do portal (21/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Qwen3.8-27B vs Qwen3.6-35B (MoE): qual escolher?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -549,6 +557,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="faq-item">
         <h3>O Qwen3.8-27B fala português?</h3>
         <p>Sim: o Qwen3.8-27B é multilíngue, compreende e gera texto em português, inglês, chinês e dezenas de outros idiomas. A qualidade em português é boa para conversação, programação e análise de documentos.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Quantização piora o modelo em português?</h3>
+        <p>No regime agressivo, sim: um paper de 12/08/2026 (arXiv 2608.11786, preprint) mede que GPTQ INT3 degrada idiomas não-inglês 2–4× mais que o inglês em perplexidade — espanhol 1,60× e francês 1,64× contra 1,35× do inglês. Português não foi testado; a estimativa por vizinhança tipológica é 1,5–1,7× (inferência, não dado do paper). No regime saudável — 27B em Q4_K_M ou melhor — a medição própria do portal mostra o dano dentro do ruído (~0,25 em WikiText-2 — corpus em inglês), então para boa qualidade em PT fique no Q4_K_M ou superior. Existe até um caminho de correção — LoRA rank-2 por idioma sobre o modelo já quantizado (+0,12% de parâmetros, ~20 min em 1 GPU) —, mas ainda não existe adapter pt-BR pronto. Análise completa: <a href="/guia/quantizacao-multilingue-portugues" style="color:var(--accent)">quantização rouba mais de quem fala português?</a>.</p>
     </div>
 
     <h2 id="comparacoes">Comparações</h2>

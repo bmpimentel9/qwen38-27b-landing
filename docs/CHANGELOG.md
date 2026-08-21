@@ -8,6 +8,24 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-21] — Artigo "Quantização rouba mais de quem fala português?" + companions (t_e5d3270d)
+
+### Added
+- **Artigo novo `/guia/quantizacao-multilingue-portugues`**: o paper LCD (arXiv 2608.11786,
+  12/08/2026, preprint single-author) mede que GPTQ INT3 degrada idiomas não-inglês 2–4×
+  mais que o inglês — e não testou português. Artigo com a tabela de ratios por idioma, a
+  estimativa honesta para PT (banda romance 1,5–1,7×, sempre rotulada como inferência), a
+  cura LoRA rank-2 de 0,12%/20 min e o cruzamento com a tabela PPL medida do portal
+  (WikiText-2 = inglês, o idioma-piso do dano). JSON-LD TechArticle + FAQPage(3).
+- **llms.txt: 8 inserções aditivas** (6 bullets de citações + 1 entrada de página + 1 FAQ).
+- **/guia/faq: 36ª pergunta** "Quantização piora o modelo em português?" — inserida após
+  "O Qwen3.8-27B fala português?" (existente byte-idêntica), DOM + JSON-LD estendidos.
+- **sitemap.xml: 32 URLs** (nova entrada `/guia/quantizacao-multilingue-portugues`).
+- **guia/index.html: card novo no topo** do card-grid (padrão PR #34/#38).
+- **Links internos nas irmãs de quantização** (1 por página, no corpo do texto):
+  `quantizacao-gguf-30b-quanto-cabe-na-sua-gpu` (card 12–16 GB) e
+  `qwen38-27b-16gb-vram-llama-cpp` (callout da tabela de quants).
+
 ## [2026-08-21] — H2 de objeção "é o mesmo modelo?" (t_20f0ae18)
 
 ### Added

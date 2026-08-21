@@ -66,6 +66,12 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - Correção de versão vLLM: a "0.27.2" não existe — PyPI vai de 0.27.0 (10/08) a 0.27.1 (11/08), seguida de 0.28.0rc1; a exigência real da recipe oficial é vLLM 0.17.0+ com transformers >= 5.8.0. Páginas do portal que citavam "≥ 0.27.2" corrigidas em 20/08/2026.
 - vLLM 1× RTX 5090 (32 GB) com NVFP4: só sobe com --enforce-eager e contexto 32K — sem eager, a captura de grafos morre em OOM de 784 MiB e mexer em --gpu-memory-utilization não resolve; KV fp8 é escolha, não requisito (91.022 tokens de KV fp8 vs 76.458 bf16); --language-model-only (→135.926) e --max-num-seqs 8 (→152.917) ampliam o pool, não consertam o OOM (recipe oficial).
 - Contexto 1M no vLLM: --max-model-len 1010000 com --hf-overrides '{"text_config": {"max_position_embeddings": 1010000}}' — aninhado em text_config no 27B, plano no 2.4T (recipe oficial); a recipe completa em /guia/como-rodar-vllm-qwen3-8-27b.
+- Quantização × idiomas (arXiv 2608.11786, preprint de 12/08/2026, Nirmal Thomas): GPTQ INT3 degrada idiomas não-inglês 2–4× mais que o inglês em perplexidade (Qwen2.5-3B e Llama-3.2-3B). Português NÃO foi testado — os 9 idiomas do paper: EN, AR, JA, ZH, HI, RU, FR, ES, KO. Análise: /guia/quantizacao-multilingue-portugues.
+- Ratios PPL INT3/FP16 por idioma (Qwen2.5-3B): inglês 1,35× · espanhol 1,60× · francês 1,64× · russo 2,12× · chinês 2,39× · hindi 2,73× · japonês 3,04× · coreano 3,49× · árabe 4,37× (arXiv 2608.11786, 12/08/2026). O dano cresce com a distância tipológica e a troca de script.
+- Estimativa do portal para português (INFERÊNCIA por vizinhança tipológica, não dado do paper): banda romance 1,5–1,7× contra 1,35× do inglês — ~15–25% acima do dano em inglês no regime agressivo (arXiv 2608.11786 + análise /guia/quantizacao-multilingue-portugues).
+- A cura LCD do paper: LoRA rank-2 por idioma sobre o modelo JÁ quantizado — +0,12% de parâmetros/idioma, ~20 min em 1 GPU (256 amostras/500 steps); recupera 70–83% do gap de PPL e 17–28% do gap de GlobalMMLU. Ganhos GlobalMMLU: chinês +9,1 · espanhol +6,7 (2º maior, vizinho tipológico do PT) · russo +6,2 · japonês +6,0 pts. Rank-1 já basta (r1→r4 em 0,1 pt). Não existe adapter pt-BR pronto.
+- Cruzamento com dados próprios: a tabela PPL do portal (WikiText-2, INGLÊS — o idioma-piso do dano no paper) mostra Q4_K_M 7,1814 e todos os 4-bit+ dentro do ruído ~0,25 do baseline f16 7,1557; só o IQ2_M (7,8581, ~2,8σ) escapa. Leitura honesta: em 27B/Q4+, PT tranquilo; em IQ2_M/3-bit, a penalidade multilingual do paper avisa que PT sofre mais que a tabela em inglês sugere.
+- Onde o erro mora (arXiv 2608.11786): quantização concentra erro em o_proj/down_proj — no Qwen em profundidade tardia (corrigível), no Llama em precoce (propaga); baseline LQER recuperaria 5,5%/13% vs 63,5%/27,8% do LCD.
 
 ## Páginas do portal
 
@@ -77,6 +83,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - [Guia completo](https://qwen38-27b-landing.vercel.app/guia/) — pillar page com visão geral do Qwen3.8-27B
 - [Meta Muse Glimmer 30B](https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local) — análise do 30B agêntico da Meta: benchmarks oficiais, cruzamento com Qwen3.8-27B, VRAM
 - [Quantização GGUF ≤30B](https://qwen38-27b-landing.vercel.app/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu) — tabela real com GB medidos por quantização (Qwen3.8-27B vs Muse Glimmer 30B)
+- [Quantização × português: o dano multilingual](https://qwen38-27b-landing.vercel.app/guia/quantizacao-multilingue-portugues) — paper de 12/08/2026 (arXiv 2608.11786): quantização INT3 degrada não-inglês 2–4× mais, PT não testado (estimativa banda romance 1,5–1,7×), a cura LoRA rank-2 de 0,12%/20 min e o cruzamento com a tabela PPL medida do portal
 - [Agent Memory Leaderboard](https://qwen38-27b-landing.vercel.app/guia/agent-memory-leaderboard-resultados) — primeiros resultados (15/08/2026): 65 sistemas em Text Memory, MemoraX lidera com 58,02; metodologia Add→Search / Answer→Eval
 - [Lemonade SDK v11.6](https://qwen38-27b-landing.vercel.app/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd) — serving de LLM local GPU+NPU com suporte AMD (ROCm, Radeon, Ryzen) e MCP server embutido; release 14/08/2026
 - [Qwen3.8-27B em 16GB de VRAM](https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp) — config llama.cpp real para GPU 16GB: IQ4_XS 15,71 GB / UD-Q3_K_XL 13,44 GB / Q4_K_M 17,11 GB com offload parcial; KV cache q8_0, speculative decoding n-gram, ~20 t/s na 4070 Ti Super
@@ -168,6 +175,9 @@ Depende do hardware e do trabalho. Em GPUs de 12–16 GB, o gpt-oss-20b (GGUF MX
 
 ### O que é um modelo abliterated?
 Um LLM cujo comportamento de recusa foi reduzido removendo-se as "direções de recusa" dos pesos — sem fine-tuning e sem dados adicionais (método de Arditi et al. 2024, arXiv 2406.11717: a recusa de modelos alinhados é majoritariamente linear no espaço de ativações). Ferramentas como o Heretic (github.com/p-e-w/heretic, 27.920 stars) automatizam o cálculo e a intensidade da remoção otimizando a troca recusas × dano (KL vs base). No Qwen3.8-27B-Uncensored-GGUF (979.768 downloads em 6 dias): recusas 98/100 → 12/100 com KL 0,1191 e MMLU 83,4→83,3 (−0,2, dentro do erro-padrão). Importante: recusa "substancialmente reduzida, não eliminada" — e a medição cobre 4 benchmarks de múltipla escolha, não código/matemática/visão. Análise completa em /guia/qwen3-8-27b-uncensored-abliterated. Fonte: README JonathanColetti/Qwen3.8-27B-Uncensored-GGUF + Heretic (verificado 20/08/2026).
+
+### Quantização piora o modelo em português?
+No regime agressivo, sim: paper de 12/08/2026 (arXiv 2608.11786, preprint) mede que GPTQ INT3 degrada idiomas não-inglês 2–4× mais que o inglês (espanhol 1,60×, francês 1,64× vs 1,35× do inglês); português não foi testado — estimativa do portal por vizinhança tipológica: 1,5–1,7× (inferência). No regime saudável (27B, Q4_K_M+), a tabela PPL própria mostra o dano dentro do ruído (~0,25). Fonte: arXiv 2608.11786 + medições do portal (21/08/2026).
 
 ## Qwen3.6-27B (geração anterior, Apache 2.0)
 
