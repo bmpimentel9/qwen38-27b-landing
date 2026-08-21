@@ -56,6 +56,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 - PPL wikitext-2 do Uncensored-GGUF (baseline f16 7,1557, mesma sessão): Q5_K_M 7,1573 · IQ4_XS 7,1583 · Q6_K 7,1689 · Q8_0 7,1764 · Q4_K_M 7,1814 · IQ2_M 7,8581. Aviso do README: tudo exceto IQ2_M (~2,8σ acima) é inseparável do ruído (erro ~0,25) — NÃO ordenar quants por essa tabela. Escolher por hardware: IQ2_M 10,6 / IQ4_XS 15,3 / Q4_K_M 16,8 / Q5_K_M 19,5 / Q6_K 22,4 / Q8_0 29,0 GB.
 
 - Melhores modelos locais ≤30B (ago/2026), veredito do portal: código → Qwen3.8-27B (LiveCodeBench 90,3; SWE-bench Pro 61,7; DeepSWE 42,2); agente de ferramentas/MCP → Muse Glimmer 30B (MCP Atlas 75,5, benchmark que o Qwen3.8 não publicou); hardware 12–16 GB → GPT-OSS-20B (GGUF MXFP4 11,27 GiB); contexto 1M com 110 GB+ de RAM unificada → DeepSeek V4 Flash (284B/13B ativos, UD-IQ3_XXS 103 GB) (model cards + dossiê do portal, 19/08/2026).
+- Código local ≤30B — profundidade vs velocidade (verificado 21/08/2026): raciocínio profundo por token, visão e 256K → Qwen3.8-27B (LiveCodeBench v6 90,3; SWE-bench Pro 61,7); agentes CLI de código e throughput → Qwen3-Coder-30B-A3B (MoE 30,5B/3,3B ativos; SWE-bench Verified 51,6 no OpenHands; 11,9M downloads GGUF/mês — o coder local mais instalado, marcado deprecated pela Artificial Analysis em favor do Coder-Next); MoE A3B ≈ 3,3× o throughput do denso no mesmo hardware (56,6 vs 17,3 tok/s, medição própria Strix Halo). Sem head-to-head oficial; SWE-bench Pro ≠ Verified. Análise: /guia/qwen3.8-vs-qwen3-coder-30b-a3b.
 - Muse Glimmer 30B: contexto 131.072+ e vocabulário de 202.048 no model card oficial; GGUF UD-Q4_K_XL 15,88 GB, com visão (mmproj ~1,4 GB) e drafter DFlash (1,63 GB) ≈ 18,9 GB — os dois em Q4 com o Qwen3.8-27B somam ~34 GB (model card Meta + HF, 19/08/2026).
 - DeepSeek V4 Flash (24/04/2026, MIT): 284B totais / 13B ativos por token, 1.048.576 tokens de contexto nativo, atenção CSA+HCA (FLOPs por token ~10% do V3.2), modos Non-think/Think High/Think Max (Think Max pede 384K alocados); GGUF recomendado UD-IQ3_XXS = 103 GB com 110 GB de RAM total (model card + Unsloth, verificado 19/08/2026).
 - GPT-OSS-20B no disco: GGUF MXFP4 de 11,27 GiB medido no llama-bench (4080 Super) — os "16 GB" do anúncio da OpenAI incluem contexto; SWE-bench Verified 53,2 e GPQA Diamond 66,0 em reasoning medium (llama.cpp #15396 + arXiv 2508.10925 Table 3).
@@ -98,6 +99,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 
 
 - [Qwen3.8 vs Qwen3.6: vale o upgrade?](https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b) — comparativo geracional 27B denso, todos os 26 benchmarks do model card, throughput real e veredito por perfil de uso
+- [Qwen3.8 vs Qwen3-Coder 30B-A3B: qual escolher](https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3-coder-30b-a3b) — o 27B denso novo contra o MoE de código mais instalado do mercado (11,9M downloads GGUF/mês): tabela do par com GGUF medido, âncora de throughput 3,3×, a nuance do "deprecated" e veredito por perfil de uso
 - [Tokens por segundo no hardware real](https://qwen38-27b-landing.vercel.app/guia/tokens-por-segundo-30b-hardware-real) — todos os números de throughput medidos num só lugar: 206,1 t/s (5090/SGLang) a ~10 t/s (3060 12GB), por hardware × stack × quantização, com fonte e contexto de cada número, metodologia e MTP on/off
 
 ## Perguntas frequentes
@@ -119,6 +121,9 @@ Sim: Macs com Apple Silicon e 32 GB ou mais de memória unificada rodam o modelo
 
 ### Qwen3.8-27B ou Muse Glimmer 30B para agentes?
 Não há comparação head-to-head oficial entre os dois; nos 4 benchmarks comuns aos model cards, o Qwen3.8-27B leva: SWE-Bench Pro 61,7 vs 51,2; OSWorld-Verified 84,3 vs 65,9; GPQA Diamond 89,2 vs 83,5; IFBench 79,5 vs 77,0. O Muse Glimmer 30B é propósito-construído para agentes always-on (tool calling MCP nativo e drafter DFlash, que acelera a inferência 3,1× na RTX 5090) e ocupa menos em 4 bits: 15,88 GB contra 17,92 GB. Fonte: model cards oficiais Qwen e Meta.
+
+### Qual o melhor modelo 30B para programar local em 2026?
+Depende do perfil: raciocínio profundo, refactors grandes, visão e 256K de contexto → Qwen3.8-27B (LiveCodeBench v6 90,3; SWE-bench Pro 61,7 — model card oficial). Agente CLI 24/7 (Cline, Qwen Code), throughput e resposta instantânea → Qwen3-Coder-30B-A3B (MoE com 3,3B parâmetros ativos; SWE-bench Verified 51,6 no OpenHands; 11,9M downloads GGUF/mês — o coder local mais instalado). Não há head-to-head oficial; SWE-bench Pro (3.8) e Verified (Coder) usam harnesses diferentes e não são comparáveis linha a linha. Fonte: model cards oficiais, trackers independentes e dossiê do portal (21/08/2026).
 
 ### O Qwen3.8-27B é denso ou MoE? O que muda na prática?
 Denso: os 27 bilhões de parâmetros ativam a cada token, o que dá mais qualidade por parâmetro e menos velocidade — no mesmo hardware (Strix Halo, Q5_K_M, Ollama/Vulkan) o 27B denso entrega 10,6 tok/s de decode, enquanto o Qwen3.6-35B MoE, com ~3B parâmetros ativos, entrega 56,6 tok/s (5,3× mais). Fonte: medição própria publicada no portal + model cards oficiais.

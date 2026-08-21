@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B ou Qwen3-Coder 30B-A3B? Veredito por caso de uso (ago/2026)</title>
+    <meta name="description" content="O coder local mais instalado (11,9M downloads GGUF/mês) contra o 27B novo: MoE de 3,3B ativos vs denso híbrido, GGUF medido em GB, âncora de throughput 3,3×, a nuance do 'deprecated' e veredito por perfil — com fontes.">
+    <meta name="keywords" content="qwen3 coder 30b a3b, qwen3.8 vs qwen3 coder, melhor modelo 30b para programar, qwen3 coder vale a pena 2026, moe vs denso, qwen3 coder deprecated, qwen3 coder gguf gb">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3-coder-30b-a3b">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Qwen3.8-27B ou Qwen3-Coder 30B-A3B? Veredito por caso de uso (ago/2026)">
+    <meta property="og:description" content="O coder local mais instalado (11,9M downloads GGUF/mês) contra o 27B novo: MoE de 3,3B ativos vs denso híbrido, GGUF medido, âncora de throughput 3,3×, a nuance do 'deprecated' e veredito por perfil — com fontes.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3-coder-30b-a3b">
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128; --bg-warn: #3b2f0a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); position: sticky; top: 0; }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr:hover { background: var(--code-bg); }
+        td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace; font-size: 0.9rem; }
+        td.delta { font-weight: 600; }
+        .g-delta { color: var(--accent-2); }
+        .m-delta { color: var(--accent); }
+        .w-delta { color: var(--accent-3); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        .section-label { background: var(--code-bg); font-weight: 700; color: var(--text); letter-spacing: 0.02em; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge-best { background: rgba(63,185,80,0.2); color: var(--accent-2); }
+        .badge-good { background: rgba(88,166,255,0.2); color: var(--accent); }
+        .badge-warn { background: rgba(247,129,102,0.2); color: var(--accent-3); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { border-left-color: var(--accent-3); }
+        .callout-warn strong { color: var(--accent-3); }
+        .callout-best { border-left-color: var(--accent-2); }
+        .callout-best strong { color: var(--accent-2); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .metric-card { display: inline-block; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; margin: 5px; text-align: center; }
+        .metric-card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+        .metric-card .label { font-size: 0.8rem; color: var(--text-muted); }
+        .verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+        .verdict-card h3 { margin-top: 0; color: var(--accent-2); font-size: 1.1rem; }
+        .verdict-card.hold h3 { color: var(--accent-3); }
+        .verdict-card.revisit h3 { color: var(--accent); }
+        .verdict-card ul { list-style: none; font-size: 0.9rem; }
+        .verdict-card ul li { padding: 4px 0; }
+        .verdict-card ul li::before { content: "→ "; color: var(--accent); }
+        .highlight { background: rgba(88,166,255,0.08); }
+        .footnote { font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
+        .footnote a { color: var(--accent); text-decoration: none; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .spec-table td:first-child { font-weight: 500; white-space: nowrap; }
+        .spec-table td { background: transparent; }
+        @media (max-width: 640px) {
+  table { display: block; overflow-x: auto; }
+  code { overflow-wrap: anywhere; }
+  pre code { overflow-wrap: normal; }
+ .verdict-grid { grid-template-columns: 1fr; } body { padding: 12px; } th, td { padding: 8px 10px; } }
+    </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+(function(){
+  var fired={};
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    if(max<=0)return;
+    var pct=Math.round((h.scrollTop||document.body.scrollTop)/max*100);
+    [25,50,75,100].forEach(function(t){
+      if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+    });
+    if(fired[100])window.removeEventListener('scroll',onScroll);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
+</script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B ou Qwen3-Coder 30B-A3B: qual escolher para codar local?</h1>
+        <p class="lead">O coder local mais instalado do mercado contra o 27B denso mais novo da Qwen: MoE de 3,3B ativos vs denso híbrido, GGUF medido em GB, a âncora honesta de throughput de 3,3×, a nuance do "deprecated" — e um veredito por perfil de uso que a SERP não te conta.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resposta-rapida">Resposta curta</a></li>
+            <li><a href="#o-confronto">O confronto: 13 meses de diferença</a></li>
+            <li><a href="#tabela">A tabela do par</a></li>
+            <li><a href="#arquitetura">Denso híbrido vs MoE: o que 3,3B ativos significam</a></li>
+            <li><a href="#velocidade">Throughput: a âncora honesta de 3,3×</a></li>
+            <li><a href="#vram">Disco e VRAM: GGUF medido</a></li>
+            <li><a href="#veredito">Veredito por perfil de uso</a></li>
+            <li><a href="#coder-next">E o Qwen3-Coder-Next?</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#fontes">Fontes</a></li>
+        </ul>
+    </div>
+
+    <div class="callout callout-best" id="resposta-rapida">
+        <strong>Resposta curta:</strong> Depende do perfil — e a SERP não te conta por quê. Para código difícil, refactors profundos, visão e 256K de contexto real, o <strong>Qwen3.8-27B</strong> está em outra prateleira (LiveCodeBench v6 90,3 no model card). Para agente CLI rodando o dia inteiro, throughput e resposta instantânea, o <strong>Qwen3-Coder-30B-A3B</strong> segue sendo o pick: MoE de 3,3B parâmetros ativos, ~3,3× o decode do denso no mesmo hardware (âncora de classe, medição própria com o Qwen3.6-35B) e o ecossistema mais maduro da categoria (11,9M downloads GGUF/mês). Não existe head-to-head oficial do par — quem promete um está vendendo número solto.
+    </div>
+
+    <h2 id="o-confronto">O confronto: 13 meses de diferença</h2>
+
+    <div class="verdict-grid">
+        <div class="verdict-card">
+            <h3>Qwen3-Coder-30B-A3B</h3>
+            <p style="font-size:0.9rem;color:var(--text-muted);">31/07/2025 · 13 meses de idade</p>
+            <ul>
+                <li>MoE de 30,5B totais / <strong>3,3B ativos</strong> por token (128 experts, 8 por token)</li>
+                <li>Contexto nativo 262.144 (1M com YaRN)</li>
+                <li><strong>Non-thinking only</strong> — o model card grifa: não gera blocos <code>&lt;think&gt;&lt;/think&gt;</code></li>
+                <li>Apache 2.0</li>
+                <li>O coder local <strong>mais instalado</strong>: 11,9M downloads GGUF/mês (unsloth, 21/08/2026) + 8,5M no Ollama</li>
+            </ul>
+        </div>
+        <div class="verdict-card">
+            <h3>Qwen3.8-27B</h3>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Pesos abertos 14/08/2026</p>
+            <ul>
+                <li>Denso ~27B híbrido: 16× Gated DeltaNet + full attention</li>
+                <li>Contexto nativo 262.144</li>
+                <li>Thinking <strong>configurável</strong> (on/off/effort, inclusive por chamada)</li>
+                <li>Visão nativa (prints, diagramas; MathVision 94,6 com CI)</li>
+                <li>Apache 2.0 · 1,73M downloads/mês no repo oficial (21/08/2026)</li>
+            </ul>
+        </div>
+    </div>
+
+    <p>Parece pergunta de ontem vs hoje — é exatamente o contrário: o "novo" da Qwen para código local saiu <strong>há 13 meses</strong>. O Qwen3-Coder-30B-A3B chegou em 31/07/2025 como o primeiro coder MoE da família e dominou a categoria desde então; o Qwen3.8-27B de agosto/2026 é denso, híbrido, multimodal e publica LCB v6 90,3 no model card — mas nas 262.144 URLs da SERP de "melhor modelo 30B para codar", quase ninguém menciona que a comparação real é entre gerações de arquitetura diferentes.</p>
+
+    <p>O enquadramento honesto: não são concorrentes diretos no mesmo nicho — são ferramentas para perfis diferentes. O Coder troca profundidade por velocidade e ecossistema; o 3.8 troca velocidade por profundidade por token, visão e raciocínio configurável.</p>
+
+    <h2 id="tabela">A tabela do par</h2>
+    <p>Valores canônicos do portal (GGUF medido via HF API) e das fontes nomeadas. Toda adoção com data — número de download é volátil.</p>
+
+    <div id="big-table"><table class="spec-table">
+        <tr><th></th><th>Qwen3.8-27B</th><th>Qwen3-Coder-30B-A3B</th></tr>
+        <tr><td>Lançamento</td><td>ago/2026 (pesos abertos 14/08)</td><td>31/07/2025 (13 meses)</td></tr>
+        <tr><td>Arquitetura</td><td>Denso ~27B híbrido (16× Gated DeltaNet + full-attention)</td><td>MoE 30,5B totais / <strong>3,3B ativos</strong> (128 experts, 8 por token)</td></tr>
+        <tr><td>Thinking</td><td>Híbrido configurável (on/off/effort)</td><td><strong>Não existe</strong> (non-thinking only)</td></tr>
+        <tr><td>Contexto nativo</td><td>262.144</td><td>262.144 (1M com YaRN)</td></tr>
+        <tr><td>Visão</td><td>Nativa</td><td>Não</td></tr>
+        <tr><td>GGUF IQ4_XS (medido)</td><td>15,71 GB</td><td><strong>16,38 GB</strong> (unsloth, 21/08)</td></tr>
+        <tr><td>GGUF Q4_K_M (medido)</td><td>17,11 GB</td><td>18,56 GB (unsloth, 21/08)</td></tr>
+        <tr><td>Rota 16 GB</td><td>IQ4_XS no limite (texto, KV quant, contexto curto)</td><td>UD-Q3_K_XL <strong>13,81 GB</strong> com folga</td></tr>
+        <tr><td>Código (trackers/cards)</td><td>LCB v6 <strong>90,3</strong> · SWE-bench Pro 61,7 · DeepSWE 42,2 (model card)</td><td>SWE-bench Verified <strong>51,6</strong> (OpenHands 100 turns) · AAII 14 (est.)</td></tr>
+        <tr><td>Throughput local</td><td>17,3 tok/s (Q4_K_M, Strix Halo — medição própria)</td><td>classe MoE A3B: 56,6 tok/s no mesmo hardware ≈ <strong>3,3×</strong> (âncora própria, ver § velocidade)</td></tr>
+        <tr><td>Adoção (21/08/2026)</td><td>1,73M dl/mês (repo HF)</td><td><strong>11,9M dl/mês GGUF + 8,5M Ollama</strong></td></tr>
+        <tr><td>Licença</td><td>Apache 2.0</td><td>Apache 2.0</td></tr>
+        <tr><td>Status</td><td>Corrente</td><td>Artificial Analysis: deprecated → Coder-Next</td></tr>
+    </table></div>
+
+    <div class="footnote">
+        <p><strong>Nota obrigatória da tabela:</strong> SWE-bench <strong>Pro</strong> (3.8, model card) e SWE-bench <strong>Verified</strong> (Coder, OpenHands) usam harnesses diferentes e <strong>não são comparáveis linha a linha</strong> — não existe head-to-head oficial do par. O model card do Coder não traz tabela de benchmarks; os números dele vêm do blog Qwen e de trackers independentes (OpenHands/openlm.ai, Artificial Analysis). É exatamente o que a SERP não te conta.</p>
+    </div>
+
+    <h2 id="arquitetura">Denso híbrido vs MoE: o que 3,3B ativos significam</h2>
+
+    <p>No Qwen3-Coder-30B-A3B, cada token passa por 8 dos 128 experts — o custo de computo por token é o de um modelo de ~3,3B parâmetros, com o conhecimento agregado de um 30B. É daí que vem o throughput: menos matrizes ativadas por token, menos bytes lidos da VRAM por token.</p>
+
+    <p>No Qwen3.8-27B, os ~27 bilhões de parâmetros ativam a cada token: mais profundidade de raciocínio por token, mais banda de memória consumida por token — e, portanto, menos tokens por segundo. A arquitetura híbrida (16 camadas full-attention + 48 Gated DeltaNet recorrentes) torna o KV cache do contexto 256K barato, mas o decode segue limitado pela banda de memória.</p>
+
+    <p>Quanto custa em velocidade? Medição própria do portal no mesmo hardware (Strix Halo, Ollama/Vulkan): <strong>10,6 t/s no 27B denso Q5_K_M vs 56,6 t/s no MoE</strong> — 5,3× na geração anterior; no Q4_K_M do 3.8, 17,3 t/s. Se o seu trabalho é conversar com um modelo que responde na hora, o MoE muda a experiência. Se é resolver um problema difícil com raciocínio longo, o denso compensa cada token.</p>
+
+    <p><strong>Non-thinking é feature aqui, não defeito.</strong> O Coder não gera blocos <code>&lt;think&gt;&lt;/think&gt;</code> antes de responder — a primeira palavra sai imediata. Para agente CLI em loop (Cline, Qwen Code), onde o loop editor→resposta→edição acontece dezenas de vezes por hora, a latência até a primeira palavra é o que se sente. O 3.8, por outro lado, tem o overthinking como trava conhecida — e solução conhecida: a <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal" style="color:var(--accent)">configuração ideal de reasoning do Qwen3.8-27B</a> explica como ligar/desligar por chamada.</p>
+
+    <p>Todos os números de throughput do portal, com fonte e contexto de cada um, estão no <a href="/guia/tokens-por-segundo-30b-hardware-real" style="color:var(--accent)">compilado de tokens por segundo no hardware real</a>.</p>
+
+    <h2 id="velocidade">Throughput: a âncora honesta de 3,3×</h2>
+
+    <p>O número de velocidade que circula na SERP para o Coder não tem fonte primária: não aparece no model card, no blog Qwen ou em tracker independente — e número sem fonte nomeada é exatamente o que este portal não publica.</p>
+
+    <p>O que o portal pode afirmar, com medição própria no mesmo hardware (Strix Halo, Ollama/Vulkan, Q4_K_M): a <strong>classe MoE A3B entrega 56,6 tok/s contra 17,3 tok/s do 27B denso — ~3,3×</strong>. É uma âncora de classe medida com o Qwen3.6-35B (mesma família MoE de ativos); o portal ainda não publicou medição do próprio Coder neste hardware. O decode do Coder deve ficar nessa faixa — mas o rótulo honesto é "classe", não "medição".</p>
+
+    <div class="callout">
+        <strong>Por que essa questão de rótulo importa:</strong> o portal publica o que mediu ou o que a fonte nomeada mediu — nunca número de terceira mão. A âncora de classe 3,3× é citável exatamente porque está rotulada como tal. Quem publica número de velocidade sem fonte primária está vendendo o mesmo número que a SERP repete sem checar.
+    </div>
+
+    <h2 id="vram">Disco e VRAM: GGUF medido</h2>
+
+    <p>Quants do Coder medidas na tree unsloth em 21/08/2026 (via HF API), arquivo por arquivo:</p>
+
+    <table>
+        <tr><th>Quantização</th><th>Tamanho (medido)</th></tr>
+        <tr><td>UD-Q3_K_XL</td><td class="num"><strong>13,81 GB</strong></td></tr>
+        <tr><td>Q3_K_M</td><td class="num">14,71 GB</td></tr>
+        <tr><td>IQ4_XS</td><td class="num">16,38 GB</td></tr>
+        <tr><tr><td>Q4_K_S</td><td class="num">17,46 GB</td></tr>
+        <tr><td>Q4_K_M</td><td class="num">18,56 GB</td></tr>
+    </table>
+
+    <p><strong>Faixa 16 GB:</strong> o Coder vence com folga — UD-Q3_K_XL de 13,81 GB deixa espaço real para KV cache. O 3.8 chega ao limite com o IQ4_XS de 15,71 GB: apenas texto, KV cache quantizado, contexto curto, sem o mmproj de visão (o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp" style="color:var(--accent)">guia do 3.8 em 16 GB</a> detalha a rota).</p>
+
+    <p><strong>Faixa 24 GB:</strong> os dois em Q4_K_M somam ~36 GB — não cabem juntos numa 4090, mas cada um cabe com contexto de sobra. Em 32 GB+ unificada (Strix Halo, Mac), os dois convivem: Coder para o dia a dia, 3.8 para o problema difícil — o mesmo padrão que o portal recomenda com o Muse Glimmer.</p>
+
+    <p>No Ollama: <code>qwen3-coder</code> (8,5M downloads) e <code>qwen3.8:27b</code> (18 GB) — comandos direto, sem flag exótica.</p>
+
+    <h2 id="veredito">Veredito por perfil de uso</h2>
+
+    <div class="verdict-grid">
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Qwen3.8-27B — código difícil e contexto como ferramenta</h3>
+            <ul>
+                <li>Refactor profundo, debugging longo, arquitetura — LCB v6 90,3 (a classe do Coder fica ~40–55 nos mesmos trackers)</li>
+                <li>Thinking configurável para problemas que rendem raciocínio</li>
+                <li>Visão nativa: prints, diagramas, UI (MathVision 94,6 com CI)</li>
+                <li>256K real com KV cache barato (híbrido DeltaNet)</li>
+            </ul>
+        </div>
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Qwen3-Coder-30B-A3B — agente CLI 24/7 e throughput</h3>
+            <ul>
+                <li>Cline, Qwen Code, Ollama — ecossistema pronto (11,9M dl/mês GGUF)</li>
+                <li>3,3B ativos ≈ 3,3× o decode do denso no mesmo hardware (âncora de classe)</li>
+                <li>Non-thinking = resposta instantânea, sem tokens de raciocínio antes da 1ª palavra</li>
+                <li>Aguenta o dia inteiro por watt — MoE barato de rodar</li>
+                <li>UD-Q3_K_XL 13,81 GB: até GPU de 16 GB roda com folga</li>
+    </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 GPU de 16 GB — Coder</h3>
+            <ul>
+                <li>UD-Q3_K_XL 13,81 GB com folga para KV cache vs IQ4_XS 15,71 GB do 3.8 no limite (texto, KV quantizado, contexto curto)</li>
+                <li>Vitória técnica do Coder na faixa — e é a faixa mais comum entre quem roda local</li>
+            </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 Já vou ter os dois? — sim, e é barato</h3>
+            <ul>
+                <li>Coder para a velocidade do dia a dia, 3.8 para a profundidade</li>
+                <li>≈36 GB somados em Q4_K_M: numa GPU de 24 GB não dá (alternar ou offload)</li>
+                <li>Em 32 GB+ unificada (Strix Halo/Mac) cabe — e compensa</li>
+                <li>Os outros vereditos do dossiê: <a href="/guia/melhores-modelos-locais-30b" style="color:var(--accent)">Melhores modelos locais de 30B</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="coder-next">E o Qwen3-Coder-Next?</h2>
+    <p>O sucessor anunciado pela Qwen resolve a maior lacuna do Coder atual — o non-thinking — mas até 21/08/2026 não tem pesos abertos publicados nem data marcada. Quando sair, este artigo ganha a terceira coluna; até lá, a decisão é entre 13 meses de maturidade contra a geração nova de densos.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+
+    <h3>Qual o melhor modelo 30B para programar local em 2026?</h3>
+    <p>Depende do perfil: raciocínio profundo, refactors grandes, visão e 256K de contexto → <strong>Qwen3.8-27B</strong> (LCB v6 90,3 e SWE-bench Pro 61,7, model card oficial). Agente CLI 24/7 (Cline, Qwen Code), throughput e resposta instantânea → <strong>Qwen3-Coder-30B-A3B</strong> (MoE de 3,3B parâmetros ativos, SWE-bench Verified 51,6, 11,9M downloads GGUF/mês — o coder local mais instalado). Não há head-to-head oficial: SWE-bench Pro (3.8) e Verified (Coder) usam harnesses diferentes e não são comparáveis linha a linha. Ambos Apache 2.0, ambos ~16–19 GB em 4-bit.</p>
+
+    <h3>O Qwen3-Coder 30B-A3B foi descontinuado?</h3>
+    <p>A Artificial Analysis o marca como deprecated e aponta o Qwen3-Coder-Next como sucessor — mas o modelo segue sendo o coder local <strong>mais instalado</strong> (11,9M downloads GGUF/mês em 21/08/2026, mais 8,5M no Ollama), disponível e em Apache 2.0. 'Deprecated' aqui significa 'a próxima geração foi anunciada', não 'pare de usar'. 13 meses de idade é muito tempo no ritmo de lançamentos de 2026 — mas a decisão é de perfil, não de pânico.</p>
+
+    <h3>Qual dos dois é mais rápido?</h3>
+    <p>No mesmo hardware (Strix Halo, Ollama), a classe MoE A3B entrega 56,6 tok/s contra 17,3 tok/s do 27B denso em Q4_K_M — <strong>~3,3×</strong>. É uma âncora de classe medida pelo portal com o Qwen3.6-35B (mesma família MoE A3B de ativos); o portal ainda não publicou medição do próprio Coder.</p>
+
+    <h3>Qual dos dois roda em GPU de 16 GB?</h3>
+    <p>O Coder, com folga: o UD-Q3_K_XL mede <strong>13,81 GB</strong>. O 3.8 chega ao limite com o IQ4_XS de 15,71 GB — apenas texto, KV cache quantizado e contexto curto, sem o mmproj de visão.</p>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;">
+
+    <h2 id="fontes">Fontes</h2>
+    <div class="footnote">
+        <ul style="margin-left:18px;">
+            <li>Hugging Face: <a href="https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct" style="color:var(--accent)">Qwen/Qwen3-Coder-30B-A3B-Instruct</a> (model card + config) · <a href="https://huggingface.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF" style="color:var(--accent)">unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF</a> (tree de 26 arquivos, GB medidos) · <a href="https://huggingface.co/Qwen/Qwen3.8-27B" style="color:var(--accent)">Qwen/Qwen3.8-27B</a></li>
+            <li>Blog Qwen: qwen3-coder (31/07/2025, com espelho Wayback Machine)</li>
+            <li>Trackers independentes: <a href="https://artificialanalysis.ai" style="color:var(--accent)">artificialanalysis.ai</a> (AAII 14 est. + banner deprecated → Coder-Next) · <a href="https://openlm.ai/swe-bench" style="color:var(--accent)">openlm.ai/swe-bench</a> + <a href="https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct/discussions/30" style="color:var(--accent)">HF discussion #30</a> (SWE-bench Verified 51,6 no OpenHands 100 turns — dupla fonte)</li>
+            <li>Biblioteca Ollama: <code>qwen3-coder</code> (8,5M downloads) · <code>qwen3.8:27b</code> (18 GB)</li>
+            <li>Portal: tabela GGUF medida via HF API (21/08/2026) · medições Strix Halo 16/08/2026 · <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu" style="color:var(--accent)">guia de quantização</a></li>
+            <li>Notas de fontes: GGUF do 3.8 conforme tabela medida do portal (IQ4_XS 15,71 / Q4_K_M 17,11 GB — o cânone do portal; a tree do ggml-org difere no empacotador); GGUF do Coder medido na tree unsloth em 21/08/2026. Repos HF: 3.8 criado em 05/08/2026, pesos abertos/publicados em 14/08/2026 (padrão de citação do portal).</li>
+        </ul>
+    </div>
+
+    <div class="footnote">
+        <p><strong>Metodologia:</strong> downloads verificados ao vivo na HF API em 21/08/2026 (11.939.987 no GGUF unsloth; 1.726.651 no repo oficial do 3.8). Tamanhos de GGUF medidos arquivo por arquivo via HF API (tree). Throughput: medições próprias Strix Halo (Ollama/Vulkan, Q4_K_M, 400 tokens × 9 rodadas, platô térmico). Benchmarks do model card reportados pelo fabricante.</p>
+    </div>
+
+    <footer>
+        <p>Portal Qwen3.8-27B | Dados baseados em especificações oficiais (Hugging Face, Qwen Blog, Ollama) e medições próprias.</p>
+        <p>Última atualização: 21/08/2026 | Publicado em <a href="/guia">guia</a></p>
+    </footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Qwen3.8-27B ou Qwen3-Coder 30B-A3B? Veredito por caso de uso (ago/2026)",
+  "description": "O coder local mais instalado (11,9M downloads GGUF/mês) contra o 27B novo: MoE de 3,3B ativos vs denso híbrido, GGUF medido em GB, âncora de throughput 3,3×, a nuance do 'deprecated' e veredito por perfil — com fontes.",
+  "inLanguage": "pt-BR",
+  "datePublished": "2026-08-21",
+  "dateModified": "2026-08-21",
+  "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3-coder-30b-a3b",
+  "proficiencyLevel": "Beginner"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Qual o melhor modelo 30B para programar local em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende do perfil: raciocínio profundo, refactors grandes, visão e 256K de contexto → Qwen3.8-27B (LCB v6 90,3 e SWE-bench Pro 61,7, model card oficial). Agente CLI 24/7 (Cline, Qwen Code), throughput e resposta instantânea → Qwen3-Coder-30B-A3B (MoE de 3,3B parâmetros ativos, SWE-bench Verified 51,6, 11,9M downloads GGUF/mês — o coder local mais instalado). Não há head-to-head oficial: SWE-bench Pro (3.8) e Verified (Coder) usam harnesses diferentes e não são comparáveis linha a linha. Ambos Apache 2.0, ambos ~16–19 GB em 4-bit. Fonte: model cards oficiais Qwen, trackers independentes (OpenHands/openlm.ai, Artificial Analysis) e dossiê do portal (21/08/2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Qwen3-Coder 30B-A3B foi descontinuado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Artificial Analysis o marca como deprecated e aponta o Qwen3-Coder-Next como sucessor — mas o modelo segue sendo o coder local mais instalado (11,9M downloads GGUF/mês em 21/08/2026, mais 8,5M no Ollama), disponível e em Apache 2.0. 'Deprecated' aqui significa 'a próxima geração foi anunciada', não 'pare de usar'. 13 meses de idade é muito tempo no ritmo de lançamentos de 2026 — mas a decisão é de perfil, não de pânico. Fonte: artificialanalysis.ai + HF API (21/08/2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual dos dois é mais rápido?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No mesmo hardware (Strix Halo, Ollama), a classe MoE A3B entrega 56,6 tok/s contra 17,3 tok/s do 27B denso em Q4_K_M — ~3,3×. É uma âncora de classe medida pelo portal com o Qwen3.6-35B (mesma família MoE A3B de ativos); o portal ainda não publicou medição do próprio Coder. Fonte: medições próprias do portal (Strix Halo, 16/08/2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual dos dois roda em GPU de 16 GB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O Coder, com folga: o UD-Q3_K_XL mede 13,81 GB. O 3.8 chega ao limite com o IQ4_XS de 15,71 GB — apenas texto, KV cache quantizado e contexto curto, sem o mmproj de visão. Fonte: tabela GGUF medida via HF API (unsloth Coder e cânone do portal para o 3.8, 21/08/2026)."
+      }
+    }
+  ]
+}
+</script>
+</body>
+</html>
