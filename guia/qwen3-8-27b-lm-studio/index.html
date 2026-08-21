@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B no LM Studio: instalação e config que funcionam</title>
+    <meta name="description" content="Como rodar o Qwen3.8-27B no LM Studio: build oficial de 16,10 GB, contexto que não deixa o modelo overthinkar, reasoning effort e os dois bugs conhecidos — com números.">
+    <meta name="keywords" content="qwen3.8-27b lm studio, rodar qwen 27b lm studio, lm studio 16gb, qwen3.8 gguf, lm studio reasoning effort, qwen 27b mac mlx">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lm-studio">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Qwen3.8-27B no LM Studio: a configuração que funciona">
+    <meta property="og:description" content="A porta de entrada do público leigo: build oficial de 16,10 GB, o ajuste de contexto que impede o overthinking e os dois bugs conhecidos — sem terminal.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lm-studio">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-21T00:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="LM Studio">
+    <meta property="article:tag" content="modelos locais">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qwen3.8-27B no LM Studio: instalação e config">
+    <meta name="twitter:description" content="Build oficial de 16,10 GB, contexto certo, reasoning effort e os bugs conhecidos — o 27B sem terminal.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Qwen3.8-27B no LM Studio: a configuração que funciona",
+          "description": "Como rodar o Qwen3.8-27B (27B denso, VLM nativa) no LM Studio sem terminal: build oficial GGUF de 16,10 GB, o ajuste de contexto que impede o overthinking do reasoning xhigh, reasoning effort configurável e os dois bugs conhecidos (contexto default 8192, flash attention em Qwen).",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-21",
+          "dateModified": "2026-08-21",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lm-studio",
+          "proficiencyLevel": "Beginner",
+          "dependencies": "LM Studio 0.4.x, 16 GB de RAM/VRAM",
+          "about": { "@type": "Thing", "name": "Qwen3.8-27B" }
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o Qwen3.8-27B no LM Studio",
+          "inLanguage": "pt-BR",
+          "totalTime": "PT15M",
+          "tool": [
+            { "@type": "HowToTool", "name": "LM Studio 0.4.x (Windows, macOS ou Linux)" },
+            { "@type": "HowToTool", "name": "16 GB de RAM/VRAM (GPU NVIDIA/AMD ou Mac Apple Silicon)" }
+          ],
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Instale o LM Studio",
+              "text": "Baixe o instalador em lmstudio.ai para Windows, macOS ou Linux. A instalação é gráfica, sem terminal."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Baixe a build oficial do Qwen3.8-27B",
+              "text": "Na aba de busca de modelos, procure por Qwen3.8 e escolha a publicação oficial qwen/qwen3.8-27b — o GGUF de 16,10 GB (4-bit). Em Mac, há builds MLX 4–8 bit da mesma família."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Configure o contexto antes do primeiro chat",
+              "text": "No load dialog, suba o context length do default 8.192 para o que sua memória comporta (32K–262K). O modelo overthinka por padrão (xhigh) e 8K de contexto acabam antes da resposta."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Ajuste o reasoning effort",
+              "text": "No painel de configurações do chat, troque reasoning effort de xhigh para medium em uso diário — o default xhigh gastou 22.276 tokens de raciocínio para um SVG de 3.223 tokens (21 minutos)."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 5,
+              "name": "Teste e valide",
+              "text": "Faça um prompt de teste e confira o throughput no HUD do LM Studio. Se o output degenerar com flash attention ligado, desligue a flag (bug conhecido em Qwen, issue #1353)."
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B roda no LM Studio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim. A publicação oficial qwen/qwen3.8-27b no catálogo do LM Studio tem 934 mil downloads e um build GGUF de 16,10 GB — o requisito mínimo declarado é 16 GB de RAM. Suporta visão, tool use e reasoning configurável."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto de memória precisa para o Qwen3.8-27B no LM Studio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "16 GB é o mínimo oficial (o build GGUF ocupa 16,10 GB em disco). Na prática, RAM/VRAM total ≥ tamanho do build + contexto: em 16 GB use contexto curto (16K–32K); em 24 GB suba para 64K+ com KV cache quantizado."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Por que o Qwen3.8-27B fica lento no LM Studio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Duas causas principais: o contexto default de 8.192 tokens do LM Studio é pequeno demais para o raciocínio xhigh do modelo (ele gasta o contexto pensando antes de responder) e o reasoning effort xhigh de fábrica multiplica os tokens gerados. Suba o contexto e baixe para medium."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "LM Studio ou llama.cpp para o Qwen3.8-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O LM Studio roda llama.cpp por baixo — a diferença é a interface gráfica e o gerenciamento de modelos. Mesmo motor, mesma velocidade com settings equivalentes. Escolha LM Studio se você não quer terminal; llama.cpp direto se precisa de flags finas (MTP com --spec-type draft-mtp, KV cache K/V assimétrico) que a GUI não expõe."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B roda no Mac?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim. Macs Apple Silicon com 32 GB+ rodam via builds MLX 4–8 bit da lmstudio-community (LM Studio nativo) ou via Ollama MLX (qwen3.8:27b-mlx). Simon Willison testou num M5 Max de 128 GB com o build Q4_K_M de 17 GB."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como ativar visão no LM Studio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A visão já vem no build oficial — o modelo é uma VLM nativa. Basta anexar a imagem na conversa. O encoder de visão (mmproj) faz parte do pacote GGUF oficial; não precisa de arquivo extra."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Qwen3.8-27B no LM Studio", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lm-studio" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        ul li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
+        .faq-item h3 { margin: 0 0 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B no LM Studio: a configuração que funciona</h1>
+        <p class="lead">O Qwen3.8-27B rodando em janela, sem terminal, em qualquer máquina com 16 GB. Este guia cobre o fluxo completo no LM Studio: a build oficial de 16,10 GB, o ajuste de contexto que impede o modelo de overthinkar antes de responder, o reasoning effort que troca minutos por velocidade — e os dois bugs conhecidos, para você não trocar de runner achando que o modelo é ruim. Para flags finas (MTP, KV cache assimétrico), o caminho é o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia llama.cpp de 16GB</a>.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
+            <li><a href="#o-build">A build oficial: 16,10 GB e o que vem nela</a></li>
+            <li><a href="#passo-a-passo">O fluxo completo (5 passos, sem terminal)</a></li>
+            <li><a href="#contexto">O ajuste que decide tudo: contexto</a></li>
+            <li><a href="#reasoning">Reasoning effort: xhigh, medium ou low</a></li>
+            <li><a href="#armadilhas">As duas armadilhas conhecidas</a></li>
+            <li><a href="#mac">No Mac: MLX 4–8 bit</a></li>
+            <li><a href="#lmstudio-vs-resto">LM Studio × Ollama × llama.cpp</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resposta-rapida">A resposta rápida</h2>
+    <p><strong>Sim, o Qwen3.8-27B roda no LM Studio em qualquer máquina com 16 GB.</strong> A publicação oficial <code>qwen/qwen3.8-27b</code> no catálogo tem build GGUF de <strong>16,10 GB</strong> (4-bit) e mínimo declarado de 16 GB de RAM — 934 mil downloads até 21/08/2026. O caminho curto:</p>
+    <ol>
+        <li>Instale o <a href="https://lmstudio.ai" rel="noopener">LM Studio</a> (Windows, macOS, Linux)</li>
+        <li>Busque <code>Qwen3.8</code> e baixe a build oficial de 16,10 GB</li>
+        <li>No load dialog, suba o contexto do default 8.192 para 32K+ (o passo que decide tudo)</li>
+        <li>Troque reasoning effort de <code>xhigh</code> para <code>medium</code> no uso diário</li>
+        <li>Converse — visão e tool use já vêm ligados no build</li>
+    </ol>
+    <p>O detalhe que separa a boa experiência da péssima não é o modelo: é o contexto default de 8.192 tokens do LM Studio contra o raciocínio xhigh de fábrica do Qwen3.8. Sem ajustar isso, o modelo gasta a janela inteira pensando e entrega resposta cortada ou degenerada.</p>
+
+    <h2 id="o-build">A build oficial: 16,10 GB e o que vem nela</h2>
+    <p>A publicação <code>qwen/qwen3.8-27b</code> no catálogo do LM Studio (mantida pela lmstudio-community, empacotada pela equipe do app) é o pacote de entrada que a maioria do público leigo vai encontrar primeiro — 934,3 mil downloads no catálogo oficial até 21/08/2026. O que ela inclui:</p>
+    <table>
+        <tr><th>Componente</th><th>Detalhe</th></tr>
+        <tr class="highlight"><td><strong>GGUF 4-bit</strong></td><td>16,10 GB — o 27B inteiro num arquivo; mínimo declarado: 16 GB de RAM</td></tr>
+        <tr><td>Visão</td><td>Encoder incluso no pacote — anexe imagens no chat, sem arquivo extra</td></tr>
+        <tr><td>Reasoning configurável</td><td>Reasoning Effort (xhigh/medium/low) + Enable Thinking + Preserve Thinking no painel de configurações</td></tr>
+        <tr><td>Sampling recomendado</td><td>temp 1,0 / top-p 0,95 / top-k 20 (defaults do modelo thinking)</td></tr>
+        <tr><td>MLX (Mac)</td><td>Builds MLX 4/5/6/8 bit da lmstudio-community para Apple Silicon</td></tr>
+    </table>
+    <p>O tamanho chama atenção: 16,10 GB para um modelo de 27B parâmetros — é a quantização 4-bit fazendo o trabalho. Para comparação, o Q4_K_M da Unsloth mede 17,11 GB e o Simon Willison rodou o build Q4_K_M de "17 GB" do LM Studio no M5 Max e no DGX Spark. A diferença entre builds 4-bit cabe no dedo: <strong>qualquer uma delas entrega o modelo inteiro; nenhuma vai caber em 8 GB de VRAM com contexto confortável</strong>.</p>
+    <div class="callout">
+        <strong>16 GB é entrada, não conforto.</strong> O build ocupa 16,10 GB e o contexto cresce por cima. Em GPU de 16 GB, use contexto 16K–32K com KV cache quantizado; em 24 GB, 64K+ com folga. A matemática completa do orçamento de VRAM (pesos + contexto + buffers) está no <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16GB com llama.cpp</a> — vale ler mesmo usando o LM Studio, porque a GUI esconde exatamente essa conta.
+    </div>
+
+    <h2 id="passo-a-passo">O fluxo completo (5 passos, sem terminal)</h2>
+
+    <h3>1. Instale o LM Studio</h3>
+    <p>Baixe em <a href="https://lmstudio.ai" rel="noopener">lmstudio.ai</a>. Existe para Windows, macOS e Linux, instalação gráfica. Na primeira execução, ele detecta seu hardware (GPU, VRAM, RAM) e mostra o que cabe.</p>
+
+    <h3>2. Baixe a build oficial</h3>
+    <p>Na aba de busca (ícone de lupa), digite <code>Qwen3.8</code>. A publicação oficial <code>qwen/qwen3.8-27b</code> aparece no topo. Baixe o GGUF de 16,10 GB. Se você usa Mac com Apple Silicon, avalie as builds MLX 4–8 bit — mesmo modelo, runtime otimizado para o Metal.</p>
+    <div class="callout-warn">
+        <strong>Confira o autor antes de baixar.</strong> O catálogo tem dezenas de quantizações comunitárias do mesmo modelo. A oficial é <code>qwen/qwen3.8-27b</code> (via lmstudio-community); builds de terceiros podem ser quants experimentais — para uso sério, fique na oficial ou nas da Unsloth.
+    </div>
+
+    <h3>3. Suba o contexto (o passo que decide tudo)</h3>
+    <p>Antes de carregar, o load dialog mostra <strong>Context Length</strong> — e o default do LM Studio é <strong>8.192 tokens</strong>. Para o Qwen3.8-27B isso é pouco, e o motivo é o raciocínio: o modelo pensa <em>dentro</em> do contexto antes de responder. Foi exatamente o que Simon Willison documentou em 16/08 — o modelo estourava os 8K pensando em problemas banais; ao carregar com o máximo de 262.144, o problema sumiu.</p>
+    <p>Regra prática por memória total:</p>
+    <table>
+        <tr><th>RAM/VRAM total</th><th>Contexto recomendado</th><th>Por quê</th></tr>
+        <tr><td>16 GB</td><td>16K–32K</td><td>16,10 GB de pesos + KV cache — sobra pouco; quantize o cache</td></tr>
+        <tr><td>24 GB</td><td>64K+</td><td>Folga para o cache crescer e visão funcionar junto</td></tr>
+        <tr><td>32 GB+</td><td>131K–262K</td><td>Contexto nativo completo com KV cache q8_0</td></tr>
+        <tr><td>Mac 32 GB+ unificada</td><td>64K–131K</td><td>Memória compartilhada com o sistema — deixe margem</td></tr>
+    </table>
+
+    <h3>4. Ajuste o reasoning effort</h3>
+    <p>Carregado o modelo, abra as configurações do chat. A build oficial expõe <strong>Reasoning Effort</strong> com default <code>xhigh</code>. Para uso diário, troque para <code>medium</code> — mesmo princípio do <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning do portal</a>: o xhigh é para tarefas que merecem minutos de raciocínio, não para toda pergunta. O caso extremo documentado: 22.276 tokens de raciocínio para gerar um SVG de 3.223 tokens — 21 minutos.</p>
+    <ul>
+        <li><strong>xhigh (default):</strong> análise complexa, matemática difícil, planejamento longo</li>
+        <li><strong>medium:</strong> o equilíbrio do dia a dia — accuracy com velocidade</li>
+        <li><strong>low:</strong> respostas rápidas, rascunhos, interação de agente</li>
+    </ul>
+    <p>Há também <strong>Preserve Thinking</strong> (default ligado): mantém o rastro de raciocínio das respostas anteriores no contexto — melhora continuidade em conversas agênticas, consome mais tokens. Desligue se seu contexto é curto.</p>
+
+    <h3>5. Teste e valide</h3>
+    <p>Mande um prompt e observe o HUD do LM Studio (tokens/s e uso de memória). Pontos de referência: <strong>~20 t/s</strong> de geração é o território de GPU de 16 GB com build 4-bit (4070 Ti Super, Q4_K_M); Strix Halo via Ollama/Vulkan fez 10,6 tok/s no Q5_K_M; MacBook M5 24GB com MTP chega a 10,47 t/s. Se os números ficarem muito abaixo disso, o problema é offload — parte dos pesos caiu na RAM porque o contexto pediu espaço demais.</p>
+
+    <h2 id="contexto">O ajuste que decide tudo: contexto</h2>
+    <p>Merece seção própria porque é a diferença entre "modelo fantástico" e "modelo quebrado" nos relatos de quem chegou primeiro. O Qwen3.8-27B é um modelo de raciocínio com contexto nativo de 262.144 tokens — e chega no LM Studio com o app sugerindo 8.192. O raciocínio xhigh consome a janela antes da resposta:</p>
+    <table>
+        <tr><th>Cenário</th><th>Contexto</th><th>Resultado</th></tr>
+        <tr class="highlight"><td>Default do LM Studio</td><td>8.192</td><td>Raciocínio estoura a janela — resposta cortada/degenerada</td></tr>
+        <tr><td>Ajustado (16 GB)</td><td>16K–32K</td><td>Funciona com reasoning medium</td></tr>
+        <tr><td>Ajustado (24 GB+)</td><td>64K–262K</td><td>xhigh sem sufocar — o caso do SVG levou 21 min mas entregou</td></tr>
+    </table>
+    <p>A conta do contexto (só 16 das 64 camadas do modelo são full-attention — o KV cache é leve para um 27B) está detalhada no <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia llama.cpp</a>. No LM Studio, o mesmo efeito se obtém no painel de GPU Offload e KV Cache quantization das configurações do modelo.</p>
+
+    <h2 id="reasoning">Reasoning effort: xhigh, medium ou low</h2>
+    <p>O Qwen3.8 formalizou o <code>reasoning_effort</code> no model card — três níveis oficiais — e a build do LM Studio expõe o controle no painel. A tradução prática de cada um, com os números que o portal já documentou:</p>
+    <table>
+        <tr><th>Nível</th><th>Quando</th><th>Custo observado</th></tr>
+        <tr><td><strong>xhigh</strong> (default)</td><td>Matemática, análise densa, planejamento multi-etapas</td><td>106 tokens de thinking = 2,18s até a 1ª palavra (vs 0,18s off); extremo: 22.276 tokens/21 min</td></tr>
+        <tr><td><strong>medium</strong></td><td>Uso diário, código comum, perguntas de trabalho</td><td>Equilíbrio recomendado para a maioria dos prompts</td></tr>
+        <tr><td><strong>low</strong></td><td>Interação rápida, agentes com loop apertado</td><td>Resposta quase imediata; raciocínio curto</td></tr>
+        <tr><td><strong>off</strong> (Enable Thinking)</td><td>Quando só importa a resposta</td><td>SVG de 3.223 tokens: 21 min → 137s</td></td></tr>
+    </table>
+    <p>Dados de referência: bench de 45 configs na 5090 — o reasoning não muda o decode (73,6 t/s thinking on vs 73,4 off), muda o <em>tempo até a primeira palavra</em> e o total de tokens gerados. Ou seja: desligar o thinking não acelera a velocidade de geração, corta a quantidade de coisa gerada. Detalhes no <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de configuração de reasoning</a>.</p>
+
+    <h2 id="armadilhas">As duas armadilhas conhecidas</h2>
+    <div class="callout-warn">
+        <strong>1. Contexto default 8.192.</strong> Já coberto acima — é a causa nº 1 de "o modelo não responde direito". Suba no load dialog antes do primeiro chat. (Documentado por Simon Willison, 16/08/2026.)
+    </div>
+    <div class="callout-warn">
+        <strong>2. Flash attention quebrando output em Qwen.</strong> Se a resposta degenerar (texto repetido, sem sentido) com flash attention ligado, desligue a flag nas configurações do modelo — é bug conhecido na família Qwen, aberto no bug tracker oficial do LM Studio (#1353). A perda de performance de desligar é menor que a de um output inutilizável.
+    </div>
+    <p>Há ainda o caso AMD: no LM Studio com ROCm, o relato da comunidade é "rocm as of now is inferior to vulkan" — se você tem GPU AMD, teste o backend Vulkan antes de culpar o modelo. No Ryzen AI Max+ o MTP aceita 4 draft tokens; no R9700, 2 (blog AMD Day 0).</p>
+
+    <h2 id="mac">No Mac: MLX 4–8 bit</h2>
+    <p>A mesma publicação oficial oferece builds <strong>MLX</strong> (4, 5, 6 e 8 bit) para Apple Silicon — runtime nativo do ecossistema Apple, geralmente mais rápido que GGUF no mesmo hardware. Macs com 32 GB+ de memória unificada rodam o 27B confortavelmente; com 24 GB, feche apps pesados e use contexto moderado. Referência de throughput: M5 24GB chegou a 10,47 t/s com MTP via llama.cpp — no LM Studio MLX espere território similar, com a vantagem da GUI.</p>
+    <p>Alternativa no Mac: <code>ollama run qwen3.8:27b-mlx</code> — mesmo modelo, outro wrapper.</p>
+
+    <h2 id="lmstudio-vs-resto">LM Studio × Ollama × llama.cpp</h2>
+    <p>Os três rodam o mesmo motor llama.cpp por baixo (o LM Studio empacota builds oficiais; o Ollama adiciona sua camada de orquestração). Com settings equivalentes, a velocidade é a mesma — a diferença é o que cada um expõe:</p>
+    <table>
+        <tr><th></th><th>LM Studio</th><th>Ollama</th><th>llama.cpp direto</th></tr>
+        <tr><td>Interface</td><td>GUI completa + server</td><td>CLI + API</td><td>Flags de linha de comando</td></tr>
+        <tr><td>Modelos</td><td>Catálogo HF integrado</td><td>Registry próprio</td><td>Você baixa o GGUF</td></tr>
+        <tr><td>Flags finas (MTP, KV assimétrico)</td><td>Parcial (GUI limita)</td><td>Parcial</td><td>Todas</td></tr>
+        <tr><td>Para quem</td><td>Quem não quer terminal</td><td>Devs, automação</td><td>Performance máxima, controle total</td></tr>
+    </table>
+    <p>A regra do portal: <strong>LM Studio para começar e conversar; llama.cpp quando você precisa das flags que a GUI não mostra</strong> — MTP com <code>--spec-type draft-mtp</code> (o ganho de +134,5% na 3090), KV cache K/V assimétrico, contexto no limite. O caminho completo dessas flags está no <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16GB com llama.cpp</a>. Para servir em produção, <a href="/guia/como-rodar-vllm-qwen3-8-27b">vLLM</a> ou <a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang</a>.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+    <div class="faq-item">
+        <h3>O Qwen3.8-27B roda no LM Studio?</h3>
+        <p>Sim. A publicação oficial <code>qwen/qwen3.8-27b</code> tem build GGUF de 16,10 GB, mínimo declarado de 16 GB de RAM e 934 mil downloads. Visão e tool use inclusos.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Quanto de memória preciso?</h3>
+        <p>16 GB é o mínimo oficial. Na prática: RAM/VRAM total ≥ build (16,10 GB) + contexto. Em 16 GB use contexto 16K–32K; em 24 GB+, 64K ou mais.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Por que o modelo fica lento ou "engasga" no LM Studio?</h3>
+        <p>Contexto default de 8.192 tokens + reasoning xhigh de fábrica: o modelo gasta a janela pensando. Suba o contexto e use reasoning medium no dia a dia.</p>
+    </div>
+    <div class="faq-item">
+        <h3>LM Studio ou llama.cpp?</h3>
+        <p>Mesmo engine, mesma velocidade. LM Studio = GUI e catálogo; llama.cpp = todas as flags (MTP, KV assimétrico). Comece no LM Studio, migre quando bater no teto dele.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Roda no Mac?</h3>
+        <p>Sim — builds MLX 4–8 bit da lmstudio-community no LM Studio, ou <code>ollama run qwen3.8:27b-mlx</code>. Macs de 32 GB+ rodam confortável.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Como uso a visão?</h3>
+        <p>Anexe a imagem na conversa — o encoder já vem no build oficial, sem arquivo extra. Documentos e diagramas STEM são o território do modelo.</p>
+    </div>
+
+    <footer>
+        <p>Portal de modelos locais de 30B — Qwen3.8-27B no LM Studio | Dados do catálogo oficial lmstudio.ai (21/08/2026); defaults e armadilhas documentadas por Simon Willison (16/08/2026) e no bug tracker oficial do LM Studio (#1353); throughput = relatos de comunidade e medições do portal.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Guia llama.cpp 16GB</a> | <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Reasoning</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
