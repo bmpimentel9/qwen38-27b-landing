@@ -186,6 +186,11 @@
         .stat-card .value.warn { color: var(--accent-3); }
         .src { font-size: 0.85rem; color: var(--text-muted); }
         .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    @media (max-width: 640px) {
+  table { display: block; overflow-x: auto; }
+  code { overflow-wrap: anywhere; }
+  pre code { overflow-wrap: normal; }
+}
     </style>
 </head>
 <body>

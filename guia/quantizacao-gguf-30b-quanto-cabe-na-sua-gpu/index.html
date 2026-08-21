@@ -143,6 +143,11 @@
         .gpu-card { flex: 1; min-width: 200px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
         .gpu-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
         .gpu-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0; }
+    @media (max-width: 640px) {
+  table { display: block; overflow-x: auto; }
+  code { overflow-wrap: anywhere; }
+  pre code { overflow-wrap: normal; }
+}
     </style>
 </head>
 <body>

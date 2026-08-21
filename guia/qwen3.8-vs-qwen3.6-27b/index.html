@@ -76,7 +76,11 @@
         footer a { color: var(--accent); text-decoration: none; }
         .spec-table td:first-child { font-weight: 500; white-space: nowrap; }
         .spec-table td { background: transparent; }
-        @media (max-width: 640px) { .verdict-grid { grid-template-columns: 1fr; } body { padding: 12px; } th, td { padding: 8px 10px; } }
+        @media (max-width: 640px) {
+  table { display: block; overflow-x: auto; }
+  code { overflow-wrap: anywhere; }
+  pre code { overflow-wrap: normal; }
+ .verdict-grid { grid-template-columns: 1fr; } body { padding: 12px; } th, td { padding: 8px 10px; } }
     </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
 <script>

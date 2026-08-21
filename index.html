@@ -466,6 +466,13 @@ h3{font-size:15px;font-weight:600;letter-spacing:-.01em}
   .bar-row{grid-template-columns:88px 1fr 44px;gap:8px}
   .bar-row .tip{left:0}
 }
+@media(max-width:640px){
+  .grid-2{grid-template-columns:1fr}
+  .grid>*{min-width:0}
+  .grid-2 .card pre{overflow-x:auto}
+  .bar-row .tip{left:0;max-width:calc(100vw - 48px);white-space:normal}
+}
+
 
 /* ===================== TABLE ===================== */
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
