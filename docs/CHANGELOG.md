@@ -21,6 +21,14 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
   throughput) e onde a objeção acerta (conhecimento: +1,4 a +1,8). Pergunta
   sem dono na SERP PT-BR (busca 21/08); formato pergunta-resposta disputa
   featured snippet.
+- **Verificação própria arquivo-por-arquivo (21/08, HF API)**: config.json dos
+  dois modelos é idêntico em arquitetura (só `transformers_version` difere);
+  vocabulário BPE idêntico (248.044 tokens); mas o 3.8 traz chat template
+  reescrito (injeta reasoning effort, xhigh default) e 7 added_tokens de áudio
+  novos. Receita usada no H2 como prova adicional — e correção de fato: textos
+  anteriores diziam "mesmo tokenizer e chat template", o template não é o
+  mesmo (corrigido em 8 superfícies: H2, FAQ do artigo ×2, JSON-LD do artigo,
+  FAQ page ×2, llms.txt ×2).
 - **Nova pergunta na `/guia/faq`** (seção Comparações, primeira posição):
   "O Qwen3.8-27B é igual ao Qwen3.6-27B?" com link para o H2.
 - **FAQ item no FAQ do próprio artigo vs** (primeira posição).
