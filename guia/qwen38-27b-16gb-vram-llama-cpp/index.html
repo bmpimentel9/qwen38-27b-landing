@@ -277,7 +277,7 @@
     </table>
     <p><em>Fontes: tamanhos medidos via HF API (18/08/2026); retenção de qualidade do benchmark da comunidade r/LocalLLM ("I benchmarked every Qwen 3.8 27B quant that fits in 16GB VRAM", 18/08/2026 — IQ4_XS 98,5%, UD-Q3_K_XL 97,8%, ppl KL 7,0615 vs 7,1113).</em></p>
     <div class="callout">
-        <strong>Como ler a tabela:</strong> a diferença de qualidade entre IQ4_XS e UD-Q3_K_XL é pequena (98,5% vs 97,8%), mas a diferença de espaço é 2,27 GB — que em 16GB é o equivalente a dezenas de milhares de tokens de contexto. A decisão é sempre <strong>qualidade máxima vs. contexto máximo</strong>, e a arquitetura híbrida do modelo torna o contexto surpreendentemente barato.
+        <strong>Como ler a tabela:</strong> a diferença de qualidade entre IQ4_XS e UD-Q3_K_XL é pequena (98,5% vs 97,8%), mas a diferença de espaço é 2,27 GB — que em 16GB é o equivalente a dezenas de milhares de tokens de contexto. A decisão é sempre <strong>qualidade máxima vs. contexto máximo</strong>, e a arquitetura híbrida do modelo torna o contexto surpreendentemente barato. E se o seu uso é majoritariamente em português: <a href="/guia/quantizacao-multilingue-portugues">por que o 3-bit dói mais em português</a>.
     </div>
     <div class="callout-warn">
         <strong>Cuidado com o mmproj:</strong> o encoder de visão (0,93 GB) é baixado automaticamente pelo <code>-hf</code>. Se você não vai passar imagens para o modelo, adicione <code>--no-mmproj</code> e recupere quase 1 GB — em 16GB, isso é o contexto inteiro de uma sessão.
