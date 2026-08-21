@@ -124,6 +124,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><a href="#conhecimento">Onde quase nada muda</a></li>
             <li><a href="#velocidade">Throughput real: medimos os dois no Strix Halo</a></li>
             <li><a href="#vram">VRAM e disco: custa caro o upgrade?</a></li>
+            <li><a href="#mesmo-modelo">"É o mesmo modelo?" — a objeção que dominou o r/LocalLLaMA</a></li>
             <li><a href="#veredito">Veredito por perfil de uso</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
         </ul>
@@ -447,6 +448,17 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <p>Fontes: <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Qwen3.6-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.6-27B-GGUF</a>.</p>
 
+    <h2 id="mesmo-modelo">O Qwen3.8-27B é igual ao Qwen3.6-27B?</h2>
+    <p>Não — é a mesma arquitetura com pesos diferentes. O 3.8 vence os <strong>26 benchmarks</strong> do model card, com mediana de <strong>+9,8 pontos</strong> sobre o 3.6. Dois modelos com ficha técnica idêntica e pontuação diferente, por definição, não são o mesmo modelo: arquitetura define o formato; o treinamento define o comportamento.</p>
+    <p>A tese do "mesmo modelo" nasceu no <a href="https://reddit.com/r/LocalLLaMA/comments/1voblcs" rel="nofollow" style="color:var(--accent)">r/LocalLLaMA</a> e virou o discurso dominante da release (1.100 upvotes, 191 comentários). A observação da thread é correta: os config.json dos dois modelos são idênticos na arquitetura — mesmo híbrido Gated DeltaNet, mesmas 64 camadas, mesmo tokenizer e chat template, tanto que o 3.8 carrega no vLLM/llama.cpp pela classe <code>Qwen3_5ForConditionalGeneration</code> da geração anterior. A conclusão da thread — "é o mesmo modelo" — é que não acompanha. A própria comunidade que defendia a tese atribuiu os ganhos de score ao (re)treinamento: um retreino profundo muda o comportamento sem mexer no esqueleto, e é isso que separa as duas gerações. Como resume a cobertura do Kingy AI: "same shape does not mean same model".</p>
+    <p>Três provas de que a diferença de pesos é real e mensurável, todas medíveis por você no seu hardware:</p>
+    <ul>
+        <li><strong>Pontos por benchmark:</strong> QwenSWEBench 49,3 → 79,0 (+29,7), DeepSWE 1.1 13,3 → 42,2 (3,2×), OSWorld-Verified 63,9 → 84,3 — 26 vitórias em 26 linhas, mediana +9,8. Duas execuções do mesmo arquivo não se separam assim.</li>
+        <li><strong>Tamanho dos arquivos:</strong> mesmo formato, pesos diferentes: no Q4_K_M, 17,11 GB vs 16,82 GB (+290 MB). Se fossem bit-a-bit idênticos, teriam exatamente o mesmo tamanho.</li>
+        <li><strong>Throughput:</strong> 17,3 vs 12,4 tok/s no mesmo Strix Halo (Q4_K_M) — mesma arquitetura, builds GGUF diferentes, resultado diferente. A recíproca: na RTX 3090 com build idêntico, o decode é equivalente (~41,5 t/s) — a arquitetura não mudou, mas os pesos sim.</li>
+    </ul>
+    <p>Onde a objeção acerta: em conhecimento e percepção o 3.6 segue entregando a mesma classe de resultado (GPQA +1,4, OmniDocBench +1,7, RealWorldQA +1,8). Quem usa o modelo como assistente de conhecimento pode continuar no 3.6 sem culpa — os ganhos se concentram em outras áreas. Em código agêntico e agentes de computador, onde as medianas são +19,2 e +16,9, os pesos novos estão em outra liga. Para o espectro completo, o <a href="#o-que-mudou">que mudou e o que ficou igual</a> mostra benchmark por benchmark.</p>
+
     <h2 id="veredito">Veredito por perfil de uso</h2>
     <div class="verdict-grid">
         <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
@@ -478,6 +490,9 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <h2 id="faq">Perguntas frequentes</h2>
+
+    <h3>O Qwen3.8-27B é igual ao Qwen3.6-27B?</h3>
+    <p>Não — é a mesma arquitetura com pesos diferentes. Os config.json são idênticos (híbrido Gated DeltaNet, 64 camadas, mesmo tokenizer), mas o 3.8 vence os 26 benchmarks do model card com mediana de +9,8 pontos — QwenSWEBench saltou de 49,3 para 79,0. Os ganhos vêm do (re)treinamento, não de mudança de esqueleto. Detalhes na seção <a href="#mesmo-modelo">"É o mesmo modelo?"</a> acima.</p>
 
     <h3>Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?</h3>
     <p>Depende do seu caso de uso. Em benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench) a mediana de ganho é de +19,2 pontos. Em conhecimento geral (GPQA, HLE, IFBench), é de +6,8 pontos. Em percepção passiva (documentos, cenas), a mediana é de +1,8 pontos — virtualmente empatado. Se você usa o modelo como agente que escreve código e opera o computador, vale o upgrade. Se usa como assistente de conhecimento, pode esperar.</p>
@@ -526,7 +541,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   "description": "Comparativo honesto Qwen3.8-27B vs Qwen3.6-27B: os 26 benchmarks do model card, throughput real medido no Strix Halo, tabela GB × GB de VRAM e veredito por perfil de uso.",
   "inLanguage": "pt-BR",
   "datePublished": "2026-08-16",
-  "dateModified": "2026-08-16",
+  "dateModified": "2026-08-21",
   "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
   "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
   "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b",
@@ -539,6 +554,14 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O Qwen3.8-27B é igual ao Qwen3.6-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não — é a mesma arquitetura com pesos diferentes. Os config.json são idênticos (híbrido Gated DeltaNet, 64 camadas, mesmo tokenizer e chat template), tanto que o 3.8 carrega no vLLM/llama.cpp pela classe Qwen3_5ForConditionalGeneration da geração anterior. Mas o (re)treinamento mudou o comportamento: o 3.8 vence os 26 benchmarks do model card com mediana de +9,8 pontos — QwenSWEBench saltou de 49,3 para 79,0 (+29,7) e DeepSWE 1.1 foi de 13,3 para 42,2. Os GGUFs Q4_K_M também têm tamanhos diferentes: 17,11 GB vs 16,82 GB. A tese do 'mesmo modelo' (1.100 upvotes no r/LocalLLaMA) observa a arquitetura idêntica e atribui os ganhos ao retreino — o que é correto quanto à causa, mas não quanto à conclusão: mesma arquitetura não é mesmo modelo."
+      }
+    },
     {
       "@type": "Question",
       "name": "Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?",

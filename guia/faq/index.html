@@ -58,6 +58,14 @@
       "mainEntity": [
         {
           "@type": "Question",
+          "name": "O Qwen3.8-27B é igual ao Qwen3.6-27B?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não — é a mesma arquitetura com pesos diferentes. Os config.json são idênticos (híbrido Gated DeltaNet, 64 camadas, mesmo tokenizer e chat template), mas o (re)treinamento mudou o comportamento: o 3.8 vence os 26 benchmarks do model card com mediana de +9,8 pontos — QwenSWEBench saltou de 49,3 para 79,0 (+29,7) e DeepSWE 1.1 foi de 13,3 para 42,2. Os GGUFs Q4_K_M têm tamanhos diferentes: 17,11 GB vs 16,82 GB. A tese do 'mesmo modelo' (1.100 upvotes no r/LocalLLaMA) observa a arquitetura idêntica e atribui os ganhos ao retreino — correto quanto à causa, mas não quanto à conclusão: mesma arquitetura não é mesmo modelo. Comparativo completo: /guia/qwen3.8-vs-qwen3.6-27b (seção 'É o mesmo modelo?')."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "O que é o Qwen3.8-27B?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -536,6 +544,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
 
     <h2 id="comparacoes">Comparações</h2>
+
+    <div class="faq-item">
+        <h3 id="igual-ao-3-6">O Qwen3.8-27B é igual ao Qwen3.6-27B?</h3>
+        <p>Não — é a mesma arquitetura com pesos diferentes: o 3.8 vence os 26 benchmarks do model card com mediana de +9,8 pontos (QwenSWEBench 49,3 → 79,0), e os GGUFs Q4_K_M têm tamanhos diferentes (17,11 vs 16,82 GB). Os ganhos vêm do (re)treinamento — a tese do "mesmo modelo" (1.100 upvotes no r/LocalLLaMA) confunde esqueleto idêntico com modelo idêntico. Comparativo completo: <a href="/guia/qwen3.8-vs-qwen3.6-27b#mesmo-modelo" style="color:var(--accent)">Qwen3.8-27B vs Qwen3.6-27B</a>.</p>
+    </div>
 
     <div class="faq-item">
         <h3>Qual o melhor modelo local de 30B em agosto/2026?</h3>

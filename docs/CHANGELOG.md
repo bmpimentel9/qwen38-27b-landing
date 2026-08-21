@@ -8,7 +8,33 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
-## [2026-08-20] — Guia "Qwen3.8-27B no vLLM em produção" (t_dfd9c398)
+## [2026-08-21] — H2 de objeção "é o mesmo modelo?" (t_20f0ae18)
+
+### Added
+- **H2 `#mesmo-modelo` no artigo `/guia/qwen3.8-vs-qwen3.6-27b`**: resposta à tese
+  viral do r/LocalLLaMA (thread 1voblcs, 1.100 upvotes, 191 comentários) de que
+  "Qwen3.8-27B é idêntico ao Qwen3.6-27B". Resposta na primeira frase: não — é a
+  mesma arquitetura com pesos diferentes (26 vitórias em 26 benchmarks, mediana
+  +9,8). Seção com a origem da tese, o que a thread acerta (config.json
+  idêntico, mesma classe `Qwen3_5ForConditionalGeneration`), as 3 provas
+  mensuráveis (scores por benchmark, tamanho de arquivo 17,11 vs 16,82 GB,
+  throughput) e onde a objeção acerta (conhecimento: +1,4 a +1,8). Pergunta
+  sem dono na SERP PT-BR (busca 21/08); formato pergunta-resposta disputa
+  featured snippet.
+- **Nova pergunta na `/guia/faq`** (seção Comparações, primeira posição):
+  "O Qwen3.8-27B é igual ao Qwen3.6-27B?" com link para o H2.
+- **FAQ item no FAQ do próprio artigo vs** (primeira posição).
+
+### Changed
+- **JSON-LD FAQPage**: 7→8 perguntas no artigo vs, 33→34 na `/guia/faq` —
+  paridade 1:1 com os h3, pergunta nova na primeira posição das duas páginas.
+- **dateModified** do TechArticle vs: 2026-08-16 → 2026-08-21; lastmod das
+  duas URLs no sitemap.xml.
+- **llms.txt**: +1 stat citável ("é o mesmo modelo?"), +1 Q&A completo na
+  seção Perguntas frequentes, descrição do link do artigo vs atualizada.
+- **Card no `/guia`**: descrição atualizada, badge "Atualizado 21/08".
+
+---
 
 ### Added
 - **Guia `/guia/como-rodar-vllm-qwen3-8-27b`**: o guia do segundo motor
