@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melhores modelos locais de 30B (ago/2026): os 6 que valem o download</title>
-    <meta name="description" content="Melhor modelo local de 30B em agosto/2026: veredito por caso de uso (código, agentes, visão, hardware fraco, 256K), tabela com VRAM medida, contexto e licença dos 6 candidatos.">
-    <meta name="keywords" content="melhor modelo local, melhores llm locais, best local llm, modelos 30b, qwen3.8-27b, muse glimmer 30b, gpt-oss-20b, gemma 3 27b, deepseek v4 flash, qwen3.6-27b, llm local 24gb, llm sem internet">
+    <title>Melhores modelos locais de 30B: os 10 que valem o download</title>
+    <meta name="description" content="Melhor modelo local 30B (ago/2026): veredito por caso de uso, tabela com GGUF medido e licença de 10 modelos: Qwen3.8, GLM-4.7, Gemma 4, Nemotron, Apriel.">
+    <meta name="keywords" content="melhor modelo local, melhores llm locais, best local llm, modelos 30b, qwen3.8-27b, glm 4.7 flash, gemma 4 31b, nemotron cascade 2, apriel 15b, muse glimmer 30b, gpt-oss-20b, gemma 3 27b, deepseek v4 flash, qwen3.6-27b, melhor modelo 30b 2026, modelo 30b moe vs denso, llm local 24gb, llm sem internet">
     <meta name="author" content="Bruno Pimentel">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
-    <meta property="og:title" content="Melhores modelos locais de 30B (ago/2026): os 6 que valem o download">
-    <meta property="og:description" content="Um veredito por caso de uso, sem empate: código, agentes MCP, visão, hardware fraco e contexto de 256K. Tabela com VRAM medida, contexto e licença dos 6 candidatos.">
+    <meta property="og:title" content="Melhores modelos locais de 30B: os 10 que valem o download">
+    <meta property="og:description" content="Um veredito por caso de uso: código, agentes MCP, visão, hardware 12–16 GB e 256K. Tabela com GGUF medido e licença dos 10 candidatos — GLM-4.7-Flash, Gemma 4 31B e mais.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b">
     <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
     <meta property="article:published_time" content="2026-08-19T00:00:00-03:00">
@@ -23,8 +23,8 @@
     <meta property="article:tag" content="comparativo">
     <meta property="article:tag" content="LLM">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Melhores modelos locais de 30B (ago/2026): os 6 que valem o download">
-    <meta name="twitter:description" content="Código, agentes, visão, hardware fraco, 256K: um vencedor por caso de uso. Tabela com VRAM medida e licença dos 6 candidatos — DeepSeek V4 Flash incluído como o intruso da lista.">
+    <meta name="twitter:title" content="Melhores modelos locais de 30B: os 10 que valem o download">
+    <meta name="twitter:description" content="Código, agentes, visão, hardware 12–16 GB, 256K: um vencedor por caso de uso. Tabela com GGUF medido e licença dos 10 candidatos — GLM-4.7-Flash, Gemma 4 31B, Nemotron e Apriel.">
     <meta name="twitter:site" content="@bmpimentel9">
     <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
@@ -49,11 +49,11 @@
       "@graph": [
         {
           "@type": "TechArticle",
-          "headline": "Melhores modelos locais de 30B (ago/2026): os 6 que valem o download",
-          "description": "Página-hub de comparação dos modelos locais de até 30B de agosto/2026, com veredito por caso de uso (código, agentes MCP, visão, hardware fraco, contexto longo) e tabela mestra de 6 candidatos: Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B e DeepSeek V4 Flash (284B totais com 13B ativos, incluído como comparação para máquinas de 110 GB+ de memória). Números de model cards oficiais, dossiê de fontes do portal e medições próprias no Strix Halo.",
+          "headline": "Melhores modelos locais de 30B: os 10 que valem o download",
+          "description": "Página-hub de comparação dos modelos locais de até 30B de agosto/2026, com veredito por caso de uso (código, agentes MCP, visão, hardware fraco, contexto longo), tabela mestra de 10 candidatos e seção Qwen3.8 vs rivais 30B. Inclui Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B, GLM-4.7-Flash, Nemotron-Cascade-2-30B-A3B, Gemma 4 31B, Apriel-1.6-15b-Thinker e DeepSeek V4 Flash (284B totais com 13B ativos). Números de model cards oficiais, dossiê de fontes do portal, medições próprias no Strix Halo e verificação ao vivo via HF API (20/08).",
           "inLanguage": "pt-BR",
           "datePublished": "2026-08-19",
-          "dateModified": "2026-08-19",
+          "dateModified": "2026-08-21",
           "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
           "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
           "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b"
@@ -69,34 +69,38 @@
         {
           "@type": "ItemList",
           "name": "Melhores modelos locais de até 30B — agosto/2026",
-          "numberOfItems": 6,
+          "numberOfItems": 10,
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Qwen3.8-27B — melhor no geral e para código", "url": "https://qwen38-27b-landing.vercel.app/guia" },
             { "@type": "ListItem", "position": 2, "name": "Muse Glimmer 30B — melhor para agentes com ferramentas MCP", "url": "https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local" },
             { "@type": "ListItem", "position": 3, "name": "GPT-OSS-20B — melhor para hardware de 12 a 16 GB", "url": "https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos" },
             { "@type": "ListItem", "position": 4, "name": "Qwen3.6-27B — a geração anterior que ainda compete em contexto", "url": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b" },
             { "@type": "ListItem", "position": 5, "name": "Gemma 3 27B — o multimodal leve do Google", "url": "https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos" },
-            { "@type": "ListItem", "position": 6, "name": "DeepSeek V4 Flash — o intruso: 284B totais, 13B ativos, 1M de contexto", "url": "https://qwen38-27b-landing.vercel.app/modelos" }
+            { "@type": "ListItem", "position": 6, "name": "GLM-4.7-Flash — MoE A3B de agentic/código (τ²-Bench 79,5)", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 7, "name": "Nemotron-Cascade-2-30B-A3B — o desafiante em código (LCB v6 87,2)", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 8, "name": "Gemma 4 31B — o denso do Google que fecha o gap da 3ª geração", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 9, "name": "Apriel-1.6-15b-Thinker — o residente de 12 GB com function calling", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 10, "name": "DeepSeek V4 Flash — o intruso: 284B totais, 13B ativos, 1M de contexto", "url": "https://qwen38-27b-landing.vercel.app/modelos" }
           ]
         },
         {
           "@type": "Dataset",
           "name": "Melhores modelos locais de 30B (ago/2026) — tabela mestra",
-          "description": "Dados estruturados da tabela mestra: 6 modelos locais de até 30B avaliados em agosto/2026 (Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B e DeepSeek V4 Flash, incluído como comparação de 284B totais). Valores em https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#tabela-mestra",
+          "description": "Dados estruturados da tabela mestra: 10 modelos locais de até 30B avaliados em agosto/2026 — Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B, GLM-4.7-Flash, Nemotron-Cascade-2-30B-A3B, Gemma 4 31B, Apriel-1.6-15b-Thinker e DeepSeek V4 Flash (284B totais). Valores em https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#tabela-mestra",
           "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b",
           "isAccessibleForFree": true,
           "creator": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
-          "license": "https://qwen38-27b-landing.vercel.app/",
+          "license": "https://opensource.org/licenses/MIT",
           "temporalCoverage": "2026-08",
           "variableMeasured": [
             { "@type": "PropertyValue", "name": "modelo", "description": "Nome e versão do modelo" },
             { "@type": "PropertyValue", "name": "params", "description": "Parâmetros totais e arquitetura: denso ou MoE" },
             { "@type": "PropertyValue", "name": "ativos", "description": "Parâmetros ativos por token (determina custo computacional e velocidade)" },
-            { "@type": "PropertyValue", "name": "gguf_gb", "description": "Tamanho do arquivo GGUF 4-bit medido em disco, em GB decimais conforme a fonte; GPT-OSS-20B é o único em GiB (11,27 GiB MXFP4 ≈ 12,10 GB). Qwen3.8-27B: IQ4_XS 15,71 GB e Q4_K_M 17,11 GB; Muse Glimmer: UD-Q4_K_XL 15,88 GB (Unsloth); Qwen3.6-27B: ≈15,7–17,1 GB (mesma arquitetura do 3.8); Gemma 3 27B: Q4_K_M 16,55 GB (bartowski); DeepSeek V4 Flash: UD-IQ3_XXS 103 GB (Q8_K_XL 162 GB)" },
-            { "@type": "PropertyValue", "name": "contexto", "description": "Contexto nativo em tokens do model card: 262.144 (Qwen3.8), 131.072+ (Muse Glimmer), 131.072 (GPT-OSS), 262.144 com 1M via YaRN (Qwen3.6), 128.000 (Gemma 3), 1.048.576 (DeepSeek V4 Flash)" },
-            { "@type": "PropertyValue", "name": "licenca", "description": "Licença: Apache 2.0 (Qwen3.8, Muse Glimmer, GPT-OSS, Qwen3.6), Gemma Terms of Use, MIT (DeepSeek V4 Flash)" },
-            { "@type": "PropertyValue", "name": "visao", "description": "Visão nativa: Qwen3.8 (mmproj 0,93 GB), Muse Glimmer (ViT-G/14 ~1,8B), Gemma 3 (128K) — GPT-OSS e DeepSeek V4 Flash não" },
-            { "@type": "PropertyValue", "name": "lancamento", "description": "Data de lançamento: 14/08/2026 (Qwen3.8), 10/08/2026 (Muse Glimmer), 05/08/2025 (GPT-OSS), 22/04/2026 (Qwen3.6), 12/03/2025 (Gemma 3), 24/04/2026 (DeepSeek V4 Flash)" }
+            { "@type": "PropertyValue", "name": "gguf_gb", "description": "Tamanho do arquivo GGUF 4-bit medido em disco, em GB decimais. Qwen3.8: IQ4_XS 15,71 GB; Muse Glimmer: UD-Q4_K_XL 15,88 GB (Unsloth); GPT-OSS: MXFP4 11,27 GiB ≈ 12,10 GB; Qwen3.6: ≈15,7–17,1 GB; Gemma 3: Q4_K_M 16,55 GB; GLM-4.7-Flash: IQ4_XS 16,27 GB (Unsloth); Nemotron Cascade 2: IQ4_XS 18,17 GB (bartowski); Gemma 4 31B: IQ4_XS 16,37 GB (Unsloth); Apriel 1.6: IQ4_XS 7,91 GB (bartowski); DeepSeek V4 Flash: UD-IQ3_XXS 103 GB" },
+            { "@type": "PropertyValue", "name": "contexto", "description": "Contexto nativo em tokens do model card: 262.144 (Qwen3.8), 131.072+ (Muse Glimmer), 131.072 (GPT-OSS), 262.144+1M YaRN (Qwen3.6), 128.000 (Gemma 3), 202.752+RoPE 1M (GLM-4.7-Flash), 262.144+RULER 1M (Nemotron Cascade 2), 262.144 (Gemma 4), 262.400 (Apriel), 1.048.576 (DeepSeek V4 Flash)" },
+            { "@type": "PropertyValue", "name": "licenca", "description": "Licença: Apache 2.0 (Qwen3.8, Muse Glimmer, GPT-OSS, Qwen3.6), Gemma Terms of Use (Gemma 3), MIT (GLM, Apriel, DeepSeek V4 Flash), NVIDIA Open Model (Nemotron Cascade 2), Gemma 4 License (HF: apache-2.0)" },
+            { "@type": "PropertyValue", "name": "visao", "description": "Visão nativa: Qwen3.8 (mmproj 0,93 GB), Muse Glimmer (ViT-G/14 ~1,8B), Gemma 3 (128K), Gemma 4 31B (imagem), Apriel (LLaVA) — GPT-OSS, GLM, Nemotron Cascade 2, DeepSeek V4 Flash não" },
+            { "@type": "PropertyValue", "name": "lancamento", "description": "Data de lançamento: 14/08/2026 (Qwen3.8), 10/08/2026 (Muse Glimmer), 05/08/2025 (GPT-OSS), 22/04/2026 (Qwen3.6), 12/03/2025 (Gemma 3), 19/01/2026 (GLM-4.7-Flash), 18/03/2026 (Nemotron Cascade 2), 11/03/2026 (Gemma 4), 28/11/2025 (Apriel), 24/04/2026 (DeepSeek V4 Flash)" }
           ],
           "distribution": [
             {
@@ -127,6 +131,14 @@
             },
             {
               "@type": "Question",
+              "name": "Qwen3.8-27B ou GLM-4.7-Flash?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Depende do eixo. Em código profundo, visão e contexto o Qwen3.8-27B lidera (LCB v6 90,3 contra 64,0 do GLM). Em throughput agentic 24/7, o GLM-4.7-Flash é MoE A3B com ~3B ativos (3–8× o t/s do denso), publicou τ²-Bench 79,5, BrowseComp 42,8 e SWE-bench Verified 59,2 — benchmarks que o Qwen não publicou. Não existe head-to-head oficial. Atenção: o teste empírico glukhov.org/pt registrou 100% de erro do GLM em tarefa estruturada de migração (OpenCode), reforçando que model card não é garantia de produção."
+              }
+            },
+            {
+              "@type": "Question",
               "name": "O DeepSeek V4 Flash é um modelo 30B?",
               "acceptedAnswer": {
                 "@type": "Answer",
@@ -146,7 +158,7 @@
               "name": "Por que o Gemma 3 27B está na lista se está uma geração atrás?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Porque é o 27B do Google com visão nativa, ecossistema maduro e 16,55 GB em Q4_K_M — e porque a comparação honesta mostra o tamanho do gap: GPQA Diamond 42,4 no instruct (Technical Report oficial, Table 6) contra 89,2 do Qwen3.8-27B."
+                "text": "Porque é o 27B do Google com visão nativa, ecossistema maduro e 16,55 GB em Q4_K_M — e porque a comparação honesta mostra o tamanho do gap: GPQA Diamond 42,4 no instruct (Technical Report oficial, Table 6) contra 89,2 do Qwen3.8-27B. O sucessor Gemma 4 31B (mar/2026) fecha esse gap para 84,3 no GPQA Diamond — tabela acima e seção Qwen3.8 vs rivais."
               }
             },
             {
@@ -154,7 +166,7 @@
               "name": "Esses modelos funcionam sem internet?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Todos os seis rodam 100% local via llama.cpp ou Ollama — baixou o GGUF, desligou o roteador, seguiu trabalhando. Nenhum dado sai da máquina; a única dependência externa é o download inicial no Hugging Face."
+                "text": "Todos os dez rodam 100% local via llama.cpp ou Ollama — baixou o GGUF, desligou o roteador, seguiu trabalhando. Nenhum dado sai da máquina; a única dependência externa é o download inicial no Hugging Face."
               }
             }
           ]
@@ -181,7 +193,7 @@
         p { margin-bottom: 15px; }
         .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
         .hero { background: linear-gradient(135deg, var(--surface), var(--bg)); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin-bottom: 30px; }
-        .hero h1 { margin-bottom: 15px; font-size: 1.7rem; }
+        .hero h2 { margin-bottom: 15px; font-size: 1.7rem; }
         .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0 0 0; }
         .stat-card { flex: 1; min-width: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
         .stat-card .value { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
@@ -240,12 +252,12 @@
             <a href="/guia/faq">FAQ</a>
         </nav>
         <h1>Melhores modelos locais de 30B (ago/2026)</h1>
-        <p class="lead">Os seis que valem o download — um veredito por caso de uso, VRAM medida de verdade e zero empate técnico.</p>
+        <p class="lead">Os dez que valem o download — um veredito por caso de uso, VRAM medida de verdade e zero empate técnico.</p>
     </header>
 
     <div class="hero">
-        <h1>Um modelo para cada trabalho: os seis melhores locais de ~30B</h1>
-        <p>Agosto de 2026 foi o mês em que a pergunta da comunidade deixou de ser <em>como rodar</em> um modelo local e virou <strong>qual modelo local rodar</strong>. Em 30 dias saíram o Muse Glimmer 30B (10/08), o Qwen3.8-27B (14/08) e o LTX-2.5 (17/08) — e o YouTube passou a responder "basicamente um Opus rodando local". Esta página reúne os seis candidatos à sua VRAM em agosto/2026, com a fonte de cada número. A regra editorial é uma: se não cabe na sua máquina, não é o melhor modelo para você.</p>
+        <h2>Um modelo para cada trabalho: os dez melhores locais de ~30B</h2>
+        <p>Agosto de 2026 foi o mês em que a pergunta da comunidade deixou de ser <em>como rodar</em> um modelo local e virou <strong>qual modelo local rodar</strong>. Em 30 dias saíram o Muse Glimmer 30B (10/08), o Qwen3.8-27B (14/08) e o LTX-2.5 (17/08) — e o YouTube passou a responder "basicamente um Opus rodando local". Esta página reúne os dez candidatos à sua VRAM em agosto/2026 — os seis clássicos mais os rivais que a comunidade já compara (GLM-4.7-Flash, Nemotron Cascade 2, Gemma 4 31B e Apriel 1.6) —, com a fonte de cada número. A regra editorial é uma: se não cabe na sua máquina, não é o melhor modelo para você.</p>
         <div class="stat-row">
             <div class="stat-card">
                 <div class="value">90,3</div>
@@ -270,13 +282,14 @@
         <h3>Índice</h3>
         <ul>
             <li><a href="#resposta-rapida">A resposta rápida</a></li>
-            <li><a href="#tabela-mestra">A tabela mestra: 6 modelos, VRAM real, contexto e licença</a></li>
+            <li><a href="#tabela-mestra">A tabela mestra: 10 modelos, VRAM real, contexto e licença</a></li>
             <li><a href="#veredito-codigo">Veredito: código e engenharia</a></li>
             <li><a href="#veredito-agente">Veredito: agentes e uso de computador</a></li>
             <li><a href="#veredito-visao">Veredito: visão e multimodal</a></li>
             <li><a href="#veredito-hardware-fraco">Veredito: hardware fraco (12–16 GB)</a></li>
             <li><a href="#veredito-contexto">Veredito: contexto longo (256K–1M)</a></li>
             <li><a href="#veredito-brasil">Veredito: hardware brasileiro e custo</a></li>
+            <li><a href="#rivais-30b">Qwen3.8-27B vs os rivais 30B</a></li>
             <li><a href="#metodologia">Metodologia e transparência</a></li>
             <li><a href="#perguntas-frequentes">Perguntas frequentes</a></li>
         </ul>
@@ -291,22 +304,23 @@
         <li><strong>Visão e documentos:</strong> <a href="#veredito-visao">Qwen3.8-27B</a> de novo — MathVision 94,6, OmniDocBench 91,1, visão nativa no GGUF</li>
         <li><strong>Contexto de 256K+ numa GPU só:</strong> Qwen3.8-27B (262.144 nativos). <strong>1M de tokens com 110 GB+ de RAM:</strong> <a href="#veredito-contexto">DeepSeek V4 Flash</a></li>
         <li><strong>Geração anterior comprovada:</strong> Qwen3.6-27B segue relevante — mesmo corpo do 3.8, perde em 26 de 26 benchmarks, mas mantém o Thinking Preservation documentado</li>
+        <li><strong>Rivais de outras casas:</strong> o GLM-4.7-Flash (3B ativos, agentic), o Nemotron-Cascade-2-30B-A3B (desafiante LCB 87,2), a Gemma 4 31B (o denso do Google, GPQA 84,3) e o Apriel-1.6-15b-Thinker (7,91 GB — a opção que cabe em 12 GB) — o confronto número a número está em <a href="#rivais-30b">Qwen3.8-27B vs os rivais 30B</a>.</li>
     </ul>
     <div class="callout">
         <strong>O intruso da lista.</strong> O DeepSeek V4 Flash não é um 30B: são 284B de parâmetros totais e um GGUF de 92–103 GB. Ele está aqui porque ativa só 13B por token — o custo computacional por token de um 13B — e porque 1M de contexto nativo é um território que nenhum ≤30B alcança. Se o seu critério é "cabe na GPU", pule ele; se é "cabe na memória unificada de 110 GB+", ele vira o candidato a melhor compra zero-real da lista.
     </div>
 
-    <h2 id="tabela-mestra">A tabela mestra: 6 modelos, VRAM real, contexto e licença</h2>
+    <h2 id="tabela-mestra">A tabela mestra: 10 modelos, VRAM real, contexto e licença</h2>
     <p>Coluna "GGUF" mostra arquivo medido em disco (fonte em cada linha), não estimativa de VRAM em carga. Contexto é o nativo do model card. "Ativos/token" é o número que separa denso de MoE — e o que determina velocidade. A tabela é interativa: filtre por caso de uso nos botões e clique nos cabeçalhos <em>GGUF</em>, <em>Contexto</em> e <em>Lançamento</em> para ordenar.</p>
     <div class="table-controls" role="group" aria-label="Filtrar modelos por caso de uso">
-        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Todos (6)</button>
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Todos (10)</button>
         <button type="button" class="filter-btn" data-filter="codigo" aria-pressed="false">Código</button>
         <button type="button" class="filter-btn" data-filter="agentes" aria-pressed="false">Agentes</button>
         <button type="button" class="filter-btn" data-filter="visao" aria-pressed="false">Visão</button>
         <button type="button" class="filter-btn" data-filter="hardware" aria-pressed="false">Hardware fraco (12–16 GB)</button>
         <button type="button" class="filter-btn" data-filter="contexto" aria-pressed="false">Contexto longo</button>
     </div>
-    <p class="table-note"><span id="tableCounter" aria-live="polite">6 de 6 modelos</span> · vencedores do caso de uso em destaque; os demais ficam esmaecidos. O DeepSeek V4 Flash (284B totais, GGUF de 103 GB) nunca aparece como recomendado no filtro de hardware fraco.</p>
+    <p class="table-note"><span id="tableCounter" aria-live="polite">10 de 10 modelos</span> · vencedores do caso de uso em destaque; os demais ficam esmaecidos. O DeepSeek V4 Flash (284B totais, GGUF de 103 GB) nunca aparece como recomendado no filtro de hardware fraco.</p>
     <div class="table-wrap">
     <table id="modelTable">
         <thead>
@@ -372,6 +386,46 @@
             <td>Nativa (128K)</td>
             <td>12/03/2025</td>
         </tr>
+        <tr data-profiles="codigo agentes" data-winner="" data-gguf="16.27" data-ctx="202752" data-lanc="2026-01-19">
+            <td><strong>GLM-4.7-Flash</strong></td>
+            <td>31,2B MoE (64 experts)</td>
+            <td>~3B</td>
+            <td>IQ4_XS 16,27 GB · Q4_K_M 18,31 GB</td>
+            <td>202.752 (RoPE 1M)</td>
+            <td>MIT</td>
+            <td>Não</td>
+            <td>19/01/2026</td>
+        </tr>
+        <tr data-profiles="codigo contexto" data-winner="" data-gguf="18.17" data-ctx="262144" data-lanc="2026-03-18">
+            <td><strong>Nemotron-Cascade-2-30B-A3B</strong></td>
+            <td>30B MoE Mamba2-híbrido</td>
+            <td>~3B</td>
+            <td>IQ4_XS 18,17 GB · Q4_K_M 24,73 GB</td>
+            <td>262.144 (RULER 1M)</td>
+            <td>NVIDIA Open Model</td>
+            <td>Não</td>
+            <td>18/03/2026</td>
+        </tr>
+        <tr data-profiles="codigo visao" data-winner="" data-gguf="16.37" data-ctx="262144" data-lanc="2026-03-11">
+            <td><strong>Gemma 4 31B (IT)</strong></td>
+            <td>31,3B denso</td>
+            <td>31,3B</td>
+            <td>IQ4_XS 16,37 GB · Q4_K_M 18,32 GB</td>
+            <td>262.144</td>
+            <td>Gemma 4 License (HF: apache-2.0)</td>
+            <td>Nativa (imagem)</td>
+            <td>11/03/2026</td>
+        </tr>
+        <tr data-profiles="agentes hardware" data-winner="" data-gguf="7.91" data-ctx="262400" data-lanc="2025-11-28">
+            <td><strong>Apriel-1.6-15b-Thinker</strong></td>
+            <td>14,9B denso</td>
+            <td>14,9B</td>
+            <td>IQ4_XS 7,91 GB · Q4_K_M 8,79 GB</td>
+            <td>262.400</td>
+            <td>MIT</td>
+            <td>Nativa (LLaVA)</td>
+            <td>28/11/2025</td>
+        </tr>
         <tr data-profiles="contexto" data-winner="" data-gguf="103" data-ctx="1048576" data-lanc="2026-04-24">
             <td><strong>DeepSeek V4 Flash</strong> <span class="badge badge-alt">intruso</span></td>
             <td>284B MoE</td>
@@ -410,7 +464,7 @@
                 if (show) { visible++; }
             });
             if (counter) {
-                counter.textContent = visible + ' de 6 modelos' + (filterLabels[currentFilter] || '');
+                counter.textContent = visible + ' de 10 modelos' + (filterLabels[currentFilter] || '');
             }
         }
 
@@ -481,7 +535,7 @@
         apply();
     })();
     </script>
-    <p class="footnote">Fontes: Qwen3.8/Q3.6 — GGUFs medidos via API do Hugging Face (dossiê do portal). Muse Glimmer — GGUF UD-Q4_K_XL do repositório Unsloth (15,88 GB; o kquant 4-bit oficial da Meta lista 16,76 GB). GPT-OSS — model card e bench llama.cpp #15396 (arquivo 11,27 GiB; os "16 GB" do anúncio da OpenAI incluem contexto). Gemma 3 — Q4_K_M 16,55 GB (bartowski, decimal). DeepSeek — GGUFs dinâmicos Unsloth (recomendação oficial UD-IQ3_XXS com 110 GB de RAM total). Benchmarks completos: <a href="/guia/benchmarks-comparativos">comparativo do portal</a> e <a href="/guia/qwen3.8-vs-qwen3.6-27b">26 benchmarks 3.8 vs 3.6</a>.</p>
+    <p class="footnote">Fontes: Qwen3.8/Q3.6 — GGUFs medidos via API do Hugging Face (dossiê do portal). Muse Glimmer — GGUF UD-Q4_K_XL do repositório Unsloth (15,88 GB; o kquant 4-bit oficial da Meta lista 16,76 GB). GPT-OSS — model card e bench llama.cpp #15396 (arquivo 11,27 GiB; os "16 GB" do anúncio da OpenAI incluem contexto). Gemma 3 — Q4_K_M 16,55 GB (bartowski, decimal). DeepSeek — GGUFs dinâmicos Unsloth (recomendação oficial UD-IQ3_XXS com 110 GB de RAM total). Benchmarks completos: <a href="/guia/benchmarks-comparativos">comparativo do portal</a> e <a href="/guia/qwen3.8-vs-qwen3.6-27b">26 benchmarks 3.8 vs 3.6</a>. Rivais 30B — GLM-4.7-Flash/Gemma 4: GGUFs Unsloth; Nemotron Cascade 2/Apriel: bartowski; specs de model cards oficiais (Z.ai, NVIDIA, Google, ServiceNow), verificadas via API do HF em 20/08/2026.</p>
 
     <h2 id="veredito-codigo">Veredito: código e engenharia — Qwen3.8-27B</h2>
     <div class="verdict-card">
@@ -503,12 +557,12 @@
 
     <h2 id="veredito-visao">Veredito: visão e multimodal — Qwen3.8-27B, de novo</h2>
     <p>Nos benchmarks de visão do model card, o 3.8 atropela a própria geração: MathVision 94,6 (com CI), CharXiv RQ 90,2, OmniDocBench 1.5 91,1 — e o salto geracional BabyVision 85,6 contra 28,9 do 3.6, quase o triplo. No GGUF, o mmproj que liga a visão custa 0,93 GB. A prova local já registrada no portal: o teste de bounding boxes do Simon Willison (16/08) acertou os dois pelicanos de primeira, com detecção a partir de um GGUF, sem API de visão.</p>
-    <p>O Muse Glimmer é o segundo colocado honesto: ViT-G/14 nativo com 4.096 tokens visuais por imagem — leitura de screenshot e documento embutida, que é o que um agente local precisa. O Gemma 3 27B é o multimodal consolidado: visão em 128K e ecossistema maduro — mas a 16,55 GB em Q4_K_M ele custa mais memória que o Muse Glimmer (15,88 GB) e o raciocínio visual fica uma geração atrás (MMMU val 64,9 no TR oficial). Guia completo: <a href="/guia/qwen3-8-27b-visao-videos-local">Qwen3.8-27B para visão e vídeos</a>.</p>
+    <p>O Muse Glimmer é o segundo colocado honesto: ViT-G/14 nativo com 4.096 tokens visuais por imagem — leitura de screenshot e documento embutida, que é o que um agente local precisa. O Gemma 3 27B é o multimodal consolidado: visão em 128K e ecossistema maduro — mas a 16,55 GB em Q4_K_M ele custa mais memória que o Muse Glimmer (15,88 GB) e o raciocínio visual fica uma geração atrás (MMMU val 64,9 no TR oficial). O Gemma 4 31B (mar/2026) entra na tabela como o denso do Google que fecha o gap do GPQA (84,3) e tem MMMU Pro 76,9 — outro benchmark, outra grandeza; a comparação visual direta com o MathVision 94,6 do Qwen não existe no card do Google. Guia completo: <a href="/guia/qwen3-8-27b-visao-videos-local">Qwen3.8-27B para visão e vídeos</a>.</p>
 
     <h2 id="veredito-hardware-fraco">Veredito: hardware fraco (12–16 GB) — GPT-OSS-20B</h2>
     <div class="verdict-card">
-        <h3>GPT-OSS-20B <span class="badge badge-best">vencedor</span></h3>
-        <p>O único da lista que abre a porta de uma GPU de 12–16 GB: GGUF MXFP4 de <strong>11,27 GiB</strong> (bench llama.cpp), 3,6B ativos por token, contexto 131.072. A OpenAI posiciona: "similar ao o3-mini em benchmarks comuns, em dispositivos de 16 GB".</p>
+        <h3>GPT-OSS-20B <span class="badge badge-best">vencedor</span> · Apriel-1.6-15b-Thinker <span class="badge-best">residente 12 GB</span></h3>
+        <p>O GPT-OSS-20B segue como o melhor para 16 GB: GGUF MXFP4 de <strong>11,27 GiB</strong> (bench llama.cpp), 3,6B ativos por token, contexto 131.072. A OpenAI posiciona: "similar ao o3-mini em benchmarks comuns, em dispositivos de 16 GB". O Apriel-1.6-15b-Thinker estreia como o novo residente da faixa de 12 GB: IQ4_XS de <strong>7,91 GB</strong>, visão LLaVA nativa, BFCL v3 63,5 e AIME25 88 — números competitivos para metade do tamanho. Os dois dividem o território sem anular um ao outro: se cabe em 12 GB, Apriel; se cabe em 16 GB, GPT-OSS.</p>
     </div>
     <p>Números oficiais (arXiv 2508.10925, Table 3): SWE-bench Verified 53,2 em reasoning medium, GPQA Diamond 66,0, MMLU 84,0. É o score de um modelo menor — e a lacuna para os 27B é real (GPQA 66,0 contra 89,2), mas 11 GiB é 11 GiB. Na RTX 3060 de 12 GB ele roda com contexto moderado; o Qwen3.8-27B na mesma placa, via UD-IQ2_M de 10,32 GB, entrega ~9,7 tok/s.</p>
     <p>Quem tem 16 GB e quer o teto de qualidade: o guia do <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B em 16 GB</a> mostra o IQ4_XS inteiro na GPU (~20 t/s na 4070 Ti Super) com KV cache quantizado e speculative decoding n-gram.</p>
@@ -519,10 +573,70 @@
 
     <h2 id="veredito-brasil">Veredito: hardware brasileiro e custo</h2>
     <p>Nos preços daqui, uma RTX 3090 usada segue sendo o melhor custo-benefício para 27B em Q4: 41,5 tok/s no Qwen3.8-27B, medição InsiderLLM com fonte pública. O Strix Halo (Ryzen AI MAX+ 395, 122 GB unificados) é o caso local mais interessante: 17,3 tok/s no 27B em Q4 — e porta de entrada real para o DeepSeek V4 Flash, porque 122 GB cobrem os 103 GB do GGUF. Tabela completa por hardware: <a href="/guia/tokens-por-segundo-30b-hardware-real">tokens por segundo no hardware real</a>.</p>
-    <p>Os seis são gratuitos e de pesos abertos; a diferença de custo entre eles é a memória que você já tem. Num país onde uma 5090 custa o preço de um carro popular, "melhor modelo local" começa por outra pergunta: quanta memória sobra na sua máquina?</p>
+    <p>Os dez são gratuitos e de pesos abertos; a diferença de custo entre eles é a memória que você já tem. Num país onde uma 5090 custa o preço de um carro popular, "melhor modelo local" começa por outra pergunta: quanta memória sobra na sua máquina?</p>
+
+    <h2 id="rivais-30b">Qwen3.8-27B vs os rivais 30B: o que os model cards permitem afirmar</h2>
+    <p>Os quatro rivais que entram nesta atualização já circulam nas listas gringas — mas o portal só os cobria em menções passivas. Esta seção monta o confronto com o único benchmark comum entre fabricantes, <strong>LiveCodeBench v6</strong>, seguido de três vereditos por eixo. Cada número vem do model card do fabricante; harnesses são distintos, então toda comparação é <strong>ordem de grandeza</strong>.</p>
+
+    <div class="table-wrap">
+    <table class="lcb-table">
+        <thead>
+        <tr>
+            <th scope="col">Modelo</th>
+            <th scope="col">LCB v6</th>
+            <th scope="col">Fonte</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><strong>Qwen3.8-27B</strong></td>
+            <td>90,3</td>
+            <td><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Model card Qwen</a></td>
+        </tr>
+        <tr>
+            <td><strong>Nemotron-Cascade-2-30B-A3B</strong></td>
+            <td>87,2</td>
+            <td><a href="https://huggingface.co/nvidia/Nemotron-Cascade-2-30B-A3B">Model card NVIDIA</a></td>
+        </tr>
+        <tr>
+            <td><strong>Gemma 4 31B (IT)</strong></td>
+            <td>80,0</td>
+            <td><a href="https://huggingface.co/google/gemma-4-31B-it">Model card Google</a></td>
+        </tr>
+        <tr>
+            <td><strong>Nemotron-3-Nano-30B-A3B</strong> (dez/2025)</td>
+            <td>68,3</td>
+            <td><a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16">Model card NVIDIA</a></td>
+        </tr>
+        <tr>
+            <td><strong>GLM-4.7-Flash</strong></td>
+            <td>64,0</td>
+            <td><a href="https://huggingface.co/zai-org/GLM-4.7-Flash">Model card Z.ai</a></td>
+        </tr>
+        <tr>
+            <td><strong>GPT-OSS-20B</strong></td>
+            <td>61,0</td>
+            <td>Tabelas Z.ai / NVIDIA</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <p class="footnote">O <strong>Nemotron-3-Nano-30B-A3B</strong> (dez/2025) é o antecessor do Cascade 2; está na tabela como referência do salto da família. A família Nemotron inclui ainda o <strong>Nemotron-3-Nano-Omni-30B-A3B-Reasoning</strong> (abr/2026, áudio+vídeo+imagem). O GPT-OSS-20B não é rival novo (já está na tabela mestra), mas aparece aqui como referência inferior da classe.</p>
+
+    <p><strong>Três observações honestas sobre o confronto:</strong></p>
+
+    <ul>
+        <li><strong>(a) Código puro: Qwen3.8 lidera, Cascade 2 é o desafiante real.</strong> A diferença de 90,3 vs 87,2 no LCB é de ~3%, dentro da margem de ordem de grandeza — mas o Qwen também publica SWE-bench Pro (61,7) e DeepSWE (42,2), que o Cascade 2 não cobre. O Cascade 2 devolve AIME25 92,4 (com tools 98,6) e GPQA-D 76,1, território onde o Qwen também não publicou.</li>
+        <li><strong>(b) Throughput e agente 24/7: os MoE A3B (GLM-4.7-Flash, Nemotron Cascade 2) entregam 3–8× o t/s do denso no mesmo hardware,</strong> por ativarem só ~3B dos 30B totais. O GLM publica τ²-Bench 79,5, BrowseComp 42,8 e SWE-bench Verified 59,2 — benchmarks de agente autônomo e navegação web que o Qwen não publicou. O contraponto empírico brasileiro: <a href="https://www.glukhov.org/pt/ai-devtools/opencode/llms-comparison">glukhov.org/pt</a> testou os modelos em tarefa estruturada de migração e registrou <strong>100% de erro do GLM-4.7-Flash</strong> no mapping task (e 96,3% do Cascade 2) — um lembrete de que model card ≠ garantia de produção.</li>
+        <li><strong>(c) Faixa 12 GB: o Apriel-1.6-15b-Thinker é o novo residente.</strong> Com 7,91 GB em IQ4_XS, cabe em placas onde o Qwen3.8-27B só entra em IQ2. O Apriel publica BFCL v3 63,5 (function calling), Tau2 Telecom 69 e AIME25 88 — números competitivos para o tamanho. O GPT-OSS-20B perde o monopólio da faixa de entrada, mas mantém o título nos 16 GB graças ao contexto de 131K e ao throughput de 3,6B ativos.</li>
+    </ul>
+
+    <div class="callout">
+        <strong>⚠️ Cuidado com versões de benchmark.</strong> O Apriel anuncia AAII v3.0 57 — versão anterior do Artificial Analysis Intelligence Index à v4.1.1 em que o Qwen3.8-27B faz 52. Não coloque os dois na mesma linha sem notar a versão. O GLM publica GPQA 75,2 sem especificar "Diamond" — citamos como "GPQA" (75,2), não "GPQA Diamond". Respeitar a fonte é parte da transparência que esta página promete.
+    </div>
 
     <h2 id="metodologia">Metodologia e transparência</h2>
-    <p>Cada número desta página tem fonte nomeada: model cards oficiais (Qwen, Meta, OpenAI/arXiv 2508.10925, DeepSeek, Google Gemma 3 TR arXiv 2503.19786), o dossiê de fontes do portal (SOURCES-BENCHMARKS.md, extrações 15/08 e 19/08), medições próprias no Strix Halo e medições de terceiros sempre atribuídas. Benchmarks de fabricantes diferentes usam harnesses distintos: toda comparação entre model cards é ordem de grandeza, e está marcada assim onde aparece. Nenhum número foi inventado; estimativa leva "~". Página revisada em 19/08/2026 — se um model card mudar, esta tabela fica velha, e é assim que deve ser.</p>
+    <p>Cada número desta página tem fonte nomeada: model cards oficiais (Qwen, Meta, OpenAI/arXiv 2508.10925, DeepSeek, Google Gemma 3 TR arXiv 2503.19786, Google Gemma 4 card, Z.ai GLM-4.7-Flash, NVIDIA Nemotron-Cascade-2, ServiceNow Apriel-1.6), o dossiê de fontes do portal (SOURCES-BENCHMARKS.md, extrações 15/08, 19/08 e 20/08), medições próprias no Strix Halo e medições de terceiros sempre atribuídas. Benchmarks de fabricantes diferentes usam harnesses distintos: toda comparação entre model cards é ordem de grandeza, e está marcada assim onde aparece. Nenhum número foi inventado; estimativa leva "~". Página revisada em 21/08/2026 (adição dos rivais 30B, verificação ao vivo HF API 20/08) — se um model card mudar, esta tabela fica velha, e é assim que deve ser.</p>
 
     <h2 id="perguntas-frequentes">Perguntas frequentes</h2>
     <div class="faq-item">
@@ -534,6 +648,10 @@
         <p>Para agente de ferramentas 24/7 (MCP, busca profunda): Muse Glimmer — destilado para isso (MCP Atlas 75,5 contra 62,5 do Qwen3.6-27B na tabela oficial da Meta). Para código e uso de computador: Qwen3.8-27B (OSWorld-Verified 84,3; SWE-bench Pro 61,7). Não existe comparação oficial head-to-head entre os dois — os números vêm de model cards de fabricantes diferentes.</p>
     </div>
     <div class="faq-item">
+        <h3>Qwen3.8-27B ou GLM-4.7-Flash?</h3>
+        <p>Depende do eixo. Em código profundo, visão e contexto o Qwen3.8-27B lidera (LCB v6 90,3 contra 64,0 do GLM). Em throughput agentic 24/7, o GLM-4.7-Flash é MoE A3B com ~3B ativos (3–8× o t/s do denso), publicou τ²-Bench 79,5, BrowseComp 42,8 e SWE-bench Verified 59,2 — benchmarks que o Qwen não publicou. Não existe head-to-head oficial. Atenção: o teste empírico glukhov.org/pt registrou 100% de erro do GLM em tarefa estruturada de migração (OpenCode), reforçando que model card não é garantia de produção.</p>
+    </div>
+    <div class="faq-item">
         <h3>O DeepSeek V4 Flash é um modelo 30B?</h3>
         <p>Não nos parâmetros totais: 284B totais, GGUF de 92 a 103 GB — não cabe em GPU de consumidor. Mas ativa só 13B por token: o custo computacional por token é de um 13B. Está na página como comparação honesta para quem tem 110 GB ou mais de memória unificada (Mac, Strix Halo), onde entrega 1.048.576 tokens de contexto nativo.</p>
     </div>
@@ -543,16 +661,16 @@
     </div>
     <div class="faq-item">
         <h3>Por que o Gemma 3 27B está na lista se está uma geração atrás?</h3>
-        <p>Porque é o 27B do Google com visão nativa, ecossistema maduro e 16,55 GB em Q4_K_M — e porque a comparação honesta mostra o tamanho do gap: GPQA Diamond 42,4 no instruct (Technical Report oficial, Table 6) contra 89,2 do Qwen3.8-27B. O leitor merece o número, não a narrativa.</p>
+        <p>Porque é o 27B do Google com visão nativa, ecossistema maduro e 16,55 GB em Q4_K_M — e porque a comparação honesta mostra o tamanho do gap: GPQA Diamond 42,4 no instruct (Technical Report oficial, Table 6) contra 89,2 do Qwen3.8-27B. O sucessor Gemma 4 31B (mar/2026) fecha esse gap para 84,3 no GPQA Diamond — tabela acima e seção <a href="#rivais-30b">Qwen3.8 vs rivais</a>.</p>
     </div>
     <div class="faq-item">
         <h3>Esses modelos funcionam sem internet?</h3>
-        <p>Todos os seis rodam 100% local via llama.cpp ou Ollama — baixou o GGUF, desligou o roteador, seguiu trabalhando. Nenhum dado sai da máquina; a única dependência externa é o download inicial no Hugging Face.</p>
+        <p>Todos os dez rodam 100% local via llama.cpp ou Ollama — baixou o GGUF, desligou o roteador, seguiu trabalhando. Nenhum dado sai da máquina; a única dependência externa é o download inicial no Hugging Face.</p>
     </div>
 
     <footer>
-        <p>Portal de modelos locais de 30B — Melhores modelos locais de 30B (ago/2026) | Fontes: model cards oficiais Qwen/Qwen3.8-27B e Qwen3.6-27B, meta-models/Muse-Glimmer-30B, OpenAI "Introducing gpt-oss" + arXiv 2508.10925 Table 3, deepseek-ai/DeepSeek-V4-Flash, Gemma 3 Technical Report (arXiv 2503.19786, Tables 6/18), GGUFs Unsloth (Muse, Qwen, DeepSeek V4), llama.cpp discussion #15396 (GPT-OSS 20B, 11,27 GiB), Artificial Analysis Intelligence Index v4.1.1 (verificado 18/08), r/LocalLLaMA 1vqrt86/1voa3ch/1vonuu0/1vpiyj9 e r/Qwen_AI 1volui5 (pesquisa PO 19/08), SOURCES-BENCHMARKS.md e medições próprias no Strix Halo. Benchmarks de fabricantes distintos usam harnesses próprios: comparações entre model cards são ordem de grandeza.</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer</a> | <a href="/guia/qwen3.8-vs-qwen3.6-27b">3.8 vs 3.6</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo</a> | <a href="/guia/faq">FAQ</a></p>
+        <p>Portal de modelos locais de 30B — Melhores modelos locais de 30B: os 10 que valem o download | Fontes: model cards oficiais Qwen/Qwen3.8-27B e Qwen3.6-27B, meta-models/Muse-Glimmer-30B, OpenAI "Introducing gpt-oss" + arXiv 2508.10925 Table 3, deepseek-ai/DeepSeek-V4-Flash, Gemma 3 Technical Report (arXiv 2503.19786, Tables 6/18), Z.ai/GLM-4.7-Flash, nvidia/Nemotron-Cascade-2-30B-A3B, google/gemma-4-31B-it, ServiceNow-AI/Apriel-1.6-15b-Thinker (model cards, verificados 20/08/2026), GGUFs Unsloth (GLM, Gemma 4) e bartowski (Nemotron, Apriel), glukhov.org/pt (teste OpenCode), GGUFs Unsloth (Muse, Qwen, DeepSeek V4), llama.cpp discussion #15396 (GPT-OSS 20B, 11,27 GiB), Artificial Analysis Intelligence Index v4.1.1 (verificado 18/08), r/LocalLLaMA 1vqrt86/1voa3ch/1vonuu0/1vpiyj9 e r/Qwen_AI 1volui5 (pesquisa PO 19/08), SOURCES-BENCHMARKS.md e medições próprias no Strix Halo. Benchmarks de fabricantes distintos usam harnesses próprios: comparações entre model cards são ordem de grandeza.</p>
+        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer</a> | <a href="/guia/qwen3.8-vs-qwen3.6-27b">3.8 vs 3.6</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo</a> | <a href="#rivais-30b">Rivais 30B</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
 </body>
 </html>

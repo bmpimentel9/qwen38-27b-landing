@@ -8,6 +8,26 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-21] — Hub page: extensão 6→10 modelos com 4 rivais 30B + seção vs (t_ac520ed5)
+
+### Added
+- **Hub page 6→10 linhas**: GLM-4.7-Flash, Nemotron-Cascade-2-30B-A3B, Gemma 4 31B e Apriel-1.6-15b-Thinker na tabela mestra interativa (filtros e sort), com dados de model cards oficiais verificados via HF API em 20/08.
+- **Seção nova "Qwen3.8-27B vs os rivais 30B"** (antes da Metodologia): tabela LCB v6 com 6 linhas (Qwen 90,3 · Cascade 2 87,2 · Gemma 4 80,0 · Nano 68,3 · GLM 64,0 · GPT-OSS 61,0), mais três observações honestas sobre código, throughput/agentic e 12 GB, com contraponto empírico glukhov.org/pt.
+- **FAQ da MOFU**: "Qwen3.8-27B ou GLM-4.7-Flash?" — JSON-LD FAQPage estendido para 7 perguntas.
+- **Meta keywords**: glm 4.7 flash, gemma 4 31b, nemotron cascade 2, apriel, melhor modelo 30b moe vs denso.
+- **Hero e TOC**: "os seis" → "os dez" em 6 superfícies.
+
+### Changed
+- **JSON-LD**: TechArticle (headline/description com 10 modelos, dateModified→2026-08-21), ItemList (numberOfItems 6→10 + 4 ListItems), Dataset (description/license/variableMeasured expandidos), FAQPage (1 nova pergunta + Gemma gap update).
+- **Veredito-visão**: menção ao Gemma 4 31B (GPQA 84,3, MMMU Pro 76,9).
+- **Veredito-hardware-fraco**: GPT-OSS mantém vencedor; Apriel 1.6 adicionado como residente 12 GB (7,91 GB).
+- **Fontes e footer**: rivais, GGUFs Unsloth/bartowski, glukhov.org/pt adicionados.
+- **Companions**: guia/index.html card atualizado, llms.txt, sitemap lastmod.
+- **Warnings W1-W3 (hygiene)**: segundo h1 → h2, Dataset.license → MIT URL, title 68→58c, meta description 176→∼155c.
+
+### Fixed
+- **Counter JS**: `' de 6 modelos'` → `' de 10 modelos'` (hardcoded no JS do filtro).
+
 ## [2026-08-21] — Artigo "Quantização rouba mais de quem fala português?" + companions (t_e5d3270d)
 
 ### Added
