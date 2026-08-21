@@ -8,6 +8,18 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-21] — Hub page: linha 11 = Qwen3-Coder-30B-A3B na tabela mestra (t_e0bd2b3c)
+
+### Added
+- **Hub page 10→11 linhas**: Qwen3-Coder-30B-A3B inserido após Apriel na tabela mestra interativa — MoE 30,5B, 3,3B ativos (128 experts, 8 ativos), IQ4_XS 16,38 GB, Q4_K_M 18,56 GB (Unsloth), contexto 262.144 (1M YaRN), Apache 2.0, sem visão, lançamento 31/07/2025. Tags de filtro: código + velocidade.
+- **Callout recíproco hub→artigo** na seção vs: link para `/guia/qwen3.8-vs-qwen3-coder-30b-a3b` com SWE-bench Verified 51,6 e throughput 3,3× o denso.
+
+### Changed
+- **JSON-LD**: TechArticle (description com 11 modelos + Qwen3-Coder), ItemList (numberOfItems 10→11, ListItem posição 10 Coder, posição 11 DeepSeek), Dataset (description 11 modelos, variableMeasured expandido com Coder em gguf/contexto/licenca/visao/lancamento).
+- **Meta/título**: title, description, OG, Twitter — "os 10" → "os 11", "10 modelos" → "11 modelos", menção ao Coder adicionada.
+- **Texto visível**: lead, hero h2, hero p, quick-answer rivais, tabela-mestra h2, counter, footer — "dez" → "onze", "10" → "11", Coder incluído no texto da página.
+- **Filter/counter**: botão "Todos (11)", counter "11 de 11 modelos", JS hardcoded `' de 11 modelos'`.
+
 ## [2026-08-21] — Hub page: extensão 6→10 modelos com 4 rivais 30B + seção vs (t_ac520ed5)
 
 ### Added
