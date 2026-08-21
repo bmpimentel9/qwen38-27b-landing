@@ -8,6 +8,27 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-21] — Artigo-veredicto "Qwen3.8-27B ou Qwen3-Coder 30B-A3B?" (t_8ec53707)
+
+### Added
+- **Artigo `/guia/qwen3.8-vs-qwen3-coder-30b-a3b`**: o vs-article MOFU da query-alvo
+  "melhor modelo 30B para codar local" — o coder local mais instalado (11,9M
+  downloads GGUF/mês, verificado ao vivo na HF API em 21/08) contra o 27B denso
+  novo. Ossatura clonada do vs-article 3.8-vs-3.6: tabela do par com GGUF
+  medido (IQ4_XS 16,38 / Q4_K_M 18,56 / UD-Q3_K_XL 13,81 GB na tree unsloth),
+  âncora de throughput de classe 3,3× rotulada (56,6 vs 17,3 tok/s, medição
+  própria Strix Halo com o Qwen3.6-35B como âncora da classe), a nuance do
+  "deprecated → Coder-Next" (Artificial Analysis), veredito por perfil em 4
+  cards (🟢🟢🟡🟡) e FAQ de 4 perguntas com textos citáveis. JSON-LD:
+  TechArticle + FAQPage. Nota de rodapé obrigatória: SWE-bench Pro ≠ Verified,
+  sem head-to-head oficial do par.
+- **Companions**: llms.txt +3 inserções (bullet do dossiê de vereditos +
+  entrada de página + FAQ nova); /guia/faq 33→34 perguntas (h3 + Question
+  JSON-LD em paridade, seção Comparações); sitemap 30→31 URLs; card no topo do
+  card-grid do /guia/ (tag Comparativo, MOFU).
+
+---
+
 ## [2026-08-20] — Guia "Qwen3.8-27B no vLLM em produção" (t_dfd9c398)
 
 ### Added
