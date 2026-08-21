@@ -124,6 +124,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><a href="#conhecimento">Onde quase nada muda</a></li>
             <li><a href="#velocidade">Throughput real: medimos os dois no Strix Halo</a></li>
             <li><a href="#vram">VRAM e disco: custa caro o upgrade?</a></li>
+            <li><a href="#mesmo-modelo">"É o mesmo modelo?" — a objeção que dominou o r/LocalLLaMA</a></li>
             <li><a href="#veredito">Veredito por perfil de uso</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
         </ul>
@@ -447,6 +448,17 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <p>Fontes: <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.8-27B-GGUF</a> e <a href="https://huggingface.co/unsloth/Qwen3.6-27B-GGUF" style="color:var(--accent)">unsloth/Qwen3.6-27B-GGUF</a>.</p>
 
+    <h2 id="mesmo-modelo">O Qwen3.8-27B é igual ao Qwen3.6-27B?</h2>
+    <p>Não — é a mesma arquitetura com pesos diferentes. O 3.8 vence os <strong>26 benchmarks</strong> do model card, com mediana de <strong>+9,8 pontos</strong> sobre o 3.6. Config idêntico com pontuação diferente só pode significar uma coisa: pesos diferentes — porque arquitetura define o formato, e o treinamento define o comportamento.</p>
+    <p>A tese do &quot;mesmo modelo&quot; nasceu no <a href="https://reddit.com/r/LocalLLaMA/comments/1voblcs" rel="nofollow" style="color:var(--accent)">r/LocalLLaMA</a> e virou o discurso dominante da release (1.100 upvotes, 191 comentários). A observação da thread acerta o esqueleto: o config.json é o mesmo — híbrido Gated DeltaNet, 64 camadas, a ponto de o 3.8 carregar no vLLM/llama.cpp pela classe <code>Qwen3_5ForConditionalGeneration</code> da geração anterior — e o vocabulário BPE é idêntico, 248.044 tokens. A conclusão é que não acompanha. Baixando os dois repositórios e comparando arquivo por arquivo, o 3.8 chega com o que a thread não viu: um chat template reescrito, que injeta o nível de raciocínio no system prompt (xhigh por padrão — o mesmo ajuste que o <a href="/guia/qwen3-8-27b-lento-causas-fixes" style="color:var(--accent)">nosso diagnóstico de lentidão</a> apontou como vilão da primeira impressão), e 7 tokens novos reservados a áudio no tokenizer. Comportamento novo empacotado em arquivo, não só em peso. A própria comunidade que defendia a tese atribuiu os ganhos de score ao (re)treinamento: um retreino profundo muda o comportamento sem mexer no esqueleto, e é isso que separa as duas gerações. Como resume a cobertura da Kingy AI: &quot;same shape does not mean same model&quot;.</p>
+    <p>Três diferenças que você confere sozinho, sem confiar em benchmark de fabricante:</p>
+    <ul>
+        <li><strong>Pontos por benchmark:</strong> QwenSWEBench 49,3 → 79,0 (+29,7), DeepSWE 1.1 13,3 → 42,2 (3,2×), OSWorld-Verified 63,9 → 84,3 — 26 vitórias em 26 linhas, mediana +9,8. Duas execuções do mesmo arquivo não se separam assim.</li>
+        <li><strong>Tamanho dos arquivos:</strong> mesmo formato, pesos diferentes: no Q4_K_M, 17,11 GB vs 16,82 GB (+290 MB). Se fossem bit-a-bit idênticos, teriam exatamente o mesmo tamanho.</li>
+        <li><strong>Throughput:</strong> 17,3 vs 12,4 tok/s no mesmo Strix Halo (Q4_K_M) — mesma arquitetura, builds GGUF diferentes, resultado diferente. E o controle: na RTX 3090 com build equivalente, o decode dos dois é equivalente (~41,5 t/s) — o que a arquitetura determina, a arquitetura entrega igual; o que os pesos e o build mudam, aparece.</li>
+    </ul>
+    <p>Onde a objeção acerta: em conhecimento e percepção o 3.6 segue entregando a mesma classe de resultado (GPQA +1,4, OmniDocBench +1,7, RealWorldQA +1,8). Quem usa o modelo como assistente de conhecimento pode continuar no 3.6 sem culpa — os ganhos se concentram em outras áreas. Em código agêntico e agentes de computador, onde as medianas são +19,2 e +16,9, os pesos novos estão em outra liga. Para o espectro completo, o <a href="#o-que-mudou">que mudou e o que ficou igual</a> mostra benchmark por benchmark.</p>
+
     <h2 id="veredito">Veredito por perfil de uso</h2>
     <div class="verdict-grid">
         <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
@@ -479,6 +491,9 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
     <h2 id="faq">Perguntas frequentes</h2>
 
+    <h3>O Qwen3.8-27B é igual ao Qwen3.6-27B?</h3>
+    <p>Não — é a mesma arquitetura com pesos diferentes. O esqueleto é o mesmo (config.json com híbrido Gated DeltaNet, 64 camadas, classe <code>Qwen3_5ForConditionalGeneration</code>, vocabulário BPE idêntico de 248.044 tokens), mas o 3.8 vence os 26 benchmarks do model card com mediana de +9,8 pontos — QwenSWEBench saltou de 49,3 para 79,0. Os ganhos vêm do (re)treinamento, não de mudança de esqueleto. E a comparação arquivo por arquivo revela o que a thread do r/LocalLLaMA não viu: chat template reescrito (reasoning effort xhigh por padrão) e 7 tokens de áudio novos no tokenizer. Detalhes na seção <a href="#mesmo-modelo">"É o mesmo modelo?"</a> acima.</p>
+
     <h3>Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?</h3>
     <p>Depende do seu caso de uso. Em benchmarks de código agêntico (DeepSWE, QwenSWEBench, SWE-bench Pro, Terminal Bench) a mediana de ganho é de +19,2 pontos. Em conhecimento geral (GPQA, HLE, IFBench), é de +6,8 pontos. Em percepção passiva (documentos, cenas), a mediana é de +1,8 pontos — virtualmente empatado. Se você usa o modelo como agente que escreve código e opera o computador, vale o upgrade. Se usa como assistente de conhecimento, pode esperar.</p>
 
@@ -495,7 +510,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <p>Não. Todos os números publicados no model card são reportados pelo fabricante (Alibaba/Qwen), consultados em 15/08/2026. Até o momento da publicação, nenhum laboratório independente reproduziu os resultados. O site <a href="https://www.orcarouter.ai/blog/qwen-3-8-27b-huggingface" style="color:var(--accent)">OrcaRouter</a> confirma: "as of today no independent lab has reproduced them". Isto é normal para um modelo de 2 dias de lançamento. Recomendamos aguardar 1-2 semanas para confirmação de terceiros antes de decisões críticas baseadas nos números absolutos.</p>
 
     <h3>Preciso trocar de template/prompt ou modificar meu código ao migrar?</h3>
-    <p>Não — se você usa Ollama: <code>ollama run qwen3.6:27b</code> vira <code>ollama run qwen3.8:27b</code> e funciona. Ambos usam o mesmo chat template e tokenizer. Em vLLM/llama.cpp o config carrega via a mesma classe <code>Qwen3_5ForConditionalGeneration</code>. A migração é drop-in: o Ollama baixa o novo GGUF e os dois convivem no mesmo disco (~17 GB cada).</p>
+    <p>Não — se você usa Ollama: <code>ollama run qwen3.6:27b</code> vira <code>ollama run qwen3.8:27b</code> e funciona. O vocabulário BPE é o mesmo (248.044 tokens) e o 3.8 já vem com o chat template novo embutido no GGUF — reasoning effort xhigh por padrão, motivo pelo qual vale conferir se você quer tanto raciocínio assim. Em vLLM/llama.cpp o config carrega via a mesma classe <code>Qwen3_5ForConditionalGeneration</code>. A migração é drop-in: o Ollama baixa o novo GGUF e os dois convivem no mesmo disco (~17 GB cada).</p>
 
     <h3>Como fazer o upgrade e voltar se não gostar?</h3>
     <p>Baixe o 3.8 sem perder o 3.6:</p>
@@ -526,7 +541,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   "description": "Comparativo honesto Qwen3.8-27B vs Qwen3.6-27B: os 26 benchmarks do model card, throughput real medido no Strix Halo, tabela GB × GB de VRAM e veredito por perfil de uso.",
   "inLanguage": "pt-BR",
   "datePublished": "2026-08-16",
-  "dateModified": "2026-08-16",
+  "dateModified": "2026-08-21",
   "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
   "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
   "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b",
@@ -539,6 +554,14 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O Qwen3.8-27B é igual ao Qwen3.6-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não — é a mesma arquitetura com pesos diferentes. O esqueleto é o mesmo (config.json idêntico: híbrido Gated DeltaNet, 64 camadas, classe Qwen3_5ForConditionalGeneration, vocabulário BPE de 248.044 tokens nos dois), mas o (re)treinamento mudou o comportamento: o 3.8 vence os 26 benchmarks do model card com mediana de +9,8 pontos — QwenSWEBench saltou de 49,3 para 79,0 (+29,7) e DeepSWE 1.1 foi de 13,3 para 42,2. A comparação arquivo por arquivo mostra diferenças além dos pesos: chat template reescrito no 3.8 (reasoning effort xhigh por padrão) e 7 tokens de áudio novos no tokenizer. Os GGUFs Q4_K_M também têm tamanhos diferentes: 17,11 GB vs 16,82 GB. A tese do 'mesmo modelo' (1.100 upvotes no r/LocalLLaMA) observa a arquitetura idêntica e atribui os ganhos ao retreino — correto quanto à causa, mas não quanto à conclusão: mesma arquitetura não é mesmo modelo."
+      }
+    },
     {
       "@type": "Question",
       "name": "Vale a pena trocar o Qwen3.6-27B pelo Qwen3.8-27B?",
@@ -584,7 +607,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
       "name": "Preciso trocar de template/prompt ou modificar meu código ao migrar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não — se você usa Ollama: ollama run qwen3.6:27b vira ollama run qwen3.8:27b e funciona. Ambos usam o mesmo chat template e tokenizer. Em vLLM/llama.cpp o config carrega via a mesma classe Qwen3_5ForConditionalGeneration. A migração é drop-in: o Ollama baixa o novo GGUF e os dois convivem no mesmo disco (~17 GB cada)."
+        "text": "Não — se você usa Ollama: ollama run qwen3.6:27b vira ollama run qwen3.8:27b e funciona. O vocabulário BPE é o mesmo (248.044 tokens) e o 3.8 já vem com o chat template novo embutido no GGUF — reasoning effort xhigh por padrão, motivo pelo qual vale conferir se você quer tanto raciocínio assim. Em vLLM/llama.cpp o config carrega via a mesma classe Qwen3_5ForConditionalGeneration. A migração é drop-in: o Ollama baixa o novo GGUF e os dois convivem no mesmo disco (~17 GB cada)."
       }
     },
     {
