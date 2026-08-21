@@ -5,7 +5,7 @@
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qwen3.8-27B no LM Studio: instalação e config que funcionam</title>
-    <meta name="description" content="Como rodar o Qwen3.8-27B no LM Studio: build oficial de 16,10 GB, contexto que não deixa o modelo overthinkar, reasoning effort e os dois bugs conhecidos — com números.">
+    <meta name="description" content="Como rodar o Qwen3.8-27B no LM Studio: build oficial Q4_K_M de 16,81 GB, contexto que não deixa o modelo overthinkar, reasoning effort e os dois bugs conhecidos — com números.">
     <meta name="keywords" content="qwen3.8-27b lm studio, rodar qwen 27b lm studio, lm studio 16gb, qwen3.8 gguf, lm studio reasoning effort, qwen 27b mac mlx">
     <meta name="author" content="Bruno Pimentel">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -14,7 +14,7 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
     <meta property="og:title" content="Qwen3.8-27B no LM Studio: a configuração que funciona">
-    <meta property="og:description" content="A porta de entrada do público leigo: build oficial de 16,10 GB, o ajuste de contexto que impede o overthinking e os dois bugs conhecidos — sem terminal.">
+    <meta property="og:description" content="A porta de entrada do público leigo: build oficial Q4_K_M de 16,81 GB, o ajuste de contexto que impede o overthinking e os dois bugs conhecidos — sem terminal.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-lm-studio">
     <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
     <meta property="article:published_time" content="2026-08-21T00:00:00-03:00">
@@ -23,7 +23,7 @@
     <meta property="article:tag" content="modelos locais">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Qwen3.8-27B no LM Studio: instalação e config">
-    <meta name="twitter:description" content="Build oficial de 16,10 GB, contexto certo, reasoning effort e os bugs conhecidos — o 27B sem terminal.">
+    <meta name="twitter:description" content="Build oficial Q4_K_M de 16,81 GB, contexto certo, reasoning effort e os bugs conhecidos — o 27B sem terminal.">
     <meta name="twitter:site" content="@bmpimentel9">
     <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
@@ -49,7 +49,7 @@
         {
           "@type": "TechArticle",
           "headline": "Qwen3.8-27B no LM Studio: a configuração que funciona",
-          "description": "Como rodar o Qwen3.8-27B (27B denso, VLM nativa) no LM Studio sem terminal: build oficial GGUF de 16,10 GB, o ajuste de contexto que impede o overthinking do reasoning xhigh, reasoning effort configurável e os dois bugs conhecidos (contexto default 8192, flash attention em Qwen).",
+          "description": "Como rodar o Qwen3.8-27B (27B denso, VLM nativa) no LM Studio sem terminal: build oficial GGUF Q4_K_M de 16,81 GB, o ajuste de contexto que impede o overthinking do reasoning xhigh, reasoning effort configurável e os dois bugs conhecidos (contexto default 8192, flash attention em Qwen).",
           "inLanguage": "pt-BR",
           "datePublished": "2026-08-21",
           "dateModified": "2026-08-21",
@@ -80,7 +80,7 @@
               "@type": "HowToStep",
               "position": 2,
               "name": "Baixe a build oficial do Qwen3.8-27B",
-              "text": "Na aba de busca de modelos, procure por Qwen3.8 e escolha a publicação oficial qwen/qwen3.8-27b — o GGUF de 16,10 GB (4-bit). Em Mac, há builds MLX 4–8 bit da mesma família."
+              "text": "Na aba de busca de modelos, procure por Qwen3.8 e escolha a publicação oficial qwen/qwen3.8-27b — o GGUF Q4_K_M de 16,81 GB (4-bit). Em Mac, há builds MLX 4–8 bit da mesma família."
             },
             {
               "@type": "HowToStep",
@@ -110,7 +110,7 @@
               "name": "O Qwen3.8-27B roda no LM Studio?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Sim. A publicação oficial qwen/qwen3.8-27b no catálogo do LM Studio tem 934 mil downloads e um build GGUF de 16,10 GB — o requisito mínimo declarado é 16 GB de RAM. Suporta visão, tool use e reasoning configurável."
+                "text": "Sim. A publicação oficial qwen/qwen3.8-27b no catálogo do LM Studio tem 934 mil downloads e um build GGUF Q4_K_M de 16,81 GB — o requisito mínimo declarado é 16 GB de RAM. Suporta visão, tool use e reasoning configurável."
               }
             },
             {
@@ -118,7 +118,7 @@
               "name": "Quanto de memória precisa para o Qwen3.8-27B no LM Studio?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "16 GB é o mínimo oficial (o build GGUF ocupa 16,10 GB em disco). Na prática, RAM/VRAM total ≥ tamanho do build + contexto: em 16 GB use contexto curto (16K–32K); em 24 GB suba para 64K+ com KV cache quantizado."
+                "text": "16 GB é o mínimo oficial (o build GGUF Q4_K_M ocupa 16,81 GB em disco). Na prática, RAM/VRAM total ≥ tamanho do build + contexto: em 16 GB use contexto curto (16K–32K); em 24 GB suba para 64K+ com KV cache quantizado."
               }
             },
             {
@@ -221,14 +221,14 @@
             <a href="/guia/faq">FAQ</a>
         </nav>
         <h1>Qwen3.8-27B no LM Studio: a configuração que funciona</h1>
-        <p class="lead">O Qwen3.8-27B rodando em janela, sem terminal, em qualquer máquina com 16 GB. Este guia cobre o fluxo completo no LM Studio: a build oficial de 16,10 GB, o ajuste de contexto que impede o modelo de overthinkar antes de responder, o reasoning effort que troca minutos por velocidade — e os dois bugs conhecidos, para você não trocar de runner achando que o modelo é ruim. Para flags finas (MTP, KV cache assimétrico), o caminho é o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia llama.cpp de 16GB</a>.</p>
+        <p class="lead">O Qwen3.8-27B rodando em janela, sem terminal, em qualquer máquina com 16 GB. Este guia cobre o fluxo completo no LM Studio: a build oficial Q4_K_M de 16,81 GB, o ajuste de contexto que impede o modelo de overthinkar antes de responder, o reasoning effort que troca minutos por velocidade — e os dois bugs conhecidos, para você não trocar de runner achando que o modelo é ruim. Para flags finas (MTP, KV cache assimétrico), o caminho é o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia llama.cpp de 16GB</a>.</p>
     </header>
 
     <div class="toc">
         <h3>Índice</h3>
         <ul>
             <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
-            <li><a href="#o-build">A build oficial: 16,10 GB e o que vem nela</a></li>
+            <li><a href="#o-build">A build oficial: Q4_K_M de 16,81 GB e o que vem nela</a></li>
             <li><a href="#passo-a-passo">O fluxo completo (5 passos, sem terminal)</a></li>
             <li><a href="#contexto">O ajuste que decide tudo: contexto</a></li>
             <li><a href="#reasoning">Reasoning effort: xhigh, medium ou low</a></li>
@@ -240,29 +240,29 @@
     </div>
 
     <h2 id="resposta-rapida">A resposta rápida</h2>
-    <p><strong>Sim, o Qwen3.8-27B roda no LM Studio em qualquer máquina com 16 GB.</strong> A publicação oficial <code>qwen/qwen3.8-27b</code> no catálogo tem build GGUF de <strong>16,10 GB</strong> (4-bit) e mínimo declarado de 16 GB de RAM — 934 mil downloads até 21/08/2026. O caminho curto:</p>
+    <p><strong>Sim, o Qwen3.8-27B roda no LM Studio em qualquer máquina com 16 GB.</strong> A publicação oficial <code>qwen/qwen3.8-27b</code> no catálogo tem build GGUF Q4_K_M de <strong>16,81 GB</strong> (4-bit) e mínimo declarado de 16 GB de RAM — 934 mil downloads até 21/08/2026. O caminho curto:</p>
     <ol>
         <li>Instale o <a href="https://lmstudio.ai" rel="noopener">LM Studio</a> (Windows, macOS, Linux)</li>
-        <li>Busque <code>Qwen3.8</code> e baixe a build oficial de 16,10 GB</li>
+        <li>Busque <code>Qwen3.8</code> e baixe a build oficial Q4_K_M de 16,81 GB</li>
         <li>No load dialog, suba o contexto do default 8.192 para 32K+ (o passo que decide tudo)</li>
         <li>Troque reasoning effort de <code>xhigh</code> para <code>medium</code> no uso diário</li>
         <li>Converse — visão e tool use já vêm ligados no build</li>
     </ol>
     <p>O detalhe que separa a boa experiência da péssima não é o modelo: é o contexto default de 8.192 tokens do LM Studio contra o raciocínio xhigh de fábrica do Qwen3.8. Sem ajustar isso, o modelo gasta a janela inteira pensando e entrega resposta cortada ou degenerada.</p>
 
-    <h2 id="o-build">A build oficial: 16,10 GB e o que vem nela</h2>
+    <h2 id="o-build">A build oficial: Q4_K_M de 16,81 GB e o que vem nela</h2>
     <p>A publicação <code>qwen/qwen3.8-27b</code> no catálogo do LM Studio (mantida pela lmstudio-community, empacotada pela equipe do app) é o pacote de entrada que a maioria do público leigo vai encontrar primeiro — 934,3 mil downloads no catálogo oficial até 21/08/2026. O que ela inclui:</p>
     <table>
         <tr><th>Componente</th><th>Detalhe</th></tr>
-        <tr class="highlight"><td><strong>GGUF 4-bit</strong></td><td>16,10 GB — o 27B inteiro num arquivo; mínimo declarado: 16 GB de RAM</td></tr>
+        <tr class="highlight"><td><strong>GGUF Q4_K_M (4-bit)</strong></td><td>16,81 GB — o 27B inteiro num arquivo; mínimo declarado: 16 GB de RAM</td></tr>
         <tr><td>Visão</td><td>Encoder incluso no pacote — anexe imagens no chat, sem arquivo extra</td></tr>
         <tr><td>Reasoning configurável</td><td>Reasoning Effort (xhigh/medium/low) + Enable Thinking + Preserve Thinking no painel de configurações</td></tr>
         <tr><td>Sampling recomendado</td><td>temp 1,0 / top-p 0,95 / top-k 20 (defaults do modelo thinking)</td></tr>
         <tr><td>MLX (Mac)</td><td>Builds MLX 4/5/6/8 bit da lmstudio-community para Apple Silicon</td></tr>
     </table>
-    <p>O tamanho chama atenção: 16,10 GB para um modelo de 27B parâmetros — é a quantização 4-bit fazendo o trabalho. Para comparação, o Q4_K_M da Unsloth mede 17,11 GB e o Simon Willison rodou o build Q4_K_M de "17 GB" do LM Studio no M5 Max e no DGX Spark. A diferença entre builds 4-bit cabe no dedo: <strong>qualquer uma delas entrega o modelo inteiro; nenhuma vai caber em 8 GB de VRAM com contexto confortável</strong>.</p>
+    <p>O tamanho chama atenção: 16,81 GB para um modelo de 27B parâmetros — é a quantização 4-bit fazendo o trabalho. Para comparação, o Q4_K_M da Unsloth mede 17,11 GB e o Simon Willison rodou o build Q4_K_M de "17 GB" do LM Studio no M5 Max e no DGX Spark. A diferença entre builds 4-bit cabe no dedo: <strong>qualquer uma delas entrega o modelo inteiro; nenhuma vai caber em 8 GB de VRAM com contexto confortável</strong>.</p>
     <div class="callout">
-        <strong>16 GB é entrada, não conforto.</strong> O build ocupa 16,10 GB e o contexto cresce por cima. Em GPU de 16 GB, use contexto 16K–32K com KV cache quantizado; em 24 GB, 64K+ com folga. A matemática completa do orçamento de VRAM (pesos + contexto + buffers) está no <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16GB com llama.cpp</a> — vale ler mesmo usando o LM Studio, porque a GUI esconde exatamente essa conta.
+        <strong>16 GB é entrada, não conforto.</strong> O build Q4_K_M ocupa 16,81 GB e o contexto cresce por cima. Em GPU de 16 GB, use contexto 16K–32K com KV cache quantizado; em 24 GB, 64K+ com folga. A matemática completa do orçamento de VRAM (pesos + contexto + buffers) está no <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia de 16GB com llama.cpp</a> — vale ler mesmo usando o LM Studio, porque a GUI esconde exatamente essa conta.
     </div>
 
     <h2 id="passo-a-passo">O fluxo completo (5 passos, sem terminal)</h2>
@@ -271,7 +271,7 @@
     <p>Baixe em <a href="https://lmstudio.ai" rel="noopener">lmstudio.ai</a>. Existe para Windows, macOS e Linux, instalação gráfica. Na primeira execução, ele detecta seu hardware (GPU, VRAM, RAM) e mostra o que cabe.</p>
 
     <h3>2. Baixe a build oficial</h3>
-    <p>Na aba de busca (ícone de lupa), digite <code>Qwen3.8</code>. A publicação oficial <code>qwen/qwen3.8-27b</code> aparece no topo. Baixe o GGUF de 16,10 GB. Se você usa Mac com Apple Silicon, avalie as builds MLX 4–8 bit — mesmo modelo, runtime otimizado para o Metal.</p>
+    <p>Na aba de busca (ícone de lupa), digite <code>Qwen3.8</code>. A publicação oficial <code>qwen/qwen3.8-27b</code> aparece no topo. Baixe o GGUF Q4_K_M de 16,81 GB. Se você usa Mac com Apple Silicon, avalie as builds MLX 4–8 bit — mesmo modelo, runtime otimizado para o Metal.</p>
     <div class="callout-warn">
         <strong>Confira o autor antes de baixar.</strong> O catálogo tem dezenas de quantizações comunitárias do mesmo modelo. A oficial é <code>qwen/qwen3.8-27b</code> (via lmstudio-community); builds de terceiros podem ser quants experimentais — para uso sério, fique na oficial ou nas da Unsloth.
     </div>
@@ -281,7 +281,7 @@
     <p>Regra prática por memória total:</p>
     <table>
         <tr><th>RAM/VRAM total</th><th>Contexto recomendado</th><th>Por quê</th></tr>
-        <tr><td>16 GB</td><td>16K–32K</td><td>16,10 GB de pesos + KV cache — sobra pouco; quantize o cache</td></tr>
+        <tr><td>16 GB</td><td>16K–32K</td><td>16,81 GB de pesos + KV cache — sobra pouco; quantize o cache</td></tr>
         <tr><td>24 GB</td><td>64K+</td><td>Folga para o cache crescer e visão funcionar junto</td></tr>
         <tr><td>32 GB+</td><td>131K–262K</td><td>Contexto nativo completo com KV cache q8_0</td></tr>
         <tr><td>Mac 32 GB+ unificada</td><td>64K–131K</td><td>Memória compartilhada com o sistema — deixe margem</td></tr>
@@ -347,11 +347,11 @@
     <h2 id="faq">Perguntas frequentes</h2>
     <div class="faq-item">
         <h3>O Qwen3.8-27B roda no LM Studio?</h3>
-        <p>Sim. A publicação oficial <code>qwen/qwen3.8-27b</code> tem build GGUF de 16,10 GB, mínimo declarado de 16 GB de RAM e 934 mil downloads. Visão e tool use inclusos.</p>
+        <p>Sim. A publicação oficial <code>qwen/qwen3.8-27b</code> tem build GGUF Q4_K_M de 16,81 GB, mínimo declarado de 16 GB de RAM e 934 mil downloads. Visão e tool use inclusos.</p>
     </div>
     <div class="faq-item">
         <h3>Quanto de memória preciso?</h3>
-        <p>16 GB é o mínimo oficial. Na prática: RAM/VRAM total ≥ build (16,10 GB) + contexto. Em 16 GB use contexto 16K–32K; em 24 GB+, 64K ou mais.</p>
+        <p>16 GB é o mínimo oficial. Na prática: RAM/VRAM total ≥ build (16,81 GB) + contexto. Em 16 GB use contexto 16K–32K; em 24 GB+, 64K ou mais.</p>
     </div>
     <div class="faq-item">
         <h3>Por que o modelo fica lento ou "engasga" no LM Studio?</h3>
