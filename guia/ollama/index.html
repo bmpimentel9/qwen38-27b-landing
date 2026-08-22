@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como Rodar o Qwen3.8-27B no Ollama: Guia Completo do ollama run ao MTP</title>
+    <meta name="description" content="Guia definitivo: instale o Ollama, puxe o qwen3.8:27b, configure Modelfile customizado com MTP, reasoning effort e flash-attn. Do 'ollama run' à produção com visão e 256K de contexto.">
+    <meta name="keywords" content="ollama qwen3.8, ollama run qwen3.8, qwen3.8 ollama modelfile, ollama qwen3.8-27b, rodar llm local ollama, ollama modelfile mtp, ollama reasoning effort, ollama flash attention">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/ollama">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
+    <meta property="og:title" content="Como Rodar o Qwen3.8-27B no Ollama: do ollama run ao MTP em produção">
+    <meta property="og:description" content="Guia completo em português: todas as tags do qwen3.8 no Ollama (18–56 GB), Modelfile customizado com num_ctx, draft_num_predict, reasoning effort, visão nativa e a diferença de desempenho Ollama × llama.cpp.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/ollama">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-22T08:00:00-03:00">
+    <meta property="article:section" content="Inteligência Artificial">
+    <meta property="article:tag" content="Ollama">
+    <meta property="article:tag" content="Qwen3.8-27B">
+    <meta property="article:tag" content="Modelfile">
+    <meta property="article:tag" content="MTP">
+    <meta property="article:tag" content="LLM local">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP">
+    <meta name="twitter:description" content="Guia completo: todas as tags (18–56 GB), Modelfile customizado, reasoning effort, MTP, visão e desempenho Ollama × llama.cpp.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+    (function(){
+      var fired={};
+      window.addEventListener('scroll',function(){
+        var h=document.documentElement;
+        var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+        [25,50,75,100].forEach(function(t){
+          if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+        });
+      });
+    })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Como rodar o Qwen3.8-27B no Ollama: do ollama run ao MTP em produção",
+          "description": "Guia completo em português sobre como rodar o Qwen3.8-27B no Ollama. Abrange todas as tags disponíveis, Modelfile customizado com num_ctx e MTP, configuração de reasoning effort, visão nativa e comparação de desempenho Ollama vs llama.cpp.",
+          "inLanguage": "pt-BR",
+          "datePublished": "2026-08-22",
+          "dateModified": "2026-08-22",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/ollama",
+          "proficiencyLevel": "Beginner",
+          "dependencies": "Ollama instalado, GPU com 16–32 GB de VRAM ou Mac com 32 GB+ de memória unificada"
+        },
+        {
+          "@type": "HowTo",
+          "name": "Como rodar o Qwen3.8-27B no Ollama com Modelfile customizado",
+          "description": "Passo a passo para instalar o Ollama, puxar o modelo, configurar Modelfile com MTP e reasoning, e testar o Qwen3.8-27B localmente.",
+          "totalTime": "PT15M",
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Instalar o Ollama", "text": "Baixe o instalador em ollama.com/download para macOS, Windows ou Linux. Verifique com ollama --version após a instalação." },
+            { "@type": "HowToStep", "position": 2, "name": "Puxar o modelo Qwen3.8-27B", "text": "Escolha a tag adequada ao seu hardware. Para maioria das GPUs de consumo: ollama pull qwen3.8:27b (18 GB, 256K contexto, texto+imagem). Para MTP embutido: ollama pull qwen3.8:27b-mtp-q4_K_M." },
+            { "@type": "HowToStep", "position": 3, "name": "Rodar com o comando básico", "text": "Teste o modelo com ollama run qwen3.8:27b. O thinking mode vem ligado por padrão. Desabilite com /set parameter no_think true durante a sessão ou num Modelfile." },
+            { "@type": "HowToStep", "position": 4, "name": "Criar um Modelfile customizado", "text": "Crie um arquivo Modelfile com PARAMETER num_ctx 262144, PARAMETER temperature 1.0, PARAMETER top_p 0.95, PARAMETER draft_num_predict 4, e crie o modelo com ollama create qwen3.8-27b-custom -f Modelfile." },
+            { "@type": "HowToStep", "position": 5, "name": "Habilitar reasoning effort via API", "text": "O reasoning_effort é controlado por requisição: na API, envie options: { 'reasoning_effort': 'medium' }. Os níveis são xhigh, high, medium, low. No CLI, edite o Modelfile ou use /set parameter." },
+            { "@type": "HowToStep", "position": 6, "name": "Testar visão com imagem", "text": "A tag qwen3.8:27b já aceita imagens nativamente. No CLI: ollama run qwen3.8:27b 'Descreva esta imagem' --image foto.jpg. Na API Python, use o campo images no payload." }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Como rodar o Qwen3.8-27B no Ollama?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Instale o Ollama, execute ollama pull qwen3.8:27b (18 GB, 256K) e depois ollama run qwen3.8:27b. Para MTP, use a tag qwen3.8:27b-mtp-q4_K_M, que já vem com draft_num_predict configurado." }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual a diferença entre qwen3.8:latest e qwen3.8:27b?",
+              "acceptedAnswer": { "@type": "Answer", "text": "São a mesma tag. qwen3.8:latest é um alias para qwen3.8:27b — modelo de 18 GB com 256K de contexto, entrada Text+Image, quantização Q4_K_M. A família qwen3.8 no Ollama tem apenas o modelo de 27B; não há versão menor." }
+            },
+            {
+              "@type": "Question",
+              "name": "Como configurar o MTP (Multi-Token Prediction) no Ollama?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Use a tag específica com MTP: ollama pull qwen3.8:27b-mtp-q4_K_M (18 GB). Ela já inclui params: { 'draft_num_predict': 4 } nos metadados, então o speculative decoding com 4 tokens de rascunho vem ativo por padrão. Desabilite com draft_num_predict 0 no Modelfile se quiser comparação." }
+            },
+            {
+              "@type": "Question",
+              "name": "O Ollama suporta o modo thinking/reasoning do Qwen3.8?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sim. O thinking vem ligado por padrão. Para controlar, use o parâmetro reasoning_effort nas opções da API (xhigh, high, medium, low) ou no Modelfile. No CLI interativo use /set parameter no_think true para desligar o raciocínio. O preserve_thinking também é suportado." }
+            },
+            {
+              "@type": "Question",
+              "name": "O Qwen3.8-27B no Ollama suporta imagens?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Sim, a tag qwen3.8:27b já aceita entrada Text+Image nativamente — o Ollama já inclui o encoder de visão no pacote. Para usar, passe --image foto.jpg no CLI ou o campo images no payload da API. O encoder de visão (mmproj) está embutido, sem necessidade de download separado." }
+            },
+            {
+              "@type": "Question",
+              "name": "Ollama é mais lento que o llama.cpp puro?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O Ollama usa o llama.cpp como backend de inferência, então o decode bruto é o mesmo — num benchmark direto, Ollama adiciona ~2–5% de overhead da camada de rede/API/processo, imperceptível em uso interativo. A diferença prática está em quais builds de GGUF cada um usa e flags como --flash-attn, que o Ollama gerencia automaticamente em versões recentes." }
+            },
+            {
+              "@type": "Question",
+              "name": "Quantas tags do qwen3.8 existem no Ollama?",
+              "acceptedAnswer": { "@type": "Answer", "text": "O Ollama oferece 12 tags para o qwen3.8 (ago/2026): latest/27b (Q4_K_M, 18 GB), 27b-mlx (18 GB), 27b-mlx-bf16 (56 GB), 27b-mtp-q4_K_M (18 GB), 27b-mtp-q8_0 (30 GB), 27b-mtp-bf16 (56 GB), 27b-mxfp8 (MLX, 32 GB), 27b-nvfp4 (MLX, 18 GB), 27b-q4_K_M (18 GB), 27b-q8_0 (30 GB), 27b-bf16 (56 GB). Total: 566.2K downloads na biblioteca." }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Ollama", "item": "https://qwen38-27b-landing.vercel.app/guia/ollama" }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        pre code { background: none; padding: 0; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
+        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr.highlight td { background: rgba(88,166,255,0.07); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout-warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; color: var(--accent); }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        ul li, ol li { margin-bottom: 6px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); }
+        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge strong { color: var(--accent-2); }
+        .flag-table td:first-child { white-space: nowrap; font-family: monospace; color: var(--accent-3); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção</h1>
+        <p class="lead">Ollama é a porta de entrada do universo de LLMs locais: um comando e o Qwen3.8-27B está rodando. Mas por trás do <code>ollama run qwen3.8:27b</code> existe um ecossistema de 12 tags, Modelfile customizável com MTP, reasoning effort ajustável por requisição e suporte nativo a visão — e é isso que este guia mapeia, do primeiro pull ao tuning fino de produção.</p>
+        <div class="badge-row">
+            <span class="badge"><strong>12</strong> tags disponíveis</span>
+            <span class="badge"><strong>18–56 GB</strong> (Q4_K_M a BF16)</span>
+            <span class="badge"><strong>256K</strong> contexto nativo</span>
+            <span class="badge"><strong>MTP</strong> embutido nas tags dedicadas</span>
+            <span class="badge"><strong>566K</strong> downloads na biblioteca</span>
+        </div>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#por-que">Por que Ollama para o Qwen3.8-27B?</a></li>
+            <li><a href="#instalacao">Pré-requisitos e instalação</a></li>
+            <li><a href="#tags">Todas as tags do qwen3.8 no Ollama (12 variantes)</a></li>
+            <li><a href="#comando-basico">Passo 1 — ollama run qwen3.8:27b</a></li>
+            <li><a href="#modelfile">Passo 2 — Modelfile customizado (ctx-size, MTP, GPU)</a></li>
+            <li><a href="#reasoning">Passo 3 — Reasoning effort e thinking mode</a></li>
+            <li><a href="#mtp">Passo 4 — MTP: Multi-Token Prediction no Ollama</a></li>
+            <li><a href="#visao">Passo 5 — Visão e multimodalidade</a></li>
+            <li><a href="#flash-attn">Passo 6 — Flash attention e desempenho</a></li>
+            <li><a href="#ollama-vs-llamacpp">Ollama vs llama.cpp: tem overhead?</a></li>
+            <li><a href="#api">Usando via API (OpenAI-compatible)</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#leia-mais">Leia mais</a></li>
+        </ul>
+    </div>
+
+    <h2 id="por-que">Por que Ollama para o Qwen3.8-27B?</h2>
+    <p>O Ollama é a ferramenta que a maioria dos usuários de LLM local conhece primeiro. A página da <a href="https://ollama.com/library/qwen3.8">biblioteca oficial do qwen3.8</a> já acumula <strong>566.2 mil downloads</strong> (ago/2026) — é <strong>8,4× mais</strong> que as 67.1K registradas no llms.txt do portal há menos de uma semana, sinal de adoção acelerada.</p>
+    <p>Três razões para começar por aqui:</p>
+    <ul>
+        <li><strong>Zero-config.</strong> <code>ollama run qwen3.8:27b</code> e o modelo inteiro (18 GB, 256K de contexto, visão) está rodando — sem variáveis de ambiente, sem flags de CUDA, sem compilar kernel.</li>
+        <li><strong>Ecosistema de tags.</strong> São 12 variantes que vão do Q4_K_M de 18 GB ao BF16 de 56 GB, incluindo opções com MTP embutido, MLX para Mac e NVFP4 para Blackwell — escolha o que cabe na sua GPU e pronto.</li>
+        <li><strong>API nativa.</strong> O servidor embutido do Ollama expõe endpoint OpenAI-compatible, então qualquer app que fala com a OpenAI pode apontar para o seu modelo local trocando a base URL.</li>
+    </ul>
+    <div class="callout">
+        <strong>Este guia preenche um buraco do portal.</strong> Até agora, o Qwen3.8-27B tinha guias para llama.cpp, SGLang, vLLM e LM Studio — mas zero para o motor que é a porta de entrada de 90% dos usuários. A thread de release no r/LocalLLaMA e o megathread mostram dezenas de usuários configurando no Ollama: a demanda estava aqui, o conteúdo não.
+    </div>
+
+    <h2 id="instalacao">Pré-requisitos e instalação</h2>
+    <table>
+        <tr><th>Componente</th><th>Mínimo</th><th>Recomendado</th></tr>
+        <tr class="highlight"><td>GPU (NVIDIA)</td><td>16 GB VRAM (RTX 4060 Ti / RTX 5080 Laptop)</td><td>24 GB VRAM (RTX 3090/4090/5090)</td></tr>
+        <tr><td>GPU (AMD)</td><td>16 GB (RX 7800 XT) + Ollama ROCm</td><td>Strix Halo 32 GB+ (Radeon 8060S)</td></tr>
+        <tr><td>Mac</td><td>32 GB RAM unificada</td><td>64 GB+ (M4 Max / M2 Ultra)</td></tr>
+        <tr><td>RAM</td><td>16 GB</td><td>32 GB+</td></tr>
+        <tr><td>Disco</td><td>18 GB livres</td><td>60 GB (para múltiplas tags)</td></tr>
+        <tr><td>Sistema</td><td>macOS, Windows, Linux</td><td>Linux + NVIDIA (máximo desempenho)</td></tr>
+    </table>
+    <p>A instalação é trivial: acesse <a href="https://ollama.com/download">ollama.com/download</a>, baixe o instalador do seu sistema, execute. Verifique com:</p>
+    <pre><code>ollama --version</code></pre>
+    <p>No Linux, o instalador registra um serviço systemd; no macOS, o app da bandeja fica rodando em segundo plano. Em ambos os casos, a API REST fica disponível em <code>http://localhost:11434</code>.</p>
+    <p><strong>Variante ROCm (AMD):</strong> se você tem GPU AMD no Linux, instale a build ROCm dedicada seguindo as instruções da <a href="https://ollama.com/blog/amd-rocm-support">documentação oficial Ollama + ROCm</a>.</p>
+
+    <h2 id="tags">Todas as tags do qwen3.8 no Ollama</h2>
+    <p>A família qwen3.8 na biblioteca Ollama tem <strong>12 tags</strong>. Todas compartilham a mesma arquitetura (27B denso, híbrida Gated DeltaNet + Gated Attention) e contexto de 256.000 tokens nativos. A diferença está na quantização e no suporte a MTP:</p>
+    <table>
+        <tr><th>Tag</th><th>Tamanho</th><th>Quant</th><th>MTP</th><th>MLX</th><th>Indicado para</th></tr>
+        <tr class="highlight"><td>qwen3.8:latest (alias de :27b)</td><td>18 GB</td><td>Q4_K_M</td><td>Não</td><td>—</td><td>GPU 24 GB, uso geral</td></tr>
+        <tr><td>qwen3.8:27b</td><td>18 GB</td><td>Q4_K_M</td><td>Não</td><td>—</td><td>GPU 24 GB, uso geral</td></tr>
+        <tr class="highlight"><td>qwen3.8:27b-mtp-q4_K_M</td><td>18 GB</td><td>Q4_K_M</td><td><strong>Sim</strong></td><td>—</td><td>GPU 24 GB, com aceleração MTP</td></tr>
+        <tr><td>qwen3.8:27b-mtp-q8_0</td><td>30 GB</td><td>Q8_0</td><td><strong>Sim</strong></td><td>—</td><td>GPU 32 GB+ (RTX 5090)</td></tr>
+        <tr><td>qwen3.8:27b-mtp-bf16</td><td>56 GB</td><td>BF16</td><td><strong>Sim</strong></td><td>—</td><td>Datacenter (A100/H100 80 GB)</td></tr>
+        <tr><td>qwen3.8:27b-q4_K_M</td><td>18 GB</td><td>Q4_K_M</td><td>Não</td><td>—</td><td>GPU 24 GB (equivalente ao :27b)</td></tr>
+        <tr><td>qwen3.8:27b-q8_0</td><td>30 GB</td><td>Q8_0</td><td>Não</td><td>—</td><td>GPU 32 GB+</td></tr>
+        <tr><td>qwen3.8:27b-bf16</td><td>56 GB</td><td>BF16</td><td>Não</td><td>—</td><td>Datacenter</td></tr>
+        <tr><td>qwen3.8:27b-mlx</td><td>18 GB</td><td>Q4_K_M (MLX)</td><td>—</td><td>Sim</td><td>Mac Apple Silicon 32 GB+</td></tr>
+        <tr><td>qwen3.8:27b-mlx-bf16</td><td>56 GB</td><td>BF16 (MLX)</td><td>—</td><td>Sim</td><td>Mac 96 GB+ (M3 Ultra, M2 Ultra)</td></tr>
+        <tr><td>qwen3.8:27b-mxfp8</td><td>32 GB</td><td>MXFP8 (MLX)</td><td>—</td><td>Sim</td><td>Mac 48 GB+</td></tr>
+        <tr><td>qwen3.8:27b-nvfp4</td><td>18 GB</td><td>NVFP4 (MLX)</td><td>—</td><td>Sim</td><td>Mac 32 GB+ (Apple Silicon)</td></tr>
+    </table>
+    <div class="callout">
+        <strong>Atenção ao MTP:</strong> as tags com <code>-mtp-</code> no nome já incluem a cabeça Multi-Token Prediction treinada pela Qwen e trazem <code>draft_num_predict: 4</code> configurado por padrão nos metadados. Isso significa que o speculative decoding com 4 tokens de rascunho está <strong>ativo desde o primeiro <code>ollama run</code></strong> — sem flags extras. As tags sem MTP (a grande maioria, incluindo a <code>:latest</code>) <strong>não</strong> têm draft_num_predict configurado.
+    </div>
+
+    <h2 id="comando-basico">Passo 1 — ollama run qwen3.8:27b</h2>
+    <p>O comando mais simples possível. Baixa o modelo (18 GB na primeira execução) e abre um chat interativo:</p>
+    <pre><code>ollama run qwen3.8:27b</code></pre>
+    <p>Pronto. O modelo está rodando com thinking mode ligado (padrão de fábrica), 256K de contexto e temperatura 0.8 (default do Ollama). Dentro do chat interativo, você pode usar comandos <code>/</code>:</p>
+    <pre><code># dentro da sessão interativa
+&gt;&gt;&gt; /show modelfile      # exibe o Modelfile atual
+&gt;&gt;&gt; /set parameter num_ctx 131072   # reduz contexto
+&gt;&gt;&gt; /set parameter temperature 0.7   # ajusta temperatura
+&gt;&gt;&gt; /set parameter no_think true     # desliga thinking
+&gt;&gt;&gt; /clear                           # limpa histórico</code></pre>
+    <p>Para saída única sem chat interativo (útil para scripts):</p>
+    <pre><code>ollama run qwen3.8:27b "Explique o que é atenção híbrida em uma frase."</code></pre>
+
+    <h2 id="modelfile">Passo 2 — Modelfile customizado (ctx-size, MTP, GPU)</h2>
+    <p>O Modelfile é o equivalente Ollama ao <code>llama-cli</code> com flags: define parâmetros que persistem entre execuções. O caminho completo para o Qwen3.8-27B com 256K de contexto, parâmetros oficiais do model card e MTP:</p>
+    <pre><code># Modelfile — Qwen3.8-27B otimizado
+FROM qwen3.8:27b
+
+# Contexto nativo máximo
+PARAMETER num_ctx 262144
+
+# Parâmetros de sampling — Thinking mode (model card oficial)
+PARAMETER temperature 1.0
+PARAMETER top_p 0.95
+PARAMETER top_k 20
+
+# Evita repetição conservadora (default Ollama é 1.0 = desligado)
+PARAMETER repeat_penalty 1.0
+PARAMETER repeat_last_n -1
+
+# Tokens máximos (ilimitado)
+PARAMETER num_predict -1
+
+# Seed para reprodutibilidade (opcional; 0 = aleatório)
+PARAMETER seed 0</code></pre>
+    <p>Salve como <code>Modelfile</code> e crie o modelo customizado:</p>
+    <pre><code>ollama create qwen3.8-27b-custom -f Modelfile</code></pre>
+    <p>Agora rode com o nome escolhido:</p>
+    <pre><code>ollama run qwen3.8-27b-custom</code></pre>
+    <p><strong>Para habilitar MTP no Modelfile,</strong> parta da tag MTP em vez da base:</p>
+    <pre><code># Modelfile MTP — parte do qwen3.8:27b-mtp-q4_K_M
+FROM qwen3.8:27b-mtp-q4_K_M
+
+PARAMETER num_ctx 262144
+PARAMETER temperature 1.0
+PARAMETER top_p 0.95
+PARAMETER top_k 20
+# MTP já configurado na tag de origem (draft_num_predict 4)
+# Para desligar: PARAMETER draft_num_predict 0</code></pre>
+    <p><strong>Controle de GPU (num_gpu):</strong> o Ollama gerencia automaticamente o offloading de camadas para GPU. Em setups multi-GPU ou para forçar uso máximo da GPU, você pode usar variáveis de ambiente ou o parâmetro <code>num_gpu</code> no Modelfile (disponível em versões recentes do Ollama que expõem os parâmetros do llama.cpp). Na prática, se o Ollama detecta GPU CUDA, ele já usa todas as camadas disponíveis — a flag <code>num_gpu</code> é útil para reservar camadas para CPU em setups com pouca VRAM:</p>
+    <pre><code># No Modelfile: carrega só 50 camadas na GPU (de 64)
+PARAMETER num_gpu 50</code></pre>
+
+    <h2 id="reasoning">Passo 3 — Reasoning effort e thinking mode</h2>
+    <p>O <strong>thinking mode</strong> do Qwen3.8-27B vem ligado por padrão — o modelo raciocina passo a passo dentro de um bloco <code>&lt;think&gt;</code> antes de responder. O parâmetro <strong>reasoning_effort</strong> controla quantos tokens o modelo gasta nesse raciocínio interno. Quatro níveis disponíveis:</p>
+    <table>
+        <tr><th>Nível</th><th>Comportamento</th><th>Quando usar</th></tr>
+        <tr><td><code>xhigh</code> (default)</td><td>Máximo raciocínio — pode gastar 20K+ tokens pensando</td><td>Matemática, código complexo, agentes multi-passo</td></tr>
+        <tr><td><code>high</code></td><td>Raciocínio profundo, mas com limite prático</td><td>Análise, decisões com trade-offs</td></tr>
+        <tr><td><code>medium</code></td><td>Equilíbrio entre pensar e responder</td><td>Uso geral, chatbots, perguntas técnicas</td></tr>
+        <tr><td><code>low</code></td><td>Raciocínio mínimo, respostas mais diretas</td><td>Extração de dados, perguntas factuais</td></tr>
+        <tr><td>desligado</td><td>Modo Instruct — resposta direta sem bloco &lt;think&gt;</td><td>Chat rápido, tradução, tarefas simples</td></tr>
+    </table>
+    <p><strong>No Ollama, o reasoning_effort é controlado via API ou requisição — não há flag direta de CLI para isso.</strong> O parâmetro é passado no corpo da requisição como <code>options</code>:</p>
+    <pre><code># API — reasoning effort medium
+curl http://localhost:11434/api/chat -d '{
+  "model": "qwen3.8:27b",
+  "messages": [{"role": "user", "content": "O que é MTP?"}],
+  "options": {
+    "reasoning_effort": "medium"
+  }
+}'</code></pre>
+    <p><strong>Para desligar o thinking (modo Instruct)</strong> — duas formas:</p>
+    <ul>
+        <li><strong>Por requisição (API):</strong> <code>"options": { "no_think": true }</code></li>
+        <li><strong>No Modelfile:</strong> <code>PARAMETER no_think true</code></li>
+        <li><strong>No CLI interativo:</strong> <code>/set parameter no_think true</code></li>
+    </ul>
+    <div class="callout-warn">
+        <strong>Atenção ao xhigh default:</strong> O reasoning_effort xhigh é o padrão de fábrica do modelo — e é <strong>caro</strong>. Simon Willison documentou que um SVG de 3.223 tokens consumiu 22.276 tokens de raciocínio (21 minutos de geração) com xhigh ligado. Com reasoning off, o mesmo prompt entregou em 137 segundos. Se você está testando o modelo pela primeira vez, comece com <code>low</code> ou desligado — o ganho de velocidade é dramático.
+    </div>
+    <p>O parâmetro <strong>preserve_thinking</strong> também é suportado (retém os blocos <code>&lt;think&gt;</code> de mensagens anteriores no contexto), útil para agentes que precisam lembrar o raciocínio de passos anteriores. Desligue com <code>"preserve_thinking": false</code> na API ou Modelfile.</p>
+
+    <h2 id="mtp">Passo 4 — MTP: Multi-Token Prediction no Ollama</h2>
+    <p>O <strong>Multi-Token Prediction</strong> (MTP) é uma das inovações do Qwen3.8: o modelo foi treinado para prever múltiplos tokens de saída por passo — não um de cada vez. No Ollama, você tem duas abordagens:</p>
+
+    <h3>Abordagem A: Tag MTP dedicada (recomendada)</h3>
+    <p>A tag <code>qwen3.8:27b-mtp-q4_K_M</code> já inclui a cabeça MTP treinada pela Qwen (arquivo mtp.safetensors) e o parâmetro <code>draft_num_predict: 4</code> nos metadados. O speculative decoding com 4 tokens de rascunho está ativo desde o primeiro comando:</p>
+    <pre><code># Puxar a tag MTP
+ollama pull qwen3.8:27b-mtp-q4_K_M
+
+# Rodar — MTP já ativo
+ollama run qwen3.8:27b-mtp-q4_K_M</code></pre>
+    <p>O ganho esperado é de <strong>~1,5× a 2,5× no decode</strong>, variando conforme hardware e conteúdo. No llama.cpp (que o Ollama usa internamente), medições mostram aceleração de até <strong>+72% no DGX Spark</strong> e <strong>~1,85× (22,97 → 42,45 tok/s)</strong> nos testes do <a href="https://github.com/ggerganov/llama.cpp/pull/22673">PR #22673</a>. A aceitação média do drafter fica entre 0,77 e 0,90 — ou seja, 3 de cada 4 tokens rascunhados são aceitos pelo modelo principal.</p>
+
+    <h3>Abordagem B: Usar drafter externo</h3>
+    <p>Em vez da cabeça MTP embutida, você pode apontar o Ollama para um drafter GGUF separado para speculative decoding. Esta abordagem não é suportada nativamente pelo <code>ollama run</code> — requer o servidor e configuração extra:</p>
+    <pre><code># Iniciar servidor com drafter externo (se disponível)
+ollama serve
+# Consumir via API com model_extra opções</code></pre>
+    <p>Na prática, para a maioria dos usuários, a <strong>Abordagem A</strong> (tag MTP dedicada) é a mais simples e eficaz — a cabeça MTP foi treinada pela própria Qwen especificamente para este modelo, não um drafter genérico.</p>
+
+    <div class="callout">
+        <strong>Verifique se o MTP está ativo:</strong> depois de rodar <code>ollama run qwen3.8:27b-mtp-q4_K_M</code>, dentro do chat interativo digite <code>/show modelfile</code> — você deve ver <code>draft_num_predict 4</code> na saída. Se não aparecer, adicione <code>PARAMETER draft_num_predict 4</code> no seu Modelfile customizado.
+    </div>
+
+    <h2 id="visao">Passo 5 — Visão e multimodalidade</h2>
+    <p>O Qwen3.8-27B é uma VLM nativa — o encoder de visão é parte do modelo, não um adaptador externo. A tag <code>qwen3.8:27b</code> já aceita entrada <strong>Text + Image</strong> (a biblioteca Ollama lista explicitamente as modalidades suportadas).</p>
+    <p><strong>No CLI interativo:</strong></p>
+    <pre><code>ollama run qwen3.8:27b "Descreva esta imagem em detalhes." --image ~/foto.jpg</code></pre>
+    <p><strong>Via API Python:</strong></p>
+    <pre><code>import ollama
+
+response = ollama.chat(
+    model='qwen3.8:27b',
+    messages=[{
+        'role': 'user',
+        'content': 'Descreva esta imagem',
+        'images': ['caminho/para/foto.jpg']
+    }]
+)
+print(response['message']['content'])</code></pre>
+    <p><strong>Via API REST:</strong></p>
+    <pre><code>curl http://localhost:11434/api/chat -d '{
+  "model": "qwen3.8:27b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "O que tem nesta imagem?",
+      "images": ["<base64 da imagem>"]
+    }
+  ]
+}'</code></pre>
+    <p>O encoder de visão (mmproj) está embutido no pacote — não há download separado de arquivos <code>.gguf</code> de visão como no llama.cpp. Todas as 12 tags incluem suporte a imagem no mesmo pacote.</p>
+    <div class="callout-warn">
+        <strong>Limitação conhecida:</strong> a página da biblioteca Ollama lista as modalidades como <code>Text, Image</code> — isto é, não há suporte declarado a <strong>vídeo</strong> no Ollama (diferente do llama.cpp, que suporta vídeo de até hora com o mesmo modelo). Para tarefas de vídeo, use o <a href="/guia/qwen3-8-27b-visao-videos-local">guia de visão e vídeo no llama.cpp</a>.
+    </div>
+
+    <h2 id="flash-attn">Passo 6 — Flash attention e desempenho</h2>
+    <p>O <strong>flash attention</strong> é uma técnica que acelera a atenção do transformer reduzindo acessos à memória de alto consumo de banda. No Ollama, o suporte a flash attention vem do backend llama.cpp — e nas versões mais recentes (Ollama 0.5+), o flash attention é <strong>habilitado automaticamente</strong> quando o hardware suporta (GPUs NVIDIA com CUDA 11.8+).</p>
+    <p>Você pode verificar se o flash attention está ativo olhando os logs do servidor:</p>
+    <pre><code>ollama serve 2>&1 | grep -i flash</code></pre>
+    <p>Se quiser forçar o desligamento (por exemplo, se encontrar degradação em benchmarks raros):</p>
+    <pre><code># Desligar flash attention via variável de ambiente
+OLLAMA_FLASH_ATTN=0 ollama run qwen3.8:27b</code></pre>
+    <p>No Qwen3.8-27B, o impacto do flash attention é notável em contextos longos: em 256K de contexto, a atenção plena (não flash) consumiria <strong>~16× mais largura de banda</strong> para o mecanismo de atenção (só 16 das 64 camadas são full-attention; as 48 Gated DeltaNet são lineares e não usam flash attention). Na prática, com flash attention ativo, o modelo sustenta <strong>~50 tok/s em GPU de 24 GB</strong> com os 262.144 tokens — contra <strong>~34 tok/s sem</strong> (medições de <a href="/guia/qwen3-8-27b-contexto-256k-24gb">piszczek.pl em RTX PRO 4000 Blackwell</a>).</p>
+
+    <h2 id="ollama-vs-llamacpp">Ollama vs llama.cpp: tem overhead?</h2>
+    <p>Essa é a pergunta que mais aparece. A resposta curta: <strong>quase nenhum no decode, algum no prefill.</strong></p>
+    <p>O Ollama usa o <strong>llama.cpp como backend</strong> de inferência para modelos GGUF — não é um motor paralelo, é o mesmo código C++ compilado. O que o Ollama adiciona por cima:</p>
+    <table>
+        <tr><th>Camada</th><th>Overhead</th><th>Detalhe</th></tr>
+        <tr><td>Inferência (llama.cpp)</td><td>0%</td><td>É o mesmo backend — decode bruto é idêntico</td></tr>
+        <tr><td>API REST (servidor)</td><td>~1–3%</td><td>Serialização JSON + HTTP; imperceptível em uso interativo</td></tr>
+        <tr><td>Gerenciamento de contexto</td><td>~0,5%</td><td>Cache de sessão e roteamento de requests</td></tr>
+        <tr><td>Build do GGUF</td><td>Variável</td><td>O build GGUF pode diferir entre o Ollama Hub e o Unsloth — diferenças de desempenho são do quant, não do motor</td></tr>
+    </table>
+    <p><strong>Quando usar Ollama:</strong> quando você quer o modelo rodando em 5 minutos, com API nativa, gerenciamento de modelos, e não está no limite de milissegundos por token. É a escolha certa para 95% dos usuários.</p>
+    <p><strong>Quando usar llama.cpp puro:</strong> quando você precisa de controle milimétrico — flags experimentais (<code>--flash-attn</code>, <code>--no-flash-attn</code>), múltiplos drafters, tuning de <code>--batch-size</code> para prefill, ou está montando um benchmark controlado. Também quando o Ollama não tem uma tag para o quant exato que você quer.</p>
+    <div class="callout">
+        <strong>Dado real:</strong> no Strix Halo (128 GB RAM unificada), o Qwen3.8-27B Q4_K_M roda a <strong>~17,3 tok/s tanto no Ollama quanto no llama.cpp</strong> — dentro da margem de erro de medição. O overhead é estatisticamente irrelevante para uso real.
+    </div>
+
+    <h2 id="api">Usando via API (OpenAI-compatible)</h2>
+    <p>O servidor embutido do Ollama expõe uma API REST OpenAI-compatible na porta 11434. Isso significa que qualquer ferramenta que aceita <code>OPENAI_API_KEY</code> e <code>OPENAI_BASE_URL</code> pode apontar para o seu Ollama local:</p>
+    <pre><code># No seu app Python com openai SDK
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama"  # qualquer valor, o Ollama não valida
+)
+
+response = client.chat.completions.create(
+    model="qwen3.8:27b",
+    messages=[{"role": "user", "content": "Escreva um poema sobre LLMs locais."}],
+    temperature=1.0,
+    top_p=0.95
+)
+print(response.choices[0].message.content)</code></pre>
+    <p><strong>Options extras (reasoning_effort, no_think):</strong></p>
+    <pre><code># Via OpenAI SDK com extra_body
+response = client.chat.completions.create(
+    model="qwen3.8:27b",
+    messages=[{"role": "user", "content": "Resolva 25 × 47 passo a passo."}],
+    extra_body={
+        "options": {
+            "reasoning_effort": "high",
+            "no_think": False
+        }
+    }
+)</code></pre>
+    <p>Para servidores que exigem um servidor dedicado com thread pool para concorrência, inicie o Ollama em modo servidor:</p>
+    <pre><code>ollama serve</code></pre>
+    <p>E faça as requisições para <code>http://localhost:11434</code>. O servidor gerencia fila de requests concorrentes automaticamente, com uma instância do modelo em GPU.</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+
+    <div class="faq-item">
+        <h3>Ollama é recomendado para produção?</h3>
+        <p>Depende do que você chama de produção. Para <strong>uso pessoal, agentes locais, equipes pequenas</strong> — sim, Ollama serve bem com sua API OpenAI-compatible e servidor embutido. Para <strong>dezenas de requests concorrentes, throughput máximo, prefix caching</strong>, os motores de serving dedicados (vLLM, SGLang) têm vantagem. Uma arquitetura comum: Ollama no dev/local, vLLM em produção.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qual tag escolher para maximizar qualidade?</h3>
+        <p>A hierarquia de qualidade acompanha a precisão: BF16 > Q8_0 > Q4_K_M. Na prática, entre Q4_K_M e BF16 a diferença em benchmarks de múltipla escolha é <strong>tipicamente &lt;1%</strong> (MMLU, ARC, HellaSwag). A diferença real aparece em tarefas de raciocínio longo e geração criativa. Para 99% dos usos, o <strong>Q4_K_M (18 GB) é a escolha certa</strong> — e se couber na sua VRAM, o <strong>Q8_0 (30 GB) é o ponto doce</strong>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Ollama no Mac é diferente do Ollama no Linux?</h3>
+        <p>No Mac, o backend é <strong>MLX</strong> (Apple Silicon) em vez de CUDA/llama.cpp para as tags MLX (<code>27b-mlx</code>, <code>27b-mlx-bf16</code>, etc.). As tags não-MLX (tipo <code>:27b</code>) rodam via llama.cpp no Mac também, mas com desempenho inferior ao MLX. Para melhor performance no Mac, use as tags MLX — elas usam a GPU e Neural Engine via Metal/MLX.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>MTP no Ollama funciona com qualquer tag?</h3>
+        <p><strong>Não.</strong> O MTP só funciona com as tags que incluem a cabeça MTP no pacote — as que têm <code>-mtp-</code> no nome. A tag <code>:latest</code> e <code>:27b</code> <strong>não</strong> têm a cabeça MTP. Se você quiser MTP, use <code>qwen3.8:27b-mtp-q4_K_M</code>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Como ver o Modelfile de um modelo já baixado?</h3>
+        <pre><code>ollama show --modelfile qwen3.8:27b</code></pre>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qual o comando para listar modelos baixados?</h3>
+        <pre><code>ollama list</code></pre>
+    </div>
+
+    <div class="faq-item">
+        <h3>O Ollama suporta tool calling no Qwen3.8?</h3>
+        <p>Sim, a biblioteca Ollama marca o qwen3.8 como <code>tools</code> — tool calling é suportado via API. O modelo usa o formato Qwen (JSON dentro de <code>&lt;tool_call&gt;</code>). Na API Python do Ollama, passe <code>tools=[...]</code> na chamada <code>chat()</code>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Ollama vs LM Studio: qual a diferença prática?</h3>
+        <p>LM Studio é uma GUI nativa para desktop (macOS, Windows, Linux) que também usa llama.cpp como backend — conceitualmente similar ao Ollama. Diferenças: LM Studio tem interface gráfica com download de modelos embutido e descubra de builds GGUF; Ollama é linha de comando + API (mais adequado para integração com código e agentes). Ambos expõem API OpenAI-compatible. Para uso via terminal e agentes, Ollama é mais direto; para quem prefere interface visual, LM Studio. Veja nosso <a href="/guia/qwen3-8-27b-lm-studio">guia do Qwen3.8-27B no LM Studio</a>.</p>
+    </div>
+
+    <h2 id="leia-mais">Leia mais</h2>
+    <ul>
+        <li><a href="/guia/como-rodar">Como rodar o Qwen3.8-27B localmente — visão geral</a> — comparação de todos os motores</li>
+        <li><a href="/guia/qwen3-8-27b-lm-studio">Qwen3.8-27B no LM Studio</a> — versão GUI desktop</li>
+        <li><a href="/guia/como-rodar-vllm-qwen3-8-27b">vLLM em produção para o Qwen3.8-27B</a> — prefix caching, bugs e workarounds</li>
+        <li><a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang + FP8 oficial</a> — máximo throughput (206 tok/s)</li>
+        <li><a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B em 16 GB de VRAM (llama.cpp)</a> — configuração para hardware limitado</li>
+        <li><a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Configuração de reasoning: desativar o overthinking</a></li>
+        <li><a href="/guia/qwen3-8-27b-visao-videos-local">Visão, vídeo e OCR no Qwen3.8-27B</a></li>
+        <li><a href="https://ollama.com/library/qwen3.8">Biblioteca oficial do qwen3.8 no Ollama</a></li>
+        <li><a href="https://docs.ollama.com/modelfile">Referência do Modelfile (Ollama docs)</a></li>
+        <li><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Model card oficial no Hugging Face</a></li>
+    </ul>
+
+    <footer>
+        <p>Guia Qwen3.8-27B | Dados baseados na biblioteca oficial Ollama (ollama.com/library/qwen3.8, verificado em 22/08/2026), model card oficial Qwen, documentação do Modelfile e medições da comunidade (r/LocalLLaMA, Simon Willison, InsiderLLM).</p>
+        <p>Última atualização: agosto 2026 | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
+    </footer>
+</body>
+</html>
