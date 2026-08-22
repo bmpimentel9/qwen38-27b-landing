@@ -8,6 +8,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-22] — Comunidade: novos relatos de cibersegurança com MCPs e cloth simulator single-shot (t_f4533dbe)
+
+### Added
+- **Seção "Novos Relatos — Agosto/2026"** em `guia/comunidade-casos-uso`: relato de analista sênior de cibersegurança (Potential_Block4598) sobre Qwen3.8-27B com Ghidra + Vbox MCP + debugger MCP — "devoured the malware that Opus couldn't". Thread `1vonuu0` com 5 citações literais verificáveis.
+- **Sub-seção "Geração de Código Single-Shot"**: cloth simulator HTML single-file com física perfeita (UDPSendToFailed), jogo Snake 3D (slavik-dev, único modelo além do Opus a conseguir), Tetris com sons retrô (Pear_Virtual), protocolo de rede nível Claude/Codex (michael_quigley). Thread `1voa3ch` com 4 citações literais verificáveis.
+
+### Changed
+- **Sitemap.xml**: lastmod de `guia/comunidade-casos-uso` atualizado para 2026-08-22.
+
 ## [2026-08-22] — Guia Ollama do Qwen3.8-27B: Modelfile customizado, MTP, reasoning, visão e flash-attn (t_fe2ac331)
 
 ### Added

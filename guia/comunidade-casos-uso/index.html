@@ -230,6 +230,62 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <strong>Tendência macro:</strong> A comunidade de LLMs locais está migrando de "experimentar modelos em casa" para "usar modelos locais em produção pessoal/profissional". O Qwen3.8-27B é o modelo que tornou essa transição possível — combinando desempenho de fronteira em agentes, viabilidade de hardware consumer, multimodalidade nativa e licença Apache 2.0 permissiva.
     </div>
 
+    <h2 id="novos-agosto-2026">Novos Relatos — Agosto/2026</h2>
+
+    <p>Nas semanas seguintes ao lançamento, a comunidade r/LocalLLaMA produziu relatos que merecem destaque próprio. Esta seção é atualizada conforme novos casos de uso surgem.</p>
+
+    <h3>5. Cibersegurança com MCPs — "Qwen 3.8 - 27B is a game changer"</h3>
+    <p>Em 22 de agosto, o usuário <strong>Potential_Block4598</strong>, analista sênior de cibersegurança, publicou um relato detalhado (<a href="https://www.reddit.com/r/LocalLLaMA/comments/1vonuu0/" style="color:var(--accent)">thread original</a>) que viralizou na frontpage do r/LocalLLaMA. Seu setup: <strong>Ghidra + sandbox Python + Vbox MCP + debugger MCP</strong>, tudo controlado pelo Qwen3.8-27B localmente.</p>
+
+    <blockquote>
+        "Qwen 3.8 devoured the malware that Opus couldn't"
+        <span class="source">Potential_Block4598 · r/LocalLLaMA · 22/08/2026</span>
+    </blockquote>
+
+    <blockquote>
+        "By the time I remembered that malware and how it works, Qwen had already extracted and disassembled the decrypted payload! I am stunned. This is super dangerous."
+        <span class="source">Potential_Block4598 · r/LocalLLaMA · 22/08/2026</span>
+    </blockquote>
+
+    <p>O analista destacou que o modelo funciona como "um time de ataque ou analistas de malware num único modelo local — sem traces, sem chamadas de API, sem nada". Ele descreve o impacto geopolítico: o que antes exigia equipes patrocinadas por estados agora pode ser feito por um indivíduo com hardware consumer.</p>
+
+    <blockquote>
+        "A local model! Can you believe it. No traces no API calls no nothing. Empowered with the right environment setup and tools and it can do what teams of attackers or malware analysts were needed to do."
+        <span class="source">Potential_Block4598 · r/LocalLLaMA · 22/08/2026</span>
+    </blockquote>
+
+    <p>O post gerou dezenas de comentários de profissionais da área. O usuário <strong>greentheonly</strong>, outro profissional de segurança, comentou que tem um desafio pessoal de ofuscação/deobfuscação e que modelos anteriores falhavam — mas que o Qwen3.8-27B é o próximo na sua lista de testes. Já <strong>CavalryArcher</strong> observou que o modelo é "decentemente consistente com autorização, o melhor entre modelos abertos".</p>
+
+    <blockquote>
+        "This model is beating most 'cybersecurity experts' already except like the top 5% or top 1%. And it is a local model! We are lost."
+        <span class="source">Potential_Block4598 (TL;DR do post) · r/LocalLLaMA · 22/08/2026</span>
+    </blockquote>
+
+    <p>O thread também gerou discussão sobre segurança de MCPs. O OP recomenda usar apenas MCPs FastMCP single-file de fontes confiáveis — "empresas, projetos grandes ou YouTubers conhecidos no espaço de cibersegurança".</p>
+
+    <h3>6. Geração de Código Single-Shot — "zero debugging needed"</h3>
+    <p>No mesmo dia, o thread oficial de lançamento (<a href="https://www.reddit.com/r/LocalLLaMA/comments/1voa3ch/" style="color:var(--accent)">Qwen 3.8 27B Released! Please Share Your Experience</a>) recebeu centenas de relatos. O destaque foi do usuário <strong>UDPSendToFailed</strong>:</p>
+
+    <blockquote>
+        "It just spat out a fully developed single-file HTML cloth simulator with perfect physics, no local model ever did this before on my single 4090. 63k tokens at ~65t/s, one-shot with zero debugging or follow-up needed."
+        <span class="source">UDPSendToFailed · r/LocalLLaMA · 22/08/2026</span>
+    </blockquote>
+
+    <p>Outro relato impressionante veio de <strong>slavik-dev</strong>, que tinha um prompt para o qual nenhum modelo jamais produziu resultado decente — exceto Opus. O Qwen3.8-27B (UD-Q5_K_XL) resolveu na primeira tentativa: um jogo Snake numa esfera 3D em HTML/CSS/JS.</p>
+
+    <blockquote>
+        "I have one prompt, for which no model were able to produce decent result, but only Opus. And this model (using UD-Q5_K_XL) did it!"
+        <span class="source">slavik-dev · r/LocalLLaMA · 22/08/2026</span>
+    </blockquote>
+
+    <p><strong>Pear_Virtual</strong> comparou Qwen3.6 vs 3.8 na geração de um jogo Tetris em Q4_K_M: o 3.8 pensou mais (15.000 palavras de reasoning vs 3.000), mas o resultado foi "muito mais polido, com botão de pausa, high scores e sons de jogo retrô que não estavam no prompt original".</p>
+
+    <p><strong>michael_quigley</strong> (RTX 5090, Linux) relatou que o modelo fez "trabalho nível Claude/Codex" num problema desafiador de protocolo de rede — encontrar um bug, corrigi-lo, construir um benchmark e escrever um relatório. "Realmente parece a era Opus 4.6."</p>
+
+    <div class="callout">
+        <strong>Padrão observado:</strong> A comunidade está convergindo para um fluxo onde o Qwen3.8-27B substitui modelos de fronteira (Opus, Claude) em tarefas específicas de alta exigência — análise de malware, simulações físicas em HTML single-file, jogos 3D, desenvolvimento de protocolos de rede — tudo com zero ou mínima intervenção. A capacidade de manter coerência em contexto longo (63k tokens sem degradação) é citada como diferencial decisivo.
+    </div>
+
     <p>Para tirar suas próprias dúvidas sobre implementação, veja nosso <a href="/guia/como-rodar" style="color:var(--accent)">guia de instalação</a> ou confira o <a href="/guia/faq" style="color:var(--accent)">FAQ completo</a>. Para ver os benchmarks que sustentam estes casos de uso, visite <a href="/guia/benchmarks-comparativos" style="color:var(--accent)">comparativos de benchmarks</a>.</p>
 
     <footer>
