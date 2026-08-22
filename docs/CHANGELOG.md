@@ -8,6 +8,17 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-22] — Guia Ollama do Qwen3.8-27B: Modelfile customizado, MTP, reasoning, visão e flash-attn (t_fe2ac331)
+
+### Added
+- **Guia Ollama dedicado** (`guia/ollama/index.html`): 12 tags catalogadas (18–56 GB), Modelfile customizado com num_ctx/draft_num_predict/num_gpu, reasoning effort xhigh→off via API/Modelfile/CLI, MTP embutido nas tags -mtp- (draft_num_predict 4 nativo), visão Text+Image sem mmproj extra, flash attention automático, overhead Ollama vs llama.cpp (~0% decode, ~2–5% API), FAQ com 7 perguntas + dica do xhigh default.
+- **JSON-LD**: TechArticle + HowTo (6 steps) + FAQPage (7 perguntas) + BreadcrumbList.
+- **Sitemap**: URL `guia/ollama` (priority 0.9, lastmod 2026-08-22).
+- **llms.txt**: entrada do Ollama com descrição + 2 stats citáveis (566.2K downloads, 12 tags).
+
+### Changed
+- **Sitemap.xml**: 30 → 31 URLs (ollama adicionado).
+
 ## [2026-08-21] — Hub page: linha 11 = Qwen3-Coder-30B-A3B na tabela mestra (t_e0bd2b3c)
 
 ### Added
