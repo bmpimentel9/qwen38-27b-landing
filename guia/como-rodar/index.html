@@ -77,6 +77,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   window.addEventListener('scroll',onScroll,{passive:true});
 })();
 </script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -322,9 +323,24 @@ mlx_lm.generate \
 
     <p>Para mais dúvidas, confira nosso <a href="/guia/faq" style="color:var(--accent)">FAQ completo</a> ou os <a href="/guia/comunidade-casos-uso" style="color:var(--accent)">casos de uso da comunidade</a>. Para requisitos de hardware, veja o <a href="/guia/hardware-local" style="color:var(--accent)">guia de hardware</a>. Para serving de alto throughput em GPU dedicada (checkpoint FP8 oficial), veja o <a href="/guia/como-rodar-sglang-qwen3-8-27b" style="color:var(--accent)">guia SGLang + FP8</a>.</p>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Guia Qwen3.8-27B — Como Rodar | Comandos baseados na documentação oficial (Ollama, llama.cpp, vLLM, HuggingFace, Qwen Blog).</p>
         <p>Última atualização: agosto 2026 | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

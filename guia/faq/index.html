@@ -381,6 +381,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   window.addEventListener('scroll',onScroll,{passive:true});
 })();
 </script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -640,9 +641,24 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <strong>Não encontrou sua resposta?</strong> Confira nosso <a href="/guia/como-rodar" style="color:var(--accent)">guia de instalação passo a passo</a> ou a <a href="/guia/comunidade-casos-uso" style="color:var(--accent)">seção de casos de uso da comunidade</a>. Para dúvidas técnicas específicas, a comunidade <a href="https://reddit.com/r/LocalLLaMA" style="color:var(--accent)">r/LocalLLaMA</a> é muito ativa.
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Guia Qwen3.8-27B — FAQ | Baseado em perguntas frequentes da comunidade (Hacker News, r/LocalLLaMA, X) e documentação oficial.</p>
         <p>Última atualização: agosto 2026 | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

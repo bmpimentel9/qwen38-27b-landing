@@ -205,6 +205,7 @@
         .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
         blockquote { background: var(--surface); border-left: 3px solid var(--accent-4); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -381,9 +382,24 @@
         <strong>Continue por aqui:</strong> <a href="/guia/qwen3-8-27b-benchmark-artificial-analysis">52 no Artificial Analysis explicado</a> · <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional Qwen</a> · <a href="/guia/melhores-modelos-locais-30b">melhores ≤30B de ago/2026</a> · <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a> · <a href="/guia/tokens-por-segundo-30b-hardware-real">tokens/s no hardware real</a> · <a href="/guia/faq">FAQ do portal</a>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — 1 ano de gpt-oss | Fontes: Hugging Face API (downloads janela 30d e likes por repositório, consultada 20/08/2026: openai/gpt-oss-20b 7.590.370 dl/mês + 4.934 likes; openai/gpt-oss-120b 4.680.489 dl/mês + 5.114 likes; Qwen/Qwen3.8-27B 1.373.584 dl/mês + 11.733 likes, criado 2026-08-05), config.json oficiais dos três repositórios (MoE 32/128 especialistas, 4 ativos, MXFP4, 128K — vs denso híbrido 48+16, 256K), post "Qwen 3.8 27B Is a Great Open Model" de William Callahan (williamcallahan.com, 19/08/2026 — lido integralmente; citação traduzida), Artificial Analysis Intelligence Index v4.1.1 via Simon Willison (17/08/2026) e verificação do portal (18/08/2026). "2× mais inteligente" é percepção de uso do autor citado, não benchmark. Downloads ≠ qualidade; likes ≠ qualidade. Geração deste conteúdo assistida por IA e revisada.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/melhores-modelos-locais-30b">Melhores 30B</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

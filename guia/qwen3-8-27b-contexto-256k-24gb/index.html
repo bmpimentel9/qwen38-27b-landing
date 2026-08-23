@@ -192,6 +192,7 @@
   pre code { overflow-wrap: normal; }
 }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -383,9 +384,40 @@ llama-server \
         <strong>Continue por aqui:</strong> <a href="/guia/tokens-por-segundo-30b-hardware-real">throughput medido por hardware</a> (contexto curto) · <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">tabela GGUF com GB medidos</a> · <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia 16 GB de VRAM</a> · <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">domando o overthinking</a> · <a href="/guia/qwen3-8-27b-visao-videos-local">visão e vídeo locais</a> · <a href="/hardware">guia de hardware</a>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<h2 id="hardware-recomendado">Hardware recomendado</h2>
+<div class="affiliate">
+  <h3>🖥️ Hardware recomendado para rodar este modelo</h3>
+  <div class="affiliate-table-wrap">
+    <table>
+      <thead><tr><th>Produto</th><th>Onde comprar</th></tr></thead>
+      <tbody>
+        <!-- Adicione ?tag=SEUTAG aos links para habilitar a comissão de afiliado -->
+        <tr><td>GPU 24 GB (ex.: RTX 4090)</td><td><a href="https://www.amazon.com.br/s?k=rtx+4090" rel="sponsored noopener" target="_blank">Amazon BR →</a></td></tr>
+        <tr><td>RAM 64 GB DDR5</td><td><a href="https://www.mercadolivre.com.br/baratos/memoria-64gb-ddr5" rel="sponsored noopener" target="_blank">Mercado Livre →</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="disclosure">Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</p>
+</div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate style="margin-top:16px">
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — Qwen3.8-27B com 256K de contexto em 24 GB | Fontes: artigo "Qwen3.8 27B at 256K: 50 TPS on a 24 GB GPU" de Michał Piszczek (piszczek.pl, publicado 17/08/2026, atualizado 18/08/2026 — lido integralmente e verificado em 19/08/2026; setup RTX PRO 4000 Blackwell SFF 24 GB + RTX 2000 Ada; GGUF cdiamond/Qwen3.8-27B-iMatrix-NVFP4-MTP-GGUF), config.json oficial Qwen/Qwen3.8-27B no Hugging Face (max_position_embeddings=262144; 64 camadas = 48 linear_attention + 16 full_attention; num_key_value_heads=4; head_dim=256), geração deste conteúdo assistida por IA e revisada. Nota de transparência: todos os números de throughput e PPL citados são medição de terceiros naquele hardware; este portal não rodou o benchmark.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens/s</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

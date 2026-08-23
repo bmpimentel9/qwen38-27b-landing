@@ -204,6 +204,7 @@
   pre code { overflow-wrap: normal; }
 }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -436,9 +437,24 @@ llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
         <p>Com MTP ativo: 206 t/s no teto (5090 + SGLang + NVFP4), 120 na RTX Pro 6000 (FP8 + DSpark), 41,5-74 na 3090, 50+ no R9700 com vLLM, 17,3 no Strix Halo, ~9,7 na 3060 de 12 GB. Tabela completa com fontes no guia <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo no hardware real</a>.</p>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — Qwen3.8-27B lento: causas e fixes | Fontes: r/LocalLLaMA threads 1voa3ch (lançamento), 1vriwym (faster than expected), 1vqjeub (throughput), 1vpuhov (configs 3090) e 1voojjz (megathread), lidas via índice de busca em 19/08/2026; Level1Techs "Dual R9700's AMD vLLM-Container woes" (pág. 3); KGP Talkie "Qwen 3.8 27B Speed Settings on llama.cpp" (45 configs, 16/08/2026); blog AMD Day 0 (19/08 indexado); dev.to jamilxt (comparativo 3.8 vs 3.6); Alibaba Cloud Medium; Cloud Codes (YouTube, 17/08); Simon Willison (16/08); InsiderLLM; PR #22673 do llama.cpp; medições próprias no Strix Halo. Números de terceiros são atribuídos aos relatos; o portal reproduziu apenas os marcados como medição própria.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo</a> | <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Configuração de reasoning</a> | <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a> | <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">27B em 16 GB</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

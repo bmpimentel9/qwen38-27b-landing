@@ -8,6 +8,32 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-23] — Monetização: newsletter + affiliate de hardware + slots de ads (t_8dd9a051)
+
+### Added
+- **Newsletter (Buttondown-ready, endpoint configurável)** nos 3 placements do PRD §8.1:
+  - Home: seção `Receba o resumo semanal` (entre "Por categoria" e o footer).
+  - Fim de artigo: form inline em **todos os 28 artigos** de `/guia/*`.
+  - Footer global: mini-form na 5ª coluna + disclosure de afiliado + link `Política de privacidade`.
+  - `assets/js/newsletter.js`: wrapper JS `fetch` a endpoint configurável (`window.NEWSLETTER_CONFIG`), feedback inline (`aria-live`), **sem redirecionar** o leitor, sem popup, sem dark pattern. Fallback honesto sem endpoint: "Ainda não abrimos as inscrições". Sem-JS: POST nativo ao `action` configurável. Evento GA4 `newsletter_subscribe`/`newsletter_error`.
+  - `templates/newsletter.html`: fragmento canônico com as 3 variações (fonte única, padrão BIND-08).
+- **Affiliate de hardware (PRD §8.2)** em 6 artigos de hardware/compra (`hardware-local`, `quantizacao-gguf-30b-quanto-cabe-na-sua-gpu`, `tokens-por-segundo-30b-hardware-real`, `lemonade-sdk-v11-6-llm-local-gpu-npu-amd`, `qwen38-27b-16gb-vram-llama-cpp`, `qwen3-8-27b-contexto-256k-24gb`): bloco "Hardware recomendado para rodar este modelo" com tabela (produto · onde comprar), disclosure obrigatório sempre visível (estilo Tecnoblog) e links `rel="sponsored noopener"`. Comentário no markup indica onde adicionar `?tag=SEUTAG` (Amazon Associates/ML) para ativar a comissão. `templates/affiliate.html` = fragmento canônico.
+- **Slots de ads (PRD §8.3, desligados)**: `.ad-slot` com `display:none` + comentário `<!-- ad slot: ativar quando tráfego >20k/mês -->` na home e em todos os artigos. Ativar na Fase 3 = só CSS + 1 script.
+- **`privacidade.html`** (página nova, LGPD): o que coletamos (email da newsletter + GA4 com `anonymize_ip`), finalidade, disclosure de afiliado, consentimento/descadastro da newsletter, direitos LGPD e contato. Canonical `/privacidade` (clean URL, padrão do site), meta robots index, GSC token, entrada no sitemap.
+- **`assets/css/blog-monetizacao.css`**: componentes `.newsletter` (3 variações), `.affiliate`, `.ad-slot`, `.newsletter-status` — compõem com os tokens do design system (`var(--surface)` etc.) e funcionam nas páginas atuais (fallback em camadas).
+- **Scripts de manutenção**: `scripts/integrar_monetizacao.py` (aplica/atualiza os blocos nas páginas) e `scripts/qa_monetizacao.py` (Playwright, 42 asserts).
+
+### Changed
+- **index.html**: `<link>` monetizacao.css + `<script defer>` newsletter.js; seção newsletter na home; 5ª coluna no footer; disclosure + link de privacidade no rodapé.
+- **28 artigos de `/guia/*`**: newsletter inline + ad-slot no fim do corpo (antes do footer); link CSS + script JS no head. Os 6 de hardware/compra ganham também o bloco affiliate (disclosure + `rel=sponsored`).
+- **sitemap.xml**: entrada aditiva `/privacidade`.
+
+### Notes
+- **Endpoint da newsletter não configurado** (sem chave Buttondown/Formspree): form ativo, feedback honesto "em breve", sem fake success. Ativar = definir `window.NEWSLETTER_CONFIG` (instruções no topo do `newsletter.js`).
+- **check_head.py**: pré-existente em main, a entrada `sitemap:/guia/qwen3-8-27b-lm-studio` aponta para página inexistente (não tocada neste card; regen de sitemap é escopo do card de template/home). Todas as outras checagens C1-C5 passam (privacidade mapeada corretamente).
+
+---
+
 ## [2026-08-23] — Hub page EN "Best Local 30B Models (Aug/2026)" — espelho GEO (t_e6d5bf5c)
 
 ### Added
