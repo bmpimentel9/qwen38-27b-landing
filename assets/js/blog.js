@@ -147,7 +147,26 @@
     searchInput.addEventListener("input", function () { renderResults(searchInput.value); });
   }
 
-  /* ---------- 4. TOC scrollspy (artigos — progressive) ---------- */
+  /* ---------- 4. TOC: estado desktop/mobile (PRD §5.3) ----------
+     O <details class="toc-details"> nasce fechado no HTML: em mobile vira
+     toggle colapsável nativo (zero-JS). Em desktop (>=1025px) o JS força
+     open para o TOC ficar sempre visível/sticky — um <details> fechado
+     esconde o conteúdo via slot interno do UA, então CSS não resolve sozinho. */
+  var tocDetails = document.querySelector(".toc-details");
+  var tocDesktop = window.matchMedia
+    ? window.matchMedia("(min-width: 1025px)")
+    : null;
+  function syncTocState() {
+    if (tocDetails && tocDesktop) tocDetails.open = tocDesktop.matches;
+  }
+  syncTocState();
+  if (tocDesktop && tocDesktop.addEventListener) {
+    tocDesktop.addEventListener("change", syncTocState);
+  } else if (tocDesktop && tocDesktop.addListener) {
+    tocDesktop.addListener(syncTocState); // Safari <14
+  }
+
+  /* ---------- 4b. TOC scrollspy (artigos — progressive) ---------- */
   var toc = document.querySelector(".toc");
   var tocLinks = toc ? Array.prototype.slice.call(toc.querySelectorAll("a")) : [];
   var headings = tocLinks

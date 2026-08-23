@@ -259,8 +259,17 @@ img { max-width: 100%; display: block; }
 /* ---------- 14. Artigo: layout TOC + corpo ---------- */
 .article-layout { display: grid; grid-template-columns: var(--toc-w) minmax(0, var(--measure)); gap: var(--space-6); justify-content: center; }
 
-.toc {
+/* <details> wrapper do TOC (PRD §5.3): vira o sticky lateral no desktop;
+   o <summary> é o toggle "Nesta página" — oculto aqui, vira botão no mobile. */
+.toc-details {
   position: sticky; top: calc(var(--nav-h) + 24px); align-self: start;
+}
+.toc-details > summary { display: none; }
+/* desktop: TOC sempre visível mesmo que o <details> esteja fechado (ex.: usuário
+   colapsou no mobile e depois girou a tela). Autor override do UA hidden. */
+.toc-details > .toc { display: block; }
+
+.toc {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
   padding: var(--space-4); max-height: calc(100vh - var(--nav-h) - 48px); overflow-y: auto;
 }
@@ -408,7 +417,20 @@ pre code { color: var(--text); }
 /* ---------- 20. Mobile ---------- */
 @media (max-width: 1024px) {
   .article-layout { grid-template-columns: 1fr; }
-  .toc { display: none; }
+  /* TOC vira toggle colapsável (PRD §5.3): botão "Nesta página" 44px,
+     lista fechada por padrão, abre com <details> nativo (zero-JS). */
+  .toc-details { position: static; align-self: auto; }
+  .toc-details > summary {
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; min-height: 44px; padding: 10px 14px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+    font-size: .82rem; font-weight: 700; color: var(--text); list-style: none;
+  }
+  .toc-details > summary::-webkit-details-marker { display: none; }
+  .toc-details > summary::after { content: "+"; font-family: var(--font-mono); color: var(--accent); }
+  .toc-details[open] > summary::after { content: "–"; }
+  .toc-details:not([open]) > .toc { display: none; }
+  .toc-details[open] > .toc { max-height: 60vh; overflow-y: auto; }
   .post-grid { grid-template-columns: repeat(2, 1fr); }
   .cat-blocks { grid-template-columns: repeat(3, 1fr); }
   .featured-card { grid-template-columns: 1fr; }
