@@ -192,6 +192,7 @@
   pre code { overflow-wrap: normal; }
 }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -454,9 +455,24 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
         <p>Os do modo Instruct do model card: temp 0,7, top_p 0,80 e repetition_penalty 1,5. Com thinking ligado: temp 1,0, top_p 0,95, top_k 20 — e nunca temperature 0, que faz o modo entrar em loop.</p>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — Configuração de reasoning do Qwen3.8-27B | Fontes: review Simon Willison (16/08/2026), README oficial do llama.cpp (flags verificadas em 18/08/2026), PR #22673 (merged 16/05/2026), discussion unsloth/Qwen3.5-27B-GGUF #7, docs Ollama capabilities/thinking, Hugging Face API (downloads 18/08) e medições próprias do portal (Strix Halo).</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">27B em 16GB</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

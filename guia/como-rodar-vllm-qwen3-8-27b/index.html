@@ -174,6 +174,7 @@
             pre code { overflow-wrap: normal; }
         }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -444,9 +445,24 @@ docker run --gpus all -p 8000:8000 \
         <li><a href="/guia/como-rodar">Como rodar localmente</a> — o mapa geral (Ollama, llama.cpp, vLLM) · <a href="/guia/faq">FAQ do portal</a></li>
     </ul>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — guia vLLM em produção do Qwen3.8-27B | Baseado na recipe oficial vLLM/Qwen3.8-27B (atualizada 14/08/2026), no código-fonte da 0.27.1 e nas issues #52475, #52564, #52583, #52682 e #52734 do repositório vllm-project/vllm (verificados em 20/08/2026). Versões conferidas no PyPI e GitHub em 20/08/2026.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

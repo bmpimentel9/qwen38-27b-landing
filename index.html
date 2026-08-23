@@ -586,6 +586,7 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 }
 </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -1134,6 +1135,26 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
     </div>
   </div>
 </section>
+
+<!-- ===================== MONETIZAÇÃO ===================== -->
+<div class="wrap">
+ <!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+ <div class="ad-slot" aria-hidden="true"></div>
+
+ <section class="newsletter grid-2" aria-labelledby="nl-title">
+   <div>
+     <h2 id="nl-title">Receba o resumo semanal</h2>
+     <p>O que rolou nos modelos locais ≤30B: releases, benchmarks e hardware — em 5 minutos, toda semana.</p>
+   </div>
+   <div>
+     <form class="newsletter-form" action="#" method="post" novalidate>
+       <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+       <button type="submit">Assinar</button>
+     </form>
+     <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+   </div>
+ </section>
+</div>
 </main>
 
 <!-- ===================== FOOTER ===================== -->
@@ -1174,9 +1195,21 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
           <li><a href="/guia">Guia completo do Qwen3.8-27B</a></li>
         </ul>
       </div>
+      <div>
+        <p class="foot-title">Newsletter</p>
+        <p style="font-size:13.5px;color:var(--fg-2);margin-bottom:10px">Resumo semanal dos modelos locais ≤30B.</p>
+        <form class="newsletter-form" action="#" method="post" novalidate>
+          <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+          <button type="submit">Assinar</button>
+        </form>
+        <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade">política de privacidade</a></p>
+      </div>
     </div>
     <div class="foot-bottom">
       <span>Atualizada em 15 de agosto de 2026.</span>
+      <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+      <span><a href="/privacidade" style="color:var(--fg-2)">Política de privacidade</a></span>
+
       <span>Código-fonte em <a href="https://github.com/bmpimentel9/qwen38-27b-landing" target="_blank" rel="noopener" style="color:var(--fg-2)">github.com/bmpimentel9/qwen38-27b-landing</a></span>
     </div>
   </div>
@@ -1260,5 +1293,6 @@ footer{padding:48px 0;font-size:13px;color:var(--fg-3)}
   });
 })();
 </script>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

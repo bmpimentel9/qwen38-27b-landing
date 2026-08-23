@@ -171,6 +171,7 @@
         .badge strong { color: var(--accent-2); }
         .flag-table td:first-child { white-space: nowrap; font-family: monospace; color: var(--accent-3); }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -513,9 +514,24 @@ response = client.chat.completions.create(
         <li><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Model card oficial no Hugging Face</a></li>
     </ul>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Guia Qwen3.8-27B | Dados baseados na biblioteca oficial Ollama (ollama.com/library/qwen3.8, verificado em 22/08/2026), model card oficial Qwen, documentação do Modelfile e medições da comunidade (r/LocalLLaMA, Simon Willison, InsiderLLM).</p>
         <p>Última atualização: agosto 2026 | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>
