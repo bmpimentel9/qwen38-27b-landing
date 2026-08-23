@@ -27,7 +27,8 @@ Cada imagem nasce do mesmo esqueleto — o estilo é UM para o site inteiro:
 
 | Badge do site | Categoria | Acento | Hex | Qtd. artigos |
 |---|---|---|---|---|
-| `tag-guide` | Guias | Violeta | `#A78BFA` | 15 |
+| `tag-guide` | Guias | Violeta | `#A78BFA` | 14 |
+| `tag-faq` | Guias (FAQ) | Violeta | `#A78BFA` | 1 |
 | `tag-bench` | Benchmarks | Ciano | `#2DD4BF` | 8 |
 | `tag-hw` | Hardware | Verde | `#4ADE80` | 6 |
 | `tag-community` | Comunidade | Azul | `#3B82F6` | 1 |
