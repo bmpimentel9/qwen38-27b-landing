@@ -20,13 +20,25 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 - **JSON-LD**: TechArticle + HowTo (5 passos) + FAQPage (6 perguntas) + BreadcrumbList.
 
 ### Changed
-- **Sitemap.xml**: 31 → 32 URLs (`guia/qwen3-8-27b-no-mac`, priority 0.8, lastmod 2026-08-23).
+- **Sitemap.xml**: URL `guia/qwen3-8-27b-no-mac` adicionada (priority 0.8, lastmod 2026-08-23) — contagem final depende da ordem de merge dos PRs do dia.
 - **Guia hub** (`guia/index.html`): card novo "Qwen3.8-27B no Mac (Apple Silicon)" no topo do grid.
 - **FAQ** (`guia/faq/index.html`): resposta "roda no Mac?" expandida (24 GB como piso, quants por máquina, M5 MTP 1,46×) + link para o guia — HTML e JSON-LD.
 - **Hardware** (`guia/hardware-local/index.html`): seção Mac linka o guia dedicado.
 - **llms.txt**: entrada nova com stats citáveis + FAQ "roda no Mac?" reescrita com piso de 24 GB e números do M5.
 
 ---
+## [2026-08-23] — Hub page EN "Best Local 30B Models (Aug/2026)" — espelho GEO (t_e6d5bf5c)
+
+### Added
+- **Hub page EN** (`guia/en/best-local-30b-models`): espelho em inglês da hub PT `melhores-modelos-locais-30b` — 11 modelos, tabela GGUF medida interativa (sortable + filtros por caso de uso + contador "N of 11"), 7 vereditos, seção rivais LCB v6, FAQ 7, JSON-LD 5 blocos `inLanguage: en`, datas canônicas 2026-08-23, `proficiencyLevel: Beginner`. Números byte-idênticos ao PT; prosa EN com ponto decimal; link recíproco "Original in Portuguese" → hub PT.
+- **hreflang bidirecional** em 4 páginas (hub EN/PT + artigo slow EN/PT), sem `x-default`.
+- **llms.txt**: seção `## English (GEO mirrors)` com subseção `### Best local 30B models (Aug/2026)` (resumo + stats citáveis + link), conteúdo do bloco slow intocado.
+- **Sitemap**: URL `guia/en/best-local-30b-models` (lastmod 2026-08-23, changefreq weekly, priority 0.9) — 35 → 36 URLs.
+- **Card no `guia/index`**: "Best Local 30B Models (EN)" (tag Inglês, MOFU · Novo 23/08).
+
+### Changed
+- **Hub PT `guia/melhores-modelos-locais-30b`**: +2 links hreflang (pt-BR self + en) e link "View in English" no nav — única mudança no arquivo (hotspot).
+- **Artigos slow PT/EN**: par hreflang bidirecional (en ↔ pt), selfs corretos, sem `x-default`.
 
 ## [2026-08-23] — Página uncensored: OBLITERATUS V3 "Deep Liberation" (t_0e16ae1c)
 
@@ -37,6 +49,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 ### Changed
 - **Meta/description/OG/Twitter** da página uncensored: menção ao OBLITERATUS V3 e keywords `obliteratus`, `deep liberation` (grep "obliterat" no repo passou de 0 ocorrências).
 - **Sitemap.xml**: lastmod de `guia/qwen3-8-27b-uncensored-abliterated` atualizado para 2026-08-23 (a página já tinha entrada própria — nenhuma URL nova).
+
+## [2026-08-23] — Artigo-veredicto "Qwen3.8-27B ou Ornith-1.5-35B-A3B?" (t_65080d35)
+
+### Added
+- **Artigo-veredicto** `guia/qwen3.8-vs-ornith-1-5-35b-a3b/index.html`: o novo MoE local (35B/3B ativos, MIT, trending no HF) contra o 27B denso — tabela do par, tabela GGUF oficial + AD-quants AtomicChat, veredito por perfil, aviso de honestidade BenchLM (49,3/100, rank #136, coverage insuficiente), 4 FAQs e JSON-LD TechArticle + FAQPage.
+- **llms.txt**: 3 inserções aditivas — bullet novo no dossiê de vereditos (Código/agentes ≤30B), entrada nova na lista de páginas e FAQ nova (Qual o melhor modelo local para código e agentes em 2026?).
+- **FAQ** (`guia/faq/index.html`): 37ª pergunta "Qwen3.8-27B ou Ornith-1.5-35B-A3B para código e agentes?" na seção Comparações (h3 + Question JSON-LD com paridade).
+- **Sitemap.xml**: 35 → 36 URLs (nova página com priority 0.8, lastmod 2026-08-23).
+- **Guia** (`guia/index.html`): card novo no topo do card-grid (Comparativo, Novo 23/08).
 
 ## [2026-08-22] — Comunidade: novos relatos de cibersegurança com MCPs e cloth simulator single-shot (t_f4533dbe)
 

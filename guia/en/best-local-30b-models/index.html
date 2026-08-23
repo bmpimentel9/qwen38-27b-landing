@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Local 30B Models (Aug/2026): 11 Worth the Download</title>
+    <meta name="description" content="Best local 30B model (Aug/2026), verdict per use case, measured GGUF and license for 11 models: Qwen3.8, GLM-4.7, Gemma 4, Nemotron, Apriel, Qwen3-Coder, DeepSeek V4 Flash.">
+    <meta name="keywords" content="best local llm, best local llm 2026, local llm 30b, models 30b, qwen3.8-27b, muse glimmer 30b, glm 4.7 flash, gemma 4 31b, nemotron cascade 2, apriel 15b, gpt-oss-20b, gemma 3 27b, qwen3 coder 30b, deepseek v4 flash, qwen3.6-27b, best 30b model 2026, 30b moe vs dense, llm local 24gb, offline llm">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models">
+    <link rel="alternate" hreflang="en" href="https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models">
+    <link rel="alternate" hreflang="pt-BR" href="https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Qwen3.8-27B — local 30B models portal">
+    <meta property="og:title" content="Best Local 30B Models (Aug/2026): 11 Worth the Download">
+    <meta property="og:description" content="One verdict per use case: coding, MCP agents, vision, 12–16 GB hardware and 256K context. Measured GGUF table and license for all 11 candidates — GLM-4.7-Flash, Gemma 4 31B, Qwen3-Coder and more.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-23T08:00:00-03:00">
+    <meta property="article:section" content="Artificial Intelligence">
+    <meta property="article:tag" content="local models">
+    <meta property="article:tag" content="comparison">
+    <meta property="article:tag" content="LLM">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Best Local 30B Models (Aug/2026): 11 Worth the Download">
+    <meta name="twitter:description" content="Coding, agents, vision, 12–16 GB hardware, 256K: one winner per use case. Measured GGUF table and license for all 11 candidates — GLM-4.7-Flash, Gemma 4 31B, Nemotron, Apriel, Qwen3-Coder.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+document.documentElement.clientHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Best Local 30B Models (Aug/2026): 11 Worth the Download",
+          "description": "Hub page comparing local models up to 30B as of August/2026, with a verdict per use case (coding, MCP agents, vision, weak hardware, long context), a master table of 11 candidates and a Qwen3.8 vs 30B rivals section. Includes Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B, GLM-4.7-Flash, Nemotron-Cascade-2-30B-A3B, Gemma 4 31B, Apriel-1.6-15b-Thinker, Qwen3-Coder-30B-A3B and DeepSeek V4 Flash (284B total with 13B active). Numbers from official model cards, the portal's sources dossier, own measurements on Strix Halo and live verification via HF API (20/08).",
+          "inLanguage": "en",
+          "datePublished": "2026-08-23",
+          "dateModified": "2026-08-23",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models",
+          "proficiencyLevel": "Beginner"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guide", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "Best Local 30B Models (EN)", "item": "https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models" }
+          ]
+        },
+        {
+          "@type": "ItemList",
+          "name": "Best local models up to 30B — August/2026",
+          "numberOfItems": 11,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Qwen3.8-27B — best overall and for code", "url": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 2, "name": "Muse Glimmer 30B — best for MCP tool agents", "url": "https://qwen38-27b-landing.vercel.app/guia/muse-glimmer-30b-agente-local" },
+            { "@type": "ListItem", "position": 3, "name": "GPT-OSS-20B — best for 12–16 GB hardware", "url": "https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos" },
+            { "@type": "ListItem", "position": 4, "name": "Qwen3.6-27B — the previous generation that still competes on context", "url": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3.6-27b" },
+            { "@type": "ListItem", "position": 5, "name": "Gemma 3 27B — Google's light multimodal", "url": "https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos" },
+            { "@type": "ListItem", "position": 6, "name": "GLM-4.7-Flash — MoE A3B for agentic/coding (τ²-Bench 79.5)", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 7, "name": "Nemotron-Cascade-2-30B-A3B — the coding challenger (LCB v6 87.2)", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 8, "name": "Gemma 4 31B — Google's dense that closes the 3rd-gen gap", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 9, "name": "Apriel-1.6-15b-Thinker — the 12 GB resident with function calling", "url": "https://qwen38-27b-landing.vercel.app/guia/melhores-modelos-locais-30b#rivais-30b" },
+            { "@type": "ListItem", "position": 10, "name": "Qwen3-Coder-30B-A3B — the most-downloaded coding MoE (11.9M GGUF/mo)", "url": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-qwen3-coder-30b-a3b" },
+            { "@type": "ListItem", "position": 11, "name": "DeepSeek V4 Flash — the outlier: 284B total, 13B active, 1M context", "url": "https://qwen38-27b-landing.vercel.app/modelos" }
+          ]
+        },
+        {
+          "@type": "Dataset",
+          "name": "Best local 30B models (Aug/2026) — master table",
+          "description": "Structured data of the master table: 11 local models up to 30B evaluated in August/2026 — Qwen3.8-27B, Muse Glimmer 30B, GPT-OSS-20B, Qwen3.6-27B, Gemma 3 27B, GLM-4.7-Flash, Nemotron-Cascade-2-30B-A3B, Gemma 4 31B, Apriel-1.6-15b-Thinker, Qwen3-Coder-30B-A3B and DeepSeek V4 Flash (284B total). Values at https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models#tabela-mestra",
+          "url": "https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models",
+          "isAccessibleForFree": true,
+          "creator": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "license": "https://opensource.org/licenses/MIT",
+          "temporalCoverage": "2026-08",
+          "variableMeasured": [
+            { "@type": "PropertyValue", "name": "model", "description": "Model name and version" },
+            { "@type": "PropertyValue", "name": "params", "description": "Total parameters and architecture: dense or MoE" },
+            { "@type": "PropertyValue", "name": "active", "description": "Active parameters per token (determines compute cost and speed)" },
+            { "@type": "PropertyValue", "name": "gguf_gb", "description": "Measured 4-bit GGUF file size on disk, in decimal GB. Qwen3.8: IQ4_XS 15,71 GB; Muse Glimmer: UD-Q4_K_XL 15,88 GB (Unsloth); GPT-OSS: MXFP4 11,27 GiB ≈ 12,10 GB; Qwen3.6: ≈15,7–17,1 GB; Gemma 3: Q4_K_M 16,55 GB; GLM-4.7-Flash: IQ4_XS 16,27 GB (Unsloth); Nemotron Cascade 2: IQ4_XS 18,17 GB (bartowski); Gemma 4 31B: IQ4_XS 16,37 GB (Unsloth); Apriel 1.6: IQ4_XS 7,91 GB (bartowski); Qwen3-Coder: IQ4_XS 16,38 GB, Q4_K_M 18,56 GB (Unsloth); DeepSeek V4 Flash: UD-IQ3_XXS 103 GB" },
+            { "@type": "PropertyValue", "name": "context", "description": "Native context in tokens from the model card: 262.144 (Qwen3.8), 131.072+ (Muse Glimmer), 131.072 (GPT-OSS), 262.144+1M YaRN (Qwen3.6), 128.000 (Gemma 3), 202.752+RoPE 1M (GLM-4.7-Flash), 262.144+RULER 1M (Nemotron Cascade 2), 262.144 (Gemma 4), 262.400 (Apriel), 262.144+1M YaRN (Qwen3-Coder-30B-A3B), 1.048.576 (DeepSeek V4 Flash)" },
+            { "@type": "PropertyValue", "name": "license", "description": "License: Apache 2.0 (Qwen3.8, Muse Glimmer, GPT-OSS, Qwen3.6, Qwen3-Coder), Gemma Terms of Use (Gemma 3), MIT (GLM, Apriel, DeepSeek V4 Flash), NVIDIA Open Model (Nemotron Cascade 2), Gemma 4 License (HF: apache-2.0)" },
+            { "@type": "PropertyValue", "name": "vision", "description": "Native vision: Qwen3.8 (mmproj 0,93 GB), Muse Glimmer (ViT-G/14 ~1,8B), Gemma 3 (128K), Gemma 4 31B (image), Apriel (LLaVA) — GPT-OSS, GLM, Nemotron Cascade 2, Qwen3-Coder, DeepSeek V4 Flash do not" },
+            { "@type": "PropertyValue", "name": "release", "description": "Release date: 14/08/2026 (Qwen3.8), 10/08/2026 (Muse Glimmer), 05/08/2025 (GPT-OSS), 22/04/2026 (Qwen3.6), 12/03/2025 (Gemma 3), 19/01/2026 (GLM-4.7-Flash), 18/03/2026 (Nemotron Cascade 2), 11/03/2026 (Gemma 4), 28/11/2025 (Apriel), 31/07/2025 (Qwen3-Coder), 24/04/2026 (DeepSeek V4 Flash)" }
+          ],
+          "distribution": [
+            {
+              "@type": "DataDownload",
+              "encodingFormat": "text/html",
+              "contentUrl": "https://qwen38-27b-landing.vercel.app/guia/en/best-local-30b-models#tabela-mestra"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the best local 30B model overall?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The Qwen3.8-27B, if you have 16 GB or more of VRAM: it leads in coding (LiveCodeBench v6 90.3), computer use (OSWorld-Verified 84.3) and context (262,144 native tokens), with native vision and Apache 2.0. Numbers from Qwen's official model card; the existing independent check (Artificial Analysis Intelligence Index v4.1.1) scores it 52 — tied with GPT-5.6 Luna and #1 among 135 open weights up to 40B. Source: Qwen3.8-27B official model card, Artificial Analysis Intelligence Index v4.1.1 (verified 2026-08-18), portal dossier, verified 2026-08-23."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Muse Glimmer 30B or Qwen3.8-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "For a 24/7 tool agent (MCP, deep search): Muse Glimmer 30B, distilled for it — MCP Atlas 75.5 vs 62.5 for Qwen3.6-27B on Meta's official table. For coding and computer use: Qwen3.8-27B (OSWorld-Verified 84.3; SWE-bench Pro 61.7). There is no official head-to-head between the two — the numbers come from model cards of different vendors. Source: meta-models/Muse-Glimmer-30B and Qwen/Qwen3.8-27B official model cards, verified 2026-08-23."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qwen3.8-27B or GLM-4.7-Flash?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "It depends on the axis. In deep coding, vision and context the Qwen3.8-27B leads (LCB v6 90.3 vs 64.0 for GLM). In 24/7 agentic throughput, GLM-4.7-Flash is an A3B MoE with ~3B active (3–8× the dense's t/s), and published τ²-Bench 79.5, BrowseComp 42.8 and SWE-bench Verified 59.2 — benchmarks Qwen did not publish. There is no official head-to-head. Caveat: the empirical glukhov.org/pt test recorded 100% error for GLM on a structured migration task (OpenCode), reinforcing that a model card is not a production guarantee. Source: Z.ai GLM-4.7-Flash and Qwen3.8-27B official model cards, glukhov.org/pt OpenCode test, verified 2026-08-23."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is DeepSeek V4 Flash a 30B model?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Not in total parameters: 284B total with a GGUF of 92 to 103 GB — it does not fit in a consumer GPU. But it activates only 13B per token: the compute cost per token is that of a 13B model. It is on the list as an honest comparison for anyone with 110 GB or more of unified memory (Mac, Strix Halo), where it delivers 1,048,576 tokens of native context. Source: deepseek-ai/DeepSeek-V4-Flash official model card, portal dossier, verified 2026-08-23."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the best local model for a 16 GB GPU?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "GPT-OSS-20B for speed and headroom (MXFP4 GGUF of 11.27 GiB, runs in 16 GB); Qwen3.8-27B at IQ4_XS (15.71 GB measured) for maximum quality that still fits — with quantized KV cache and speculative decoding, ~20 t/s on an RTX 4070 Ti Super. Source: OpenAI gpt-oss model card + arXiv 2508.10925, llama.cpp discussion #15396, portal measurement, verified 2026-08-23."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why is Gemma 3 27B on the list if it is a generation behind?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Because it is Google's 27B with native vision, a mature ecosystem and 16.55 GB at Q4_K_M — and because the honest comparison shows the size of the gap: GPQA Diamond 42.4 on the instruct (official Technical Report, Table 6) vs 89.2 for Qwen3.8-27B. The successor Gemma 4 31B (Mar/2026) closes that gap to 84.3 on GPQA Diamond — table above and the Qwen3.8 vs rivals section. Source: Gemma 3 Technical Report (arXiv 2503.19786, Table 6), google/gemma-4-31B-it and Qwen3.8-27B model cards, verified 2026-08-23."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do these models work offline?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "All of them run 100% local via llama.cpp or Ollama — download the GGUF, unplug the router, keep working. No data leaves the machine; the only external dependency is the initial Hugging Face download. Source: portal verification, verified 2026-08-23."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --accent-4: #d2a8ff; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        .lang-link { margin-bottom: 12px; font-size: 0.85rem; }
+        .lang-link a { color: var(--accent); text-decoration: none; }
+        .lang-link a:hover { text-decoration: underline; }
+        h1 { font-size: 2rem; margin-bottom: 10px; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        .hero { background: linear-gradient(135deg, var(--surface), var(--bg)); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin-bottom: 30px; }
+        .hero h2 { margin-bottom: 15px; font-size: 1.7rem; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0 0 0; }
+        .stat-card { flex: 1; min-width: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); vertical-align: top; }
+        tr:hover { background: var(--code-bg); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin: 15px 0; }
+        .verdict-card h3 { margin-top: 0; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+        .badge-best { background: rgba(63,185,80,0.2); color: var(--accent-2); }
+        .badge-alt { background: rgba(247,129,102,0.2); color: var(--accent-3); }
+        .footnote { font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
+        .footnote a { color: var(--accent); text-decoration: none; }
+        .faq-item { margin-bottom: 18px; }
+        .faq-item h3 { margin-bottom: 8px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        .table-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 15px 0 5px 0; }
+        .filter-btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px; padding: 5px 14px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+        .table-note { font-size: 0.8rem; color: var(--text-muted); margin: 6px 0 0 0; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-wrap table { min-width: 860px; margin-top: 10px; }
+        th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+        th.sortable:hover { color: var(--accent-2); }
+        th.sortable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        th .sort-ind { font-size: 0.72rem; color: var(--text-muted); margin-left: 4px; }
+        th[aria-sort] .sort-ind { color: var(--accent-2); }
+        tr.filter-hidden { display: none; }
+        tr.row-dim td { opacity: 0.55; }
+        @media (max-width: 640px) { body { padding: 12px; } th, td { padding: 8px 10px; } .filter-btn { padding: 5px 10px; font-size: 0.8rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia" class="active">Guide</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <p class="lang-link"><a href="/guia/melhores-modelos-locais-30b">Original in Portuguese →</a></p>
+        <h1>Best Local 30B Models (Aug/2026): 11 Worth the Download</h1>
+        <p class="lead">The eleven worth the download — one verdict per use case, real measured VRAM, zero technical ties.</p>
+    </header>
+
+    <div class="hero">
+        <h2>One model for each job: the eleven best local ~30B models</h2>
+        <p>August 2026 was the month the community's question stopped being <em>how to run</em> a local model and became <strong>which local model to run</strong>. In 30 days the Muse Glimmer 30B (Aug 10), the Qwen3.8-27B (Aug 14) and the LTX-2.5 (Aug 17) shipped — and YouTube started answering "basically an Opus running locally". This page gathers the eleven candidates for your VRAM in August/2026 — the six classics plus the rivals the community already compares (GLM-4.7-Flash, Nemotron Cascade 2, Gemma 4 31B and Apriel 1.6) and the Qwen3-Coder-30B-A3B — with the source behind every number. The editorial rule is a single one: if it does not fit on your machine, it is not the best model for you.</p>
+        <div class="stat-row">
+            <div class="stat-card">
+                <div class="value">90.3</div>
+                <div class="label">LiveCodeBench v6 — Qwen3.8-27B</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">75.5</div>
+                <div class="label">MCP Atlas — Muse Glimmer 30B</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">11.27 GiB</div>
+                <div class="label">GGUF MXFP4 — GPT-OSS-20B</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">103 GB</div>
+                <div class="label">Recommended GGUF — DeepSeek V4 Flash</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h3>Contents</h3>
+        <ul>
+            <li><a href="#resposta-rapida">The quick answer</a></li>
+            <li><a href="#tabela-mestra">The master table: 11 models, real VRAM, context and license</a></li>
+            <li><a href="#veredito-codigo">Verdict: coding & engineering</a></li>
+            <li><a href="#veredito-agente">Verdict: agents & computer use</a></li>
+            <li><a href="#veredito-visao">Verdict: vision & multimodal</a></li>
+            <li><a href="#veredito-hardware-fraco">Verdict: weak hardware (12–16 GB)</a></li>
+            <li><a href="#veredito-contexto">Verdict: long context (256K–1M)</a></li>
+            <li><a href="#veredito-brasil">Verdict: Brazilian hardware and cost</a></li>
+            <li><a href="#rivais-30b">Qwen3.8-27B vs the 30B rivals</a></li>
+            <li><a href="#metodologia">Methodology and transparency</a></li>
+            <li><a href="#perguntas-frequentes">Frequently asked questions</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resposta-rapida">The quick answer</h2>
+    <p><strong>What is the best local 30B model in August/2026?</strong> It depends on the job — and the dependency is literal, not a dodge:</p>
+    <ul>
+        <li><strong>Coding and agentic engineering:</strong> <a href="#veredito-codigo">Qwen3.8-27B</a> — LiveCodeBench 90.3, SWE-bench Pro 61.7, DeepSWE 42.2 (official model card)</li>
+        <li><strong>24/7 agent with tools (MCP):</strong> <a href="#veredito-agente">Muse Glimmer 30B</a> — MCP Atlas 75.5, the tool-calling benchmark the others did not even publish</li>
+        <li><strong>12–16 GB GPU:</strong> <a href="#veredito-hardware-fraco">GPT-OSS-20B</a> — GGUF of 11.27 GiB, 3.6B active per token</li>
+        <li><strong>Vision and documents:</strong> <a href="#veredito-visao">Qwen3.8-27B</a> again — MathVision 94.6, OmniDocBench 91.1, native vision in the GGUF</li>
+        <li><strong>256K+ context on a single GPU:</strong> Qwen3.8-27B (262,144 native). <strong>1M tokens with 110 GB+ of RAM:</strong> <a href="#veredito-contexto">DeepSeek V4 Flash</a></li>
+        <li><strong>Proven previous generation:</strong> Qwen3.6-27B stays relevant — same body as the 3.8, loses 26 of 26 benchmarks, but keeps the documented Thinking Preservation</li>
+        <li><strong>Rivals from other houses:</strong> the GLM-4.7-Flash (3B active, agentic), the Nemotron-Cascade-2-30B-A3B (LCB challenger at 87.2), the Gemma 4 31B (Google's dense, GPQA 84.3), the Apriel-1.6-15b-Thinker (7.91 GB — the option that fits 12 GB) and the Qwen3-Coder-30B-A3B (SWE-bench Verified 51.6, 3.3B active, the most downloaded in the market) — the number-by-number matchup is in <a href="#rivais-30b">Qwen3.8-27B vs the 30B rivals</a>.</li>
+    </ul>
+    <div class="callout">
+        <strong>The outlier of the list.</strong> The DeepSeek V4 Flash is not a 30B: 284B total parameters and a 92–103 GB GGUF. It is here because it activates only 13B per token — the compute cost per token of a 13B — and because 1M of native context is territory no ≤30B reaches. If your criterion is "fits in the GPU", skip it; if it is "fits in 110 GB+ of unified memory", it becomes the candidate for the best no-new-hardware buy on the list.
+    </div>
+
+    <h2 id="tabela-mestra">The master table: 11 models, real VRAM, context and license</h2>
+    <p>The "GGUF" column shows the measured file on disk (source on each row), not a VRAM estimate at load. Context is the model card's native one. "Active/token" is the number that separates dense from MoE — and the one that determines speed. The table is interactive: filter by use case with the buttons and click the <em>GGUF</em>, <em>Context</em> and <em>Release</em> headers to sort.</p>
+    <div class="table-controls" role="group" aria-label="Filter models by use case">
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All (11)</button>
+        <button type="button" class="filter-btn" data-filter="codigo" aria-pressed="false">Coding</button>
+        <button type="button" class="filter-btn" data-filter="agentes" aria-pressed="false">Agents</button>
+        <button type="button" class="filter-btn" data-filter="visao" aria-pressed="false">Vision</button>
+        <button type="button" class="filter-btn" data-filter="hardware" aria-pressed="false">Weak hardware (12–16 GB)</button>
+        <button type="button" class="filter-btn" data-filter="contexto" aria-pressed="false">Long context</button>
+    </div>
+    <p class="table-note"><span id="tableCounter" aria-live="polite">11 of 11 models</span> · use-case winners highlighted; the others are dimmed. The DeepSeek V4 Flash (284B total, 103 GB GGUF) never appears as recommended in the weak-hardware filter.</p>
+    <div class="table-wrap">
+    <table id="modelTable">
+        <thead>
+        <tr>
+            <th scope="col">Model</th>
+            <th scope="col">Parameters</th>
+            <th scope="col">Active/token</th>
+            <th scope="col" class="sortable" data-key="gguf" tabindex="0" title="Sort by 4-bit GGUF size">GGUF 4-bit (measured) <span class="sort-ind" aria-hidden="true">↕</span></th>
+            <th scope="col" class="sortable" data-key="ctx" tabindex="0" title="Sort by native context">Native context <span class="sort-ind" aria-hidden="true">↕</span></th>
+            <th scope="col">License</th>
+            <th scope="col">Vision</th>
+            <th scope="col" class="sortable" data-key="lanc" tabindex="0" title="Sort by release date">Release <span class="sort-ind" aria-hidden="true">↕</span></th>
+        </tr>
+        </thead>
+        <tbody id="modelTableBody">
+        <tr data-profiles="codigo agentes visao contexto" data-winner="codigo" data-gguf="15.71" data-ctx="262144" data-lanc="2026-08-14">
+            <td><strong>Qwen3.8-27B</strong></td>
+            <td>27B dense</td>
+            <td>27B</td>
+            <td>IQ4_XS 15,71 GB · Q4_K_M 17,11 GB</td>
+            <td>262.144 (1M RoPE)</td>
+            <td>Apache 2.0</td>
+            <td>Native (mmproj 0,93 GB)</td>
+            <td>14/08/2026</td>
+        </tr>
+        <tr data-profiles="agentes visao" data-winner="agentes" data-gguf="15.88" data-ctx="131072" data-lanc="2026-08-10">
+            <td><strong>Muse Glimmer 30B</strong></td>
+            <td>29,6B dense</td>
+            <td>29,6B</td>
+            <td>UD-Q4_K_XL 15,88 GB (vision+drafter ≈ 18,9)</td>
+            <td>131.072+</td>
+            <td>Apache 2.0</td>
+            <td>Native (ViT-G/14 ~1,8B)</td>
+            <td>10/08/2026</td>
+        </tr>
+        <tr data-profiles="hardware" data-winner="hardware" data-gguf="12.10" data-ctx="131072" data-lanc="2025-08-05">
+            <td><strong>GPT-OSS-20B</strong></td>
+            <td>20,9B MoE</td>
+            <td>3,6B</td>
+            <td>MXFP4 11,27 GiB</td>
+            <td>131.072</td>
+            <td>Apache 2.0</td>
+            <td>No</td>
+            <td>05/08/2025</td>
+        </tr>
+        <tr data-profiles="contexto" data-winner="contexto" data-gguf="16.4" data-ctx="262144" data-lanc="2026-04-22">
+            <td><strong>Qwen3.6-27B</strong></td>
+            <td>27B dense</td>
+            <td>27B</td>
+            <td>≈ 15,7–17,1 GB (same architecture as the 3.8)</td>
+            <td>262.144 (1M YaRN)</td>
+            <td>Apache 2.0</td>
+            <td>Native</td>
+            <td>22/04/2026</td>
+        </tr>
+        <tr data-profiles="visao" data-winner="visao" data-gguf="16.55" data-ctx="128000" data-lanc="2025-03-12">
+            <td><strong>Gemma 3 27B (IT)</strong></td>
+            <td>27B dense</td>
+            <td>27B</td>
+            <td>Q4_K_M 16,55 GB</td>
+            <td>128.000</td>
+            <td>Gemma Terms of Use</td>
+            <td>Native (128K)</td>
+            <td>12/03/2025</td>
+        </tr>
+        <tr data-profiles="codigo agentes" data-winner="" data-gguf="16.27" data-ctx="202752" data-lanc="2026-01-19">
+            <td><strong>GLM-4.7-Flash</strong></td>
+            <td>31,2B MoE (64 experts)</td>
+            <td>~3B</td>
+            <td>IQ4_XS 16,27 GB · Q4_K_M 18,31 GB</td>
+            <td>202.752 (RoPE 1M)</td>
+            <td>MIT</td>
+            <td>No</td>
+            <td>19/01/2026</td>
+        </tr>
+        <tr data-profiles="codigo contexto" data-winner="" data-gguf="18.17" data-ctx="262144" data-lanc="2026-03-18">
+            <td><strong>Nemotron-Cascade-2-30B-A3B</strong></td>
+            <td>30B MoE Mamba2-hybrid</td>
+            <td>~3B</td>
+            <td>IQ4_XS 18,17 GB · Q4_K_M 24,73 GB</td>
+            <td>262.144 (RULER 1M)</td>
+            <td>NVIDIA Open Model</td>
+            <td>No</td>
+            <td>18/03/2026</td>
+        </tr>
+        <tr data-profiles="codigo visao" data-winner="" data-gguf="16.37" data-ctx="262144" data-lanc="2026-03-11">
+            <td><strong>Gemma 4 31B (IT)</strong></td>
+            <td>31,3B dense</td>
+            <td>31,3B</td>
+            <td>IQ4_XS 16,37 GB · Q4_K_M 18,32 GB</td>
+            <td>262.144</td>
+            <td>Gemma 4 License (HF: apache-2.0)</td>
+            <td>Native (image)</td>
+            <td>11/03/2026</td>
+        </tr>
+        <tr data-profiles="agentes hardware" data-winner="" data-gguf="7.91" data-ctx="262400" data-lanc="2025-11-28">
+            <td><strong>Apriel-1.6-15b-Thinker</strong></td>
+            <td>14,9B dense</td>
+            <td>14,9B</td>
+            <td>IQ4_XS 7,91 GB · Q4_K_M 8,79 GB</td>
+            <td>262.400</td>
+            <td>MIT</td>
+            <td>Native (LLaVA)</td>
+            <td>28/11/2025</td>
+        </tr>
+        <tr data-profiles="codigo velocidade" data-winner="" data-gguf="16.38" data-ctx="262144" data-lanc="2025-07-31">
+            <td><strong>Qwen3-Coder-30B-A3B</strong> <span class="badge badge-alt">most downloaded</span></td>
+            <td>30,5B MoE (128 experts)</td>
+            <td>3,3B (8 active)</td>
+            <td>IQ4_XS 16,38 GB · Q4_K_M 18,56 GB</td>
+            <td>262.144 (1M YaRN)</td>
+            <td>Apache 2.0</td>
+            <td>No</td>
+            <td>31/07/2025</td>
+        </tr>
+        <tr data-profiles="contexto" data-winner="" data-gguf="103" data-ctx="1048576" data-lanc="2026-04-24">
+            <td><strong>DeepSeek V4 Flash</strong> <span class="badge badge-alt">the outlier</span></td>
+            <td>284B MoE</td>
+            <td>13B</td>
+            <td>UD-IQ3_XXS 103 GB (Q8_K_XL 162 GB)</td>
+            <td>1.048.576</td>
+            <td>MIT</td>
+            <td>No (text)</td>
+            <td>24/04/2026</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <script>
+    (function () {
+        var tbody = document.getElementById('modelTableBody');
+        if (!tbody) { return; }
+        var rows = Array.prototype.slice.call(tbody.rows);
+        var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filter-btn[data-filter]'));
+        var sortThs = Array.prototype.slice.call(document.querySelectorAll('#modelTable th.sortable'));
+        var counter = document.getElementById('tableCounter');
+        var currentFilter = 'all';
+        var sortKey = null;
+        var sortDir = 1;
+        var originalRows = rows.slice();
+        var filterLabels = { codigo: ' for coding', agentes: ' for agents', visao: ' for vision', hardware: ' for weak hardware', contexto: ' for long context' };
+
+        function apply() {
+            var visible = 0;
+            rows.forEach(function (r) {
+                var profiles = (r.getAttribute('data-profiles') || '').split(' ');
+                var show = currentFilter === 'all' || profiles.indexOf(currentFilter) > -1;
+                r.classList.toggle('filter-hidden', !show);
+                var isWinner = currentFilter !== 'all' && r.getAttribute('data-winner') === currentFilter;
+                r.classList.toggle('row-dim', show && currentFilter !== 'all' && !isWinner);
+                if (show) { visible++; }
+            });
+            if (counter) {
+                counter.textContent = visible + ' of 11 models' + (filterLabels[currentFilter] || '');
+            }
+        }
+
+        function setSortInd() {
+            sortThs.forEach(function (th) {
+                var ind = th.querySelector('.sort-ind');
+                if (!ind) { return; }
+                if (th.getAttribute('data-key') === sortKey) {
+                    th.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
+                    ind.textContent = sortDir === 1 ? '▲' : '▼';
+                } else {
+                    th.removeAttribute('aria-sort');
+                    ind.textContent = '↕';
+                }
+            });
+        }
+
+        function sortRows() {
+            if (!sortKey) {
+                originalRows.forEach(function (r) { tbody.appendChild(r); });
+                rows = originalRows.slice();
+                setSortInd();
+                return;
+            }
+            rows.sort(function (a, b) {
+                var va = a.getAttribute('data-' + sortKey);
+                var vb = b.getAttribute('data-' + sortKey);
+                var cmp;
+                if (sortKey === 'lanc') {
+                    cmp = va < vb ? -1 : (va > vb ? 1 : 0);
+                } else {
+                    cmp = parseFloat(va) - parseFloat(vb);
+                }
+                return cmp * sortDir;
+            });
+            rows.forEach(function (r) { tbody.appendChild(r); });
+            setSortInd();
+        }
+
+        filterBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                currentFilter = btn.getAttribute('data-filter');
+                filterBtns.forEach(function (b) {
+                    b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+                });
+                apply();
+            });
+        });
+
+        sortThs.forEach(function (th) {
+            function activate() {
+                var key = th.getAttribute('data-key');
+                if (sortKey === key) {
+                    if (sortDir === 1) { sortDir = -1; } else { sortKey = null; sortDir = 1; }
+                } else {
+                    sortKey = key;
+                    sortDir = 1;
+                }
+                sortRows();
+                setSortInd();
+            }
+            th.addEventListener('click', activate);
+            th.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+            });
+        });
+
+        apply();
+    })();
+    </script>
+    <p class="footnote">Sources: Qwen3.8/Q3.6 — GGUFs measured via the Hugging Face API (portal dossier). Muse Glimmer — UD-Q4_K_XL GGUF from the Unsloth repository (15.88 GB; Meta's official 4-bit kquant lists 16.76 GB). GPT-OSS — model card and llama.cpp bench #15396 (11.27 GiB file; OpenAI's "16 GB" announcement includes context). Gemma 3 — Q4_K_M 16.55 GB (bartowski, decimal). DeepSeek — dynamic Unsloth GGUFs (official UD-IQ3_XXS recommendation with 110 GB total RAM). Full benchmarks: the <a href="/guia/benchmarks-comparativos">portal comparison (PT-BR)</a> and the <a href="/guia/qwen3.8-vs-qwen3.6-27b">26 benchmarks 3.8 vs 3.6 (PT-BR)</a>. 30B rivals — GLM-4.7-Flash/Gemma 4: Unsloth GGUFs; Nemotron Cascade 2/Apriel: bartowski; specs from official model cards (Z.ai, NVIDIA, Google, ServiceNow), verified via the HF API on 20/08/2026.</p>
+
+    <h2 id="veredito-codigo">Verdict: coding & engineering — Qwen3.8-27B</h2>
+    <div class="verdict-card">
+        <h3>Qwen3.8-27B <span class="badge badge-best">winner</span></h3>
+        <p>Across the four agentic-coding benchmarks the model card publishes against the previous generation, a sweep: SWE-bench Pro <strong>61.7</strong> (3.6 scored 53.5; Opus 4.6 Max, 53.4), DeepSWE 1.1 <strong>42.2</strong> (was 13.3 — 3.2× the score), QwenSWEBench <strong>79.0</strong> (was 49.3), Terminal-Bench 2.1 <strong>73.0</strong> (was 63.4). LiveCodeBench v6: <strong>90.3</strong>.</p>
+    </div>
+    <p>The community confirmed it in production, not in theory prompts: in the r/LocalLLaMA launch threads, a cybersecurity analyst called the model a watershed; another user stood up a complete e-commerce store on vercel.app written by the model; a third started writing ray-tracers in BASIC against the 3.6. On YouTube, WorldofAI summed it up: "basically an Opus running locally".</p>
+    <p>The caveat this portal always makes: these numbers are from Qwen's official model card, without independent reproduction — the industry standard, and the same criterion applies to every vendor here. What does exist independently: the Artificial Analysis Intelligence Index v4.1.1 (measured over 160M output tokens) gave the 27B a score of 52 — tied with GPT-5.6 Luna (max), one point behind the 1.7T DeepSeek V4 Pro 0813, and first among 135 open weights up to 40B.</p>
+    <p>Starting config (full recipe in the <a href="/guia/como-rodar">run guide (PT-BR)</a>): <code>llama-server -hf unsloth/Qwen3.8-27B-GGUF:IQ4_XS --ctx-size 32768 --n-gpu-layers 99 --flash-attn on</code>. For SWE with a large context, the <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K on 24 GB guide (PT-BR)</a> has the measured step-by-step.</p>
+
+    <h2 id="veredito-agente">Verdict: agents & computer use — Muse Glimmer 30B</h2>
+    <div class="verdict-card">
+        <h3>Muse Glimmer 30B <span class="badge badge-best">winner in tools</span> · Qwen3.8-27B <span class="badge badge-best">winner in computer</span></h3>
+        <p>Agents is not a single category — and the two model cards split the territory with almost rehearsed precision.</p>
+    </div>
+    <p>For a <strong>24/7 tool agent</strong> — MCP tool calling, deep search, routine automation — the Muse Glimmer was purpose-built: distilled from Muse Spark by Meta, 100+ languages, built-in vision and Apache 2.0 with no gate. The number that matters: <strong>MCP Atlas 75.5</strong> on Meta's official table, against 62.5 for Qwen3.6-27B and 54.2 for Gemma4-31B. DeepSearch QA 74.6. The Qwen3.8-27B simply did not publish those benchmarks — you cannot claim who would win.</p>
+    <p>For an <strong>agent that operates the computer</strong> — clicking, typing, navigating — the Qwen3.8-27B plays in another league: OSWorld-Verified <strong>84.3</strong> against 65.9 for the Muse, WebArena 64.8, AndroidWorld 81.9. And the Muse's throughput bonus: the DFlash drafter (1.63 GB) triples generation on the 5090 — from 74.9 to 233.4 tok/s (3.1×) — which changes the math for an agent running all night.</p>
+    <p>Both at Q4 fit together in ~34 GB: tool agent + code agent in the same window is a documented setup in the <a href="/guia/muse-glimmer-30b-agente-local">dedicated Muse Glimmer article (PT-BR)</a>.</p>
+
+    <h2 id="veredito-visao">Verdict: vision & multimodal — Qwen3.8-27B, again</h2>
+    <p>On the model card's vision benchmarks, the 3.8 runs over its own generation: MathVision 94.6 (with CI), CharXiv RQ 90.2, OmniDocBench 1.5 91.1 — and the generational jump BabyVision 85.6 against 28.9 for the 3.6, almost triple. In the GGUF, the mmproj that wires up vision costs 0.93 GB. The local proof already recorded on the portal: Simon Willison's bounding-box test (Aug 16) got both pelicans right on the first try, detecting from a GGUF, no vision API.</p>
+    <p>The Muse Glimmer is the honest runner-up: native ViT-G/14 with 4,096 visual tokens per image — screenshot and document reading built in, which is what a local agent needs. The Gemma 3 27B is the consolidated multimodal: vision at 128K and a mature ecosystem — but at 16.55 GB in Q4_K_M it costs more memory than the Muse Glimmer (15.88 GB) and its visual reasoning is a generation behind (MMMU val 64.9 on the official TR). The Gemma 4 31B (Mar/2026) enters the table as Google's dense that closes the GPQA gap (84.3) and has MMMU Pro 76.9 — another benchmark, another scale; a direct visual comparison with the Qwen's MathVision 94.6 does not exist on Google's card. Full guide: <a href="/guia/qwen3-8-27b-visao-videos-local">Qwen3.8-27B for vision and videos (PT-BR)</a>.</p>
+
+    <h2 id="veredito-hardware-fraco">Verdict: weak hardware (12–16 GB) — GPT-OSS-20B</h2>
+    <div class="verdict-card">
+        <h3>GPT-OSS-20B <span class="badge badge-best">winner</span> · Apriel-1.6-15b-Thinker <span class="badge badge-best">12 GB resident</span></h3>
+        <p>GPT-OSS-20B remains the best for 16 GB: MXFP4 GGUF of <strong>11.27 GiB</strong> (llama.cpp bench), 3.6B active per token, 131,072 context. OpenAI positions it: "similar to o3-mini on common benchmarks, on 16 GB devices". The Apriel-1.6-15b-Thinker debuts as the new resident of the 12 GB range: IQ4_XS of <strong>7.91 GB</strong>, native LLaVA vision, BFCL v3 63.5 and AIME25 88 — competitive numbers for half the size. The two split the territory without cancelling each other: if it fits in 12 GB, Apriel; if it fits in 16 GB, GPT-OSS.</p>
+    </div>
+    <p>Official numbers (arXiv 2508.10925, Table 3): SWE-bench Verified 53.2 at reasoning medium, GPQA Diamond 66.0, MMLU 84.0. It is the score of a smaller model — and the gap to the 27Bs is real (GPQA 66.0 vs 89.2), but 11 GiB is 11 GiB. On a 12 GB RTX 3060 it runs with moderate context; the Qwen3.8-27B on the same card, via the 10.32 GB UD-IQ2_M, delivers ~9.7 tok/s.</p>
+    <p>Whoever has 16 GB and wants the quality ceiling: the <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B on 16 GB guide (PT-BR)</a> shows the full IQ4_XS in the GPU (~20 t/s on the 4070 Ti Super) with quantized KV cache and n-gram speculative decoding.</p>
+
+    <h2 id="veredito-contexto">Verdict: long context (256K–1M) — Qwen3.8-27B, with DeepSeek in the wings</h2>
+    <p>262,144 native tokens — double the Muse Glimmer, quadruple the Gemma 3 — and the architecture's cheap cache: only 16 of the 64 layers are full-attention (the other 48 are fixed-state Gated DeltaNet), so the Q4 KV cache of the entire context costs ~4.25 GiB. The documented production proof: 50.44 tok/s average with all 262,144 tokens enabled on a 24 GB GPU (RTX PRO 4000 Blackwell, piszczek.pl measurement, 10 runs).</p>
+    <p>DeepSeek V4 Flash is the other planet: <strong>1,048,576 native tokens</strong> — 4× the Qwen — under an MIT license, the only open weight with 1M of context. With 13B active, the 103 GB UD-IQ3_XXS GGUF runs on a 128 GB Mac or a 122 GB Strix Halo. The caveats: a 103 GB download, a recommended minimum of 110 GB of total memory, and Think Max mode asking for 384K allocated. It is not a consumer-GPU model; it is a workstation model. The honest answer has two parts: 24 GB → Qwen3.8-27B; 110 GB+ of unified memory → DeepSeek V4 Flash.</p>
+
+    <h2 id="veredito-brasil">Verdict: Brazilian hardware and cost</h2>
+    <p>At local prices, a used RTX 3090 is still the best cost-benefit for a 27B at Q4: 41.5 tok/s on the Qwen3.8-27B, an InsiderLLM measurement with a public source. The Strix Halo (Ryzen AI MAX+ 395, 122 GB unified) is the most interesting local case: 17.3 tok/s on the 27B at Q4 — and the real entry door to DeepSeek V4 Flash, because 122 GB covers the 103 GB GGUF. Full per-hardware table: <a href="/guia/tokens-por-segundo-30b-hardware-real">tokens per second on real hardware (PT-BR)</a>.</p>
+    <p>All of them are free and open-weight; the cost difference between them is the memory you already own. In a country where a 5090 costs the price of an entry-level car, "best local model" starts with a different question: how much memory is left on your machine?</p>
+
+    <h2 id="rivais-30b">Qwen3.8-27B vs the 30B rivals: what the model cards allow us to claim</h2>
+    <p>The four rivals entering this update already circulate in the international lists — but the portal only covered them in passing mentions. This section builds the matchup on the only benchmark common across vendors, <strong>LiveCodeBench v6</strong>, followed by three verdicts per axis. Every number comes from the vendor's model card; harnesses differ, so every comparison is an <strong>order of magnitude</strong>.</p>
+
+    <div class="table-wrap">
+    <table class="lcb-table">
+        <thead>
+        <tr>
+            <th scope="col">Model</th>
+            <th scope="col">LCB v6</th>
+            <th scope="col">Source</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><strong>Qwen3.8-27B</strong></td>
+            <td>90.3</td>
+            <td><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen model card</a></td>
+        </tr>
+        <tr>
+            <td><strong>Nemotron-Cascade-2-30B-A3B</strong></td>
+            <td>87.2</td>
+            <td><a href="https://huggingface.co/nvidia/Nemotron-Cascade-2-30B-A3B">NVIDIA model card</a></td>
+        </tr>
+        <tr>
+            <td><strong>Gemma 4 31B (IT)</strong></td>
+            <td>80.0</td>
+            <td><a href="https://huggingface.co/google/gemma-4-31B-it">Google model card</a></td>
+        </tr>
+        <tr>
+            <td><strong>Nemotron-3-Nano-30B-A3B</strong> (Dec/2025)</td>
+            <td>68.3</td>
+            <td><a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16">NVIDIA model card</a></td>
+        </tr>
+        <tr>
+            <td><strong>GLM-4.7-Flash</strong></td>
+            <td>64.0</td>
+            <td><a href="https://huggingface.co/zai-org/GLM-4.7-Flash">Z.ai model card</a></td>
+        </tr>
+        <tr>
+            <td><strong>GPT-OSS-20B</strong></td>
+            <td>61.0</td>
+            <td>Z.ai / NVIDIA tables</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <p class="footnote">The <strong>Nemotron-3-Nano-30B-A3B</strong> (Dec/2025) is the Cascade 2's predecessor; it is in the table as a reference for the family's jump. The Nemotron family also includes the <strong>Nemotron-3-Nano-Omni-30B-A3B-Reasoning</strong> (Apr/2026, audio+video+image). The GPT-OSS-20B is not a new rival (it is already in the master table), but it appears here as the class's lower reference.</p>
+
+    <p><strong>Three honest observations about the matchup:</strong></p>
+
+    <div class="callout">
+        <strong>🔗 Qwen3-Coder-30B-A3B in the master table.</strong> The Coder is the most downloaded coding MoE in the market (11.9M GGUF/mo, 8.5M Ollama, 21/08/2026) — and it is in the <a href="#tabela-mestra">master table</a> above. The dedicated Qwen3.8-27B vs Qwen3-Coder-30B-A3B matchup is in the <a href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">verdict article (PT-BR)</a> (SWE-bench Verified 51.6, AAII est. 14, 3.3× the dense's throughput).
+    </div>
+
+    <ul>
+        <li><strong>(a) Pure coding: Qwen3.8 leads, Cascade 2 is the real challenger.</strong> The 90.3 vs 87.2 gap on the LCB is ~3%, inside the order-of-magnitude margin — but the Qwen also publishes SWE-bench Pro (61.7) and DeepSWE (42.2), which the Cascade 2 does not cover. The Cascade 2 answers with AIME25 92.4 (98.6 with tools) and GPQA-D 76.1, territory where the Qwen also did not publish.</li>
+        <li><strong>(b) Throughput and the 24/7 agent: the A3B MoEs (GLM-4.7-Flash, Nemotron Cascade 2) deliver 3–8× the dense's t/s on the same hardware,</strong> because they activate only ~3B of the 30B total. GLM publishes τ²-Bench 79.5, BrowseComp 42.8 and SWE-bench Verified 59.2 — autonomous-agent and web-navigation benchmarks the Qwen did not publish. The empirical Brazilian counterpoint: <a href="https://www.glukhov.org/pt/ai-devtools/opencode/llms-comparison">glukhov.org/pt</a> ran the models on a structured migration task and recorded <strong>100% error for GLM-4.7-Flash</strong> on the mapping task (and 96.3% for Cascade 2) — a reminder that model card ≠ production guarantee.</li>
+        <li><strong>(c) The 12 GB range: the Apriel-1.6-15b-Thinker is the new resident.</strong> At 7.91 GB in IQ4_XS it fits on cards where the Qwen3.8-27B only enters at IQ2. Apriel publishes BFCL v3 63.5 (function calling), Tau2 Telecom 69 and AIME25 88 — competitive numbers for its size. GPT-OSS-20B loses the monopoly of the entry range but keeps the title at 16 GB thanks to its 131K context and 3.6B-active throughput.</li>
+    </ul>
+
+    <div class="callout">
+        <strong>⚠️ Watch out for benchmark versions.</strong> Apriel advertises AAII v3.0 57 — an earlier version of the Artificial Analysis Intelligence Index than the v4.1.1 where the Qwen3.8-27B scores 52. Do not put the two on the same line without noting the version. GLM publishes GPQA 75.2 without specifying "Diamond" — we cite it as "GPQA" (75.2), not "GPQA Diamond". Respecting the source is part of the transparency this page promises.
+    </div>
+
+    <h2 id="metodologia">Methodology and transparency</h2>
+    <p>Every number on this page has a named source: official model cards (Qwen, Meta, OpenAI/arXiv 2508.10925, DeepSeek, Google Gemma 3 TR arXiv 2503.19786, Google Gemma 4 card, Z.ai GLM-4.7-Flash, NVIDIA Nemotron-Cascade-2, ServiceNow Apriel-1.6), the portal's sources dossier (SOURCES-BENCHMARKS.md, extractions on 15/08, 19/08 and 20/08), own measurements on Strix Halo, and third-party measurements always attributed. Benchmarks from different vendors use different harnesses: every comparison between model cards is an order of magnitude, and it is labelled as such wherever it appears. No number was invented; estimates carry "~". Page reviewed on 21/08/2026 (addition of the 30B rivals, live HF API verification on 20/08) — if a model card changes, this table gets old, and that is how it should be.</p>
+
+    <h2 id="perguntas-frequentes">Frequently asked questions</h2>
+    <div class="faq-item">
+        <h3>What is the best local 30B model overall?</h3>
+        <p>The Qwen3.8-27B, if you have 16 GB or more of VRAM: it leads in coding (LiveCodeBench v6 90.3), computer use (OSWorld-Verified 84.3) and context (262,144 native tokens), with native vision and Apache 2.0. Numbers from Qwen's official model card; the existing independent check (Artificial Analysis Intelligence Index v4.1.1) scores it 52 — tied with GPT-5.6 Luna and #1 among 135 open weights up to 40B.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Muse Glimmer 30B or Qwen3.8-27B?</h3>
+        <p>For a 24/7 tool agent (MCP, deep search): Muse Glimmer — distilled for it (MCP Atlas 75.5 vs 62.5 for Qwen3.6-27B on Meta's official table). For coding and computer use: Qwen3.8-27B (OSWorld-Verified 84.3; SWE-bench Pro 61.7). There is no official head-to-head between the two — the numbers come from model cards of different vendors.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Qwen3.8-27B or GLM-4.7-Flash?</h3>
+        <p>It depends on the axis. In deep coding, vision and context the Qwen3.8-27B leads (LCB v6 90.3 vs 64.0 for GLM). In 24/7 agentic throughput, GLM-4.7-Flash is an A3B MoE with ~3B active (3–8× the dense's t/s), and published τ²-Bench 79.5, BrowseComp 42.8 and SWE-bench Verified 59.2 — benchmarks Qwen did not publish. There is no official head-to-head. Caveat: the empirical glukhov.org/pt test recorded 100% error for GLM on a structured migration task (OpenCode), reinforcing that a model card is not a production guarantee.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Is DeepSeek V4 Flash a 30B model?</h3>
+        <p>Not in total parameters: 284B total, GGUF of 92 to 103 GB — it does not fit in a consumer GPU. But it activates only 13B per token: the compute cost per token is that of a 13B. It is on the page as an honest comparison for anyone with 110 GB or more of unified memory (Mac, Strix Halo), where it delivers 1,048,576 tokens of native context.</p>
+    </div>
+    <div class="faq-item">
+        <h3>What is the best local model for a 16 GB GPU?</h3>
+        <p>GPT-OSS-20B for speed and headroom (MXFP4 GGUF of 11.27 GiB, runs in 16 GB); Qwen3.8-27B at IQ4_XS (15.71 GB measured) for maximum quality that still fits — with quantized KV cache and speculative decoding, ~20 t/s on an RTX 4070 Ti Super.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Why is Gemma 3 27B on the list if it is a generation behind?</h3>
+        <p>Because it is Google's 27B with native vision, a mature ecosystem and 16.55 GB at Q4_K_M — and because the honest comparison shows the size of the gap: GPQA Diamond 42.4 on the instruct (official Technical Report, Table 6) vs 89.2 for Qwen3.8-27B. The successor Gemma 4 31B (Mar/2026) closes that gap to 84.3 on GPQA Diamond — table above and the <a href="#rivais-30b">Qwen3.8 vs rivals</a> section.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Do these models work offline?</h3>
+        <p>All of them run 100% local via llama.cpp or Ollama — download the GGUF, unplug the router, keep working. No data leaves the machine; the only external dependency is the initial Hugging Face download.</p>
+    </div>
+
+    <footer>
+        <p>Local 30B models portal — Best local 30B models: the 11 worth the download | Sources: official model cards Qwen/Qwen3.8-27B and Qwen3.6-27B, meta-models/Muse-Glimmer-30B, OpenAI "Introducing gpt-oss" + arXiv 2508.10925 Table 3, deepseek-ai/DeepSeek-V4-Flash, Gemma 3 Technical Report (arXiv 2503.19786, Tables 6/18), Z.ai/GLM-4.7-Flash, nvidia/Nemotron-Cascade-2-30B-A3B, google/gemma-4-31B-it, ServiceNow-AI/Apriel-1.6-15b-Thinker, Qwen/Qwen3-Coder-30B-A3B (model cards, verified 20/08/2026), Unsloth GGUFs (GLM, Gemma 4, Qwen3-Coder) and bartowski (Nemotron, Apriel), glukhov.org/pt (OpenCode test), Unsloth GGUFs (Muse, Qwen, DeepSeek V4), llama.cpp discussion #15396 (GPT-OSS 20B, 11.27 GiB), Artificial Analysis Intelligence Index v4.1.1 (verified 18/08), r/LocalLLaMA 1vqrt86/1voa3ch/1vonuu0/1vpiyj9 and r/Qwen_AI 1volui5 (PO research 19/08), SOURCES-BENCHMARKS.md and own measurements on Strix Halo. Benchmarks from different vendors use their own harnesses: comparisons between model cards are order of magnitude.</p>
+        <p>Last updated: August 2026 | <a href="/">Home</a> | <a href="/guia">Guide</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer</a> | <a href="/guia/qwen3.8-vs-qwen3.6-27b">3.8 vs 3.6</a> | <a href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">Qwen3.8 vs Coder</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens per second</a> | <a href="#rivais-30b">30B rivals</a> | <a href="/guia/faq">FAQ</a> | <a href="/guia/melhores-modelos-locais-30b">Original in Portuguese</a></p>
+    </footer>
+</body>
+</html>

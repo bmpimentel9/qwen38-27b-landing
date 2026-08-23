@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)</title>
+    <meta name="description" content="O novo MoE local (35B totais / ~3B ativos, MIT) que a SERP EN já compara com o Qwen3.8-27B: benchmarks autodeclarados (Terminal-Bench 2.1 68,5, SWE-bench Verified 79), GGUF Q4_K_M 21,71 GB, 303 tok/s numa 5090 (relato) e o veredito honesto por perfil — com fontes.">
+    <meta name="keywords" content="ornith 1.5 35b a3b, qwen3.8 vs ornith, melhor modelo local para codar 2026, moe local 30b, ornith moe gguf, terminal-bench 2.1, modelo local para agentes, ornith vs qwen3.8">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-ornith-1-5-35b-a3b">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)">
+    <meta property="og:description" content="O novo MoE local (35B totais / ~3B ativos, MIT) que a SERP EN já compara com o Qwen3.8-27B: benchmarks autodeclarados (Terminal-Bench 2.1 68,5, SWE-bench Verified 79), GGUF Q4_K_M 21,71 GB, 303 tok/s numa 5090 (relato) e o veredito honesto por perfil — com fontes.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-ornith-1-5-35b-a3b">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --code-bg: #1c2128; --bg-warn: #3b2f0a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; color: var(--text); }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); position: sticky; top: 0; }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); }
+        tr:hover { background: var(--code-bg); }
+        td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace; font-size: 0.9rem; }
+        td.delta { font-weight: 600; }
+        .g-delta { color: var(--accent-2); }
+        .m-delta { color: var(--accent); }
+        .w-delta { color: var(--accent-3); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        .section-label { background: var(--code-bg); font-weight: 700; color: var(--text); letter-spacing: 0.02em; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge-best { background: rgba(63,185,80,0.2); color: var(--accent-2); }
+        .badge-good { background: rgba(88,166,255,0.2); color: var(--accent); }
+        .badge-warn { background: rgba(247,129,102,0.2); color: var(--accent-3); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout-warn { border-left-color: var(--accent-3); }
+        .callout-warn strong { color: var(--accent-3); }
+        .callout-best { border-left-color: var(--accent-2); }
+        .callout-best strong { color: var(--accent-2); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .metric-card { display: inline-block; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; margin: 5px; text-align: center; }
+        .metric-card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+        .metric-card .label { font-size: 0.8rem; color: var(--text-muted); }
+        .verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+        .verdict-card h3 { margin-top: 0; color: var(--accent-2); font-size: 1.1rem; }
+        .verdict-card.hold h3 { color: var(--accent-3); }
+        .verdict-card.revisit h3 { color: var(--accent); }
+        .verdict-card ul { list-style: none; font-size: 0.9rem; }
+        .verdict-card ul li { padding: 4px 0; }
+        .verdict-card ul li::before { content: "→ "; color: var(--accent); }
+        .highlight { background: rgba(88,166,255,0.08); }
+        .footnote { font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
+        .footnote a { color: var(--accent); text-decoration: none; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .spec-table td:first-child { font-weight: 500; white-space: nowrap; }
+        .spec-table td { background: transparent; }
+        @media (max-width: 640px) {
+  table { display: block; overflow-x: auto; }
+  code { overflow-wrap: anywhere; }
+  pre code { overflow-wrap: normal; }
+ .verdict-grid { grid-template-columns: 1fr; } body { padding: 12px; } th, td { padding: 8px 10px; } }
+    </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+(function(){
+  var fired={};
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    if(max<=0)return;
+    var pct=Math.round((h.scrollTop||document.body.scrollTop)/max*100);
+    [25,50,75,100].forEach(function(t){
+      if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+    });
+    if(fired[100])window.removeEventListener('scroll',onScroll);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
+</script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia">Guia</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <h1>Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?</h1>
+        <p class="lead">O trending do Hugging Face (18/08/2026, MIT, 35B totais / ~3B ativos) contra o 27B denso mais novo da Qwen: benchmarks de harnesses diferentes e autodeclarados, GGUF em GB, os relatos de throughput da comunidade — e um veredito por caso de uso que a SERP EN não te dá.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#resposta-rapida">Resposta curta</a></li>
+            <li><a href="#o-confronto">O confronto: o trending do HF contra o 27B denso</a></li>
+            <li><a href="#tabela">A tabela do par</a></li>
+            <li><a href="#arquitetura">MoE de ~3B ativos vs denso híbrido: o que muda por token</a></li>
+            <li><a href="#velocidade">Throughput: os relatos da comunidade</a></li>
+            <li><a href="#vram">Disco e VRAM: GGUF oficial e a tabela AD-quants</a></li>
+            <li><a href="#veredito">Veredito por perfil de uso</a></li>
+            <li><a href="#honestidade">O aviso de honestidade: benchmarks autodeclarados</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#fontes">Fontes</a></li>
+        </ul>
+    </div>
+
+    <div class="callout callout-best" id="resposta-rapida">
+        <strong>Resposta curta:</strong> Depende do perfil — e a resposta honesta é "a comparação não é 1:1". Para código difícil, raciocínio longo, visão e ecossistema com verificação independente, o <strong>Qwen3.8-27B</strong> segue o pick (LCB v6 90,3, SWE-bench Pro 61,7 no model card; AAII 52 com verificação independente). Para throughput agêntico/token e números de agente no papel, o <strong>Ornith-1.5-35B-A3B</strong> chama atenção (Terminal-Bench 2.1 68,5 e SWE-bench Verified 79 — autodeclarados, média 5 runs; ~3B ativos por token = velocidade de MoE). Não existe head-to-head oficial: os dois usam harnesses de benchmark diferentes, e o Ornith tem 5 dias de vida sem verificação independente (BenchLM: coverage insuficiente).
+    </div>
+
+    <h2 id="o-confronto">O confronto: o trending do HF contra o 27B denso</h2>
+
+    <div class="verdict-grid">
+        <div class="verdict-card">
+            <h3>Ornith-1.5-35B-A3B</h3>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Pesos públicos 18/08/2026 · trending no HF em 23/08</p>
+            <ul>
+                <li>MoE 35,95B totais / <strong>~3B ativos</strong> por token (256 experts, 8 por token + 1 shared)</li>
+                <li>Contexto nativo 262.144 (1M com YaRN factor 4.0)</li>
+                <li>Multimodal — visão nativa (mmproj 0,90 GB)</li>
+                <li>Reasoning <strong>on por padrão</strong> (bloco <code>thinking</code>), desligável</li>
+                <li>MIT · família 397B/35B/9B · self-improvement loop (tarefas auto-geradas + scaffolds + GRPO)</li>
+            </ul>
+        </div>
+        <div class="verdict-card">
+            <h3>Qwen3.8-27B</h3>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Pesos abertos 14/08/2026</p>
+            <ul>
+                <li>Denso ~27B híbrido: 16× Gated DeltaNet + full attention</li>
+                <li>Contexto nativo 262.144</li>
+                <li>Thinking <strong>configurável</strong> (on/off/effort, inclusive por chamada)</li>
+                <li>Visão nativa (mmproj 0,93 GB)</li>
+                <li>Apache 2.0 · AAII 52 (verificação independente real)</li>
+            </ul>
+        </div>
+    </div>
+
+    <p>A SERP em inglês <strong>já pergunta essa pergunta</strong> — o BenchLM compara os dois lado a lado, há head-to-head no YouTube (20/08) e a thread do Ornith no r/LocalLLaMA subiu 273 upvotes. O que falta é a resposta em português com a honestidade que a SERP não tem: o rival aqui é <strong>novo de verdade</strong> (5 dias de pesos públicos), entra com benchmarks autodeclarados e <strong>nas tabelas oficiais do próprio laboratório supera rivais que este portal já cobre</strong> — Gemma 4-31B, Muse Glimmer-30B, Qwen3.6-35B-A3B. É a mesma janela do artigo contra o Qwen3-Coder, com um detalhe a mais: aqui não existe verificação independente ainda.</p>
+
+    <p>O enquadramento honesto: não são concorrentes diretos no mesmo nicho — são ferramentas para perfis diferentes. O Ornith troca profundidade densa por velocidade de MoE e números de agente no papel; o 3.8 troca velocidade por profundidade por token, visão e ecossistema verificado. E cada um publica benchmarks em harnesses que <strong>não se comparam linha a linha</strong>.</p>
+
+    <h2 id="tabela">A tabela do par</h2>
+    <p>Valores canônicos do portal (cânone GGUF do 3.8) e das fontes nomeadas. Toda adoção com data — número de download é volátil (re-verificado na HF API em 23/08/2026).</p>
+
+    <div id="big-table"><table class="spec-table">
+        <tr><th></th><th>Qwen3.8-27B</th><th>Ornith-1.5-35B-A3B</th></tr>
+        <tr><td>Lançamento</td><td>ago/2026 (pesos abertos 14/08)</td><td>18/08/2026 (trending no HF em 23/08)</td></tr>
+        <tr><td>Arquitetura</td><td>Denso ~27B híbrido (16× Gated DeltaNet + full-attention)</td><td>MoE 35,95B totais / <strong>~3B ativos</strong> (256 experts, 8 por token + 1 shared)</td></tr>
+        <tr><td>Thinking</td><td>Híbrido configurável (on/off/effort)</td><td>Reasoning on por padrão (bloco <code>thinking</code>), desligável</td></tr>
+        <tr><td>Contexto nativo</td><td>262.144</td><td>262.144 (1M com YaRN factor 4.0)</td></tr>
+        <tr><td>Visão</td><td>Nativa (mmproj 0,93 GB)</td><td>Nativa (mmproj 0,90 GB)</td></tr>
+        <tr><td>GGUF Q4_K_M (medido)</td><td>17,11 GB</td><td><strong>21,71 GB</strong> (oficial, tree HF API 23/08)</td></tr>
+        <tr><td>MTP / spec-decode</td><td>Suportado (--spec-type draft-mtp)</td><td>Head MTP de 1,9B separado (draft file)</td></tr>
+        <tr><td>Código (cards)</td><td>LCB v6 <strong>90,3</strong> · SWE-bench Pro 61,7 · DeepSWE 42,2 (model card)</td><td>Terminal-Bench 2.1 (Claude Code) <strong>68,5</strong> · SWE-bench Verified 79 · DeepSWE 22 (blog/model card, média 5 runs)</td></tr>
+        <tr><td>Agêntico (cards)</td><td>MCP Atlas não publicado</td><td>MCP-Atlas 70,2 (Muse Glimmer 75,5 lidera)</td></tr>
+        <tr><td>GPQA Diamond</td><td>89,2</td><td>89,2</td></tr>
+        <tr><td>Throughput local</td><td>17,3 tok/s (Q4_K_M, Strix Halo — medição própria)</td><td>~60 tok/s 4070Ti Q4_K_M · ~303 tok/s RTX 5090 Q4_K_M (<strong>relatos da comunidade</strong>, não medição do portal)</td></tr>
+        <tr><td>Adoção (23/08)</td><td>1,73M dl/mês (repo HF)</td><td>GGUF oficial 369.478 dl (5 dias) · model card 23.516 dl / 337 likes</td></tr>
+        <tr><td>Licença</td><td>Apache 2.0</td><td>MIT</td></tr>
+        <tr><td>Status</td><td>Corrente, verificação independente (AAII 52)</td><td>Novo (5 dias), <strong>sem verificação independente</strong> (BenchLM: coverage insuficiente)</td></tr>
+    </table></div>
+
+    <div class="footnote">
+        <p><strong>Nota obrigatória da tabela:</strong> Terminal-Bench 2.1, SWE-bench Verified e DeepSWE do Ornith vêm do blog/model card do próprio laboratório (média de 5 runs) e <strong>não têm verificação independente</strong>; LCB v6 e SWE-bench Pro do Qwen3.8 vêm do model card Qwen. Os conjuntos de benchmark são <strong>diferentes</strong> (Terminal-Bench ≠ LiveCodeBench; Verified ≠ Pro) e <strong>não são comparáveis linha a linha</strong> — a coluna "Código" mostra o que cada um publicou, não um head-to-head. A SERP EN compara os dois sem deixar isso claro; o portal deixa.</p>
+    </div>
+
+    <h2 id="arquitetura">MoE de ~3B ativos vs denso híbrido: o que muda por token</h2>
+
+    <p>No Ornith-1.5-35B-A3B, cada token passa por 8 dos 256 experts (mais um shared): o custo de computo por token é o de um modelo de ~3B parâmetros, com o conhecimento agregado de um 35B. É daí que vem o throughput: menos matrizes ativadas por token, menos bytes lidos da VRAM por token. O "A3B" no nome é exatamente isso — 3B ativados por token.</p>
+
+    <p>No Qwen3.8-27B, os ~27 bilhões de parâmetros ativam a cada token: mais profundidade de raciocínio por token, mais banda de memória consumida por token — e, portanto, menos tokens por segundo. A arquitetura híbrida (16 camadas full-attention + 48 Gated DeltaNet recorrentes) torna o KV cache do contexto 256K barato, mas o decode segue limitado pela banda de memória. A troca é a mesma que este portal documenta no confronto com o Qwen3-Coder: denso compra profundidade por token; MoE compra velocidade.</p>
+
+    <p><strong>Multi-Token Prediction também existe no Ornith:</strong> a head MTP de 1,9B é separada e sugere vários tokens por passo — a mesma mecânica que este portal já cobre para o 3.8 (speculative decoding com <code>--spec-type draft-mtp</code>). Quem roda os dois na mesma máquina vai reconhecer o padrão.</p>
+
+    <p><strong>O rótulo que resume a classe:</strong> "velocidade segue os 3B ativos, memória segue os 35B totais — todo expert tem de estar residente (ou em RAM com <code>--cpu-moe</code>)". Diferente de um denso de 27B, o MoE de 35B não diminui de tamanho em disco só porque ativa pouco: os pesos completos estão lá.</p>
+
+    <p>O Ornith também é <strong>reasoning on por padrão</strong> — o que significa que a trava do overthinking que este portal documenta para o 3.8 vale como alerta aqui: a <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal" style="color:var(--accent)">configuração ideal de reasoning do Qwen3.8-27B</a> explica como ligar/desligar e medir o custo. Todos os números de throughput do portal, com fonte e contexto de cada um, estão no <a href="/guia/tokens-por-segundo-30b-hardware-real" style="color:var(--accent)">compilado de tokens por segundo no hardware real</a>.</p>
+
+    <h2 id="velocidade">Throughput: os relatos da comunidade</h2>
+
+    <p>O número de velocidade que circula na SERP para o Ornith <strong>não é medição deste portal</strong> — não há medição própria no Strix Halo do Bruno ainda. O que existe são dois relatos da comunidade, citados como tais:</p>
+
+    <div class="callout">
+        <strong>Relatos da comunidade (rótulo obrigatório):</strong> ~60 tok/s numa RTX 4070 Ti em Q4_K_M (r/LocalLLaMA, thread 1vt6hwc) e ~303 tok/s numa RTX 5090 em Q4_K_M (@witcheer). São relatos, não medição do portal — o padrão deste site é publicar o que mediu ou o que a fonte nomeada mediu, e aqui a fonte é a comunidade.
+    </div>
+
+    <p>A âncora própria do portal para o 3.8 é 17,3 tok/s no Strix Halo (Q4_K_M, Ollama/Vulkan, medição própria). São <strong>classes diferentes de hardware</strong> — o Strix Halo é iGPU de 128 GB unificados, a 4070 Ti e a 5090 são GPUs discretas — então não existe head-to-head sério entre esses números. A leitura útil é a da classe: um MoE de ~3B ativos lê muito menos peso por token do que um denso de 27B, e os relatos da comunidade para o Ornith apontam na direção esperada para essa arquitetura. Medição própria do Ornith no Strix Halo é trabalho futuro — e quando existir, este artigo ganha a coluna certa.</p>
+
+    <h2 id="vram">Disco e VRAM: GGUF oficial e a tabela AD-quants</h2>
+
+    <p>Tree oficial do <code>ornith-ai/Ornith-1.5-35B-A3B-GGUF</code> (HF API, 23/08/2026), arquivo por arquivo:</p>
+
+    <table>
+        <tr><th>Quantização</th><th>Tamanho (oficial)</th></tr>
+        <tr><td>BF16</td><td class="num">71,07 GB</td></tr>
+        <tr><td>Q8_0</td><td class="num">37,80 GB</td></tr>
+        <tr><td>Q6_K</td><td class="num">29,21 GB</td></tr>
+        <tr><td>Q5_K_M</td><td class="num">25,35 GB</td></tr>
+        <tr><td><strong>Q4_K_M</strong></td><td class="num"><strong>21,71 GB</strong></td></tr>
+        <tr><td>mmproj (visão)</td><td class="num">0,90 GB</td></tr>
+    </table>
+
+    <p>Os <strong>AD-quants da AtomicChat</strong> (35B, verificados 23/08/2026 — KL/top-1 contra o BF16 de referência, corpus público) apertam mais por faixa de GPU:</p>
+
+    <table>
+        <tr><th>Build (AtomicChat)</th><th>Tamanho</th><th>KL / top-1</th></tr>
+        <tr><td>Q8_0</td><td class="num">36,9 GB</td><td class="num">0,0116 / 95,64%</td></tr>
+        <tr><td>AD-Q6_K</td><td class="num">29,1 GB</td><td class="num">0,0130 / 95,31%</td></tr>
+        <tr><td>Q6_K</td><td class="num">28,5 GB</td><td class="num">—</td></tr>
+        <tr><td>AD-Q6_K-Q5_K</td><td class="num">26,2 GB</td><td class="num">—</td></tr>
+        <tr><td>Q5_K_M</td><td class="num">24,7 GB</td><td class="num">0,0269 / 93,31%</td></tr>
+        <tr><td><strong>AD-Q5_K-Q4_K</strong></td><td class="num"><strong>22,1 GB</strong></td><td class="num">0,0251 / 93,52% — menor que stock Q5_K_M e mais preciso</td></tr>
+        <tr><td>AD-Q5_K-IQ4_XS</td><td class="num">21,5 GB</td><td class="num">—</td></tr>
+        <tr><td>Q4_K_M</td><td class="num">21,2 GB</td><td class="num">—</td></tr>
+        <tr><td><strong>AD-Q4_K-IQ4_XS</strong></td><td class="num"><strong>20,1 GB</strong></td><td class="num">0,0315 / 92,71%</td></tr>
+        <tr><td>IQ4_XS</td><td class="num">18,7 GB</td><td class="num">—</td></tr>
+        <tr><td>AD-IQ4_XS-IQ3_S</td><td class="num">17,6 GB</td><td class="num">—</td></tr>
+        <tr><td>AD-IQ3_S-IQ3_XXS</td><td class="num">15,5 GB</td><td class="num">—</td></tr>
+        <tr><td>AD-IQ3_XXS-IQ2_S</td><td class="num">13,7 GB</td><td class="num">0,1416 / 84,70%</td></tr>
+    </table>
+
+    <p><strong>Confronto por faixa de GPU:</strong></p>
+    <ul style="margin-left:18px;">
+        <li><strong>24 GB</strong> → AD-Q4_K-IQ4_XS de 20,1 GB com folga para contexto, ou AD-Q5_K-Q4_K de 22,1 GB em conversa curta.</li>
+        <li><strong>16 GB</strong> → AD-IQ3_S-IQ3_XXS de 15,5 GB (ou 4-bit com experts offloadados).</li>
+        <li><strong>12–16 GB</strong> → AD-IQ3_XXS-IQ2_S de 13,7 GB (ou AD-Q5_K-Q4_K de 22,1 GB com <code>--cpu-moe</code>, experts em RAM).</li>
+        <li><strong>32 GB</strong> → AD-Q6_K de 29,1 GB.</li>
+        <li><strong>48 GB+</strong> → Q8_0.</li>
+    </ul>
+
+    <p>No Ollama: <code>ollama run ornith-1.5:35b</code> (23 GB, mmproj incluso). <strong>Nota de fontes:</strong> o Q4_K_M tem três tamanhos por publisher — ornith-ai oficial 21,7 GB, bartowski 21,9, AtomicChat 21,2; o artigo usa o oficial. O contexto de quantização completo do portal está no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu" style="color:var(--accent)">guia de quantização GGUF ≤30B</a>.</p>
+
+    <h2 id="veredito">Veredito por perfil de uso</h2>
+
+    <div class="verdict-grid">
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Qwen3.8-27B — profundidade densa, ecossistema e verificação</h3>
+            <ul>
+                <li>Código difícil e raciocínio longo (LCB v6 90,3, SWE-bench Pro 61,7 — model card)</li>
+                <li>Visão + 256K nativos</li>
+                <li>AAII 52 — verificação independente real, que o Ornith ainda não tem</li>
+                <li>17,11 GB em Q4_K_M cabe em 24 GB com folga</li>
+            </ul>
+        </div>
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Ornith-1.5-35B-A3B — throughput agêntico/token e números de agente</h3>
+            <ul>
+                <li>Terminal-Bench 2.1 (Claude Code) 68,5 e SWE-bench Verified 79 (autodeclarados, média 5 runs) superam com folga Gemma 4-31B e Muse Glimmer-30B nos próprios benchmarks do lab</li>
+                <li>~3B ativos por token = velocidade de MoE (303 tok/s numa 5090, relato)</li>
+                <li>DeepSWE 22 vs 0 dos rivais — números de agente que o portal ainda não tinha na classe</li>
+                <li>MIT</li>
+            </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 GPU de 16–24 GB — Ornith (com ressalva)</h3>
+            <ul>
+                <li>AD-quants cabem (20,1 GB em 24 GB com contexto; 15,5 GB em 16 GB)</li>
+                <li>Mas é modelo novo, sem medição própria do portal</li>
+                <li>O 3.8 em 17,11 GB é caminho mais batido e verificado</li>
+            </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 Quero os dois? — possível, não barato</h3>
+            <ul>
+                <li>Q4_K_M somados ≈ 38,8 GB (17,11 + 21,71) — em 32 GB+ unificada cabe com sobra apertada</li>
+                <li>Em 24 GB, alternar ou offload</li>
+                <li>Para agente CLI 24/7 com RAM sobrando, o <code>--cpu-moe</code> do Ornith é uma rota nova que vale teste</li>
+                <li>Os outros vereditos do dossiê: <a href="/guia/melhores-modelos-locais-30b" style="color:var(--accent)">Melhores modelos locais de 30B</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="honestidade">O aviso de honestidade: benchmarks autodeclarados</h2>
+
+    <p>A tabela do Ornith é <strong>reportada pelo próprio laboratório</strong> — média de 5 runs, metodologia no model card (Terminal-Bench com parser json, temp 1,0; SWE-bench Verified/Pro via OpenHands com anti-hacking, etc.). <strong>Não há verificação independente ainda</strong> — o modelo tem 5 dias.</p>
+
+    <div class="callout callout-warn">
+        <strong>O que o BenchLM diz (23/08/2026):</strong> Ornith <strong>49,3/100, rank público #136</strong>, intervalo 90% 39,4–59,1, "not enough sourced coverage for a verified position". No confronto direto com o Qwen3.8-27B, a página <strong>"does not name an overall quality winner"</strong> e avisa que "no workload recommendation clears the current evidence threshold". É o contrário de um selo de aprovação.
+    </div>
+
+    <p>As críticas da comunidade também existem: relatos de loops de raciocínio (u/Over_Technology_1764) e a cautela da AtomicChat com forks falsos no HF — "a 35B model at 4-bit cannot weigh 400 MB". Este portal tem a tradição de citar o contraponto, e aqui o contraponto é central: modelo de 5 dias, números autodeclarados e uma comunidade que já aponta problemas.</p>
+
+    <p><strong>Enquadramento final:</strong> "Nenhum número de benchmark substitui o teste no SEU hardware — e num modelo de 5 dias, menos ainda. O que este artigo entrega é o cruzamento honesto: os números que cada um publicou, a ressalva de que são de harnesses diferentes e autodeclarados, e o veredito por caso de uso."</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+
+    <h3>Qual o melhor modelo local para código e agentes em 2026?</h3>
+    <p>Depende do perfil: código difícil, raciocínio longo, visão e ecossistema verificado → <strong>Qwen3.8-27B</strong> (LCB v6 90,3, SWE-bench Pro 61,7 — model card; AAII 52 com verificação independente). Agente/throughput e números de agêntico no papel → <strong>Ornith-1.5-35B-A3B</strong> (Terminal-Bench 2.1 68,5 e SWE-bench Verified 79 — autodeclarados; ~3B ativos por token = velocidade de MoE). Não há head-to-head oficial: os benchmarks dos dois usam harnesses diferentes e não são comparáveis linha a linha. E há um fator de maturidade: o Ornith tem 5 dias de vida e sem verificação independente; o Qwen3.8 tem 17,11 GB em Q4_K_M contra 21,71 GB do Ornith.</p>
+
+    <h3>O Ornith-1.5-35B-A3B é melhor que o Qwen3.8-27B?</h3>
+    <p>Não dá para afirmar: os benchmarks que cada um publica são de harnesses diferentes (Terminal-Bench 2.1 e SWE-bench Verified no Ornith vs LiveCodeBench v6 e SWE-bench Pro no Qwen3.8) e a tabela do Ornith é autodeclarada, sem verificação independente — o BenchLM coloca o Ornith em 49,3/100 (rank #136) com "coverage insuficiente" e não nomeia vencedor no confronto direto. O veredito honesto é por caso de uso: throughput agêntico/token → MoE de ~3B ativos; profundidade densa + visão + ecossistema → Qwen3.8. No papel, ainda pesam a licença (MIT vs Apache 2.0) e o tamanho (21,71 vs 17,11 GB em Q4_K_M).</p>
+
+    <h3>Qual dos dois roda em GPU de 24 GB?</h3>
+    <p>Os dois: o Qwen3.8-27B cabe em Q4_K_M (17,11 GB) com folga; o Ornith-1.5-35B-A3B cabe com AD-Q4_K-IQ4_XS (20,1 GB) deixando espaço para contexto, ou AD-Q5_K-Q4_K (22,1 GB) em conversa curta. A diferença é maturidade: o 3.8 é caminho verificado pelo portal, o Ornith tem 5 dias de vida e a tabela de quants vem de terceiros (AtomicChat, corpus público). Subindo a faixa: em 32 GB → AD-Q6_K de 29,1 GB; descendo para 16 GB → AD-IQ3_S-IQ3_XXS de 15,5 GB.</p>
+
+    <h3>O Ornith-1.5-35B-A3B roda em GPU de 16 GB?</h3>
+    <p>Roda com sacrifício: AD-IQ3_S-IQ3_XXS (15,5 GB) em 16 GB, ou AD-IQ3_XXS-IQ2_S (13,7 GB) em 12–16 GB — e há a rota <code>--cpu-moe</code> do llama.cpp, que coloca os experts em RAM e deixa só atenção/router/shared expert na GPU, servindo o AD-Q5_K-Q4_K de 22,1 GB numa placa de 12 GB. Em todos os casos, contexto curto é obrigatório. Em Apple Silicon, o bug conhecido do Metal (resposta vazia acima de ~16K de contexto, llama.cpp #27442) é um aviso antes de escolher essa rota.</p>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;">
+
+    <h2 id="fontes">Fontes</h2>
+    <div class="footnote">
+        <ul style="margin-left:18px;">
+            <li>Hugging Face: <a href="https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B" style="color:var(--accent)">ornith-ai/Ornith-1.5-35B-A3B</a> (model card + config: MoE qwen3_5_moe, 40 layers, 256 experts/8 ativos, 262.144, vision 1152) · <a href="https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF" style="color:var(--accent)">ornith-ai/Ornith-1.5-35B-A3B-GGUF</a> (tree 10 arquivos: BF16 71,07 / Q8_0 37,80 / Q6_K 29,21 / Q5_K_M 25,35 / Q4_K_M 21,71 / mmproj 0,90; 369.478 downloads 23/08) · <a href="https://huggingface.co/AtomicChat/Ornith-1.5-35B-A3B-GGUF" style="color:var(--accent)">AtomicChat/Ornith-1.5-35B-A3B-GGUF</a> (13 builds 13,7–36,9 GB, KL/top-1, corpus público)</li>
+            <li>Blog: <a href="https://ornith.ai/ornith_1_5.html" style="color:var(--accent)">ornith.ai/ornith_1_5.html</a> (tabela oficial 35B, média 5 runs, família 397B/35B/9B, self-improvement loop)</li>
+            <li>Trackers: <a href="https://benchlm.ai/compare/ornith-1-5-35b-a3b-vs-qwen3-8-27b" style="color:var(--accent)">benchlm.ai/compare/ornith-1-5-35b-a3b-vs-qwen3-8-27b</a> (49,3/100, rank #136, coverage insuficiente, sem winner — verificado 23/08) · <a href="https://artificialanalysis.ai" style="color:var(--accent)">artificialanalysis.ai</a> (AAII 52 do 3.8)</li>
+            <li>Comunidade: r/LocalLLaMA 1vt6hwc (60 tok/s 4070Ti Q4_K_M) · @witcheer (303 tok/s RTX 5090) · thread r/LocalLLaMA do Ornith 1.5 (273 upvotes) · head-to-head no YouTube (20/08) · u/Over_Technology_1764 (críticas/loops)</li>
+            <li>Guia AtomicChat 35B: how-to-run-ornith-1-5-35b-locally (23/08) — sampling temp 0,6 / top_p 0,95 / top_k 20, <code>--cpu-moe</code>, bug Metal llama.cpp #27442</li>
+            <li>Portal: cânone 17,11/15,71 GB do 3.8, medição Strix Halo, dossiê do portal</li>
+        </ul>
+    </div>
+
+    <div class="footnote">
+        <p><strong>Metodologia:</strong> downloads e sizes re-verificados ao vivo na HF API no dia do PR (23/08/2026 — números voláteis); benchmarks do Ornith reportados pelo lab (média 5 runs); throughput do Ornith = relatos da comunidade rotulados como tais, não medição do portal; comparação nunca linha a linha entre harnesses distintos.</p>
+    </div>
+
+    <footer>
+        <p>Portal Qwen3.8-27B | Dados baseados em especificações oficiais (Hugging Face, ornith.ai, Qwen, Ollama) e fontes nomeadas.</p>
+        <p>Última atualização: 23/08/2026 | Publicado em <a href="/guia">guia</a></p>
+    </footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)",
+  "description": "O novo MoE local (35B totais / ~3B ativos, MIT) que a SERP EN já compara com o Qwen3.8-27B: benchmarks autodeclarados (Terminal-Bench 2.1 68,5, SWE-bench Verified 79), GGUF Q4_K_M 21,71 GB, 303 tok/s numa 5090 (relato) e o veredito honesto por perfil — com fontes.",
+  "inLanguage": "pt-BR",
+  "datePublished": "2026-08-23",
+  "dateModified": "2026-08-23",
+  "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-ornith-1-5-35b-a3b",
+  "proficiencyLevel": "Beginner"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Qual o melhor modelo local para código e agentes em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende do perfil: código difícil, raciocínio longo, visão e ecossistema verificado → Qwen3.8-27B (LCB v6 90,3, SWE-bench Pro 61,7 — model card; AAII 52 com verificação independente). Agente/throughput e números de agêntico no papel → Ornith-1.5-35B-A3B (Terminal-Bench 2.1 68,5 e SWE-bench Verified 79 — autodeclarados; ~3B ativos por token = velocidade de MoE). Não há head-to-head oficial: os benchmarks dos dois usam harnesses diferentes e não são comparáveis linha a linha. E há um fator de maturidade: o Ornith tem 5 dias de vida e sem verificação independente; o Qwen3.8 tem 17,11 GB em Q4_K_M contra 21,71 GB do Ornith. Fonte: model cards oficiais (ornith-ai, Qwen), BenchLM compare (23/08) e dossiê do portal (23/08/2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Ornith-1.5-35B-A3B é melhor que o Qwen3.8-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não dá para afirmar: os benchmarks que cada um publica são de harnesses diferentes (Terminal-Bench 2.1 e SWE-bench Verified no Ornith vs LiveCodeBench v6 e SWE-bench Pro no Qwen3.8) e a tabela do Ornith é autodeclarada, sem verificação independente — o BenchLM coloca o Ornith em 49,3/100 (rank #136) com 'coverage insuficiente' e não nomeia vencedor no confronto direto. O veredito honesto é por caso de uso: throughput agêntico/token → MoE de ~3B ativos; profundidade densa + visão + ecossistema → Qwen3.8. No papel, ainda pesam a licença (MIT vs Apache 2.0) e o tamanho (21,71 vs 17,11 GB em Q4_K_M). Fonte: blog ornith.ai/ornith_1_5.html (média 5 runs), model card Qwen, BenchLM compare (23/08) e dossiê do portal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual dos dois roda em GPU de 24 GB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Os dois: o Qwen3.8-27B cabe em Q4_K_M (17,11 GB) com folga; o Ornith-1.5-35B-A3B cabe com AD-Q4_K-IQ4_XS (20,1 GB) deixando espaço para contexto, ou AD-Q5_K-Q4_K (22,1 GB) em conversa curta. A diferença é maturidade: o 3.8 é caminho verificado pelo portal, o Ornith tem 5 dias de vida e a tabela de quants vem de terceiros (AtomicChat, corpus público). Subindo a faixa: em 32 GB → AD-Q6_K de 29,1 GB; descendo para 16 GB → AD-IQ3_S-IQ3_XXS de 15,5 GB. Fonte: tree GGUF oficial ornith-ai via HF API (23/08/2026), guia AtomicChat 35B e cânone do portal (17,11 GB)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Ornith-1.5-35B-A3B roda em GPU de 16 GB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Roda com sacrifício: AD-IQ3_S-IQ3_XXS (15,5 GB) em 16 GB, ou AD-IQ3_XXS-IQ2_S (13,7 GB) em 12–16 GB — e há a rota --cpu-moe do llama.cpp, que coloca os experts em RAM e deixa só atenção/router/shared expert na GPU, servindo o AD-Q5_K-Q4_K de 22,1 GB numa placa de 12 GB. Em todos os casos, contexto curto é obrigatório. Em Apple Silicon, o bug conhecido do Metal (resposta vazia acima de ~16K de contexto, llama.cpp #27442) é um aviso antes de escolher essa rota. Fonte: guia AtomicChat 35B (how-to-run-ornith-1-5-35b-locally, 23/08/2026) e issue llama.cpp #27442."
+      }
+    }
+  ]
+}
+</script>
+</body>
+</html>
