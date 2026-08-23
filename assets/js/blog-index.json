@@ -1,0 +1,386 @@
+[
+  {
+    "slug": "ollama",
+    "title": "Como Rodar o Qwen3.8-27B no Ollama: do ollama run ao MTP em produção",
+    "category": "Guias",
+    "tags": [
+      "Ollama",
+      "Qwen3.8-27B",
+      "Modelfile",
+      "MTP",
+      "LLM local"
+    ],
+    "date": "2026-08-22",
+    "lead": "Guia definitivo: instale o Ollama, puxe o qwen3.8:27b, configure Modelfile customizado com MTP, reasoning effort e flash-attn. Do 'ollama run' à produção com visão e 256K de contexto.",
+    "readTime": 15,
+    "featured": false,
+    "url": "/guia/ollama"
+  },
+  {
+    "slug": "quantizacao-multilingue-portugues",
+    "title": "Quantização rouba mais de quem fala português? 2–4× mais dano em não-inglês (ago/2026)",
+    "category": "Benchmarks",
+    "tags": [
+      "quantização",
+      "multilingual",
+      "português",
+      "GPTQ",
+      "LoRA"
+    ],
+    "date": "2026-08-21",
+    "lead": "Paper de 12/08/2026 mede que quantização INT3 degrada idiomas não-inglês 2–4× mais que inglês — e português não foi testado. Ratios por idioma, a estimativa honesta para PT, a cura LoRA rank-2 e o cruzamento com a tabela PPL real do portal.",
+    "readTime": 9,
+    "featured": false,
+    "url": "/guia/quantizacao-multilingue-portugues"
+  },
+  {
+    "slug": "1-ano-gpt-oss-modelos-locais-2026",
+    "title": "1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então",
+    "category": "Releases",
+    "tags": [
+      "modelos locais",
+      "open weights",
+      "retrospectiva"
+    ],
+    "date": "2026-08-20",
+    "lead": "gpt-oss faz 1 ano com 12,27M downloads/mês ainda hoje (HF API). Qwen3.8-27B chegou 15 dias depois. O claim de '2× mais inteligente', examinado.",
+    "readTime": 13,
+    "featured": false,
+    "url": "/guia/1-ano-gpt-oss-modelos-locais-2026"
+  },
+  {
+    "slug": "como-rodar-vllm-qwen3-8-27b",
+    "title": "Qwen3.8-27B no vLLM em produção: prefix caching, flags e bugs reais",
+    "category": "Guias",
+    "tags": [
+      "vLLM",
+      "Prefix Caching",
+      "Qwen3.8-27B",
+      "Serving"
+    ],
+    "date": "2026-08-20",
+    "lead": "Guia de produção: vLLM 0.27.1 + Qwen3.8-27B-FP8, prefix caching, MTP, contexto 262K e 6 bugs reais com workarounds — tudo verificado em fontes oficiais.",
+    "readTime": 14,
+    "featured": false,
+    "url": "/guia/como-rodar-vllm-qwen3-8-27b"
+  },
+  {
+    "slug": "qwen3-8-27b-uncensored-abliterated",
+    "title": "Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência",
+    "category": "Guias",
+    "tags": [
+      "modelos locais",
+      "quantização",
+      "ecossistema"
+    ],
+    "date": "2026-08-20",
+    "lead": "Recusas 98→12/100, MTP re-enxertado e o OBLITERATUS V3: 20/20 em cyber, thinking ON e MMLU −2,1pp — anatomia do ecossistema abliterated.",
+    "readTime": 18,
+    "featured": true,
+    "url": "/guia/qwen3-8-27b-uncensored-abliterated"
+  },
+  {
+    "slug": "ltx-2-5-video-local-comfyui",
+    "title": "LTX-2.5 local: gerar vídeo com áudio no ComfyUI",
+    "category": "Guias",
+    "tags": [
+      "geração de vídeo",
+      "modelos locais",
+      "LTX-2.5"
+    ],
+    "date": "2026-08-19",
+    "lead": "Como rodar o LTX-2.5 local no ComfyUI: vídeo com áudio sincronizado, setup int8 de ~40 GB em arquivos, tiers de VRAM, GGUFs comunitários e a licença de US$ 10M.",
+    "readTime": 16,
+    "featured": false,
+    "url": "/guia/ltx-2-5-video-local-comfyui"
+  },
+  {
+    "slug": "melhores-modelos-locais-30b",
+    "title": "Melhores modelos locais de 30B: os 11 que valem o download",
+    "category": "Benchmarks",
+    "tags": [
+      "modelos locais",
+      "comparativo",
+      "LLM"
+    ],
+    "date": "2026-08-19",
+    "lead": "Melhor modelo local 30B (ago/2026): veredito por caso de uso, tabela com GGUF medido e licença de 11 modelos: Qwen3.8, GLM-4.7, Gemma 4, Nemotron, Apriel, Qwen3-Coder.",
+    "readTime": 16,
+    "featured": false,
+    "url": "/guia/melhores-modelos-locais-30b"
+  },
+  {
+    "slug": "qwen3-8-27b-contexto-256k-24gb",
+    "title": "Qwen3.8-27B com 256K de contexto em 24 GB: o guia do cache que cabe",
+    "category": "Guias",
+    "tags": [
+      "contexto longo",
+      "hardware",
+      "modelos locais"
+    ],
+    "date": "2026-08-19",
+    "lead": "Contexto de 262.144 tokens numa GPU de 24 GB a 50,44 tok/s: a conta do KV cache Q4 (48+16 camadas), os flags do llama.cpp e as armadilhas da quantização.",
+    "readTime": 14,
+    "featured": false,
+    "url": "/guia/qwen3-8-27b-contexto-256k-24gb"
+  },
+  {
+    "slug": "qwen3-8-27b-lento-causas-fixes",
+    "title": "Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma",
+    "category": "Guias",
+    "tags": [
+      "performance",
+      "llama.cpp",
+      "troubleshooting",
+      "MTP"
+    ],
+    "date": "2026-08-19",
+    "lead": "Qwen3.8-27B lento? O decode é igual ao do 3.6. O vilão: reasoning default, MTP desligado ou VRAM estourada — fix de cada causa com ganho medido.",
+    "readTime": 21,
+    "featured": false,
+    "url": "/guia/qwen3-8-27b-lento-causas-fixes"
+  },
+  {
+    "slug": "como-rodar-sglang-qwen3-8-27b",
+    "title": "Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo",
+    "category": "Guias",
+    "tags": [
+      "SGLang",
+      "FP8",
+      "Qwen3.8-27B",
+      "LLM local"
+    ],
+    "date": "2026-08-18",
+    "lead": "Tutorial completo: instale o SGLang, baixe o FP8 oficial do Qwen3.8-27B, suba o servidor com 262K de contexto e valide com benchmark. 206 tok/s na RTX 5090.",
+    "readTime": 14,
+    "featured": false,
+    "url": "/guia/como-rodar-sglang-qwen3-8-27b"
+  },
+  {
+    "slug": "minimax-music3-musica-local",
+    "title": "MiniMax Music3 local: gerando música com 8GB de VRAM",
+    "category": "Guias",
+    "tags": [
+      "música IA",
+      "modelos locais",
+      "MiniMax Music3"
+    ],
+    "date": "2026-08-18",
+    "lead": "Como rodar o MiniMax Music3 local: 8GB de VRAM com group offloading, músicas de 5 min com vocal, prompts em português e licença para uso comercial.",
+    "readTime": 13,
+    "featured": false,
+    "url": "/guia/minimax-music3-musica-local"
+  },
+  {
+    "slug": "qwen3-8-27b-benchmark-artificial-analysis",
+    "title": "Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)",
+    "category": "Benchmarks",
+    "tags": [
+      "benchmarks",
+      "artificial analysis",
+      "modelos locais"
+    ],
+    "date": "2026-08-18",
+    "lead": "52 no Artificial Analysis: o Qwen3.8-27B empatou com o GPT-5.6 Luna e ficou a 1 ponto do DeepSeek V4 Pro (1,7T). O que o dado diz — e o que não diz.",
+    "readTime": 10,
+    "featured": false,
+    "url": "/guia/qwen3-8-27b-benchmark-artificial-analysis"
+  },
+  {
+    "slug": "qwen3-8-27b-reasoning-configuracao-ideal",
+    "title": "Qwen3.8-27B: desativar overthinking e configurar reasoning",
+    "category": "Guias",
+    "tags": [
+      "llama.cpp",
+      "reasoning",
+      "overthinking"
+    ],
+    "date": "2026-08-18",
+    "lead": "Guia prático: desative o overthinking do Qwen3.8-27B com --reasoning-budget, reasoning_effort e MTP no llama.cpp/Ollama. 21 min viram 2 com as flags certas.",
+    "readTime": 12,
+    "featured": false,
+    "url": "/guia/qwen3-8-27b-reasoning-configuracao-ideal"
+  },
+  {
+    "slug": "qwen3-8-27b-visao-videos-local",
+    "title": "Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)",
+    "category": "Guias",
+    "tags": [
+      "multimodal",
+      "visão",
+      "llama.cpp",
+      "OCR"
+    ],
+    "date": "2026-08-18",
+    "lead": "Guia de visão do Qwen3.8-27B local: mmproj GGUF, --mmproj no llama.cpp, imagens no Ollama, OCR de documentos, bounding boxes e vídeo de hora — com benchmarks multimodais.",
+    "readTime": 14,
+    "featured": false,
+    "url": "/guia/qwen3-8-27b-visao-videos-local"
+  },
+  {
+    "slug": "qwen3.8-vs-qwen3-coder-30b-a3b",
+    "title": "Qwen3.8-27B ou Qwen3-Coder 30B-A3B? Veredito por caso de uso (ago/2026)",
+    "category": "Benchmarks",
+    "tags": [],
+    "date": "2026-08-18",
+    "lead": "O coder local mais instalado (11,9M downloads GGUF/mês) contra o 27B novo: MoE de 3,3B ativos vs denso híbrido, GGUF medido em GB, âncora de throughput 3,3×, a nuance do 'deprecated' e veredito por perfil — com fontes.",
+    "readTime": 10,
+    "featured": false,
+    "url": "/guia/qwen3.8-vs-qwen3-coder-30b-a3b"
+  },
+  {
+    "slug": "qwen38-27b-16gb-vram-llama-cpp",
+    "title": "Qwen3.8-27B em 16GB de VRAM: a config llama.cpp que funciona",
+    "category": "Hardware",
+    "tags": [
+      "llama.cpp",
+      "hardware local"
+    ],
+    "date": "2026-08-18",
+    "lead": "Como rodar o Qwen3.8-27B em 16GB de VRAM com llama.cpp: quant IQ4_XS/Q4_K_M, contexto que cabe, speculative decoding n-gram, KV cache q8_0 e t/s reais.",
+    "readTime": 9,
+    "featured": false,
+    "url": "/guia/qwen38-27b-16gb-vram-llama-cpp"
+  },
+  {
+    "slug": "tokens-por-segundo-30b-hardware-real",
+    "title": "Tokens por segundo: Qwen3.8-27B no hardware real — 206 t/s na 5090, 10 t/s na 3060 12GB",
+    "category": "Hardware",
+    "tags": [
+      "Throughput",
+      "Benchmark",
+      "LLM local",
+      "Qwen3.8-27B"
+    ],
+    "date": "2026-08-18",
+    "lead": "Quantos tokens por segundo roda um 30B no seu hardware? Tabela com números medidos: RTX 5090 a 206 t/s, 3090 a 41, Strix Halo a 17, 3060 12GB a 10 — por stack e quantização.",
+    "readTime": 11,
+    "featured": false,
+    "url": "/guia/tokens-por-segundo-30b-hardware-real"
+  },
+  {
+    "slug": "qwen3.8-vs-qwen3.6-27b",
+    "title": "Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade? 26 benchmarks comparados",
+    "category": "Benchmarks",
+    "tags": [],
+    "date": "2026-08-17",
+    "lead": "Comparativo honesto Qwen3.8-27B vs Qwen3.6-27B: os 26 benchmarks do model card, throughput real medido no Strix Halo, tabela GB × GB de VRAM e veredito por perfil de uso.",
+    "readTime": 15,
+    "featured": false,
+    "url": "/guia/qwen3.8-vs-qwen3.6-27b"
+  },
+  {
+    "slug": "agent-memory-leaderboard-resultados",
+    "title": "Agent Memory Leaderboard: os primeiros resultados do benchmark de memória de agentes",
+    "category": "Benchmarks",
+    "tags": [
+      "agent memory",
+      "benchmark",
+      "agentes de IA"
+    ],
+    "date": "2026-08-16",
+    "lead": "65 sistemas de memória avaliados, MemoraX lidera com 58/100. O que o primeiro benchmark padronizado de memória de agentes muda para LLMs locais.",
+    "readTime": 7,
+    "featured": false,
+    "url": "/guia/agent-memory-leaderboard-resultados"
+  },
+  {
+    "slug": "comunidade-casos-uso",
+    "title": "Comunidade e Casos de Uso Reais do Qwen3.8-27B",
+    "category": "Comunidade",
+    "tags": [],
+    "date": "2026-08-16",
+    "lead": "Reações da comunidade (Hacker News, r/LocalLLaMA, X) e casos de uso reais do Qwen3.8-27B: programação agêntica, uso de computador, análise de documentos. O que usuários estão fazendo.",
+    "readTime": 8,
+    "featured": false,
+    "url": "/guia/comunidade-casos-uso"
+  },
+  {
+    "slug": "lemonade-sdk-v11-6-llm-local-gpu-npu-amd",
+    "title": "Lemonade v11.6: serving de LLM local com GPU+NPU — a alternativa AMD ao Ollama",
+    "category": "Hardware",
+    "tags": [
+      "Lemonade",
+      "AMD",
+      "LLM local"
+    ],
+    "date": "2026-08-16",
+    "lead": "Lemonade SDK v11.6 (14/08): serving de LLM local com GPU+NPU, suporte AMD ROCm e MCP server embutido. Alternativa ao Ollama para GPU AMD.",
+    "readTime": 5,
+    "featured": false,
+    "url": "/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd"
+  },
+  {
+    "slug": "benchmarks-comparativos",
+    "title": "Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos",
+    "category": "Benchmarks",
+    "tags": [],
+    "date": "2026-08-15",
+    "lead": "Comparativo completo de benchmarks do Qwen3.8-27B vs modelos de escala similar. LiveCodeBench, SWE-bench, OSWorld, GPQA, 26 resultados do model card oficial.",
+    "readTime": 8,
+    "featured": false,
+    "url": "/guia/benchmarks-comparativos"
+  },
+  {
+    "slug": "hardware-local",
+    "title": "Guia de Hardware para Rodar o Qwen3.8-27B Localmente",
+    "category": "Hardware",
+    "tags": [],
+    "date": "2026-08-15",
+    "lead": "Requisitos de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B localmente. Tabela por nível de quantização, setups recomendados e dicas de configuração.",
+    "readTime": 4,
+    "featured": false,
+    "url": "/guia/hardware-local"
+  },
+  {
+    "slug": "muse-glimmer-30b-agente-local",
+    "title": "Meta Muse Glimmer 30B: o modelo de 30B feito para rodar agentes 24/7 no seu PC",
+    "category": "Releases",
+    "tags": [
+      "Muse Glimmer",
+      "modelo agêntico local",
+      "LLM 30B"
+    ],
+    "date": "2026-08-15",
+    "lead": "Muse Glimmer 30B (Meta): 29,6B denso, Apache 2.0, multimodal e pronto para agentes locais 24/7. Benchmarks, VRAM e como rodar.",
+    "readTime": 8,
+    "featured": false,
+    "url": "/guia/muse-glimmer-30b-agente-local"
+  },
+  {
+    "slug": "quantizacao-gguf-30b-quanto-cabe-na-sua-gpu",
+    "title": "Quantização GGUF: quanto cabe na sua GPU? Tabela real de 30B",
+    "category": "Hardware",
+    "tags": [
+      "quantização GGUF",
+      "hardware local"
+    ],
+    "date": "2026-08-15",
+    "lead": "Tabela real de quantização GGUF (Qwen3.8-27B vs Muse Glimmer 30B) com GB medidos no HF: Q2 a Q8, mmproj, drafter e qual GPU roda cada nível.",
+    "readTime": 5,
+    "featured": false,
+    "url": "/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu"
+  },
+  {
+    "slug": "como-rodar",
+    "title": "Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace",
+    "category": "Guias",
+    "tags": [],
+    "date": "2026-08-14",
+    "lead": "Guia passo a passo para rodar o Qwen3.8-27B localmente via Ollama, llama.cpp, vLLM e HuggingFace. Comandos, configurações, dicas de performance e troubleshooting.",
+    "readTime": 4,
+    "featured": false,
+    "url": "/guia/como-rodar"
+  },
+  {
+    "slug": "qwen3.8-vs-ornith-1-5-35b-a3b",
+    "title": "Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)",
+    "category": "Benchmarks",
+    "tags": [],
+    "date": "2026-08-14",
+    "lead": "O novo MoE local (35B totais / ~3B ativos, MIT) que a SERP EN já compara com o Qwen3.8-27B: benchmarks autodeclarados (Terminal-Bench 2.1 68,5, SWE-bench Verified 79), GGUF Q4_K_M 21,71 GB, 303 tok/s numa 5090 (relato) e o veredito honesto por perfil — com fontes.",
+    "readTime": 13,
+    "featured": false,
+    "url": "/guia/qwen3.8-vs-ornith-1-5-35b-a3b"
+  }
+]
