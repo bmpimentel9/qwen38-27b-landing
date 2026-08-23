@@ -1,0 +1,43 @@
+<!-- ============================================================
+     templates/newsletter.html — Formulário de newsletter (canônico)
+     Card t_8dd9a051 · 3 variações: home (grid-2) · inline (artigo) · mini (footer)
+     Depende de: assets/css/blog-monetizacao.css + assets/js/newsletter.js
+     Endpoint configurável: ver comentários no topo de newsletter.js
+     (window.NEWSLETTER_CONFIG) ou atributo data-endpoint no form.
+     ============================================================ -->
+
+<!-- VARIANTE 1 — Home (seção completa, entre "Por categoria" e o footer) -->
+<section class="newsletter grid-2" aria-labelledby="nl-title">
+  <div>
+    <h2 id="nl-title">Receba o resumo semanal</h2>
+    <p>O que rolou nos modelos locais ≤30B: releases, benchmarks e hardware — em 5 minutos, toda semana.</p>
+  </div>
+  <div>
+    <form class="newsletter-form" action="#" method="post" novalidate>
+      <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+      <button type="submit">Assinar</button>
+    </form>
+    <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+  </div>
+</section>
+
+<!-- VARIANTE 2 — Fim de artigo (inline, após o conteúdo / antes do footer) -->
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate style="margin-top:16px">
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
+<!-- VARIANTE 3 — Footer (mini, coluna Newsletter) -->
+<div class="newsletter mini">
+  <p style="font-size:.85rem;color:var(--muted,var(--fg-2,#8c96ab));margin-bottom:10px">Resumo semanal dos modelos locais ≤30B.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade">política de privacidade</a></p>
+</div>

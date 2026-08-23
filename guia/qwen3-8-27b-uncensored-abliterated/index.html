@@ -232,6 +232,7 @@
         .src { font-size: 0.85rem; color: var(--text-muted); }
         .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -442,9 +443,24 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
         <strong>Continue por aqui:</strong> <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">tabela GGUF com GB medidos</a> · <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning e MTP</a> · <a href="/guia/qwen3-8-27b-visao-videos-local">visão e vídeo locais</a> · <a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang + FP8 oficial</a> · <a href="/guia/faq">FAQ do portal</a>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — Qwen3.8-27B-Uncensored e o ecossistema abliterated | Fontes: README integral de JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (Hugging Face, lido integralmente e verificado em 20/08/2026 — recusas 98→12/100, KL 0,1191, Pareto de 23 pontos, MMLU/ARC/HellaSwag/Winogrande com erros-padrão, PPL por quant, verificação MTP 65/65, bench MTP na H200), README integral de OBLITERATUS/Qwen3.8-27B-OBLITERATED (verificado em 23/08/2026 — V3 "Deep Liberation": tabela V1→V2→V3, MMLU 82,3, 20/20 cyber/código, settings ótimos, receita de cirurgia SVD+LEACE), HF API (downloads/likes/datas/tree de arquivos de JonathanColetti GGUF, orcarouter MLX e FP8 e OBLITERATUS — metadados públicos apenas para o FP8 gated; nada do readme dele foi acessado), GitHub API p-e-w/heretic (27.920 stars, push 17/08/2026) e elder-plinius/OBLITERATUS, Arditi et al. 2024 (arXiv 2406.11717). Nota de transparência: este portal não rodou nenhuma das medições citadas — todas são dos autores dos repos ou do projeto Heretic; a posição editorial é reportar os dados com suas limitações, não endossar usos. Geração deste conteúdo assistida por IA e revisada.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

@@ -1,0 +1,131 @@
+/* ============================================================
+   blog-monetizacao.css — Componentes de monetização do blog
+   ============================================================
+   Escopo deste arquivo (card t_8dd9a051): newsletter, affiliate,
+   slots de anúncio. Compõe com o design system (blog.css) via
+   tokens var(--...) e funciona também com as páginas atuais.
+
+   Tokens usados (com fallback em camadas para as duas eras):
+     --surface · --surface-2 · --border · --bg · --accent
+     texto: --text (design) ou --fg (páginas atuais)
+     muted: --muted (design) ou --fg-2 / --text-muted (atuais)
+
+   Regra de negócio (PRD §8):
+   - Newsletter: 3 placements (home, fim de artigo, footer), sem
+     redirecionar o leitor, sucesso/erro inline via JS.
+   - Affiliate: SÓ em artigos de hardware/compra, com disclosure.
+   - Ads: slots reservados, desligados por padrão (Fase 3).
+   ============================================================ */
+
+/* ---------- 1. Newsletter ---------- */
+.newsletter {
+  --nl-bg: var(--surface, var(--bg-subtle, #151b27));
+  --nl-border: var(--border, #2a3446);
+  --nl-text: var(--text, var(--fg, #e8edf6));
+  --nl-muted: var(--muted, var(--fg-2, var(--text-muted, #8c96ab)));
+  --nl-accent: var(--accent, #2dd4bf);
+  --nl-input-bg: var(--bg, #0b0e14);
+
+  background: var(--nl-bg);
+  border: 1px solid var(--nl-border);
+  border-radius: 12px;
+  padding: 32px;
+  margin: 48px 0;
+}
+
+/* Variação home: texto à esquerda, formulário à direita (≥640px) */
+.newsletter.grid-2 { display: grid; grid-template-columns: 1fr 1.2fr; gap: 32px; align-items: center; }
+
+.newsletter h2 { font-size: 1.3rem; margin: 0 0 8px; color: var(--nl-text); }
+.newsletter p { color: var(--nl-muted); font-size: .92rem; margin: 0; }
+
+/* Formulário */
+.newsletter-form { display: flex; gap: 12px; margin-top: 16px; }
+.newsletter-form input[type="email"] {
+  flex: 1; min-width: 0;
+  background: var(--nl-input-bg);
+  border: 1px solid var(--nl-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--nl-text);
+  font-size: .92rem;
+  font-family: inherit;
+}
+.newsletter-form input:focus { border-color: var(--nl-accent); outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--nl-accent) 25%, transparent); }
+.newsletter-form input[aria-invalid="true"] { border-color: #f87171; }
+.newsletter-form button {
+  background: var(--nl-accent);
+  color: var(--nl-input-bg);
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: .9rem;
+  font-family: inherit;
+}
+.newsletter-form button:disabled { opacity: .6; cursor: progress; }
+
+/* Feedback inline (preenchido pelo JS — aria-live) */
+.newsletter-status {
+  margin-top: 10px;
+  font-size: .82rem;
+  min-height: 1.2em;
+  color: var(--nl-muted);
+}
+.newsletter-status[data-state="success"] { color: var(--accent-2, #4ade80); }
+.newsletter-status[data-state="error"] { color: var(--accent-5, #f87171); }
+.newsletter-status[data-state="info"] { color: var(--accent-3, #f5b841); }
+
+/* Microcopy (consentimento/privacidade) — funciona dentro e fora de .newsletter */
+.newsletter .microcopy, .microcopy { font-size: .75rem; color: var(--nl-muted, var(--muted, var(--fg-2, var(--text-muted, #8c96ab)))); margin-top: 8px; }
+.newsletter .microcopy a, .microcopy a { color: var(--nl-muted, var(--muted, var(--fg-2, var(--text-muted, #8c96ab)))); text-decoration: underline; }
+.newsletter .microcopy a:hover, .microcopy a:hover { color: var(--nl-accent, var(--accent, #2dd4bf)); }
+
+/* Variação mini (footer) */
+.newsletter.mini { background: none; border: none; border-radius: 0; padding: 0; margin: 0; }
+.newsletter.mini .newsletter-form { flex-direction: column; gap: 8px; margin-top: 10px; }
+.newsletter.mini .newsletter-form button { align-self: flex-start; }
+
+/* ---------- 2. Affiliate (só hardware/compra — PRD §8.2) ---------- */
+.affiliate {
+  --af-bg: var(--surface-2, #1c2433);
+  --af-border: var(--border, #2a3446);
+  --af-text: var(--text, var(--fg, #e8edf6));
+  --af-muted: var(--muted, var(--fg-2, var(--text-muted, #8c96ab)));
+  --af-accent: var(--accent, #2dd4bf);
+
+  background: var(--af-bg);
+  border: 1px solid var(--af-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+}
+.affiliate h3 { font-size: 1.05rem; margin: 0 0 8px; color: var(--af-text); display: flex; align-items: center; gap: 8px; }
+.affiliate .affiliate-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.affiliate table { width: 100%; border-collapse: collapse; min-width: 320px; }
+.affiliate th, .affiliate td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--af-border); font-size: .9rem; }
+.affiliate th { color: var(--af-muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+.affiliate td { color: var(--af-text); }
+.affiliate a[rel] { color: var(--af-accent); white-space: nowrap; }
+.affiliate .disclosure { font-size: .78rem; color: var(--af-muted); margin: 12px 0 0; }
+
+/* ---------- 3. Slots de anúncio (desligados — PRD §8.3) ---------- */
+/*
+   ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon).
+   Fase 3 = trocar display:none por display:block + 1 script.
+   Política: 1 ad por página, sem tracking extra, sem interromper leitura.
+*/
+.ad-slot { display: none; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 640px) {
+  .newsletter { padding: 24px; }
+  .newsletter.grid-2 { grid-template-columns: 1fr; }
+  .newsletter-form { flex-direction: column; }
+  .newsletter-form button { width: 100%; }
+}
+
+/* Tema claro: o componente herda os tokens do tema via var() —
+   nenhuma regra extra necessária aqui. */

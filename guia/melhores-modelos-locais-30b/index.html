@@ -242,6 +242,7 @@
         tr.row-dim td { opacity: 0.55; }
         @media (max-width: 640px) { body { padding: 12px; } th, td { padding: 8px 10px; } .filter-btn { padding: 5px 10px; font-size: 0.8rem; } }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -686,9 +687,24 @@
         <p>Todos os dez rodam 100% local via llama.cpp ou Ollama — baixou o GGUF, desligou o roteador, seguiu trabalhando. Nenhum dado sai da máquina; a única dependência externa é o download inicial no Hugging Face.</p>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — Melhores modelos locais de 30B: os 11 que valem o download | Fontes: model cards oficiais Qwen/Qwen3.8-27B e Qwen3.6-27B, meta-models/Muse-Glimmer-30B, OpenAI "Introducing gpt-oss" + arXiv 2508.10925 Table 3, deepseek-ai/DeepSeek-V4-Flash, Gemma 3 Technical Report (arXiv 2503.19786, Tables 6/18), Z.ai/GLM-4.7-Flash, nvidia/Nemotron-Cascade-2-30B-A3B, google/gemma-4-31B-it, ServiceNow-AI/Apriel-1.6-15b-Thinker, Qwen/Qwen3-Coder-30B-A3B (model cards, verificados 20/08/2026), GGUFs Unsloth (GLM, Gemma 4, Qwen3-Coder) e bartowski (Nemotron, Apriel), glukhov.org/pt (teste OpenCode), GGUFs Unsloth (Muse, Qwen, DeepSeek V4), llama.cpp discussion #15396 (GPT-OSS 20B, 11,27 GiB), Artificial Analysis Intelligence Index v4.1.1 (verificado 18/08), r/LocalLLaMA 1vqrt86/1voa3ch/1vonuu0/1vpiyj9 e r/Qwen_AI 1volui5 (pesquisa PO 19/08), SOURCES-BENCHMARKS.md e medições próprias no Strix Halo. Benchmarks de fabricantes distintos usam harnesses próprios: comparações entre model cards são ordem de grandeza.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/muse-glimmer-30b-agente-local">Muse Glimmer</a> | <a href="/guia/qwen3.8-vs-qwen3.6-27b">3.8 vs 3.6</a> | <a href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">Qwen3.8 vs Coder</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo</a> | <a href="#rivais-30b">Rivais 30B</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

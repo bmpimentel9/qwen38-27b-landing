@@ -113,6 +113,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   window.addEventListener('scroll',onScroll,{passive:true});
 })();
 </script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -298,6 +299,20 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <p><strong>Metodologia:</strong> ratios do paper verificados ao vivo no HTML do arXiv em 21/08/2026 (EN 1,35 / ES 1,60 / AR 4,37 como spot-check). Tabela PPL do portal: medição própria (llama.cpp, WikiText-2 — corpus em inglês —, mesma sessão, baseline f16). A estimativa para português é inferência editorial por vizinhança tipológica — rotulada como tal em toda ocorrência, conforme a regra de honestidade do portal.</p>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal Qwen3.8-27B | Dados baseados em especificações oficiais (Hugging Face, Qwen Blog, Ollama) e medições próprias.</p>
         <p>Última atualização: 21/08/2026 | Publicado em <a href="/guia">guia</a></p>
@@ -351,5 +366,6 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   ]
 }
 </script>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>

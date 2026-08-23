@@ -75,7 +75,7 @@
     ],
     "date": "2026-08-20",
     "lead": "Recusas 98→12/100, MTP re-enxertado e o OBLITERATUS V3: 20/20 em cyber, thinking ON e MMLU −2,1pp — anatomia do ecossistema abliterated.",
-    "readTime": 18,
+    "readTime": 19,
     "featured": true,
     "url": "/guia/qwen3-8-27b-uncensored-abliterated"
   },
@@ -182,7 +182,7 @@
     ],
     "date": "2026-08-18",
     "lead": "52 no Artificial Analysis: o Qwen3.8-27B empatou com o GPT-5.6 Luna e ficou a 1 ponto do DeepSeek V4 Pro (1,7T). O que o dado diz — e o que não diz.",
-    "readTime": 10,
+    "readTime": 11,
     "featured": false,
     "url": "/guia/qwen3-8-27b-benchmark-artificial-analysis"
   },
@@ -238,7 +238,7 @@
     ],
     "date": "2026-08-18",
     "lead": "Como rodar o Qwen3.8-27B em 16GB de VRAM com llama.cpp: quant IQ4_XS/Q4_K_M, contexto que cabe, speculative decoding n-gram, KV cache q8_0 e t/s reais.",
-    "readTime": 9,
+    "readTime": 10,
     "featured": false,
     "url": "/guia/qwen38-27b-16gb-vram-llama-cpp"
   },
@@ -328,7 +328,7 @@
     "tags": [],
     "date": "2026-08-15",
     "lead": "Requisitos de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B localmente. Tabela por nível de quantização, setups recomendados e dicas de configuração.",
-    "readTime": 4,
+    "readTime": 5,
     "featured": false,
     "url": "/guia/hardware-local"
   },
@@ -357,7 +357,7 @@
     ],
     "date": "2026-08-15",
     "lead": "Tabela real de quantização GGUF (Qwen3.8-27B vs Muse Glimmer 30B) com GB medidos no HF: Q2 a Q8, mmproj, drafter e qual GPU roda cada nível.",
-    "readTime": 5,
+    "readTime": 6,
     "featured": false,
     "url": "/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu"
   },

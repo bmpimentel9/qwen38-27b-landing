@@ -186,6 +186,7 @@
   pre code { overflow-wrap: normal; }
 }
     </style>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
 </head>
 <body>
     <header>
@@ -461,9 +462,24 @@ curl http://localhost:11434/api/chat -d '{
         <p>OmniDocBench 91,1 (documentos), MathVision 94,6 com CI (matemática visual), CharXiv 90,2 (gráficos) e Vision2Web 62,9 (web por screenshot) — todos do model card oficial, com comparativos contra Qwen3.6-27B na tabela deste guia.</p>
     </div>
 
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
     <footer>
         <p>Portal de modelos locais de 30B — Visão, vídeo e OCR no Qwen3.8-27B | Fontes: model card oficial Qwen/Qwen3.8-27B no Hugging Face (seção VL Performance, lida em 18/08/2026), docs multimodal do llama.cpp (libmtmd, 18/08/2026), biblioteca Ollama qwen3.8 + doc capabilities/vision (18/08/2026), review Simon Willison 16/08/2026 (bbox_2d/bbox-lab), Hugging Face API (tamanhos de arquivo e downloads, 18/08/2026).</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/modelos">Catálogo de modelos</a> | <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Configuração de reasoning</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
+  <script defer src="/assets/js/newsletter.js"></script>
 </body>
 </html>
