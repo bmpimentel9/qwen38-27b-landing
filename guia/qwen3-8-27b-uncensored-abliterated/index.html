@@ -5,8 +5,8 @@
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias (guia 2026)</title>
-    <meta name="description" content="Recusas 98→12/100 com KL 0,1191 e MMLU −0,2: como o Heretic abliterated o Qwen3.8-27B quase sem perda, o re-enxerto do MTP e a escolha de quant (PPL real do wikitext-2).">
-    <meta name="keywords" content="qwen 3.8 uncensored, qwen 3.8 abliterated, modelo local sem censura, heretic llm, uncensored gguf, abliterated, refusal direction, qwen3.8-27b uncensored gguf, decensored, mtp speculative decoding, quantização gguf 30b">
+    <meta name="description" content="Recusas 98→12/100, MTP re-enxertado e o OBLITERATUS V3: 20/20 em cyber, thinking ON e MMLU −2,1pp — anatomia do ecossistema abliterated.">
+    <meta name="keywords" content="qwen 3.8 uncensored, qwen 3.8 abliterated, modelo local sem censura, heretic llm, uncensored gguf, abliterated, refusal direction, qwen3.8-27b uncensored gguf, decensored, obliteratus, deep liberation, mtp speculative decoding, quantização gguf 30b">
     <meta name="author" content="Bruno Pimentel">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">
@@ -14,7 +14,7 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Qwen3.8-27B — Portal de modelos locais de 30B">
     <meta property="og:title" content="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência">
-    <meta property="og:description" content="O GGUF abliterated com Heretic que fez 979.768 downloads em 6 dias: recusas 98→12/100 com KL 0,1191, MMLU 83,4→83,3, MTP re-enxertado e verificado arquivo por arquivo, e a tabela PPL real por quant.">
+    <meta property="og:description" content="O GGUF abliterated com Heretic que fez 979.768 downloads em 6 dias: recusas 98→12/100 com KL 0,1191, MMLU 83,4→83,3, MTP re-enxertado e verificado arquivo por arquivo, a tabela PPL real por quant — e o OBLITERATUS V3 'Deep Liberation' (20/20 em cyber, thinking ON compatível, MMLU 82,3).">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">
     <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
     <meta property="article:published_time" content="2026-08-20T00:00:00-03:00">
@@ -24,7 +24,7 @@
     <meta property="article:tag" content="ecossistema">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda">
-    <meta name="twitter:description" content="Recusas 98→12/100, KL 0,1191, MMLU −0,2 e o MTP re-enxertado: a anatomia técnica do abliterated mais baixado do Qwen3.8-27B — e como escolher o quant pelo PPL real.">
+    <meta name="twitter:description" content="Recusas 98→12/100, KL 0,1191, MMLU −0,2, MTP re-enxertado e o OBLITERATUS V3 'Deep Liberation' (20/20 cyber, thinking ON, MMLU 82,3): a anatomia do ecossistema abliterated do Qwen3.8-27B.">
     <meta name="twitter:site" content="@bmpimentel9">
     <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
@@ -50,16 +50,17 @@
         {
           "@type": "TechArticle",
           "headline": "Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência",
-          "description": "Anatomia técnica do ecossistema abliterated do Qwen3.8-27B: o GGUF de JonathanColetti fez 979.768 downloads em 6 dias removendo direções de recusa com o Heretic (recusas 98/100 → 12/100 em 100 prompts nocivos held-out, KL de primeiro token 0,1191 vs base), com MMLU 83,4→83,3 e demais deltas dentro do erro-padrão. Detalhe exclusivo: a abliteration derruba os tensores mtp.*, que o autor re-enxerta do checkpoint base e verifica arquivo por arquivo. Inclui a fronteira de Pareto publicada (23 pontos não-dominados em 200 trials), a tabela de PPL wikitext-2 por quant com o aviso de não-ordenabilidade e o guia de escolha de quant.",
+          "description": "Anatomia técnica do ecossistema abliterated do Qwen3.8-27B: o GGUF de JonathanColetti fez 979.768 downloads em 6 dias removendo direções de recusa com o Heretic (recusas 98/100 → 12/100 em 100 prompts nocivos held-out, KL de primeiro token 0,1191 vs base), com MMLU 83,4→83,3 e demais deltas dentro do erro-padrão. Detalhe exclusivo: a abliteration derruba os tensores mtp.*, que o autor re-enxerta do checkpoint base e verifica arquivo por arquivo. Inclui a fronteira de Pareto publicada (23 pontos não-dominados em 200 trials), a tabela de PPL wikitext-2 por quant com o aviso de não-ordenabilidade e o guia de escolha de quant. Atualizado em 23/08 com o OBLITERATUS V3 'Deep Liberation' (OBLITERATUS/Qwen3.8-27B-OBLITERATED): eliminação de recusas duras E deflexões suaves, MMLU 82,3 (−2,1pp vs stock), 20/20 em tarefas cyber/código, thinking-mode compatível, settings ótimos documentados e 5 GGUFs (IQ4_XS 15,42 a Q8_0 29,05 GB).",
           "inLanguage": "pt-BR",
           "datePublished": "2026-08-20",
-          "dateModified": "2026-08-20",
+          "dateModified": "2026-08-23",
           "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
           "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
           "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated",
           "about": [
             { "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#uncensored-gguf" },
-            { "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#heretic" }
+            { "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#heretic" },
+            { "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#obliteratus" }
           ],
           "proficiencyLevel": "Advanced",
           "dependencies": "llama.cpp com suporte a MTP speculative decoding (PR #22673); GGUF do JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (IQ2_M a Q8_0); GPU com 10,6–29 GB conforme o quant escolhido"
@@ -87,6 +88,20 @@
           "description": "Ferramenta de código aberto (27.920 stars, push 17/08/2026) que automatiza a abliteration de LLMs: calcula direções de recusa (método de Arditi et al. 2024, arXiv 2406.11717) e otimiza a intensidade da remoção por TPE/Optuna, co-minimizando o número de recusas contra a divergência KL em relação ao modelo base. Produz ablations com KL bem menor que as abliterations manuais.",
           "url": "https://github.com/p-e-w/heretic",
           "author": { "@type": "Person", "name": "p-e-w" },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "isAccessibleForFree": true
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated#obliteratus",
+          "name": "Qwen3.8-27B-OBLITERATED",
+          "applicationCategory": "AIModel",
+          "operatingSystem": "Linux, Windows, macOS",
+          "softwareVersion": "V3 (Deep Liberation)",
+          "description": "Derivado abliterated do Qwen3.8-27B publicado por Pliny the Prompter (suite OBLITERATUS, github.com/elder-plinius/OBLITERATUS) em 19/08/2026 e atualizado para a V3 'Deep Liberation' em 23/08/2026: combinação complementar de cirurgias SVD + LEACE (V2) refinada iterativamente com corpus direcionado (V3), eliminando recusas duras e deflexões suaves (safety lectures). MMLU 82,3 (−2,1pp vs stock 84,5), 20/20 em tarefas cyber/código com código funcional, 7/8 em tarefas avançadas do mundo real, thinking-mode compatível. 244.834 downloads e 577 likes (verificado 23/08/2026). Apache 2.0.",
+          "url": "https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED",
+          "author": { "@type": "Person", "name": "Pliny the Prompter" },
+          "license": "https://www.apache.org/licenses/LICENSE-2.0",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
           "isAccessibleForFree": true
         },
@@ -263,6 +278,7 @@
             <li><a href="#mtp">O detalhe que quase passou: MTP re-enxertado e verificado</a></li>
             <li><a href="#quant">Qual quant escolher: a tabela PPL real (e o que ela não diz)</a></li>
             <li><a href="#ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</a></li>
+            <li><a href="#obliteratus">OBLITERATUS V3 — Deep Liberation: a quarta peça do ecossistema</a></li>
             <li><a href="#limites">O que esses números NÃO dizem (limitações explícitas)</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
         </ul>
@@ -359,7 +375,7 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
     <p>Um detalhe de engenharia que diferencia o repo: a <strong>imatrix</strong> (matriz de importância para a quantização) é calculada direto do f16 — não de um quant intermediário — com wikitext-2 raw, 200 chunks, e é publicada junto (13,6 MB) para quem quiser construir tamanhos que o repo não publica. A tabela de GB por quant do modelo base (com mmproj e drafter para comparação) está no nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização</a>.</p>
 
     <h2 id="ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</h2>
-    <p>O GGUF do JonathanColetti é a âncora, mas o ecossistema Uncensored do Qwen3.8-27B tem três repos ativos:</p>
+    <p>O GGUF do JonathanColetti é a âncora, mas o ecossistema Uncensored do Qwen3.8-27B tem três repos ativos — e um quarto ator independente, o <a href="#obliteratus">OBLITERATUS/Qwen3.8-27B-OBLITERATED</a> (V3 "Deep Liberation", coberto na próxima seção):</p>
     <table>
         <tr><th>Repo</th><th>Formato</th><th>Downloads (20/08)</th><th>Likes</th><th>Estado</th></tr>
         <tr class="highlight"><td>JonathanColetti/…-GGUF</td><td>GGUF IQ2_M–Q8_0</td><td>979.768</td><td>510</td><td>Criado 14/08, última alteração 16/08</td></tr>
@@ -368,6 +384,21 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
     </table>
     <p>Sobre o MLX (Apple Silicon): publicado pelo orcarouter com quants de 2 a 8-bit, <strong>visão preservada em BF16</strong> e as tags <code>ai-red-team</code> / <code>red-teaming</code> — o posicionamento declarado do repo é ferramenta de segurança, não produto de consumo. É o caminho para Mac (o guia de visão multimodal do portal, que cobre o modelo base no llama.cpp/Ollama, está <a href="/guia/qwen3-8-27b-visao-videos-local">aqui</a>).</p>
     <p>Sobre o FP8: 76.109 downloads e 675 likes — mas o repo é <strong>gated</strong> (exige login e aceite de termos para ver o conteúdo). Por isso este artigo cita apenas os metadados públicos dele (downloads, likes, tags, datas); nada do que está escrito no readme dele foi lido ou verificado por este portal. Se você precisa de FP8 non-gated do modelo base, o checkpoint oficial <code>Qwen/Qwen3.8-27B-FP8</code> tem nosso <a href="/guia/como-rodar-sglang-qwen3-8-27b">guia completo de SGLang</a>.</p>
+
+    <h2 id="obliteratus">OBLITERATUS V3 — Deep Liberation: a quarta peça do ecossistema</h2>
+    <p>Enquanto o ecossistema do JonathanColetti evoluía ao redor do GGUF, um quarto ator entrou no radar: o <a href="https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED">OBLITERATUS/Qwen3.8-27B-OBLITERATED</a>, publicado por <strong>Pliny the Prompter</strong> (a suite de abliteration <a href="https://github.com/elder-plinius/OBLITERATUS">OBLITERATUS</a> é do elder-plinius). Criado em 19/08, o repo foi atualizado para a <strong>V3 "Deep Liberation"</strong> em <strong>23/08 03:58 UTC</strong> e soma <strong>244.834 downloads e 577 likes</strong> (verificado na HF API em 23/08), licença Apache 2.0. É o mesmo objetivo do GGUF do JonathanColetti — remover a recusa por edição de pesos, sem fine-tuning — mas com uma evolução de método própria: em vez de uma única cirurgia, a combinação de técnicas que o autor batizou de <em>complementary abliteration blending</em>.</p>
+    <table>
+        <tr><th>Versão</th><th>MMLU (0-shot)</th><th>vs stock</th><th>Recusa dura</th><th>Deflexão suave</th><th>Cyber/código</th><th>Thinking</th></tr>
+        <tr><td>Stock Qwen3.8-27B</td><td>84,5</td><td>—</td><td>recusa</td><td>recusa</td><td>não medido</td><td>✓</td></tr>
+        <tr><td>V1 — Single Surgery</td><td>81,4</td><td>−6,0pp</td><td>removida</td><td>? (não testado)</td><td>não testado</td><td>✗</td></tr>
+        <tr><td>V2 — Complementary Blend</td><td>84,3</td><td>−0,3pp</td><td>removida</td><td><strong>permanece</strong> (safety lectures)</td><td>não testado</td><td>✗ (recusa)</td></tr>
+        <tr class="highlight"><td><strong>V3 — Deep Liberation</strong></td><td><strong>82,3</strong></td><td><strong>−2,1pp</strong></td><td><strong>removida</strong></td><td><strong>removida</strong> ✅</td><td><strong>20/20</strong> com código funcional</td><td><strong>✓</strong></td></tr>
+    </table>
+    <p><strong>O salto da V3 não é o MMLU — é o comportamento.</strong> A V2 já quase não perdia inteligência (−0,3pp), mas ainda <em>defletia</em> em consultas simples: respondia com uma safety lecture sem substância em vez de um "não posso". A V3 ataca exatamente isso com duas ideias: <em>refinamento iterativo</em> (nunca recomeça do stock; cada rodada refina o campeão da rodada anterior) e <em>cirurgia direcionada com corpus focado</em> (um corpus específico para cada categoria de deflexão acha a direção de recusa única daquela categoria sem diluir o sinal). O resultado é a remoção tanto da recusa dura quanto da deflexão suave — e as tarefas <strong>20/20 cyber/código</strong> entregam implementações funcionais, não disclaimers. O custo em MMLU (−2,1pp) fica entre o zero da V2 e o −6 da V1, e é o maior dano em STEM (−3,3pp), com humanities quase intactas (−1,0pp).</p>
+    <p><strong>Thinking-mode compatível</strong> — o detalhe que separa a V3 da V2: a V2 recusava com o thinking ligado; a V3 responde nos dois modos. O template de chat da V3 vem com um prefill que pula a cadeia de pensamento por padrão (thinking OFF), e o README recomenda deixá-lo assim para respostas mais diretas. Atenção para usuários de GGUF: use o template embutido do modelo com <code>--jinja</code> no llama.cpp (ou o template nativo no Ollama/LM Studio) — é ele que carrega o prefill.</p>
+    <div class="callout"><strong>Settings ótimos documentados (tradução literal do README):</strong> temperature <strong>0</strong> (greedy; acima de 0,5 degrada) · repetition_penalty <strong>1,15</strong> (essencial — sem ele o greedy loopa em imports/boilerplate) · max_new_tokens <strong>≥ 2048</strong> · system prompt <strong>none/vazio</strong> ("naked is better" — A/B testado; system prompts podem reintroduzir recusas) · enable_thinking <strong>OFF recomendado</strong> · top_p/top_k/min_p <strong>não necessários</strong>.</div>
+    <p><strong>Arquivos publicados (tree HF verificada em 23/08):</strong> 5 GGUFs — IQ4_XS <strong>15,42 GB</strong> · Q4_K_M <strong>16,81 GB</strong> · Q5_K_M <strong>19,54 GB</strong> · Q6_K <strong>22,43 GB</strong> · Q8_0 <strong>29,05 GB</strong> — mais <strong>mmproj-model-bf16.gguf 0,93 GB</strong> (visão preservada). Há também safetensors BF16 (29 shards, ~54 GB) para Transformers; MLX está pendente do upstream <code>mlx_lm</code> dar suporte à arquitetura. O README documenta a receita de cirurgia com transparência: V2 = 60% LEACE + 40% SVD (LERP no espaço de pesos) com MTP e visão restaurados do stock; V3 = refinamento gentil (SVD 2-dir) + cirurgia direcionada (SVD 3-dir) com blend 50/50, restaurando MTP e visão do stock com o nome de tensores correto.</p>
+    <div class="callout-warn"><strong>O que este repo NÃO certifica (do próprio README):</strong> as 20/20 tarefas cyber/código e as 7/8 tarefas do mundo real são avaliações do autor com auditoria manual (1000+ prompts, cada resposta conferida por substância real), não benchmarks independentes; o MMLU de 82,3 é 0-shot no lm-eval-harness do autor, na mesma linha metodológica do GGUF do JonathanColetti — comparável entre as versões dele, não aos números few-shot da Qwen. O README é explícito sobre o público: pesquisa de alinhamento, red-teaming e avaliação de segurança — e igualmente explícito sobre o que o modelo agora atende: pedidos que o stock recusaria. A posição editorial deste portal segue a mesma da seção abaixo: reportamos a medição com suas limitações, sem endosso.</div>
 
     <h2 id="limites">O que esses números NÃO dizem (limitações explícitas)</h2>
     <p>O README do GGUF é incomum na quantidade de caveats que publica — e é justo reportá-las, porque elas definem o alcance real de cada claim:</p>
@@ -412,7 +443,7 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
     </div>
 
     <footer>
-        <p>Portal de modelos locais de 30B — Qwen3.8-27B-Uncensored e o ecossistema abliterated | Fontes: README integral de JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (Hugging Face, lido integralmente e verificado em 20/08/2026 — recusas 98→12/100, KL 0,1191, Pareto de 23 pontos, MMLU/ARC/HellaSwag/Winogrande com erros-padrão, PPL por quant, verificação MTP 65/65, bench MTP na H200), HF API (downloads/likes/datas de JonathanColetti GGUF, orcarouter MLX e FP8 — metadados públicos apenas para o FP8 gated; nada do readme dele foi acessado), GitHub API p-e-w/heretic (27.920 stars, push 17/08/2026), Arditi et al. 2024 (arXiv 2406.11717). Nota de transparência: este portal não rodou nenhuma das medições citadas — todas são do autor do repo ou do projeto Heretic; a posição editorial é reportar os dados com suas limitações, não endossar usos. Geração deste conteúdo assistida por IA e revisada.</p>
+        <p>Portal de modelos locais de 30B — Qwen3.8-27B-Uncensored e o ecossistema abliterated | Fontes: README integral de JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (Hugging Face, lido integralmente e verificado em 20/08/2026 — recusas 98→12/100, KL 0,1191, Pareto de 23 pontos, MMLU/ARC/HellaSwag/Winogrande com erros-padrão, PPL por quant, verificação MTP 65/65, bench MTP na H200), README integral de OBLITERATUS/Qwen3.8-27B-OBLITERATED (verificado em 23/08/2026 — V3 "Deep Liberation": tabela V1→V2→V3, MMLU 82,3, 20/20 cyber/código, settings ótimos, receita de cirurgia SVD+LEACE), HF API (downloads/likes/datas/tree de arquivos de JonathanColetti GGUF, orcarouter MLX e FP8 e OBLITERATUS — metadados públicos apenas para o FP8 gated; nada do readme dele foi acessado), GitHub API p-e-w/heretic (27.920 stars, push 17/08/2026) e elder-plinius/OBLITERATUS, Arditi et al. 2024 (arXiv 2406.11717). Nota de transparência: este portal não rodou nenhuma das medições citadas — todas são dos autores dos repos ou do projeto Heretic; a posição editorial é reportar os dados com suas limitações, não endossar usos. Geração deste conteúdo assistida por IA e revisada.</p>
         <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização</a> | <a href="/guia/faq">FAQ</a></p>
     </footer>
 </body>

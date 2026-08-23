@@ -8,6 +8,16 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-23] — Página uncensored: OBLITERATUS V3 "Deep Liberation" (t_0e16ae1c)
+
+### Added
+- **Seção "OBLITERATUS V3 — Deep Liberation: a quarta peça do ecossistema"** em `guia/qwen3-8-27b-uncensored-abliterated`: repo OBLITERATUS/Qwen3.8-27B-OBLITERATED (Pliny the Prompter / suite elder-plinius, criado 19/08, V3 atualizado 23/08 03:58 UTC) — tabela V1→V2→V3 (MMLU 84,5→81,4→84,3→82,3; recusa dura e deflexão suave; cyber/código 20/20; thinking-mode compatível na V3), método de *complementary abliteration blending* (SVD+LEACE), settings ótimos documentados (temp 0 · repetition_penalty 1,15 · max ≥2048 · sem system prompt · thinking OFF), 5 GGUFs (IQ4_XS 15,42 a Q8_0 29,05 GB + mmproj 0,93) e callout de honestidade com limitações do próprio README.
+- **JSON-LD**: SoftwareApplication `#obliteratus` (Qwen3.8-27B-OBLITERATED, V3 Deep Liberation, 244.834 downloads/577 likes, Apache 2.0) + `about` estendido no TechArticle; dateModified 2026-08-23.
+
+### Changed
+- **Meta/description/OG/Twitter** da página uncensored: menção ao OBLITERATUS V3 e keywords `obliteratus`, `deep liberation` (grep "obliterat" no repo passou de 0 ocorrências).
+- **Sitemap.xml**: lastmod de `guia/qwen3-8-27b-uncensored-abliterated` atualizado para 2026-08-23 (a página já tinha entrada própria — nenhuma URL nova).
+
 ## [2026-08-22] — Comunidade: novos relatos de cibersegurança com MCPs e cloth simulator single-shot (t_f4533dbe)
 
 ### Added
