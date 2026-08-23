@@ -31,6 +31,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 - **Meta/description/OG/Twitter** da página uncensored: menção ao OBLITERATUS V3 e keywords `obliteratus`, `deep liberation` (grep "obliterat" no repo passou de 0 ocorrências).
 - **Sitemap.xml**: lastmod de `guia/qwen3-8-27b-uncensored-abliterated` atualizado para 2026-08-23 (a página já tinha entrada própria — nenhuma URL nova).
 
+## [2026-08-23] — Artigo-veredicto "Qwen3.8-27B ou Ornith-1.5-35B-A3B?" (t_65080d35)
+
+### Added
+- **Artigo-veredicto** `guia/qwen3.8-vs-ornith-1-5-35b-a3b/index.html`: o novo MoE local (35B/3B ativos, MIT, trending no HF) contra o 27B denso — tabela do par, tabela GGUF oficial + AD-quants AtomicChat, veredito por perfil, aviso de honestidade BenchLM (49,3/100, rank #136, coverage insuficiente), 4 FAQs e JSON-LD TechArticle + FAQPage.
+- **llms.txt**: 3 inserções aditivas — bullet novo no dossiê de vereditos (Código/agentes ≤30B), entrada nova na lista de páginas e FAQ nova (Qual o melhor modelo local para código e agentes em 2026?).
+- **FAQ** (`guia/faq/index.html`): 37ª pergunta "Qwen3.8-27B ou Ornith-1.5-35B-A3B para código e agentes?" na seção Comparações (h3 + Question JSON-LD com paridade).
+- **Sitemap.xml**: 35 → 36 URLs (nova página com priority 0.8, lastmod 2026-08-23).
+- **Guia** (`guia/index.html`): card novo no topo do card-grid (Comparativo, Novo 23/08).
+
 ## [2026-08-22] — Comunidade: novos relatos de cibersegurança com MCPs e cloth simulator single-shot (t_f4533dbe)
 
 ### Added
