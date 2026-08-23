@@ -8,6 +8,26 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-23] — Guia dedicado: Qwen3.8-27B no Mac (Apple Silicon) — Metal, MLX e MTP no M5 (t_6b9b0c91)
+
+### Added
+- **Primeiro guia por SO do portal** (`guia/qwen3-8-27b-no-mac/index.html`): Mac deixou de ser menção de passagem (antes só em 10 guias + FAQ "roda no Mac?"). Cobre a keyword "rodar ia no mac" (KD 15) + cauda longa "qwen3.8 no mac" / "qwen3.8 apple silicon" com zero concorrência PT dedicada.
+- **Memória unificada como decisão central**: quant ideal por máquina (4-bit Q4_K_M ~16-19 GB em Mac 24 GB, 6-bit ~21-22 GB em 32 GB, 8-bit ~27-30 GB em 48 GB+, BF16 ~55,6 GB em 96-128 GB), custo do KV cache (~64 KB/token — só 16 das 64 camadas são full-attention), janela 262K = orçamento de servidor.
+- **Banda como gargalo**: tabela teórica M4 base (~120 GB/s → ~5-6 tok/s) a M5 Max (~600 GB/s → ~17-18 tok/s), com medição independente oMLX (M5 Max 8-bit: 17,8 tok/s @8K, 841,6 prefill, pico 30,4 GB).
+- **3 caminhos de instalação** com comandos: Ollama MLX (`qwen3.8:27b-mlx`, 18 GB, 256K), mlx-lm (conversão + serving), llama.cpp Metal (MTP + KV quantizado). Tabela de tags MLX do Ollama.
+- **MTP no Mac com honestidade**: número próprio do portal (MacBook M5 24 GB: 7,16 → 10,47 tok/s, 1,46×) + paridade/regressão em M4 base (code +9-10%, prosa −22-24%), +6,1% no M3 Ultra, 1,8× no M5 Max (Muse Glimmer/DFlash) e o porquê físico (Metal não amortiza batch pequeno: 1,22× vs 3,34× no batch-8).
+- **Armadilhas específicas**: 16 GB não roda, reasoning xhigh que parece lentidão, template trap no MLX, `-b 512 -ub 512` e `iogpu.wired_limit_mb` no 24 GB, regressão IQ4_XS, swap é morte, cold start Metal, regressão 3.8 vs 3.6 no M5 Max.
+- **JSON-LD**: TechArticle + HowTo (5 passos) + FAQPage (6 perguntas) + BreadcrumbList.
+
+### Changed
+- **Sitemap.xml**: 31 → 32 URLs (`guia/qwen3-8-27b-no-mac`, priority 0.8, lastmod 2026-08-23).
+- **Guia hub** (`guia/index.html`): card novo "Qwen3.8-27B no Mac (Apple Silicon)" no topo do grid.
+- **FAQ** (`guia/faq/index.html`): resposta "roda no Mac?" expandida (24 GB como piso, quants por máquina, M5 MTP 1,46×) + link para o guia — HTML e JSON-LD.
+- **Hardware** (`guia/hardware-local/index.html`): seção Mac linka o guia dedicado.
+- **llms.txt**: entrada nova com stats citáveis + FAQ "roda no Mac?" reescrita com piso de 24 GB e números do M5.
+
+---
+
 ## [2026-08-23] — Página uncensored: OBLITERATUS V3 "Deep Liberation" (t_0e16ae1c)
 
 ### Added
