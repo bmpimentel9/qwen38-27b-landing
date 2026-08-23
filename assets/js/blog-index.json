@@ -368,7 +368,7 @@
     "tags": [],
     "date": "2026-08-14",
     "lead": "Guia passo a passo para rodar o Qwen3.8-27B localmente via Ollama, llama.cpp, vLLM e HuggingFace. Comandos, configurações, dicas de performance e troubleshooting.",
-    "readTime": 4,
+    "readTime": 5,
     "featured": false,
     "url": "/guia/como-rodar"
   },
