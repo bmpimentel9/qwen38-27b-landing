@@ -287,14 +287,6 @@
         },
         {
           "@type": "Question",
-          "name": "Qwen3.8-27B ou Ornith-1.5-35B-A3B para código e agentes?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Depende do perfil: o Qwen3.8-27B ganha em profundidade densa, visão e ecossistema verificado — LiveCodeBench v6 90,3 e SWE-bench Pro 61,7 (model card), AAII 52 com verificação independente, 17,11 GB em Q4_K_M. O Ornith-1.5-35B-A3B ganha em throughput agêntico e números de agente no papel: Terminal-Bench 2.1 (Claude Code) 68,5 e SWE-bench Verified 79 (autodeclarados, média 5 runs), ~3B ativos por token = velocidade de MoE (303 tok/s numa 5090, relato da comunidade). Sem head-to-head oficial: os harnesses são diferentes (Terminal-Bench ≠ LiveCodeBench; Verified ≠ Pro) e o Ornith não tem verificação independente (BenchLM: 49,3/100, rank #136, coverage insuficiente). Fonte: model cards oficiais (ornith-ai, Qwen), BenchLM compare e dossiê do portal (23/08/2026)."
-          }
-        },
-        {
-          "@type": "Question",
           "name": "Vale a pena rodar gpt-oss em 2026?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -608,11 +600,6 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="faq-item">
         <h3>Qwen3.8-27B ou Qwen3-Coder 30B-A3B para programar?</h3>
         <p>Depende do perfil: o <strong>Qwen3.8-27B</strong> ganha em profundidade — LiveCodeBench v6 90,3 e SWE-bench Pro 61,7 (model card), visão nativa e 256K de contexto para refactors grandes e debugging longo. O <strong>Qwen3-Coder-30B-A3B</strong> ganha em velocidade e agentes CLI: MoE de 3,3B parâmetros ativos (~3,3× o decode do denso no mesmo hardware), resposta instantânea sem tokens de raciocínio e 11,9M downloads GGUF/mês — o coder local mais instalado, marcado "deprecated" pela Artificial Analysis apenas no sentido de que o Coder-Next foi anunciado (o modelo segue disponível, Apache 2.0). Sem head-to-head oficial: SWE-bench Pro (3.8) e Verified (Coder, 51,6 no OpenHands) usam harnesses diferentes. Análise completa: <a href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">Qwen3.8-27B ou Qwen3-Coder 30B-A3B</a>.</p>
-    </div>
-
-    <div class="faq-item">
-        <h3>Qwen3.8-27B ou Ornith-1.5-35B-A3B para código e agentes?</h3>
-        <p>Depende do perfil: o <strong>Qwen3.8-27B</strong> ganha em profundidade densa, visão e ecossistema verificado — LiveCodeBench v6 90,3 e SWE-bench Pro 61,7 (model card), AAII 52 com verificação independente, 17,11 GB em Q4_K_M. O <strong>Ornith-1.5-35B-A3B</strong> ganha em throughput agêntico e números de agente no papel: Terminal-Bench 2.1 (Claude Code) 68,5 e SWE-bench Verified 79 (autodeclarados, média 5 runs), ~3B ativos por token = velocidade de MoE (303 tok/s numa 5090, relato da comunidade). Sem head-to-head oficial: os harnesses são diferentes (Terminal-Bench ≠ LiveCodeBench; Verified ≠ Pro) e o Ornith não tem verificação independente (BenchLM: 49,3/100, rank #136, coverage insuficiente). Análise completa: <a href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">Qwen3.8-27B ou Ornith-1.5-35B-A3B</a>.</p>
     </div>
 
     <div class="faq-item">

@@ -97,7 +97,7 @@
               "@type": "HowToStep",
               "position": 4,
               "name": "Caminho de tuning fino — llama.cpp com Metal e MTP",
-              "text": "brew install llama.cpp (ou build do master para kernels Metal recentes) e suba o servidor: llama-server -m Qwen3.8-27B-Q4_K_M.gguf -c 131072 -ngl 999 -fa 1 --cache-type-k q8_0 --cache-type-v q8_0 --spec-type draft-mtp --spec-draft-n-max 2 --parallel 1. Confira o iogpu.wired_limit_mb e use -b 512 -ub 512 em Mac de 24 GB."
+              "text": "brew install llama.cpp (ou build do master para kernels Metal recentes) e suba o servidor: llama-server -m Qwen3.8-27B-Q4_K_M.gguf -c 32768 -ngl 999 -fa 1 --cache-type-k q8_0 --cache-type-v q8_0 --spec-type draft-mtp --spec-draft-n-max 2 --parallel 1. Ajuste o -c à sua RAM: 32K é o default seguro em 24 GB, até 128K em 48 GB+. Confira o iogpu.wired_limit_mb e use -b 512 -ub 512 em Mac de 24 GB."
             },
             {
               "@type": "HowToStep",
@@ -123,7 +123,7 @@
             {
               "@type": "Question",
               "name": "MLX ou llama.cpp com Metal: qual usar no Mac?",
-              "acceptedAnswer": { "@type": "Answer", "text": "Para começar, MLX via Ollama (qwen3.8:27b-mlx): nativo, um comando, 256K de contexto. Para controle máximo e o zoológico de GGUFs, llama.cpp com Metal — o decode fica tipicamente 10-20% atrás do MLX no M-series, mas oferece MTP via --spec-type draft-mtp e KV cache quantizado. No M5, o MTP do llama.cpp mediu 7,16 → 10,47 tok/s (1,46×)." }
+              "acceptedAnswer": { "@type": "Answer", "text": "Para começar, MLX via Ollama (qwen3.8:27b-mlx): nativo, um comando, 256K de contexto. Para controle máximo e o zoológico de GGUFs, llama.cpp com Metal — o decode costuma ficar 10-25% atrás do MLX no M-series (benchmarks independentes 2026), mas oferece MTP via --spec-type draft-mtp e KV cache quantizado. No M5, o MTP do llama.cpp mediu 7,16 → 10,47 tok/s (1,46×)." }
             },
             {
               "@type": "Question",
@@ -282,7 +282,7 @@
     </table>
     <p>A teoria explica o que a prática confirma: o <strong>Mac mini M4 (32 GB, MLX 4-bit) mede ~5–6 tok/s</strong> — o piso honesto da plataforma, suficiente para conversa interativa, rascunho e uso ocasional de agente, desconfortável para loops agênticos longos. Um M5 Max, com 5× a banda, anda na casa dos 17–18 tok/s em 8-bit sem MTP. É a mesma física do Strix Halo: memória unificada tem capacidade enorme e banda modesta, e ninguém deve esperar o número de uma GPU dedicada.</p>
     <div class="callout">
-        <strong>E o Neural Engine?</strong> O NPU do Apple Silicon acelera prefill e alguns kernels (o M5 traz aceleradores neurais por núcleo de GPU que deixam o processamento de prompt ~4× mais rápido que o M4 em cenários agênticos). Mas o decode — o que você sente como velocidade de resposta — continua limitado pela banda. Melhorar o prefill ajuda loops que releem contexto grande; não muda o tok/s de geração.
+        <strong>E o Neural Engine?</strong> O NPU do Apple Silicon acelera prefill e alguns kernels — o M5 traz aceleradores neurais por núcleo de GPU que, segundo a Apple, reduzem em até ~4× o processamento de prompt (time-to-first-token) vs o M4 em cargas via MLX (benchmarks ML da Apple em 3,3–4×; presenc.ai mede 4,06× no TTFT; em teste independente de prompt processing o ganho real veio menor, 15–25% — promptquorum). Mas o decode — o que você sente como velocidade de resposta — continua limitado pela banda. Melhorar o prefill ajuda loops que releem contexto grande; não muda o tok/s de geração.
     </div>
 
     <h2 id="caminhos">Os três caminhos: Ollama (MLX), mlx-lm e llama.cpp (Metal)</h2>
@@ -292,7 +292,7 @@
         <tr><td><strong>mlx-lm</strong></td><td>Toolkit oficial da Apple, Python, conversão e serving</td><td>Quem quer controle do quant e servir como API</td><td>Checkpoint MTP/DFlash (via MTPLX)</td></tr>
         <tr><td><strong>llama.cpp + Metal</strong></td><td>Build nativo Metal, maior zoológico de GGUF, flags finas</td><td>Quem quer o MTP do llama.cpp e KV quantizado</td><td>Sim — --spec-type draft-mtp (PR #22673)</td></tr>
     </table>
-    <p>A regra geral: o decode do llama.cpp fica tipicamente <strong>10–20% atrás do MLX</strong> no mesmo Mac no estado atual dos kernels Metal — mas o llama.cpp é o único dos três com o MTP maduro via flag de linha de comando. Para a maioria dos usuários, comece no Ollama MLX; para tuning fino, vá ao llama.cpp.</p>
+    <p>A regra geral: o decode do llama.cpp costuma ficar <strong>10–25% atrás do MLX</strong> no mesmo Mac no estado atual dos kernels Metal (benchmarks independentes: MLX 10–25% mais rápido em decode que o llama.cpp em Apple Silicon — Pickuma, SpecPicks e Will It Run AI, 2026; com o fork oMLX a lacuna chegou a ~48% num M4 Pro 24 GB — halfpennymac) — mas o llama.cpp é o único dos três com o MTP maduro via flag de linha de comando. Para a maioria dos usuários, comece no Ollama MLX; para tuning fino, vá ao llama.cpp.</p>
 
     <h2 id="caminho-ollama">Caminho A — Ollama com MLX (o mais simples)</h2>
     <p>Atualize para o <strong>Ollama 0.32.12 ou superior</strong> (a versão que trouxe a otimização Apple Silicon) e:</p>
@@ -341,13 +341,14 @@ cmake -B build -DGGML_METAL=ON
 cmake --build build -j --config Release</code></pre>
     <p>Comando de produção para Mac (Q4_K_M + KV cache quantizado + MTP):</p>
     <pre><code>llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
-  -c 131072 -ngl 999 -fa 1 \
+  -c 32768 -ngl 999 -fa 1 \
   --cache-type-k q8_0 --cache-type-v q8_0 \
   --spec-type draft-mtp --spec-draft-n-max 2 --parallel 1</code></pre>
+    <p>Ajuste o <code>-c</code> à sua RAM: 32K é o default que cabe em 24 GB mesmo com o wired limit de fábrica (KV q8_0 ~2 GB sobre o Q4_K_M ~17 GB — receita validada num M4 Pro 24 GB, halfpennymac). Com o <code>iogpu.wired_limit_mb</code> ajustado (20480), dá para ir a 64K–96K (tabela acima); 128K pede 48 GB+.</p>
     <p>Três ajustes específicos de Mac, validados pela comunidade:</p>
     <ul>
         <li><strong><code>-b 512 -ub 512</code> em Mac de 24 GB.</strong> O batch default <code>-b 2048</code> faz o arm de especulação morrer no meio da geração com erro de memória Metal (kIOGPUCommandBufferCallbackErrorOutOfMemory). Batch menor resolve.</li>
-        <li><strong>Suba o <code>iogpu.wired_limit_mb</code>.</strong> O default de ~18.000 MB em máquina de 24 GB é baixo demais para um modelo de ~12,5 GiB + contexto de especulação. Ajuste antes de qualquer tuning.</li>
+        <li><strong>Suba o <code>iogpu.wired_limit_mb</code>.</strong> O default de ~18.000 MB em máquina de 24 GB é baixo demais para o Q4_K_M (~17,8 GB) + KV de especulação — sem o ajuste, o llama.cpp se recusa a offloadar todas as camadas ou a máquina começa a paginar. A receita validada: <code>sudo sysctl iogpu.wired_limit_mb=20480</code> (não é permanente, reseta no reboot — halfpennymac, M4 Pro 24 GB). Ajuste antes de qualquer tuning.</li>
         <li><strong>Prefira Q4_K_M a IQ4_XS.</strong> Existe uma regressão de kernel Metal conhecida do llama.cpp no IQ4_XS; rebaixe para Q4_K_M se o tok/s estiver estranho.</li>
     </ul>
 
@@ -403,7 +404,7 @@ cmake --build build -j --config Release</code></pre>
     <p>24 GB é o piso realista: o Q4_K_M (MLX) ocupa ~16–19 GB, e com 16 GB o modelo vai para swap e fica inutilizável. 32 GB roda o 6-bit (~21–22 GB), 48 GB+ roda o 8-bit (~27–30 GB, quase sem perdas) e só Macs Max/Ultra de 96–128 GB comportam BF16 (~55,6 GB).</p>
 
     <h3>MLX ou llama.cpp com Metal?</h3>
-    <p>Para começar, MLX via Ollama: nativo, um comando, 256K de contexto. Para controle máximo e o zoológico de GGUFs, llama.cpp com Metal — o decode fica tipicamente 10–20% atrás do MLX no M-series, mas oferece o MTP via <code>--spec-type draft-mtp</code> e KV cache quantizado. No M5, o MTP do llama.cpp mediu 7,16 → 10,47 tok/s (1,46×).</p>
+    <p>Para começar, MLX via Ollama: nativo, um comando, 256K de contexto. Para controle máximo e o zoológico de GGUFs, llama.cpp com Metal — o decode costuma ficar 10–25% atrás do MLX no M-series (benchmarks independentes, 2026), mas oferece o MTP via <code>--spec-type draft-mtp</code> e KV cache quantizado. No M5, o MTP do llama.cpp mediu 7,16 → 10,47 tok/s (1,46×).</p>
 
     <h3>O MTP vale a pena no Mac?</h3>
     <p>Depende da máquina e do tipo de prompt. No MacBook M5 24 GB, +46% (7,16 → 10,47). Mas no M4 base foi paridade dentro do ruído (code +9–10%, prosa −22–24%), e no M3 Ultra +6,1% com n-max 2. Em Mac, a verificação em batch pequeno não amortiza como no CUDA — meça o seu caso antes de assumir ganho.</p>
