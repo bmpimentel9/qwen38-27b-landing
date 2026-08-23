@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup — Guia (Arquivo) | Blog Modelos Locais</title>
+<link rel="stylesheet" href="blog.css">
+<script>
+function toggleTheme(){var d=document.documentElement;d.setAttribute('data-theme',d.getAttribute('data-theme')==='light'?'dark':'light');}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias" aria-current="true">Guias</a><a href="/guia/#benchmarks">Benchmarks</a><a href="/guia/#hardware">Hardware</a><a href="/guia/#releases">Releases</a><a href="/guia/#comunidade">Comunidade</a><a href="/modelos">Modelos</a><a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Buscar">⌕</button>
+      <button class="icon-btn" aria-label="Alternar tema" onclick="toggleTheme()">☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main id="topo" class="container">
+  <header class="page-head">
+    <nav class="breadcrumb" aria-label="breadcrumb"><a href="/">Home</a><span class="sep">›</span><span aria-current="page">Guia e artigos</span></nav>
+    <h1>Guias, benchmarks e testes de modelos locais</h1>
+    <p class="lead">O arquivo completo do blog: 26 artigos organizados em 5 categorias — da instalação ao benchmark, do hardware às releases. Filtre pelo que você precisa.</p>
+    <div class="stat-row" style="max-width:640px">
+      <div class="stat-card"><div class="value">26</div><div class="label">Artigos</div></div>
+      <div class="stat-card"><div class="value">5</div><div class="label">Categorias</div></div>
+      <div class="stat-card"><div class="value">26</div><div class="label">URLs /guia/*</div></div>
+      <div class="stat-card"><div class="value">~150</div><div class="label">Min de leitura</div></div>
+    </div>
+  </header>
+
+  <section class="cat-section" id="guias" aria-labelledby="guias-title">
+  <div class="cat-section-head">
+    <h2 id="guias-title"><span class="anchor-chip" style="background:#A78BFA"></span>Guias</h2>
+    <span class="count">11 artigos</span>
+  </div>
+  <p style="color:var(--muted);margin-bottom:var(--space-4);font-size:.92rem">Passo a passo para baixar, configurar e rodar modelos locais — do Ollama ao SGLang.</p>
+  <div class="post-grid"><a class="post-card" href="/guia/qwen3-8-27b-uncensored-abliterated">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>QWEN3</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 3 dias</time><span class="dot">·</span><span>18 min</span></div>
+    <h3>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias (guia 2026)</h3>
+    <p>A história de ecossistema mais quente do Qwen3.8-27B não saiu da Qwen: saiu de um GGUF publicado em 14/08 que removeu as direções de recusa do modelo </p>
+  </div>
+</a><a class="post-card" href="/guia/como-rodar-vllm-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>COMO</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 3 dias</time><span class="dot">·</span><span>16 min</span></div>
+    <h3>Qwen3.8-27B no vLLM em produção: guia, flags e bugs</h3>
+    <p>O SGLang tem o guia de throughput; este é o guia do outro motor que a recipe oficial da Qwen recomenda. Comando base de produção com cada flag justifi</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3-8-27b-lento-causas-fixes">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>QWEN3</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 4 dias</time><span class="dot">·</span><span>25 min</span></div>
+    <h3>Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma</h3>
+    <p>Dono de duas Radeon R9700 resume o pesadelo em uma frase: ~55 t/s no Qwen3.6-27B, e o 3.8 marchando na metade disso com config quase idêntica. Os dado</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3-8-27b-contexto-256k-24gb">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>QWEN3</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 4 dias</time><span class="dot">·</span><span>17 min</span></div>
+    <h3>Qwen3.8-27B com 256K de contexto em 24 GB (guia 2026)</h3>
+    <p>A janela de 262.144 tokens do Qwen3.8-27B não é cifra de ficha técnica — é memória que dá para ocupar de verdade numa GPU de 24 GB, com 50,44 tok/s de</p>
+  </div>
+</a><a class="post-card" href="/guia/ltx-2-5-video-local-comfyui">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>LTX</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 4 dias</time><span class="dot">·</span><span>18 min</span></div>
+    <h3>LTX-2.5 local: vídeo com áudio no ComfyUI (22B abertos)</h3>
+    <p>Depois da música local com o Music3, a segunda fronteira multimodal do portal: geração de vídeo. A Lightricks abriu os pesos do LTX-2.5 em 17 de agost</p>
+  </div>
+</a><a class="post-card" href="/guia/en/why-is-qwen3-8-27b-slow">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>EN/WHY</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="badge-cat hw" style="background:rgba(139,148,158,.2);color:#8C96AB">EN</span><span class="dot">·</span><time>há 4 dias</time><span class="dot">·</span><span>17 min</span></div>
+    <h3>Why is Qwen3.8-27B slow? The real fixes, with measured numbers</h3>
+    <p>You downloaded a 27B model that benchmarks like a frontier agent, and it's crawling at single-digit tok/s while your GPU sits half idle. The model isn</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3-8-27b-visao-videos-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>QWEN3</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>16 min</span></div>
+    <h3>Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)</h3>
+    <p>3,56 milhões de downloads do GGUF depois, quase ninguém liga a visão: o 27B é uma VLM nativa que lê documentos, acerta bounding boxes e entende vídeo </p>
+  </div>
+</a><a class="post-card" href="/guia/minimax-music3-musica-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>MINIMAX</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>15 min</span></div>
+    <h3>MiniMax Music3 local: gerando música com 8GB de VRAM</h3>
+    <p>O portal cobre modelos de linguagem locais desde o início — esta é a primeira vez que um modelo de música entra no radar, e ele entra por um motivo cl</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>QWEN3</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>14 min</span></div>
+    <h3>Qwen3.8-27B: desativar overthinking e configurar reasoning</h3>
+    <p>O modelo sai de fábrica pensando no máximo — e gastando 22.276 tokens de raciocínio para escrever 3.223 de resposta. Este guia mostra como desligar, d</p>
+  </div>
+</a><a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>COMO</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>17 min</span></div>
+    <h3>Como Rodar o Qwen3.8-27B no SGLang (FP8): Guia Passo a Passo</h3>
+    <p>Ollama resolve para o uso pessoal, mas quando o Qwen3.8-27B vira infraestrutura — API para o seu agente, para o time, para o produto — a pergunta muda</p>
+  </div>
+</a><a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>COMO</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 9 dias</time><span class="dot">·</span><span>5 min</span></div>
+    <h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3>
+    <p>Guia passo a passo para rodar o Qwen3.8-27B na sua máquina. Cobrimos Ollama (mais fácil), llama.cpp (mais flexível), vLLM (produção) e HuggingFace Tra</p>
+  </div>
+</a></div>
+</section><section class="cat-section" id="benchmarks" aria-labelledby="benchmarks-title">
+  <div class="cat-section-head">
+    <h2 id="benchmarks-title"><span class="anchor-chip" style="background:#2DD4BF"></span>Benchmarks</h2>
+    <span class="count">7 artigos</span>
+  </div>
+  <p style="color:var(--muted);margin-bottom:var(--space-4);font-size:.92rem">Números medidos: comparativos entre modelos ~30B, artificial analysis e testes reais.</p>
+  <div class="post-grid"><a class="post-card" href="/guia/quantizacao-multilingue-portugues">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>QUANTIZACAO</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 2 dias</time><span class="dot">·</span><span>10 min</span></div>
+    <h3>Quantização rouba mais de quem fala português? 2–4× mais dano em não-inglês (ago/2026)</h3>
+    <p>Um paper de 12 de agosto de 2026 colocou números no que usuários de modelos locais suspeitavam: a quantização agressiva degrada idiomas não-inglês 2 a</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>QWEN3.8</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 2 dias</time><span class="dot">·</span><span>12 min</span></div>
+    <h3>Qwen3.8-27B ou Qwen3-Coder 30B-A3B? Veredito por caso de uso (ago/2026)</h3>
+    <p>O coder local mais instalado do mercado contra o 27B denso mais novo da Qwen: MoE de 3,3B ativos vs denso híbrido, GGUF medido em GB, a âncora honesta</p>
+  </div>
+</a><a class="post-card" href="/guia/melhores-modelos-locais-30b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>MELHORES</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 4 dias</time><span class="dot">·</span><span>19 min</span></div>
+    <h3>Melhores modelos locais de 30B: os 11 que valem o download</h3>
+    <p>Os onze que valem o download — um veredito por caso de uso, VRAM medida de verdade e zero empate técnico.</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3-8-27b-benchmark-artificial-analysis">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>QWEN3</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>12 min</span></div>
+    <h3>Qwen3.8-27B no Artificial Analysis: 52 pontos (explicado)</h3>
+    <p>O índice independente da Artificial Analysis colocou o 27B denso da Alibaba no mesmo quadrante do GPT-5.6 Luna e a 1 ponto do DeepSeek V4 Pro de 1,7 t</p>
+  </div>
+</a><a class="post-card" href="/guia/qwen3.8-vs-qwen3.6-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>QWEN3.8</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 7 dias</time><span class="dot">·</span><span>17 min</span></div>
+    <h3>Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade? Comparativo com 26 benchmarks</h3>
+    <p>Comparativo direto entre as duas gerações de modelo denso 27B da Qwen — 26 benchmarks do model card, throughput real medido no mesmo hardware, tamanho</p>
+  </div>
+</a><a class="post-card" href="/guia/agent-memory-leaderboard-resultados">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>AGENT</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 7 dias</time><span class="dot">·</span><span>9 min</span></div>
+    <h3>Agent Memory Leaderboard: os primeiros resultados</h3>
+    <p>Seu modelo local de 30B raciocina bem, chama ferramentas, lê tela — e esquece tudo quando você fecha o terminal. Em 15/08 saíram os primeiros resultad</p>
+  </div>
+</a><a class="post-card" href="/guia/benchmarks-comparativos">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>BENCHMARKS</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat bench">Benchmarks</span><span class="dot">·</span><time>há 8 dias</time><span class="dot">·</span><span>9 min</span></div>
+    <h3>Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos</h3>
+    <p>Análise técnica de desempenho do Qwen3.8-27B (denso, 27B) contra outros modelos de escala similar — código, agentes, conhecimento, multimodal. 26 benc</p>
+  </div>
+</a></div>
+</section><section class="cat-section" id="hardware" aria-labelledby="hardware-title">
+  <div class="cat-section-head">
+    <h2 id="hardware-title"><span class="anchor-chip" style="background:#4ADE80"></span>Hardware</h2>
+    <span class="count">5 artigos</span>
+  </div>
+  <p style="color:var(--muted);margin-bottom:var(--space-4);font-size:.92rem">Qual GPU/RAM você precisa, quantização por VRAM e tokens por segundo em hardware real.</p>
+  <div class="post-grid"><a class="post-card" href="/guia/qwen38-27b-16gb-vram-llama-cpp">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80"><span>QWEN38</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat hw">Hardware</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>11 min</span></div>
+    <h3>Qwen3.8-27B em 16GB de VRAM: config llama.cpp que funciona</h3>
+    <p>Um modelo de 27B parâmetros denso numa placa de 16GB, 100% na GPU, sem ficar trocando teto de contexto por qualidade às cegas. Este guia mostra a mate</p>
+  </div>
+</a><a class="post-card" href="/guia/tokens-por-segundo-30b-hardware-real">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80"><span>TOKENS</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat hw">Hardware</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>13 min</span></div>
+    <h3>Tokens por segundo: Qwen3.8-27B no hardware real (30B medidos)</h3>
+    <p>O portal inteiro fala de qualidade — 26 benchmarks, VRAM, quantização. Mas a pergunta que chega antes de qualquer download é mais simples: "vai ficar </p>
+  </div>
+</a><a class="post-card" href="/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80"><span>LEMONADE</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat hw">Hardware</span><span class="dot">·</span><time>há 7 dias</time><span class="dot">·</span><span>6 min</span></div>
+    <h3>Lemonade v11.6: LLM local com GPU e NPU (e AMD)</h3>
+    <p>Enquanto o Ollama domina a conversa sobre LLM local, o Lemonade SDK segue um caminho próprio: um servidor local que orquestra GPU e NPU, com foco expl</p>
+  </div>
+</a><a class="post-card" href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80"><span>QUANTIZACAO</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat hw">Hardware</span><span class="dot">·</span><time>há 8 dias</time><span class="dot">·</span><span>6 min</span></div>
+    <h3>Quantização GGUF ≤30B: quanto cabe na sua GPU? (tabela real)</h3>
+    <p>GB medidos um a um, arquivo por arquivo, via Hugging Face API — Qwen3.8-27B vs Muse Glimmer 30B, de IQ2 a Q8, incluindo mmproj e drafter. Chegou aqui </p>
+  </div>
+</a><a class="post-card" href="/guia/hardware-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80"><span>HARDWARE</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat hw">Hardware</span><span class="dot">·</span><time>há 8 dias</time><span class="dot">·</span><span>5 min</span></div>
+    <h3>Guia de Hardware para Rodar o Qwen3.8-27B Localmente</h3>
+    <p>Requisitos mínimos e recomendados de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B em cada nível de quantização. Tabelas, setups recomendados e dicas </p>
+  </div>
+</a></div>
+</section><section class="cat-section" id="releases" aria-labelledby="releases-title">
+  <div class="cat-section-head">
+    <h2 id="releases-title"><span class="anchor-chip" style="background:#F5B841"></span>Releases</h2>
+    <span class="count">2 artigos</span>
+  </div>
+  <p style="color:var(--muted);margin-bottom:var(--space-4);font-size:.92rem">Lançamentos que importam no mundo dos modelos locais ≤30B.</p>
+  <div class="post-grid"><a class="post-card" href="/guia/1-ano-gpt-oss-modelos-locais-2026">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#F5B84133,#F5B84111);color:#F5B841"><span>1</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat releases">Releases</span><span class="dot">·</span><time>há 3 dias</time><span class="dot">·</span><span>15 min</span></div>
+    <h3>1 ano de gpt-oss: 12M downloads/mês e o que mudou (2026)</h3>
+    <p>O par open-weights da OpenAI completou um ano em 4 de agosto sem alarde — e segue com 12,27 milhões de downloads por mês. Quinze dias depois do aniver</p>
+  </div>
+</a><a class="post-card" href="/guia/muse-glimmer-30b-agente-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#F5B84133,#F5B84111);color:#F5B841"><span>MUSE</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat releases">Releases</span><span class="dot">·</span><time>há 8 dias</time><span class="dot">·</span><span>9 min</span></div>
+    <h3>Meta Muse Glimmer 30B: o modelo de agentes 24/7 no seu PC</h3>
+    <p>A Meta lançou em 10/08 o primeiro modelo grande propósito-construído para agentes locais sempre ligados: 29,6B denso, Apache 2.0, multimodal. Aqui est</p>
+  </div>
+</a></div>
+</section><section class="cat-section" id="comunidade" aria-labelledby="comunidade-title">
+  <div class="cat-section-head">
+    <h2 id="comunidade-title"><span class="anchor-chip" style="background:#3B82F6"></span>Comunidade</h2>
+    <span class="count">1 artigos</span>
+  </div>
+  <p style="color:var(--muted);margin-bottom:var(--space-4);font-size:.92rem">Casos de uso reais e a comunidade em volta dos modelos locais.</p>
+  <div class="post-grid"><a class="post-card" href="/guia/comunidade-casos-uso">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#3B82F633,#3B82F611);color:#3B82F6"><span>COMUNIDADE</span></div>
+  <div class="post-body">
+    <div class="post-meta"><span class="badge-cat community">Comunidade</span><span class="dot">·</span><time>há 7 dias</time><span class="dot">·</span><span>6 min</span></div>
+    <h3>Comunidade e Casos de Uso Reais do Qwen3.8-27B</h3>
+    <p>Reações do Hacker News, r/LocalLLaMA e X nas primeiras 48h após o lançamento dos pesos (14–15 ago 2026). Inclui as críticas, não só o entusiasmo.</p>
+  </div>
+</a></div>
+</section>
+
+  <a class="faq-link-card" href="/guia/faq">
+    <div><div class="t">FAQ — Perguntas frequentes</div><div class="d">Dúvidas rápidas sobre rodar modelos locais, VRAM, quantização e licença.</div></div>
+    <span style="margin-left:auto;color:var(--accent);font-weight:700">Abrir →</span>
+  </a>
+
+  <section class="newsletter grid-2" aria-labelledby="nl-title" style="margin-top:var(--space-7)">
+    <div>
+      <h2 id="nl-title">Receba o resumo semanal</h2>
+      <p>O que rolou nos modelos locais ≤30B: releases, benchmarks e hardware — em 5 minutos, toda semana.</p>
+    </div>
+    <div>
+      <form class="newsletter-form" action="#" method="post">
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div><h4>Navegação</h4><ul>
+      <li><a href="/guia/#guias">Guias</a></li><li><a href="/guia/#benchmarks">Benchmarks</a></li>
+      <li><a href="/guia/#hardware">Hardware</a></li><li><a href="/guia/#releases">Releases</a></li>
+      <li><a href="/guia/#comunidade">Comunidade</a></li><li><a href="/guia-rapido">Guia Rápido</a></li>
+      <li><a href="/guia/faq">FAQ</a></li>
+    </ul></div>
+    <div><h4>Recursos</h4><ul>
+      <li><a href="/llms.txt">llms.txt</a></li><li><a href="/sitemap.xml">sitemap.xml</a></li>
+      <li><a href="/robots.txt">robots.txt</a></li><li><a href="/modelos">Modelos</a></li>
+    </ul></div>
+    <div>
+      <h4>Newsletter</h4>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+</body>
+</html>
