@@ -8,6 +8,19 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-23] — Hub page EN "Best Local 30B Models (Aug/2026)" — espelho GEO (t_e6d5bf5c)
+
+### Added
+- **Hub page EN** (`guia/en/best-local-30b-models`): espelho em inglês da hub PT `melhores-modelos-locais-30b` — 11 modelos, tabela GGUF medida interativa (sortable + filtros por caso de uso + contador "N of 11"), 7 vereditos, seção rivais LCB v6, FAQ 7, JSON-LD 5 blocos `inLanguage: en`, datas canônicas 2026-08-23, `proficiencyLevel: Beginner`. Números byte-idênticos ao PT; prosa EN com ponto decimal; link recíproco "Original in Portuguese" → hub PT.
+- **hreflang bidirecional** em 4 páginas (hub EN/PT + artigo slow EN/PT), sem `x-default`.
+- **llms.txt**: seção `## English (GEO mirrors)` com subseção `### Best local 30B models (Aug/2026)` (resumo + stats citáveis + link), conteúdo do bloco slow intocado.
+- **Sitemap**: URL `guia/en/best-local-30b-models` (lastmod 2026-08-23, changefreq weekly, priority 0.9) — 35 → 36 URLs.
+- **Card no `guia/index`**: "Best Local 30B Models (EN)" (tag Inglês, MOFU · Novo 23/08).
+
+### Changed
+- **Hub PT `guia/melhores-modelos-locais-30b`**: +2 links hreflang (pt-BR self + en) e link "View in English" no nav — única mudança no arquivo (hotspot).
+- **Artigos slow PT/EN**: par hreflang bidirecional (en ↔ pt), selfs corretos, sem `x-default`.
+
 ## [2026-08-23] — Página uncensored: OBLITERATUS V3 "Deep Liberation" (t_0e16ae1c)
 
 ### Added
