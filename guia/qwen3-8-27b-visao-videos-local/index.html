@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -134,78 +134,74 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
-            --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
-        .faq-item h3 { margin: 0 0 8px; }
-        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
-        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
-        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent-3); }
-        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
-        .stat-card .value.ok { color: var(--accent-2); }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama</h1>
-        <p class="lead">3,56 milhões de downloads do GGUF depois, quase ninguém liga a visão: o 27B é uma VLM nativa que lê documentos, acerta bounding boxes e entende vídeo de até uma hora — e o encoder inteiro cabe em 0,93 GB. Como ativar tudo em hardware local, stack por stack.</p>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-18">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama", "description": "Guia de visão do Qwen3.8-27B local: mmproj GGUF, --mmproj no llama.cpp, imagens no Ollama, OCR de documentos, bounding boxes e vídeo de hora — com benchmarks multimodais.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama</h1>
+        <div class="article-meta">
+          <span class="badge-cat guides">Guias</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-18">18 ago 2026</time>
+          <span class="sep">·</span><span>14 min de leitura</span>
+        </div>
+        <p class="article-lead">3,56 milhões de downloads do GGUF depois, quase ninguém liga a visão: o 27B é uma VLM nativa que lê documentos, acerta bounding boxes e entende vídeo de até uma hora — e o encoder inteiro cabe em 0,93 GB. Como ativar tudo em hardware local, stack por stack.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
             <li><a href="#vlm-nativa">VLM nativa: o que o modelo enxerga (e o que o model card promete)</a></li>
             <li><a href="#mmproj">mmproj: os 0,93 GB que ligam os olhos do modelo</a></li>
@@ -219,10 +215,14 @@
             <li><a href="#presets">Presets prontos por perfil de hardware</a></li>
             <li><a href="#erros">Erros comuns e como resolver</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
-        </ul>
-    </div>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama" width="1200" height="630" loading="eager">
+
+<h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
     <p><strong>Para o Qwen3.8-27B enxergar imagens localmente:</strong> no llama.cpp, baixe o mmproj junto com o GGUF e suba o servidor com <code>-hf</code> (detecção automática) ou <code>--mmproj arquivo.gguf</code> (manual). No Ollama, a tag <code>qwen3.8:27b</code> já aceita imagens: passe o caminho do arquivo no terminal ou um array <code>images</code> em base64 na API. A visão custa +0,93 GB (BF16) ou +0,63 GB (Q8_0) de VRAM.</p>
     <pre><code># llama.cpp — caminho automático (baixa GGUF + mmproj e detecta sozinho)
 llama-server -hf ggml-org/Qwen3.8-27B-GGUF:Q4_K_M
@@ -257,7 +257,7 @@ ollama run qwen3.8:27b ./foto.png o que aparece nesta imagem?</code></pre>
     <h2 id="mmproj">mmproj: os 0,93 GB que ligam os olhos do modelo</h2>
     <p>O <strong>mmproj</strong> (multimodal projector) é o encoder de visão do modelo convertido para GGUF: ele transforma pixels em embeddings que o LLM entende. Sem ele carregado, o modelo responde a mensagens com imagem como se nada tivesse sido anexado — comportamento confuso para quem não sabe que falta um arquivo.</p>
     <p>Onde encontrar (tamanhos medidos via Hugging Face API em 18/08/2026):</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Repositório</th><th>Arquivo</th><th>Tamanho</th></tr>
         </thead>
@@ -266,7 +266,7 @@ ollama run qwen3.8:27b ./foto.png o que aparece nesta imagem?</code></pre>
             <tr><td>ggml-org/Qwen3.8-27B-GGUF (oficial)</td><td>mmproj-Qwen3.8-27B-Q8_0.gguf</td><td>0,63 GB</td></tr>
             <tr><td>unsloth/Qwen3.8-27B-GGUF</td><td>mmproj-F16.gguf / mmproj-BF16.gguf</td><td>0,93 GB cada</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p>Três fatos práticos, direto da doc multimodal oficial do llama.cpp (libmtmd):</p>
     <ul>
         <li><strong>Com <code>-hf</code>, o mmproj é detectado automaticamente</strong> quando o repositório tem um — é o caminho sem fricção.</li>
@@ -362,7 +362,7 @@ curl http://localhost:11434/api/chat -d '{
 
     <h2 id="benchmarks">Benchmarks multimodais: os números do model card</h2>
     <p>Tabela completa da seção <em>VL Performance</em> do model card oficial (colunas: Qwen3.8-27B, Qwen3.6-27B, Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max). Onde há dois valores, "sem CI / com CI":</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Qwen3.7-Plus</th><th>Muse Glimmer</th><th>Opus 4.6 Max</th></tr>
         </thead>
@@ -381,12 +381,12 @@ curl http://localhost:11434/api/chat -d '{
             <tr><td>ClawEval-MM (agêntico multimodal)</td><td>57,4 P@3 / <strong>56,9</strong> avg</td><td>42,6 / 50,4</td><td>57,4 / 60,1</td><td>--</td><td>52,5 / 54,7</td></tr>
             <tr><td>SWE-MM (SWE-bench Multimodal)</td><td><strong>38,6</strong></td><td>25,7</td><td>30,0</td><td>--</td><td>27,1</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p>Notas do próprio model card: MathVision usa prompt fixo com <code>\boxed{}</code> para o 3.8 (variantes para os outros); Vision2Web é média das categorias frontend/webpage/website; SWE-MM roda no harness Claude Code com o dev split público; benchmarks com duas linhas de score reportam "sem CI" e "com CI" separadamente; células "--" = resultado não disponível. Como sempre, são números auto-reportados pela Qwen — a leitura de comparação entre gerações (3.6 → 3.8) é a mais segura.</p>
 
     <h2 id="vram">Quanto custa a visão em VRAM</h2>
     <p>Os pesos do encoder (mmproj) são pequenos; a conta real soma três coisas: quantização do modelo de texto + mmproj + <strong>tokens da imagem no KV cache</strong>. Referências medidas (tabela completa no nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a>):</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Setup</th><th>Modelo texto</th><th>mmproj</th><th>Total de pesos</th><th>GPU confortável</th></tr>
         </thead>
@@ -396,7 +396,7 @@ curl http://localhost:11434/api/chat -d '{
             <tr><td>UD-Q4_K_XL (unsloth) + BF16</td><td>17,92 GB</td><td>0,93 GB</td><td>~18,9 GB</td><td>24 GB</td></tr>
             <tr><td>IQ4_XS (unsloth) + BF16</td><td>15,71 GB</td><td>0,93 GB</td><td>~16,6 GB</td><td>não cabe em 16 GB com folga de KV</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p>A leitura prática: <strong>em 16 GB, imagem pontual dá para tentar com mmproj na CPU</strong> (<code>--no-mmproj-offload</code>) e contexto curto; o conforto começa em 24 GB. Vídeo é território de 24 GB+ ou memória unificada grande (Strix Halo, Mac 36 GB+) por causa do contexto. Contexto recomendado: 16-32K para OCR e imagens simples, 64K+ para vídeo.</p>
 
     <h2 id="presets">Presets prontos por perfil de hardware</h2>
@@ -476,10 +476,95 @@ curl http://localhost:11434/api/chat -d '{
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Portal de modelos locais de 30B — Visão, vídeo e OCR no Qwen3.8-27B | Fontes: model card oficial Qwen/Qwen3.8-27B no Hugging Face (seção VL Performance, lida em 18/08/2026), docs multimodal do llama.cpp (libmtmd, 18/08/2026), biblioteca Ollama qwen3.8 + doc capabilities/vision (18/08/2026), review Simon Willison 16/08/2026 (bbox_2d/bbox-lab), Hugging Face API (tamanhos de arquivo e downloads, 18/08/2026).</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/modelos">Catálogo de modelos</a> | <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">Configuração de reasoning</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/qwen3-8-27b-reasoning-configuracao-ideal"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B: desativar overthinking e configurar reasoning</div></a>
+          <a class="pn-card next" href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b"><div class="dir">Próximo →</div><div class="t">Qwen3.8-27B ou Qwen3-Coder 30B-A3B? Veredito por caso de uso (ago/2026)</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</h3></div>
+</a>
+          <a class="post-card" href="/guia/minimax-music3-musica-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>MINIMA</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>MiniMax Music3 local: gerando música com 8GB de VRAM</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

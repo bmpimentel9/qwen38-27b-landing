@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -135,79 +135,91 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
-            --accent-4: #d2a8ff; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
-        .faq-item h3 { margin: 0 0 8px; }
-        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
-        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
-        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
-        .stat-card .value.ok { color: var(--accent-2); }
-        .stat-card .value.warn { color: var(--accent-3); }
-        .src { font-size: 0.85rem; color: var(--text-muted); }
-        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)</h1>
-        <p class="lead">O índice independente da Artificial Analysis colocou o 27B denso da Alibaba no mesmo quadrante do GPT-5.6 Luna e a 1 ponto do DeepSeek V4 Pro de 1,7 trilhão de parâmetros. Simon Willison chamou de "um modelo verdadeiramente espantoso". Aqui está o dado, a metodologia — e os asteriscos.</p>
-    </header>
 
-    <div class="stat-row">
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-18">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)", "description": "52 no Artificial Analysis: o Qwen3.8-27B empatou com o GPT-5.6 Luna e ficou a 1 ponto do DeepSeek V4 Pro (1,7T). O que o dado diz — e o que não diz.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#benchmarks">Benchmarks</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)</h1>
+        <div class="article-meta">
+          <span class="badge-cat bench">Benchmarks</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-18">18 ago 2026</time>
+          <span class="sep">·</span><span>11 min de leitura</span>
+        </div>
+        <p class="article-lead">O índice independente da Artificial Analysis colocou o 27B denso da Alibaba no mesmo quadrante do GPT-5.6 Luna e a 1 ponto do DeepSeek V4 Pro de 1,7 trilhão de parâmetros. Simon Willison chamou de "um modelo verdadeiramente espantoso". Aqui está o dado, a metodologia — e os asteriscos.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
+            <li><a href="#o-dado">O dado: 52 na primeira medição independente</a></li>
+            <li><a href="#o-que-e">O que é o Artificial Analysis Intelligence Index</a></li>
+            <li><a href="#placar">O placar ao vivo (18/08)</a></li>
+            <li><a href="#o-que-nao-diz">O que o dado NÃO diz</a></li>
+            <li><a href="#preco-do-52">O preço escondido do 52: overthinking</a></li>
+            <li><a href="#custo-zero">O outro lado: custo por tarefa zero</a></li>
+            <li><a href="#familia">Contexto: a família Qwen3.8 e o primo de 2,4T</a></li>
+            <li><a href="#veredito">Veredito</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
+
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)" width="1200" height="630" loading="eager">
+
+<div class="stat-row">
         <div class="stat-card">
             <div class="value">52</div>
             <div class="label">Artificial Analysis Intelligence Index (v4.1.1)</div>
@@ -226,20 +238,7 @@
         </div>
     </div>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
-            <li><a href="#o-dado">O dado: 52 na primeira medição independente</a></li>
-            <li><a href="#o-que-e">O que é o Artificial Analysis Intelligence Index</a></li>
-            <li><a href="#placar">O placar ao vivo (18/08)</a></li>
-            <li><a href="#o-que-nao-diz">O que o dado NÃO diz</a></li>
-            <li><a href="#preco-do-52">O preço escondido do 52: overthinking</a></li>
-            <li><a href="#custo-zero">O outro lado: custo por tarefa zero</a></li>
-            <li><a href="#familia">Contexto: a família Qwen3.8 e o primo de 2,4T</a></li>
-            <li><a href="#veredito">Veredito</a></li>
-            <li><a href="#faq">Perguntas frequentes</a></li>
-        </ul>
-    </div>
+    
 
     <h2 id="o-dado">O dado: 52 na primeira medição independente</h2>
     <p>Em 17 de agosto de 2026, Simon Willison publicou o número que faltava ao lançamento do Qwen3.8-27B: <strong>52 pontos no Artificial Analysis Intelligence Index</strong> — o mesmo score do <strong>GPT-5.6 Luna (max)</strong> e um ponto atrás do <strong>DeepSeek V4 Pro 0813</strong> e do <strong>GLM-5.2</strong>. O detalhe que fez o post viralizar (371 pontos no Hacker News): o DeepSeek daquela tabela tem <strong>1,7 trilhão de parâmetros</strong>, o GLM tem 753B, e o modelo da Qwen tem <strong>27 bilhões</strong>.</p>
@@ -257,18 +256,18 @@
         <li><strong>AA-Omniscience</strong> e <strong>AA-LCR</strong> (avaliações próprias da Artificial Analysis)</li>
     </ul>
     <p>Diferenças práticas em relação ao model card da Qwen, que você pode comparar no nosso <a href="/guia/benchmarks-comparativos">compilado dos 26 benchmarks oficiais</a>:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th></th><th>Model card (Qwen)</th><th>AAII (Artificial Analysis)</th></tr>
         <tr><td><strong>Quem mede</strong></td><td>O próprio fabricante</td><td>Laboratório independente</td></tr>
         <tr><td><strong>Compara contra</strong></td><td>Colunas do próprio documento (Qwen3.7-Plus, Muse Glimmer, Opus 4.6 Max)</td><td>GPT-5.6, DeepSeek V4, GLM, Gemini, Grok, Kimi — medidos igual</td></tr>
         <tr><td><strong>Formato</strong></td><td>26 benchmarks individuais</td><td>1 índice agregado de 9 avaliações</td></tr>
         <tr><td><strong>Atualização</strong></td><td>Estático (publicação)</td><td>Contínua (re-avaliações e novas versões do índice)</td></tr>
-    </table>
+    </table></div>
     <p class="src">O índice é "em movimento": scores mudam com re-avaliações e novas versões da metodologia. Os números deste artigo foram capturados da página oficial do modelo em <strong>18/08/2026</strong>.</p>
 
     <h2 id="placar">O placar ao vivo (18/08)</h2>
     <p>Valores lidos diretamente da página da Artificial Analysis em 18/08/2026, no gráfico do Intelligence Index:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Modelo</th><th>Parâmetros</th><th>AAII</th><th>Pesos</th></tr>
         <tr><td>GPT-5.6 Sol (max)</td><td>não divulgado</td><td>60,9</td><td>fechado</td></tr>
         <tr><td>Grok 4.6 (high)</td><td>não divulgado</td><td>60,9</td><td>fechado</td></tr>
@@ -278,7 +277,7 @@
         <tr><td>GPT-5.6 Luna (max)</td><td>não divulgado</td><td>52,3</td><td>fechado</td></tr>
         <tr class="highlight"><td><strong>Qwen3.8 27B</strong></td><td><strong>27,8B denso</strong></td><td><strong>52,0</strong></td><td><strong>Apache 2.0</strong></td></tr>
         <tr><td>Nemotron 3 Ultra</td><td>550B-A55B</td><td>38,3</td><td>aberto (grande)</td></tr>
-    </table>
+    </table></div>
     <p class="src">Fonte: payload público da página <a href="https://artificialanalysis.ai/models/qwen3-8-27b">artificialanalysis.ai/models/qwen3-8-27b</a> (18/08/2026, 19h45). Nota de transparência: o post de Simon Willison (17/08) citava o GLM-5.2 (753B); no gráfico atual a Artificial Analysis já exibe o GLM-5.3 (59,5) — os scores de Luna e DeepSeek V4 Pro seguem os mesmos do post.</p>
     <p>Três leituras honestas dessa tabela:</p>
     <ul>
@@ -301,19 +300,19 @@
     <h2 id="preco-do-52">O preço escondido do 52: overthinking</h2>
     <p>A própria Artificial Analysis entregou a evidência do custo. Na avaliação do índice, o Qwen3.8 27B gerou <strong>160 milhões de tokens de saída</strong> — contra uma mediana de <strong>43M</strong> na classe (#23/135 em verbosidade, "muito verboso" na página oficial). São <strong>3,7× mais tokens</strong> que o típico para chegar ao mesmo score.</p>
     <p>É o overthinking que documentamos desde o lançamento: no teste de Simon Willison, gerar um SVG de 3.223 tokens consumiu <strong>22.276 tokens de raciocínio e 21 minutos</strong> no default <code>xhigh</code>; com reasoning desligado, o mesmo prompt entregou em 137 segundos. O 52 do índice foi comprado, em parte, com raciocínio longo — em datacenter isso é custo de API; na sua GPU, é <strong>latência real</strong>.</p>
-    <div class="callout-warn">
+    <div class="callout warn">
         <strong>A configuração importa mais que o score:</strong> o default de fábrica (<code>reasoning_effort=xhigh</code>) pode transformar o "modelo que empatou com o GPT-5.6" em um modelo que passa 21 minutos pensando num SVG. O meio-termo prático está no <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">guia de reasoning</a> — e a aceleração por MTP devolve boa parte do tempo (decode ~1,85× no llama.cpp).
     </div>
     <p>Contraponto justo: nos <a href="/guia/tokens-por-segundo-30b-hardware-real">throughputs medidos que compilamos</a>, o mesmo modelo que "pensa demais" entrega 41,5 tok/s numa RTX 3090 e até 206 tok/s com SGLang em 5090. O overthinking é configurável; a inteligência medida pelo índice, essa fica.</p>
 
     <h2 id="custo-zero">O outro lado: custo por tarefa zero</h2>
     <p>O gráfico de custo por tarefa do Intelligence Index mostra a assimetria econômica do empate:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Modelo</th><th>Custo por tarefa do índice</th><th>Como roda</th></tr>
         <tr><td>GPT-5.6 Luna (max)</td><td>US$ 0,047</td><td>API fechada</td></tr>
         <tr><td>DeepSeek V4 Pro 0813</td><td>US$ 0,252</td><td>API / self-host de 1,7T</td></tr>
         <tr class="highlight"><td><strong>Qwen3.8 27B</strong></td><td><strong>US$ 0,00 (self-host)</strong></td><td><strong>GPU de 24 GB (Q4_K_M)</strong></td></tr>
-    </table>
+    </table></div>
     <p class="src">Preço de API listado na página do modelo: US$ 0,00 in/out — pesos abertos sem provedor oficial listado; custo por tarefa do índice: "desconhecido" para o Qwen (sem API comercial), contra US$ 0,047/US$ 0,252 dos concorrentes. O custo real do local é o seu hardware: a partir de ~17 GB de VRAM, detalhes no <a href="/guia/hardware-local">guia de hardware</a>.</p>
     <p>É a tese deste portal em formato de dado: <strong>inteligência no quadrante da fronteira, rodando numa GPU de consumidor, sem conta por token</strong>. Nem o DeepSeek V4 Pro (1,7T) nem o Luna saem desse gráfico de graça — o 27B é o único do topo que cabe na sua mesa.</p>
 
@@ -370,10 +369,95 @@
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Portal de modelos locais de 30B — Qwen3.8-27B no Artificial Analysis | Fontes: Artificial Analysis, página do modelo Qwen3.8 27B (consultada em 18/08/2026 às 19h45; AAII v4.1.1), post de Simon Willison de 17/08/2026, thread do Hacker News #49334544 (371 pontos em 18/08), README oficiais de Qwen/Qwen3.8-27B e Qwen/Qwen3.8-2.4T-A95B, Hugging Face API.</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens/s</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/minimax-music3-musica-local"><div class="dir">← Anterior</div><div class="t">MiniMax Music3 local: gerando música com 8GB de VRAM</div></a>
+          <a class="pn-card next" href="/guia/qwen3-8-27b-reasoning-configuracao-ideal"><div class="dir">Próximo →</div><div class="t">Qwen3.8-27B: desativar overthinking e configurar reasoning</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>QWEN38</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)</h3></div>
+</a>
+          <a class="post-card" href="/guia/benchmarks-comparativos">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>BENCHM</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos</h3></div>
+</a>
+          <a class="post-card" href="/guia/agent-memory-leaderboard-resultados">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>AGENTM</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Agent Memory Leaderboard: os primeiros resultados do benchmark de memória de agentes</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-benchmark-artificial-analysis" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

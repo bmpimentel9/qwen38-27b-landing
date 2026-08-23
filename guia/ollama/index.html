@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -127,80 +127,77 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
-            --accent-3: #f78166; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul, ol { margin-left: 25px; margin-bottom: 15px; }
-        ul li, ol li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
-        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
-        .badge strong { color: var(--accent-2); }
-        .flag-table td:first-child { white-space: nowrap; font-family: monospace; color: var(--accent-3); }
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção</h1>
-        <p class="lead">Ollama é a porta de entrada do universo de LLMs locais: um comando e o Qwen3.8-27B está rodando. Mas por trás do <code>ollama run qwen3.8:27b</code> existe um ecossistema de 12 tags, Modelfile customizável com MTP, reasoning effort ajustável por requisição e suporte nativo a visão — e é isso que este guia mapeia, do primeiro pull ao tuning fino de produção.</p>
-        <div class="badge-row">
-            <span class="badge"><strong>12</strong> tags disponíveis</span>
-            <span class="badge"><strong>18–56 GB</strong> (Q4_K_M a BF16)</span>
-            <span class="badge"><strong>256K</strong> contexto nativo</span>
-            <span class="badge"><strong>MTP</strong> embutido nas tags dedicadas</span>
-            <span class="badge"><strong>566K</strong> downloads na biblioteca</span>
-        </div>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-22">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção", "description": "Guia definitivo: instale o Ollama, puxe o qwen3.8:27b, configure Modelfile customizado com MTP, reasoning effort e flash-attn. Do 'ollama run' à produção com visão e 256K de contexto.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/ollama", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-22", "dateModified": "2026-08-22"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção</h1>
+        <div class="article-meta">
+          <span class="badge-cat guides">Guias</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-22">22 ago 2026</time>
+          <span class="sep">·</span><span>15 min de leitura</span>
+        </div>
+        <p class="article-lead">Ollama é a porta de entrada do universo de LLMs locais: um comando e o Qwen3.8-27B está rodando. Mas por trás do ollama run qwen3.8:27b existe um ecossistema de 12 tags, Modelfile customizável com MTP, reasoning effort ajustável por requisição e suporte nativo a visão — e é isso que este guia mapeia, do primeiro pull ao tuning fino de produção.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#por-que">Por que Ollama para o Qwen3.8-27B?</a></li>
             <li><a href="#instalacao">Pré-requisitos e instalação</a></li>
-            <li><a href="#tags">Todas as tags do qwen3.8 no Ollama (12 variantes)</a></li>
+            <li><a href="#tags">Todas as tags do qwen3.8 no Ollama</a></li>
             <li><a href="#comando-basico">Passo 1 — ollama run qwen3.8:27b</a></li>
             <li><a href="#modelfile">Passo 2 — Modelfile customizado (ctx-size, MTP, GPU)</a></li>
             <li><a href="#reasoning">Passo 3 — Reasoning effort e thinking mode</a></li>
@@ -211,10 +208,14 @@
             <li><a href="#api">Usando via API (OpenAI-compatible)</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
             <li><a href="#leia-mais">Leia mais</a></li>
-        </ul>
-    </div>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="por-que">Por que Ollama para o Qwen3.8-27B?</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção" width="1200" height="630" loading="eager">
+
+<h2 id="por-que">Por que Ollama para o Qwen3.8-27B?</h2>
     <p>O Ollama é a ferramenta que a maioria dos usuários de LLM local conhece primeiro. A página da <a href="https://ollama.com/library/qwen3.8">biblioteca oficial do qwen3.8</a> já acumula <strong>566.2 mil downloads</strong> (ago/2026) — é <strong>8,4× mais</strong> que as 67.1K registradas no llms.txt do portal há menos de uma semana, sinal de adoção acelerada.</p>
     <p>Três razões para começar por aqui:</p>
     <ul>
@@ -227,7 +228,7 @@
     </div>
 
     <h2 id="instalacao">Pré-requisitos e instalação</h2>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Componente</th><th>Mínimo</th><th>Recomendado</th></tr>
         <tr class="highlight"><td>GPU (NVIDIA)</td><td>16 GB VRAM (RTX 4060 Ti / RTX 5080 Laptop)</td><td>24 GB VRAM (RTX 3090/4090/5090)</td></tr>
         <tr><td>GPU (AMD)</td><td>16 GB (RX 7800 XT) + Ollama ROCm</td><td>Strix Halo 32 GB+ (Radeon 8060S)</td></tr>
@@ -235,7 +236,7 @@
         <tr><td>RAM</td><td>16 GB</td><td>32 GB+</td></tr>
         <tr><td>Disco</td><td>18 GB livres</td><td>60 GB (para múltiplas tags)</td></tr>
         <tr><td>Sistema</td><td>macOS, Windows, Linux</td><td>Linux + NVIDIA (máximo desempenho)</td></tr>
-    </table>
+    </table></div>
     <p>A instalação é trivial: acesse <a href="https://ollama.com/download">ollama.com/download</a>, baixe o instalador do seu sistema, execute. Verifique com:</p>
     <pre><code>ollama --version</code></pre>
     <p>No Linux, o instalador registra um serviço systemd; no macOS, o app da bandeja fica rodando em segundo plano. Em ambos os casos, a API REST fica disponível em <code>http://localhost:11434</code>.</p>
@@ -243,7 +244,7 @@
 
     <h2 id="tags">Todas as tags do qwen3.8 no Ollama</h2>
     <p>A família qwen3.8 na biblioteca Ollama tem <strong>12 tags</strong>. Todas compartilham a mesma arquitetura (27B denso, híbrida Gated DeltaNet + Gated Attention) e contexto de 256.000 tokens nativos. A diferença está na quantização e no suporte a MTP:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Tag</th><th>Tamanho</th><th>Quant</th><th>MTP</th><th>MLX</th><th>Indicado para</th></tr>
         <tr class="highlight"><td>qwen3.8:latest (alias de :27b)</td><td>18 GB</td><td>Q4_K_M</td><td>Não</td><td>—</td><td>GPU 24 GB, uso geral</td></tr>
         <tr><td>qwen3.8:27b</td><td>18 GB</td><td>Q4_K_M</td><td>Não</td><td>—</td><td>GPU 24 GB, uso geral</td></tr>
@@ -257,7 +258,7 @@
         <tr><td>qwen3.8:27b-mlx-bf16</td><td>56 GB</td><td>BF16 (MLX)</td><td>—</td><td>Sim</td><td>Mac 96 GB+ (M3 Ultra, M2 Ultra)</td></tr>
         <tr><td>qwen3.8:27b-mxfp8</td><td>32 GB</td><td>MXFP8 (MLX)</td><td>—</td><td>Sim</td><td>Mac 48 GB+</td></tr>
         <tr><td>qwen3.8:27b-nvfp4</td><td>18 GB</td><td>NVFP4 (MLX)</td><td>—</td><td>Sim</td><td>Mac 32 GB+ (Apple Silicon)</td></tr>
-    </table>
+    </table></div>
     <div class="callout">
         <strong>Atenção ao MTP:</strong> as tags com <code>-mtp-</code> no nome já incluem a cabeça Multi-Token Prediction treinada pela Qwen e trazem <code>draft_num_predict: 4</code> configurado por padrão nos metadados. Isso significa que o speculative decoding com 4 tokens de rascunho está <strong>ativo desde o primeiro <code>ollama run</code></strong> — sem flags extras. As tags sem MTP (a grande maioria, incluindo a <code>:latest</code>) <strong>não</strong> têm draft_num_predict configurado.
     </div>
@@ -317,14 +318,14 @@ PARAMETER num_gpu 50</code></pre>
 
     <h2 id="reasoning">Passo 3 — Reasoning effort e thinking mode</h2>
     <p>O <strong>thinking mode</strong> do Qwen3.8-27B vem ligado por padrão — o modelo raciocina passo a passo dentro de um bloco <code>&lt;think&gt;</code> antes de responder. O parâmetro <strong>reasoning_effort</strong> controla quantos tokens o modelo gasta nesse raciocínio interno. Quatro níveis disponíveis:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Nível</th><th>Comportamento</th><th>Quando usar</th></tr>
         <tr><td><code>xhigh</code> (default)</td><td>Máximo raciocínio — pode gastar 20K+ tokens pensando</td><td>Matemática, código complexo, agentes multi-passo</td></tr>
         <tr><td><code>high</code></td><td>Raciocínio profundo, mas com limite prático</td><td>Análise, decisões com trade-offs</td></tr>
         <tr><td><code>medium</code></td><td>Equilíbrio entre pensar e responder</td><td>Uso geral, chatbots, perguntas técnicas</td></tr>
         <tr><td><code>low</code></td><td>Raciocínio mínimo, respostas mais diretas</td><td>Extração de dados, perguntas factuais</td></tr>
         <tr><td>desligado</td><td>Modo Instruct — resposta direta sem bloco &lt;think&gt;</td><td>Chat rápido, tradução, tarefas simples</td></tr>
-    </table>
+    </table></div>
     <p><strong>No Ollama, o reasoning_effort é controlado via API ou requisição — não há flag direta de CLI para isso.</strong> O parâmetro é passado no corpo da requisição como <code>options</code>:</p>
     <pre><code># API — reasoning effort medium
 curl http://localhost:11434/api/chat -d '{
@@ -340,7 +341,7 @@ curl http://localhost:11434/api/chat -d '{
         <li><strong>No Modelfile:</strong> <code>PARAMETER no_think true</code></li>
         <li><strong>No CLI interativo:</strong> <code>/set parameter no_think true</code></li>
     </ul>
-    <div class="callout-warn">
+    <div class="callout warn">
         <strong>Atenção ao xhigh default:</strong> O reasoning_effort xhigh é o padrão de fábrica do modelo — e é <strong>caro</strong>. Simon Willison documentou que um SVG de 3.223 tokens consumiu 22.276 tokens de raciocínio (21 minutos de geração) com xhigh ligado. Com reasoning off, o mesmo prompt entregou em 137 segundos. Se você está testando o modelo pela primeira vez, comece com <code>low</code> ou desligado — o ganho de velocidade é dramático.
     </div>
     <p>O parâmetro <strong>preserve_thinking</strong> também é suportado (retém os blocos <code>&lt;think&gt;</code> de mensagens anteriores no contexto), útil para agentes que precisam lembrar o raciocínio de passos anteriores. Desligue com <code>"preserve_thinking": false</code> na API ou Modelfile.</p>
@@ -396,7 +397,7 @@ print(response['message']['content'])</code></pre>
   ]
 }'</code></pre>
     <p>O encoder de visão (mmproj) está embutido no pacote — não há download separado de arquivos <code>.gguf</code> de visão como no llama.cpp. Todas as 12 tags incluem suporte a imagem no mesmo pacote.</p>
-    <div class="callout-warn">
+    <div class="callout warn">
         <strong>Limitação conhecida:</strong> a página da biblioteca Ollama lista as modalidades como <code>Text, Image</code> — isto é, não há suporte declarado a <strong>vídeo</strong> no Ollama (diferente do llama.cpp, que suporta vídeo de até hora com o mesmo modelo). Para tarefas de vídeo, use o <a href="/guia/qwen3-8-27b-visao-videos-local">guia de visão e vídeo no llama.cpp</a>.
     </div>
 
@@ -412,13 +413,13 @@ OLLAMA_FLASH_ATTN=0 ollama run qwen3.8:27b</code></pre>
     <h2 id="ollama-vs-llamacpp">Ollama vs llama.cpp: tem overhead?</h2>
     <p>Essa é a pergunta que mais aparece. A resposta curta: <strong>quase nenhum no decode, algum no prefill.</strong></p>
     <p>O Ollama usa o <strong>llama.cpp como backend</strong> de inferência para modelos GGUF — não é um motor paralelo, é o mesmo código C++ compilado. O que o Ollama adiciona por cima:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Camada</th><th>Overhead</th><th>Detalhe</th></tr>
         <tr><td>Inferência (llama.cpp)</td><td>0%</td><td>É o mesmo backend — decode bruto é idêntico</td></tr>
         <tr><td>API REST (servidor)</td><td>~1–3%</td><td>Serialização JSON + HTTP; imperceptível em uso interativo</td></tr>
         <tr><td>Gerenciamento de contexto</td><td>~0,5%</td><td>Cache de sessão e roteamento de requests</td></tr>
         <tr><td>Build do GGUF</td><td>Variável</td><td>O build GGUF pode diferir entre o Ollama Hub e o Unsloth — diferenças de desempenho são do quant, não do motor</td></tr>
-    </table>
+    </table></div>
     <p><strong>Quando usar Ollama:</strong> quando você quer o modelo rodando em 5 minutos, com API nativa, gerenciamento de modelos, e não está no limite de milissegundos por token. É a escolha certa para 95% dos usuários.</p>
     <p><strong>Quando usar llama.cpp puro:</strong> quando você precisa de controle milimétrico — flags experimentais (<code>--flash-attn</code>, <code>--no-flash-attn</code>), múltiplos drafters, tuning de <code>--batch-size</code> para prefill, ou está montando um benchmark controlado. Também quando o Ollama não tem uma tag para o quant exato que você quer.</p>
     <div class="callout">
@@ -497,13 +498,13 @@ response = client.chat.completions.create(
 
     <div class="faq-item">
         <h3>Ollama vs LM Studio: qual a diferença prática?</h3>
-        <p>LM Studio é uma GUI nativa para desktop (macOS, Windows, Linux) que também usa llama.cpp como backend — conceitualmente similar ao Ollama. Diferenças: LM Studio tem interface gráfica com download de modelos embutido e descubra de builds GGUF; Ollama é linha de comando + API (mais adequado para integração com código e agentes). Ambos expõem API OpenAI-compatible. Para uso via terminal e agentes, Ollama é mais direto; para quem prefere interface visual, LM Studio. Veja nosso <a href="/guia/qwen3-8-27b-lm-studio">guia do Qwen3.8-27B no LM Studio</a>.</p>
+        <p>LM Studio é uma GUI nativa para desktop (macOS, Windows, Linux) que também usa llama.cpp como backend — conceitualmente similar ao Ollama. Diferenças: LM Studio tem interface gráfica com download de modelos embutido e descubra de builds GGUF; Ollama é linha de comando + API (mais adequado para integração com código e agentes). Ambos expõem API OpenAI-compatible. Para uso via terminal e agentes, Ollama é mais direto; para quem prefere interface visual, LM Studio. Veja nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a> para escolher o build certo.</p>
     </div>
 
     <h2 id="leia-mais">Leia mais</h2>
     <ul>
         <li><a href="/guia/como-rodar">Como rodar o Qwen3.8-27B localmente — visão geral</a> — comparação de todos os motores</li>
-        <li><a href="/guia/qwen3-8-27b-lm-studio">Qwen3.8-27B no LM Studio</a> — versão GUI desktop</li>
+        <li><a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Qwen3.8-27B em GGUF: quanto cabe na sua GPU</a> — guia de quantização</li>
         <li><a href="/guia/como-rodar-vllm-qwen3-8-27b">vLLM em produção para o Qwen3.8-27B</a> — prefix caching, bugs e workarounds</li>
         <li><a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang + FP8 oficial</a> — máximo throughput (206 tok/s)</li>
         <li><a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B em 16 GB de VRAM (llama.cpp)</a> — configuração para hardware limitado</li>
@@ -528,10 +529,95 @@ response = client.chat.completions.create(
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Guia Qwen3.8-27B | Dados baseados na biblioteca oficial Ollama (ollama.com/library/qwen3.8, verificado em 22/08/2026), model card oficial Qwen, documentação do Modelfile e medições da comunidade (r/LocalLLaMA, Simon Willison, InsiderLLM).</p>
-        <p>Última atualização: agosto 2026 | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/quantizacao-multilingue-portugues"><div class="dir">← Anterior</div><div class="t">Quantização rouba mais de quem fala português? 2–4× mais dano em não-inglês (ago/2026)</div></a>
+          
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</h3></div>
+</a>
+          <a class="post-card" href="/guia/minimax-music3-musica-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>MINIMA</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>MiniMax Music3 local: gerando música com 8GB de VRAM</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/ollama">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/ollama">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/ollama">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/ollama" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta charset="UTF-8">
@@ -13,47 +13,7 @@
     <meta property="og:title" content="FAQ — Perguntas Frequentes sobre o Qwen3.8-27B">
     <meta property="og:description" content="Respostas diretas sobre o Qwen3.8-27B: hardware, performance, quantização, thinking mode, multimodalidade, licença e mais.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/faq">
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
-            --accent-3: #f78166; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        nav a.active { background: var(--accent); color: var(--bg); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.15rem; margin: 20px 0 8px; color: var(--accent-2); cursor: pointer; }
-        h3:hover { color: var(--accent); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; cursor: default; }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 15px 0; }
-        .faq-item h3 { margin-top: 0; cursor: default; }
-        .faq-item h3:hover { color: var(--accent-2); }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -382,35 +342,94 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 })();
 </script>
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq" class="active">FAQ</a>
-        </nav>
-        <h1>FAQ — Perguntas Frequentes sobre o Qwen3.8-27B</h1>
-        <p class="lead">Respostas diretas sobre o Qwen3.8-27B: o que é, hardware necessário, como rodar, thinking mode, multimodalidade, licença e mais.</p>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "FAQ — Perguntas Frequentes sobre o Qwen3.8-27B", "description": "Perguntas frequentes sobre o Qwen3.8-27B. Respostas diretas sobre hardware, performance, quantização, thinking mode, multimodalidade, licença e mais.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/faq", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR"}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Guias", "item": "https://qwen38-27b-landing.vercel.app/guia/#guias"}, {"@type": "ListItem", "position": 3, "name": "FAQ — Perguntas Frequentes sobre o Qwen3.8-27B", "item": "https://qwen38-27b-landing.vercel.app/guia/faq"}]}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">FAQ — Perguntas Frequentes sobre o Qwen3.8-27B</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>FAQ — Perguntas Frequentes sobre o Qwen3.8-27B</h1>
+        <div class="article-meta">
+          <span class="badge-cat guides">Guias</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="">ago 2026</time>
+          <span class="sep">·</span><span>14 min de leitura</span>
+        </div>
+        <p class="article-lead">Respostas diretas sobre o Qwen3.8-27B: o que é, hardware necessário, como rodar, thinking mode, multimodalidade, licença e mais.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#o-que-e">O que é o Qwen3.8-27B?</a></li>
             <li><a href="#hardware">Hardware e VRAM</a></li>
+            <li class="sub"><a href="#gpu-16gb">O Qwen3.8-27B roda em GPU de 16GB?</a></li>
             <li><a href="#performance">Performance e Velocidade</a></li>
+            <li class="sub"><a href="#desativar-thinking">Como desativar o thinking (overthinking) do Qwen3.8-27B?</a></li>
             <li><a href="#instalacao">Instalação e Uso</a></li>
+            <li class="sub"><a href="#enxerga-imagens">O Qwen3.8-27B enxerga imagens?</a></li>
+            <li class="sub"><a href="#lento-vs-36">Por que o Qwen3.8-27B parece mais lento que o Qwen3.6-27B?</a></li>
             <li><a href="#modelo">Sobre o Modelo</a></li>
             <li><a href="#comparacoes">Comparações</a></li>
-        </ul>
-    </div>
+            <li class="sub"><a href="#igual-ao-3-6">O Qwen3.8-27B é igual ao Qwen3.6-27B?</a></li>
+            <li class="sub"><a href="#gpt-oss-2026">Vale a pena rodar gpt-oss em 2026?</a></li>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="o-que-e">O que é o Qwen3.8-27B?</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="FAQ — Perguntas Frequentes sobre o Qwen3.8-27B" width="1200" height="630" loading="eager">
+
+<h2 id="o-que-e">O que é o Qwen3.8-27B?</h2>
 
     <div class="faq-item">
         <h3>O que é o Qwen3.8-27B?</h3>
@@ -655,10 +674,91 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Guia Qwen3.8-27B — FAQ | Baseado em perguntas frequentes da comunidade (Hacker News, r/LocalLLaMA, X) e documentação oficial.</p>
-        <p>Última atualização: agosto 2026 | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+          
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</h3></div>
+</a>
+          <a class="post-card" href="/guia/minimax-music3-musica-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>MINIMA</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>MiniMax Music3 local: gerando música com 8GB de VRAM</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/faq">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/faq">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/faq">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/faq" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>
