@@ -498,13 +498,13 @@ response = client.chat.completions.create(
 
     <div class="faq-item">
         <h3>Ollama vs LM Studio: qual a diferença prática?</h3>
-        <p>LM Studio é uma GUI nativa para desktop (macOS, Windows, Linux) que também usa llama.cpp como backend — conceitualmente similar ao Ollama. Diferenças: LM Studio tem interface gráfica com download de modelos embutido e descubra de builds GGUF; Ollama é linha de comando + API (mais adequado para integração com código e agentes). Ambos expõem API OpenAI-compatible. Para uso via terminal e agentes, Ollama é mais direto; para quem prefere interface visual, LM Studio. Veja nosso <a href="/guia/qwen3-8-27b-lm-studio">guia do Qwen3.8-27B no LM Studio</a>.</p>
+        <p>LM Studio é uma GUI nativa para desktop (macOS, Windows, Linux) que também usa llama.cpp como backend — conceitualmente similar ao Ollama. Diferenças: LM Studio tem interface gráfica com download de modelos embutido e descubra de builds GGUF; Ollama é linha de comando + API (mais adequado para integração com código e agentes). Ambos expõem API OpenAI-compatible. Para uso via terminal e agentes, Ollama é mais direto; para quem prefere interface visual, LM Studio. Veja nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a> para escolher o build certo.</p>
     </div>
 
     <h2 id="leia-mais">Leia mais</h2>
     <ul>
         <li><a href="/guia/como-rodar">Como rodar o Qwen3.8-27B localmente — visão geral</a> — comparação de todos os motores</li>
-        <li><a href="/guia/qwen3-8-27b-lm-studio">Qwen3.8-27B no LM Studio</a> — versão GUI desktop</li>
+        <li><a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Qwen3.8-27B em GGUF: quanto cabe na sua GPU</a> — guia de quantização</li>
         <li><a href="/guia/como-rodar-vllm-qwen3-8-27b">vLLM em produção para o Qwen3.8-27B</a> — prefix caching, bugs e workarounds</li>
         <li><a href="/guia/como-rodar-sglang-qwen3-8-27b">SGLang + FP8 oficial</a> — máximo throughput (206 tok/s)</li>
         <li><a href="/guia/qwen38-27b-16gb-vram-llama-cpp">Qwen3.8-27B em 16 GB de VRAM (llama.cpp)</a> — configuração para hardware limitado</li>
