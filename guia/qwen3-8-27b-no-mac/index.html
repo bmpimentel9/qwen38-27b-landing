@@ -247,7 +247,7 @@
     </div>
 
     <h2 id="memoria">A conta da memória unificada: qual quant cabe em cada Mac</h2>
-    <p>No Apple Silicon não existe VRAM separada. O modelo usa a memória unificada — o que importa é a RAM total do Mac menos o que o macOS e os outros apps seguram. E há um detalhe que joga a favor do Qwen3.8: das 64 camadas, só as 16 camadas full-attention guardam KV cache — as 48 camadas DeltaNet lineares não. Isso reduz o custo do contexto a cerca de <strong>64 KB por token</strong>, um quarto do que um denso convencional de 64 camadas pagaria. Na prática: o cache do contexto não estoura o Mac tão cedo.</p>
+    <p>No Apple Silicon não existe VRAM separada. O modelo usa a memória unificada — o que importa é a RAM total do Mac menos o que o macOS e os outros apps seguram. E há um detalhe que joga a favor do Qwen3.8: das 64 camadas, só as 16 camadas full-attention guardam KV cache — as 48 camadas DeltaNet lineares não. Isso reduz o custo do contexto a cerca de <strong>64 KB por token</strong>, um quarto do que um denso convencional de 64 camadas pagaria. Resultado: o cache do contexto não estoura o Mac tão cedo.</p>
     <table>
         <tr><th>Quant (MLX)</th><th>Memória total aprox.</th><th>Mac mínimo</th><th>Janela de contexto realista</th></tr>
         <tr class="highlight"><td><strong>4-bit (Q4_K_M)</strong></td><td>~16–19 GB</td><td><strong>24 GB</strong></td><td>64K–96K — o padrão sensato</td></tr>
@@ -282,7 +282,7 @@
     </table>
     <p>A teoria explica o que a prática confirma: o <strong>Mac mini M4 (32 GB, MLX 4-bit) mede ~5–6 tok/s</strong> — o piso honesto da plataforma, suficiente para conversa interativa, rascunho e uso ocasional de agente, desconfortável para loops agênticos longos. Um M5 Max, com 5× a banda, anda na casa dos 17–18 tok/s em 8-bit sem MTP. É a mesma física do Strix Halo: memória unificada tem capacidade enorme e banda modesta, e ninguém deve esperar o número de uma GPU dedicada.</p>
     <div class="callout">
-        <strong>E o Neural Engine?</strong> O NPU do Apple Silicon acelera prefill e alguns kernels (o M5 traz aceleradores neurais por núcleo de GPU que deixam o processamento de prompt ~4× mais rápido que o M4 em cenários agênticos). Mas o decode — o que você sente como velocidade de resposta — continua limitado pela banda. Otimizar prefill ajuda loops que releem contexto grande; não muda o tok/s de geração.
+        <strong>E o Neural Engine?</strong> O NPU do Apple Silicon acelera prefill e alguns kernels (o M5 traz aceleradores neurais por núcleo de GPU que deixam o processamento de prompt ~4× mais rápido que o M4 em cenários agênticos). Mas o decode — o que você sente como velocidade de resposta — continua limitado pela banda. Melhorar o prefill ajuda loops que releem contexto grande; não muda o tok/s de geração.
     </div>
 
     <h2 id="caminhos">Os três caminhos: Ollama (MLX), mlx-lm e llama.cpp (Metal)</h2>
