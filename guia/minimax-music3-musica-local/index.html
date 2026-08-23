@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -134,86 +134,80 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
-            --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px  0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul, ol { margin-left: 25px; margin-bottom: 15px; }
-        ul li, ol li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
-        .faq-item h3 { margin: 0 0 8px; }
-        .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
-        .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; font-size: 0.85rem; color: var(--text-muted); }
-        .badge strong { color: var(--accent-2); }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>MiniMax Music3 local: gerando música com 8GB de VRAM</h1>
-        <p class="lead">O portal cobre modelos de linguagem locais desde o início — esta é a primeira vez que um modelo de <strong>música</strong> entra no radar, e ele entra por um motivo claro: pesos abertos, músicas completas de até 5 minutos com vocal cantado, e um caminho oficial para rodar em GPU de 8GB — a placa de entrada do PC gamer brasileiro.</p>
-        <div class="badge-row">
-            <span class="badge"><strong>~11,1B</strong> parâmetros somados</span>
-            <span class="badge"><strong>8 GB</strong> de VRAM no modo streaming</span>
-            <span class="badge"><strong>5 min</strong> de música por geração</span>
-            <span class="badge"><strong>US$ 0</strong> pesos abertos (Community License)</span>
-        </div>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-18">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "MiniMax Music3 local: gerando música com 8GB de VRAM", "description": "Como rodar o MiniMax Music3 local: 8GB de VRAM com group offloading, músicas de 5 min com vocal, prompts em português e licença para uso comercial.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">MiniMax Music3 local: gerando música com 8GB de VRAM</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>MiniMax Music3 local: gerando música com 8GB de VRAM</h1>
+        <div class="article-meta">
+          <span class="badge-cat guides">Guias</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-18">18 ago 2026</time>
+          <span class="sep">·</span><span>13 min de leitura</span>
+        </div>
+        <p class="article-lead">O portal cobre modelos de linguagem locais desde o início — esta é a primeira vez que um modelo de música entra no radar, e ele entra por um motivo claro: pesos abertos, músicas completas de até 5 minutos com vocal cantado, e um caminho oficial para rodar em GPU de 8GB — a placa de entrada do PC gamer brasileiro.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#o-que-e">O que é o MiniMax Music3</a></li>
+            <li class="sub"><a href="#arquitetura">A arquitetura em 4 módulos (e o mito do "2,4B")</a></li>
             <li><a href="#vram-tiers">VRAM: os três degraus (23 → 22 → 8 GB)</a></li>
             <li><a href="#requisitos">Antes de começar: requisitos</a></li>
             <li><a href="#diffusers">Rota 1 — diffusers (a rota dos 8GB)</a></li>
+            <li class="sub"><a href="#codigo-8gb">A configuração de 8 GB</a></li>
             <li><a href="#sglang">Rota 2 — SGLang-Omni (servidor oficial)</a></li>
             <li><a href="#comfyui">Rota 3 — ComfyUI (a mais fácil)</a></li>
             <li><a href="#hardware-br">O que roda no hardware brasileiro típico</a></li>
@@ -222,33 +216,37 @@
             <li><a href="#limitacoes">Limitações: o que esperar (e o que não)</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
             <li><a href="#leia-mais">Leia mais</a></li>
-        </ul>
-    </div>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="o-que-e">O que é o MiniMax Music3</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="MiniMax Music3 local: gerando música com 8GB de VRAM" width="1200" height="630" loading="eager">
+
+<h2 id="o-que-e">O que é o MiniMax Music3</h2>
     <p>O <strong>MiniMax Music3</strong> é um modelo de <strong>geração de música por texto</strong> (text-to-music) lançado pela MiniMax com pesos abertos no <a href="https://huggingface.co/MiniMaxAI/MiniMax-Music3">Hugging Face</a> em 7 de agosto de 2026. Você entrega duas coisas — <strong>letras</strong> e uma <strong>descrição musical</strong> (caption) — e recebe uma música completa: voz cantada, arranjo, estrutura de música de verdade, em WAV estéreo.</p>
     <p>Não é um TTS com batida. O Music3 modela música como música: seções (intro, verso, pré-refrão, refrão, ponte, instrumental, solo, final), progressão emocional, identidade vocal estável e evolução de arranjo ao longo da faixa. Saída nativa de <strong>32 kHz estéreo</strong> (o vocoder entrega 44,1 kHz; o servidor de referência reamostra para 32 kHz).</p>
     <p>Um detalhe que interessa ao público deste portal: o cérebro estrutural do Music3 é um <strong>LLM Qwen3 de 8B parâmetros</strong> — o Global LLM que planeja a música frame a frame foi inicializado a partir do Qwen3-8B e retreinado para tokens semânticos de música. A mesma família de modelos que <a href="/guia/benchmarks-comparativos">analisamos aqui</a> virou o compositor de dentro de um modelo de música local.</p>
 
     <h3 id="arquitetura">A arquitetura em 4 módulos (e o mito do "2,4B")</h3>
     <p>A circula por aí que o Music3 seria "um modelo de 2,4B parâmetros". Isso é meia-verdade que confunde o planejamento de hardware. Os <strong>2,4B são só o módulo de flow matching</strong> — o que transformaria tokens em áudio. O pipeline completo soma <strong>~11,1B</strong>:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Componente</th><th>Parâmetros</th><th>Faz o quê</th></tr>
         <tr class="highlight"><td><strong>Global LLM</strong></td><td>8B</td><td>Estrutura musical de longo prazo. Inicializado do Qwen3-8B; prevê o primeiro codebook RVQ frame a frame (36 camadas, hidden 4096, GQA 32/8, vocab 200k).</td></tr>
         <tr><td><strong>Local LLM</strong></td><td>0,6B</td><td>Detalhe acústico frame a frame: preenche os 7 codebooks residuais de cada frame via depth decoder de 4 camadas.</td></tr>
         <tr><td><strong>Flow Matching</strong></td><td>2,4B</td><td>DIT (36 camadas, dim 2048) que resolve o latente do Flow-VAE por janelas de 200 frames, Euler 30 passos, CFG 1,7.</td></tr>
         <tr><td><strong>Flow-VAE Decoder</strong></td><td>123M</td><td>Decodificador estilo DAC que transforma latente em forma de onda estéreo (upsampling 512x).</td></tr>
-    </table>
+    </table></div>
     <p>Por isso os requisitos de VRAM parecem estranhos à primeira vista — "2,4B que precisa de 23GB?" — e por isso o modelo baixa ~22 GB de pesos em bfloat16 (flowmatching_vae.pth 9,83 GB + qwen_7B + dav.pth 0,49 GB + módulos). Somando os módulos: 8B + 0,6B + 2,4B + 123M ≈ <strong>11,1B</strong>. Quem planeja disco e VRAM pelo "2,4B" se dá mal.</p>
 
     <h2 id="vram-tiers">VRAM: os três degraus (23 → 22 → 8 GB)</h2>
     <p>Os números oficiais, medidos pela Hugging Face e documentados na <a href="https://huggingface.co/docs/diffusers/api/pipelines/minimax_music3">doc do diffusers</a>:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Modo</th><th>VRAM livre</th><th>Como</th><th>Custo</th></tr>
         <tr><td><strong>Full bf16</strong></td><td>~23 GB</td><td>pipeline inteira na GPU</td><td>mais rápido; RTX 3090/4090/5090 de 24GB</td></tr>
         <tr><td><strong>CPU offload automático</strong></td><td>~22 GB</td><td><code>enable_auto_cpu_offload</code></td><td>pouca troca de peso; 22GB já não roda em 16GB</td></tr>
         <tr class="highlight"><td><strong>Group offloading + streaming</strong></td><td><strong>8 GB</strong></td><td><code>apply_group_offloading(..., use_stream=True)</code> no language model</td><td>mais lento; RTX 3060 Ti / 4060 / 3090 dividida</td></tr>
-    </table>
+    </table></div>
     <div class="callout">
         <strong>O degrau dos 8GB não é quantização — é offload.</strong> O caminho para caber em uma GPU de 8GB não é um quant menor (não há build GGUF oficial documentada para o pipeline completo), e sim <strong>group offloading em leaf_level com use_stream=True</strong>: os blocos do language model sobem para a GPU só quando executam, sob demanda, com cópias sobrepostas em CUDA streams. A doc é explícita: "additionally group-offloading the language model fits in 8 GB". É mais lento — mas é oficial, documentado e funciona.
     </div>
@@ -359,13 +357,13 @@ curl http://127.0.0.1:8000/v1/audio/speech \
 
     <h2 id="hardware-br">O que roda no hardware brasileiro típico</h2>
     <p>Cruzando os três degraus de VRAM com as placas mais comuns no mercado brasileiro de reposição:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>GPU</th><th>VRAM</th><th>Veredito Music3</th></tr>
         <tr class="highlight"><td><strong>RTX 3060 Ti / 4060</strong></td><td>8 GB</td><td><strong>Roda no modo streaming</strong> — group offloading leaf_level, mais lento. O candidato real do "8GB de VRAM" do título.</td></tr>
         <tr><td>RTX 4060 Ti 16GB / 5060 Ti 16GB</td><td>16 GB</td><td>Gap desconfortável: os ~22GB do offload automático não cabem. Recorra ao group offloading (cabe folgado) ou aguarde quantizações comunitárias maduras.</td></tr>
         <tr><td>2× RTX 3060 Ti ou 2× 4060</td><td>8+8 GB</td><td>Rota SGLang-Omni com estágios divididos por GPU (AR na primeira, DIT/DAV na segunda).</td></tr>
         <tr><td>RTX 3090 (usada, mercado BR forte) / 4090 / 5090</td><td>24 GB</td><td>Full bf16 (~23 GB) — a experiência completa, sem offload.</td></tr>
-    </table>
+    </table></div>
     <p>Como referência da casa: <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">explicamos aqui</a> o esforço de encaixar um LLM de 27B em 16GB via quantização GGUF — lá o caminho é quant menor; aqui, em 2026, o caminho dos 8GB é offload estruturado. Ferramenta diferente, mesma lição: <strong>quanto de VRAM você tem importa mais do que quantos parâmetros o modelo tem</strong>. Para o panorama geral de placas por caso de uso, veja o <a href="/guia/hardware-local">guia de hardware local</a>.</p>
 
     <h2 id="prompts-ptbr">Prompts em português: letra + caption</h2>
@@ -428,7 +426,7 @@ prompt = (
     <p>Não é Apache 2.0 como o Qwen3.8-27B — é uma community license no estilo Llama: aberta para quase todos, com cláusulas para quem escala. Para projeto indie, agência ou conteúdo monetizado, o caminho está aberto; leia o texto integral no <a href="https://huggingface.co/MiniMaxAI/MiniMax-Music3/blob/main/LICENSE">LICENSE do repo</a>.</p>
 
     <h2 id="limitacoes">Limitações: o que esperar (e o que não)</h2>
-    <div class="callout-warn">
+    <div class="callout warn">
         <strong>Português cantado: funciona, com ressalvas.</strong> O model card demonstra geração em múltiplos idiomas e a comunidade reporta letras em pt-BR sendo cantadas corretamente. As ressalvas práticas: (1) pronúncia de algumas palavras pode exigir ajuste — o truque da comunidade é escrever a letra <em>como soa</em> (abafo fonético) quando uma sílaba sai errada; (2) a caption/descrição funciona melhor em inglês, onde o modelo foi treinado nas descrições estruturadas; (3) não há como fixar uma voz de referência como em TTS — o que controla a voz é a descrição textual dela.
     </div>
     <ul>
@@ -490,10 +488,95 @@ prompt = (
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Portal de modelos locais de 30B — primeira cobertura de música local | Dados: model card MiniMaxAI/MiniMax-Music3, docs diffusers (branch minimax-music3-integration), cookbook SGLang-Omni e tutorial ComfyUI — todos verificados ao vivo em 18/08/2026.</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/como-rodar-sglang-qwen3-8-27b"><div class="dir">← Anterior</div><div class="t">Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</div></a>
+          <a class="pn-card next" href="/guia/qwen3-8-27b-benchmark-artificial-analysis"><div class="dir">Próximo →</div><div class="t">Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</h3></div>
+</a>
+          <a class="post-card" href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>QWEN38</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Qwen3.8-27B: desativar overthinking e configurar reasoning</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/minimax-music3-musica-local" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

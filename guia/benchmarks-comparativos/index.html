@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta charset="UTF-8">
@@ -13,53 +13,7 @@
     <meta property="og:title" content="Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos">
     <meta property="og:description" content="Comparativo completo de benchmarks do Qwen3.8-27B. 26 resultados do model card oficial, código, agentes, conhecimento e multimodal.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos">
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
-            --accent-3: #f78166; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        nav a.active { background: var(--accent); color: var(--bg); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; }
-        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); }
-        td { padding: 12px 15px; border-top: 1px solid var(--border); }
-        tr:hover { background: var(--code-bg); }
-        .highlight { background: rgba(88,166,255,0.1); }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
-        .badge-best { background: rgba(63,185,80,0.2); color: var(--accent-2); }
-        .badge-good { background: rgba(88,166,255,0.2); color: var(--accent); }
-        .badge-warn { background: rgba(247,129,102,0.2); color: var(--accent-3); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        .metric-card { display: inline-block; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; margin: 5px; text-align: center; }
-        .metric-card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
-        .metric-card .label { font-size: 0.85rem; color: var(--text-muted); }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
@@ -81,25 +35,75 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 })();
 </script>
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos" class="active">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos</h1>
-        <p class="lead">Análise técnica de desempenho do Qwen3.8-27B (denso, 27B) contra outros modelos de escala similar — código, agentes, conhecimento, multimodal. 26 benchmarks do model card oficial.</p>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-15">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos", "description": "Comparativo completo de benchmarks do Qwen3.8-27B vs modelos de escala similar. LiveCodeBench, SWE-bench, OSWorld, GPQA, 26 resultados do model card oficial.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-15", "dateModified": "2026-08-15"}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Benchmarks", "item": "https://qwen38-27b-landing.vercel.app/guia/#benchmarks"}, {"@type": "ListItem", "position": 3, "name": "Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos", "item": "https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos"}]}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#benchmarks">Benchmarks</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos</h1>
+        <div class="article-meta">
+          <span class="badge-cat bench">Benchmarks</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-15">15 ago 2026</time>
+          <span class="sep">·</span><span>8 min de leitura</span>
+        </div>
+        <p class="article-lead">Análise técnica de desempenho do Qwen3.8-27B (denso, 27B) contra outros modelos de escala similar — código, agentes, conhecimento, multimodal. 26 benchmarks do model card oficial.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#overview">Visão Geral do Qwen3.8-27B</a></li>
             <li><a href="#arquitetura">Arquitetura: Denso vs MoE</a></li>
             <li><a href="#codigo">Programação e Engenharia de Software</a></li>
@@ -109,10 +113,14 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><a href="#comparison">Tabela Comparativa Completa (26 benchmarks)</a></li>
             <li><a href="#vs-30b">Qwen3.8-27B vs Outros Modelos ~30B</a></li>
             <li><a href="#takeaways">Principais Conclusões</a></li>
-        </ul>
-    </div>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="overview">Visão Geral do Qwen3.8-27B</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos" width="1200" height="630" loading="eager">
+
+<h2 id="overview">Visão Geral do Qwen3.8-27B</h2>
     <p>O <strong>Qwen3.8-27B</strong> é um modelo de linguagem denso desenvolvido pela equipe Qwen (Alibaba Cloud). Lançado em 14 de agosto de 2026 como parte da família Qwen3.8, este modelo representa um salto significativo em tarefas agênticas: com <strong>27 bilhões de parâmetros densos</strong> (todos ativos a cada token), ele combina a capacidade de um modelo de 27B com multimodalidade nativa e 262K de contexto nativo (1M com RoPE).</p>
 
     <div style="text-align: center; margin: 25px 0;">
@@ -143,7 +151,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <h2 id="codigo">Programação e Engenharia de Software</h2>
     <p>Os benchmarks de código mostram o salto da geração. O Qwen3.8-27B publica 90,3 no LiveCodeBench v6 — +6,4 pontos em relação ao Qwen3.6-27B (83,9). Em SWE-bench Pro, o avanço é de +8,2 pontos (61,7 vs 53,5).</p>
 
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referências do model card</th></tr>
         <tr class="highlight"><td>LiveCodeBench v6</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--accent-2)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus 4.6 Max 88,8</td></tr>
         <tr><td>Terminal-Bench 2.1 (Terminus)</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--accent-2)">+9,6</td><td>Opus 4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
@@ -151,7 +159,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>DeepSWE 1.1</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--accent-2)">+28,9</td><td>Qwen3.7-Plus 14,2 (única referência do card)</td></tr>
         <tr><td>QwenSWEBench</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--accent-2)">+29,7</td><td>Qwen3.7-Plus 59,2 · Opus 4.6 Max 63,8</td></tr>
         <tr><td>NL2Repo-Bench</td><td><strong>42,3</strong></td><td>36,2</td><td style="color:var(--accent-2)">+6,1</td><td>Qwen3.7-Plus 41,1 · Opus 4.6 Max 47,6</td></tr>
-    </table>
+    </table></div>
 
     <div class="callout">
         <strong>Destaque:</strong> DeepSWE 1.1 saltou de 13,3 para 42,2 — o maior salto relativo da geração. QwenSWEBench subiu +29,7 pontos (49,3 → 79,0). O modelo está convergindo para a fronteira em tarefas de engenharia de software agêntica.
@@ -160,7 +168,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <h2 id="agentes">Agentes e Uso de Computador</h2>
     <p>É aqui que o Qwen3.8-27B mais brilha. OSWorld-Verified (uso de computador agêntico) subiu de 63,9 para 84,3 — +20,4 pontos. O modelo supera as duas referências do próprio card: Qwen3.7-Plus (73,3) e Claude Opus 4.6 Max (72,7).</p>
 
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referência</th></tr>
         <tr class="highlight"><td>OSWorld-Verified</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--accent-2)">+20,4</td><td>Qwen3.7-Plus 73,3 · Opus 4.6 Max 72,7 · Muse 65,9</td></tr>
         <tr><td>AndroidWorld</td><td><strong>81,9</strong></td><td>70,3</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 81,0 · Opus 4.6 Max 62,0</td></tr>
@@ -170,24 +178,24 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>Agents' Last Exam — Pass@1</td><td><strong>20,4</strong></td><td>10,6</td><td style="color:var(--accent-2)">+9,8</td><td>Qwen3.7-Plus 13,2 (única referência do card)</td></tr>
         <tr><td>Agents' Last Exam — Score</td><td><strong>42,9</strong></td><td>27,3</td><td style="color:var(--accent-2)">+15,6</td><td>Qwen3.7-Plus 33,6 (única referência do card)</td></tr>
         <tr><td>RecreationBench</td><td><strong>47,1</strong></td><td>29,8</td><td style="color:var(--accent-2)">+17,3</td><td>Qwen3.7-Plus 30,2 (única referência do card)</td></tr>
-    </table>
+    </table></div>
 
     <p>Em CoWorkBench, o Qwen3.8-27B (70,7) <strong>supera o Claude Opus 4.6 Max</strong> (68,2) — um modelo de fronteira proprietário. Entre as colunas de referência do card, nenhuma fica à frente.</p>
 
     <h2 id="conhecimento">Conhecimento e Raciocínio</h2>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Referências do model card</th></tr>
         <tr class="highlight"><td>GPQA Diamond</td><td><strong>89,2</strong></td><td>Opus 4.6 Max 91,3 · Qwen3.7-Plus 90,3 · Muse 83,5</td></tr>
         <tr><td>Humanity's Last Exam</td><td><strong>30,8</strong></td><td>Opus 4.6 Max 40,0 · Qwen3.7-Plus 34,7 · Muse 22,0</td></tr>
         <tr><td>IFBench (seguir instruções)</td><td><strong>79,5</strong></td><td>Qwen3.7-Plus 79,1 · Muse 77,0 · Opus 4.6 Max 62,5</td></tr>
-    </table>
+    </table></div>
 
     <p>GPQA Diamond (graduate-level Q&A) em 89,2 fica a 1,1 ponto do Qwen3.7-Plus (90,3) e a 2,1 do Claude Opus 4.6 Max (91,3) nas colunas do próprio card. IFBench (seguir instruções) subiu +10,4 pontos e supera o Qwen3.7-Plus (79,1).</p>
 
     <h2 id="multimodal">Multimodalidade</h2>
     <p>A torre de visão é nativa e os benchmarks confirmam: MathVision (matemática a partir de imagens) em 94,6, OmniDocBench 1.5 (leitura de documentos) em 91,1, CharXiv (gráficos científicos) em 90,2. O modelo entende imagens, vídeos e documentos sem componentes adicionais.</p>
 
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th></tr>
         <tr class="highlight"><td>MathVision (com CI)</td><td><strong>94,6</strong></td><td>85,1</td><td style="color:var(--accent-2)">+9,5</td></tr>
         <tr><td>OmniDocBench 1.5</td><td><strong>91,1</strong></td><td>89,4</td><td style="color:var(--accent-2)">+1,7</td></tr>
@@ -198,10 +206,10 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>Vision2Web</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--accent-2)">+17,9</td></tr>
         <tr><td>ClawEval-MM (Pass@3)</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--accent-2)">+14,8</td></tr>
         <tr><td>SWE-MM (bugs multimodais)</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--accent-2)">+12,9</td></tr>
-    </table>
+    </table></div>
 
     <h2 id="comparison">Tabela Comparativa Completa (26 benchmarks)</h2>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Benchmark</th><th>Categoria</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referências do model card</th></tr>
         <tr class="highlight"><td>LiveCodeBench v6</td><td>código</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--accent-2)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus 4.6 Max 88,8</td></tr>
         <tr><td>Terminal-Bench 2.1 (Terminus)</td><td>código</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--accent-2)">+9,6</td><td>Opus 4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
@@ -229,7 +237,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>Vision2Web</td><td>visão</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--accent-2)">+17,9</td><td>Qwen3.7-Plus 42,1 (única referência do card)</td></tr>
         <tr><td>ClawEval-MM (Pass@3)</td><td>visão</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--accent-2)">+14,8</td><td>Qwen3.7-Plus 57,4 · Opus 4.6 Max 52,5</td></tr>
         <tr><td>SWE-MM (bugs multimodais)</td><td>visão</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--accent-2)">+12,9</td><td>Qwen3.7-Plus 30,0 · Opus 4.6 Max 27,1</td></tr>
-    </table>
+    </table></div>
 
     <div class="callout">
         <strong>Aviso:</strong> Todos os números acima são reportados pela própria Qwen e ainda não passaram por verificação independente. As colunas de referência (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) vêm do próprio model card — mesma tabela e mesma data de avaliação, servindo como ordem de grandeza.
@@ -238,13 +246,13 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <h2 id="vs-30b">Qwen3.8-27B vs Outros Modelos ~30B</h2>
     <p>O Qwen3.8-27B é um modelo denso de 27B. Na faixa de ~30B, existem alternativas com arquiteturas diferentes:</p>
 
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Modelo</th><th>Arquitetura</th><th>Parâmetros</th><th>Ativos/token</th><th>Licença</th><th>Contexto</th></tr>
         <tr class="highlight"><td>Qwen3.8-27B</td><td><strong>Denso</strong></td><td>27B</td><td>27B (todos)</td><td>Apache 2.0</td><td>262K → 1M</td></tr>
         <tr><td>Qwen3.6-35B</td><td>MoE</td><td>35B</td><td>~3B</td><td>Apache 2.0</td><td>262K</td></tr>
         <tr><td>GPT-OSS-20B</td><td>MoE</td><td>20B</td><td>~3.6B</td><td>Apache 2.0</td><td>128K</td></tr>
         <tr><td>Gemma 4 31B</td><td>Denso</td><td>31B</td><td>31B (todos)</td><td>Gemma</td><td>128K</td></tr>
-    </table>
+    </table></div>
 
     <p><strong>Qwen3.8-27B vs Qwen3.6-35B (MoE):</strong> O 35B MoE ativa apenas ~3B por token — é 5,3× mais rápido no mesmo hardware (56,6 tok/s vs 10,6 tok/s em Strix Halo), mas o 27B denso entrega melhor qualidade por parâmetro. A escolha depende do caso de uso: conversa contínua → MoE; especialista chamado sob demanda → denso.</p>
     <p><strong>Qwen3.8-27B vs GPT-OSS-20B:</strong> O GPT-OSS-20B é menor (20B total, ~3.6B ativos) e mais rápido, mas o Qwen3.8-27B tem contexto nativo 2× maior (262K vs 128K), multimodalidade nativa e mais benchmarks publicados (26 vs limitado). Para raciocínio agêntico de horizonte longo, o Qwen3.8-27B é a escolha superior.</p>
@@ -275,10 +283,95 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Guia Qwen3.8-27B — Benchmarks | Dados: model card oficial (Hugging Face Qwen/Qwen3.8-27B) e Qwen Blog. Benchmarks reportados pelo fabricante.</p>
-        <p>Última atualização: agosto 2026 | <a href="/guia">Guia</a> | <a href="/guia/hardware-local">Hardware</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)</div></a>
+          <a class="pn-card next" href="/guia/hardware-local"><div class="dir">Próximo →</div><div class="t">Guia de Hardware para Rodar o Qwen3.8-27B Localmente</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>QWEN38</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)</h3></div>
+</a>
+          <a class="post-card" href="/guia/agent-memory-leaderboard-resultados">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>AGENTM</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Agent Memory Leaderboard: os primeiros resultados do benchmark de memória de agentes</h3></div>
+</a>
+          <a class="post-card" href="/guia/qwen3.8-vs-qwen3.6-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>QWEN38</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B vs Qwen3.6-27B: vale o upgrade? 26 benchmarks comparados</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/benchmarks-comparativos" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

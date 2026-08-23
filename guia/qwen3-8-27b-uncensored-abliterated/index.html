@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -182,74 +182,93 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
-            --accent-4: #d2a8ff; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
-        .faq-item h3 { margin: 0 0 8px; }
-        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
-        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
-        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
-        .stat-card .value.ok { color: var(--accent-2); }
-        .stat-card .value.warn { color: var(--accent-3); }
-        .src { font-size: 0.85rem; color: var(--text-muted); }
-        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência</h1>
-        <p class="lead">A história de ecossistema mais quente do Qwen3.8-27B não saiu da Qwen: saiu de um GGUF publicado em 14/08 que removeu as direções de recusa do modelo com otimização matemática — recusas 98→12/100 com KL 0,1191 e MMLU −0,2. Este artigo destrincha o método (Heretic + abliteration direcional), o detalhe técnico que quase ninguém notou (o re-enxerto dos tensores MTP) e como escolher o quant pela tabela de PPL real, com os avisos de honestidade que o próprio README publica.</p>
-    </header>
 
-    <div class="stat-row">
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-20">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência", "description": "Recusas 98→12/100, MTP re-enxertado e o OBLITERATUS V3: 20/20 em cyber, thinking ON e MMLU −2,1pp — anatomia do ecossistema abliterated.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-20", "dateModified": "2026-08-20"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência</h1>
+        <div class="article-meta">
+          <span class="badge-cat guides">Guias</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-20">20 ago 2026</time>
+          <span class="sep">·</span><span>19 min de leitura</span>
+        </div>
+        <p class="article-lead">A história de ecossistema mais quente do Qwen3.8-27B não saiu da Qwen: saiu de um GGUF publicado em 14/08 que removeu as direções de recusa do modelo com otimização matemática — recusas 98→12/100 com KL 0,1191 e MMLU −0,2. Este artigo destrincha o método (Heretic + abliteration direcional), o detalhe técnico que quase ninguém notou (o re-enxerto dos tensores MTP) e como escolher o quant pela tabela de PPL real, com os avisos de honestidade que o próprio README publica.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
+            <li><a href="#o-fenomeno">O fenômeno: 1 milhão de downloads em cima de um modelo de 6 dias</a></li>
+            <li><a href="#o-que-e-abliteration">O que é abliteration (e por que quase não dói)</a></li>
+            <li><a href="#heretic">O Heretic: abliteration virou problema de otimização</a></li>
+            <li><a href="#pareto">A fronteira de Pareto publicada: recusas × KL</a></li>
+            <li><a href="#custo">O custo medido: −0,5 ponto de média, dentro do ruído</a></li>
+            <li><a href="#mtp">O detalhe que quase passou: MTP re-enxertado e verificado</a></li>
+            <li><a href="#quant">Qual quant escolher: a tabela PPL real (e o que ela não diz)</a></li>
+            <li><a href="#ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</a></li>
+            <li><a href="#obliteratus">OBLITERATUS V3 — Deep Liberation: a quarta peça do ecossistema</a></li>
+            <li><a href="#limites">O que esses números NÃO dizem (limitações explícitas)</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
+
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência" width="1200" height="630" loading="eager">
+
+<div class="stat-row">
         <div class="stat-card">
             <div class="value">979.768</div>
             <div class="label">downloads do GGUF em 6 dias (14→20/08, HF API)</div>
@@ -268,22 +287,7 @@
         </div>
     </div>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
-            <li><a href="#o-fenomeno">O fenômeno: 1 milhão de downloads em cima de um modelo de 6 dias</a></li>
-            <li><a href="#o-que-e-abliteration">O que é abliteration (e por que quase não dói)</a></li>
-            <li><a href="#heretic">O Heretic: abliteration virou problema de otimização</a></li>
-            <li><a href="#pareto">A fronteira de Pareto publicada: recusas × KL</a></li>
-            <li><a href="#custo">O custo medido: −0,5 ponto de média, dentro do ruído</a></li>
-            <li><a href="#mtp">O detalhe que quase passou: MTP re-enxertado e verificado</a></li>
-            <li><a href="#quant">Qual quant escolher: a tabela PPL real (e o que ela não diz)</a></li>
-            <li><a href="#ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</a></li>
-            <li><a href="#obliteratus">OBLITERATUS V3 — Deep Liberation: a quarta peça do ecossistema</a></li>
-            <li><a href="#limites">O que esses números NÃO dizem (limitações explícitas)</a></li>
-            <li><a href="#faq">Perguntas frequentes</a></li>
-        </ul>
-    </div>
+    
 
     <h2 id="o-fenomeno">O fenômeno: 1 milhão de downloads em cima de um modelo de 6 dias</h2>
     <p>O Qwen3.8-27B foi publicado em 14 de agosto de 2026. Seis dias depois, um derivado dele — o <a href="https://huggingface.co/JonathanColetti/Qwen3.8-27B-Uncensored-GGUF">Qwen3.8-27B-Uncensored-GGUF</a> de JonathanColetti — já tinha <strong>979.768 downloads</strong> (verificado na HF API em 20/08), com 510 likes. Somando os derivados <em>Uncensored</em> publicados em seguida — o <a href="https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-MLX">MLX para Apple Silicon</a> (2.628 downloads) e o <a href="https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-FP8">FP8</a> (76.109 downloads) — o ecossistema passa de <strong>1,05 milhão de downloads em menos de uma semana</strong>, com dois dos três repos atualizados no próprio dia 20/08.</p>
@@ -309,7 +313,7 @@
 
     <h2 id="pareto">A fronteira de Pareto publicada: recusas × KL</h2>
     <p>O README do GGUF publica a tabela inteira da busca Heretic: 200 trials, <strong>23 pontos não-dominados</strong>. O modelo publicado é um ponto nessa fronteira — uma escolha, não um ótimo global. Amostra (recusas / KL de primeiro token):</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Recusas (de 100)</th><th>KL vs base</th><th></th></tr>
         <tr class="highlight"><td>12</td><td>0,1191</td><td>← publicado</td></tr>
         <tr><td>13</td><td>0,1052</td><td></td></tr>
@@ -318,20 +322,20 @@
         <tr><td>36</td><td>0,0387</td><td></td></tr>
         <tr><td>60</td><td>0,0290</td><td></td></tr>
         <tr><td>98</td><td>0,0004</td><td>≈ o modelo base, sem edição</td></tr>
-    </table>
+    </table></div>
     <p>Como ler: o autor escolheu o ponto mais agressivo da fronteira (12 recusas restantes) aceitando o maior KL do conjunto publicável. Se o objetivo fosse "recusas na metade" (por volta de 50), o KL cairia para ~0,03 — um quarto do dano. A fronteira permite essa escolha explícita; a diferença contra a era manual é que agora ela é <em>documentada</em>.</p>
     <div class="callout"><strong>Metodologia da medição de recusas:</strong> 100 prompts held-out do dataset <code>mlabonne/harmful_behaviors</code> (split de teste) — pedidos explicitamente nocivos, não benignos. O número <em>não</em> mede over-refusal (quantas vezes o modelo recusa trabalho legítimo); mede quanto do comportamento de segurança original sobre pedidos nocivos permanece. KL é divergência de primeiro token vs o modelo base não-modificado — o proxy do otimizador para "quanto dano causamos"; baixo KL não certifica que raciocínio ou código sobreviveram.</div>
 
     <h2 id="custo">O custo medido: −0,5 ponto de média, dentro do ruído</h2>
     <p>O README compara base e derivado nos <strong>mesmos settings, mesma sessão, bf16, 0-shot</strong> via lm-evaluation-harness:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Task</th><th>Base</th><th>Uncensored</th><th>Δ</th><th>Erro-padrão</th></tr>
         <tr><td>MMLU</td><td>83,4</td><td>83,3</td><td>−0,2</td><td>±0,30</td></tr>
         <tr><td>ARC-Challenge</td><td>58,9</td><td>57,7</td><td>−1,2</td><td>±1,44</td></tr>
         <tr><td>HellaSwag</td><td>82,8</td><td>82,9</td><td>+0,1</td><td>±0,38</td></tr>
         <tr><td>Winogrande</td><td>76,1</td><td>75,3</td><td>−0,8</td><td>±1,21</td></tr>
         <tr class="highlight"><td><strong>Média</strong></td><td></td><td></td><td><strong>−0,5</strong></td><td></td></tr>
-    </table>
+    </table></div>
     <p>Todo delta está dentro ou perto do erro-padrão reportado — <strong>nenhum é claramente separável do ruído run-to-run</strong>. Esse é o dado que sustenta o "quase não perde inteligência" do título. Dois avisos de honestidade que o próprio README faz questão de dar:</p>
     <ul>
         <li><strong>São escores 0-shot e não são comparáveis aos números few-shot publicados pela Qwen</strong> no model card do 3.8. Comparáveis entre si (base vs derivado, mesma sessão) — que é o que isola o custo da edição. O ARC baixo para um modelo desse MMLU é sensibilidade de formato em modelo reasoning-tuned, presente também no base (58,9 nos mesmos settings).</li>
@@ -357,7 +361,7 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
 
     <h2 id="quant">Qual quant escolher: a tabela PPL real (e o que ela não diz)</h2>
     <p>O repo publica perplexidade wikitext-2 para cada arquivo, medida na mesma sessão, com erro-padrão (baseline f16: 7,1557):</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Quant</th><th>Tamanho</th><th>PPL wikitext-2</th><th>vs f16</th></tr>
         <tr><td>Q5_K_M</td><td>19,5 GB</td><td>7,1573 ± 0,25055</td><td>+0,0016</td></tr>
         <tr><td>IQ4_XS</td><td>15,3 GB</td><td>7,1583 ± 0,25019</td><td>+0,0026</td></tr>
@@ -365,7 +369,7 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
         <tr><td>Q8_0</td><td>29,0 GB</td><td>7,1764 ± 0,25195</td><td>+0,0207</td></tr>
         <tr><td>Q4_K_M</td><td>16,8 GB</td><td>7,1814 ± 0,25227</td><td>+0,0257</td></tr>
         <tr class="highlight"><td>IQ2_M</td><td>10,6 GB</td><td>7,8581 ± 0,27481</td><td>+0,7024 (~2,8σ)</td></tr>
-    </table>
+    </table></div>
     <p>A leitura que o próprio README manda fazer (e a maioria dos agregadores ignora): <strong>os cinco quants de Q4 a Q8 têm PPL dentro do erro-padrão uns dos outros — a ordenação entre eles é ruído</strong>. Não conclua que Q5_K_M é melhor que Q8_0 porque mediu 0,009 a menos; o span de 0,026 contra erro de ~0,25 não separa nada. O único arquivo estatisticamente separável é o IQ2_M, ~2,8 erros-padrão acima do baseline.</p>
     <p>Decisão prática, então, é hardware puro — e aqui o repo é explícito sobre o risco comportamental:</p>
     <ul>
@@ -377,29 +381,29 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
 
     <h2 id="ecossistema">O ecossistema: MLX para Apple Silicon e o FP8 gated</h2>
     <p>O GGUF do JonathanColetti é a âncora, mas o ecossistema Uncensored do Qwen3.8-27B tem três repos ativos — e um quarto ator independente, o <a href="#obliteratus">OBLITERATUS/Qwen3.8-27B-OBLITERATED</a> (V3 "Deep Liberation", coberto na próxima seção):</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Repo</th><th>Formato</th><th>Downloads (20/08)</th><th>Likes</th><th>Estado</th></tr>
         <tr class="highlight"><td>JonathanColetti/…-GGUF</td><td>GGUF IQ2_M–Q8_0</td><td>979.768</td><td>510</td><td>Criado 14/08, última alteração 16/08</td></tr>
         <tr><td>orcarouter/…-FP8</td><td>FP8 (vLLM/SGLang)</td><td>76.109</td><td>675</td><td>Criado 15/08, atualizado 20/08 08:41</td></tr>
         <tr><td>orcarouter/…-MLX</td><td>MLX 2/4/6/8-bit</td><td>2.628</td><td>708</td><td>Criado 17/08, atualizado 20/08 08:36</td></tr>
-    </table>
+    </table></div>
     <p>Sobre o MLX (Apple Silicon): publicado pelo orcarouter com quants de 2 a 8-bit, <strong>visão preservada em BF16</strong> e as tags <code>ai-red-team</code> / <code>red-teaming</code> — o posicionamento declarado do repo é ferramenta de segurança, não produto de consumo. É o caminho para Mac (o guia de visão multimodal do portal, que cobre o modelo base no llama.cpp/Ollama, está <a href="/guia/qwen3-8-27b-visao-videos-local">aqui</a>).</p>
     <p>Sobre o FP8: 76.109 downloads e 675 likes — mas o repo é <strong>gated</strong> (exige login e aceite de termos para ver o conteúdo). Por isso este artigo cita apenas os metadados públicos dele (downloads, likes, tags, datas); nada do que está escrito no readme dele foi lido ou verificado por este portal. Se você precisa de FP8 non-gated do modelo base, o checkpoint oficial <code>Qwen/Qwen3.8-27B-FP8</code> tem nosso <a href="/guia/como-rodar-sglang-qwen3-8-27b">guia completo de SGLang</a>.</p>
 
     <h2 id="obliteratus">OBLITERATUS V3 — Deep Liberation: a quarta peça do ecossistema</h2>
     <p>Enquanto o ecossistema do JonathanColetti evoluía ao redor do GGUF, um quarto ator entrou no radar: o <a href="https://huggingface.co/OBLITERATUS/Qwen3.8-27B-OBLITERATED">OBLITERATUS/Qwen3.8-27B-OBLITERATED</a>, publicado por <strong>Pliny the Prompter</strong> (a suite de abliteration <a href="https://github.com/elder-plinius/OBLITERATUS">OBLITERATUS</a> é do elder-plinius). Criado em 19/08, o repo foi atualizado para a <strong>V3 "Deep Liberation"</strong> em <strong>23/08 03:58 UTC</strong> e soma <strong>244.834 downloads e 577 likes</strong> (verificado na HF API em 23/08), licença Apache 2.0. É o mesmo objetivo do GGUF do JonathanColetti — remover a recusa por edição de pesos, sem fine-tuning — mas com uma evolução de método própria: em vez de uma única cirurgia, a combinação de técnicas que o autor batizou de <em>complementary abliteration blending</em>.</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Versão</th><th>MMLU (0-shot)</th><th>vs stock</th><th>Recusa dura</th><th>Deflexão suave</th><th>Cyber/código</th><th>Thinking</th></tr>
         <tr><td>Stock Qwen3.8-27B</td><td>84,5</td><td>—</td><td>recusa</td><td>recusa</td><td>não medido</td><td>✓</td></tr>
         <tr><td>V1 — Single Surgery</td><td>81,4</td><td>−6,0pp</td><td>removida</td><td>? (não testado)</td><td>não testado</td><td>✗</td></tr>
         <tr><td>V2 — Complementary Blend</td><td>84,3</td><td>−0,3pp</td><td>removida</td><td><strong>permanece</strong> (safety lectures)</td><td>não testado</td><td>✗ (recusa)</td></tr>
         <tr class="highlight"><td><strong>V3 — Deep Liberation</strong></td><td><strong>82,3</strong></td><td><strong>−2,1pp</strong></td><td><strong>removida</strong></td><td><strong>removida</strong> ✅</td><td><strong>20/20</strong> com código funcional</td><td><strong>✓</strong></td></tr>
-    </table>
+    </table></div>
     <p><strong>O salto da V3 não é o MMLU — é o comportamento.</strong> A V2 já quase não perdia inteligência (−0,3pp), mas ainda <em>defletia</em> em consultas simples: respondia com uma safety lecture sem substância em vez de um "não posso". A V3 ataca exatamente isso com duas ideias: <em>refinamento iterativo</em> (nunca recomeça do stock; cada rodada refina o campeão da rodada anterior) e <em>cirurgia direcionada com corpus focado</em> (um corpus específico para cada categoria de deflexão acha a direção de recusa única daquela categoria sem diluir o sinal). O resultado é a remoção tanto da recusa dura quanto da deflexão suave — e as tarefas <strong>20/20 cyber/código</strong> entregam implementações funcionais, não disclaimers. O custo em MMLU (−2,1pp) fica entre o zero da V2 e o −6 da V1, e é o maior dano em STEM (−3,3pp), com humanities quase intactas (−1,0pp).</p>
     <p><strong>Thinking-mode compatível</strong> — o detalhe que separa a V3 da V2: a V2 recusava com o thinking ligado; a V3 responde nos dois modos. O template de chat da V3 vem com um prefill que pula a cadeia de pensamento por padrão (thinking OFF), e o README recomenda deixá-lo assim para respostas mais diretas. Atenção para usuários de GGUF: use o template embutido do modelo com <code>--jinja</code> no llama.cpp (ou o template nativo no Ollama/LM Studio) — é ele que carrega o prefill.</p>
     <div class="callout"><strong>Settings ótimos documentados (tradução literal do README):</strong> temperature <strong>0</strong> (greedy; acima de 0,5 degrada) · repetition_penalty <strong>1,15</strong> (essencial — sem ele o greedy loopa em imports/boilerplate) · max_new_tokens <strong>≥ 2048</strong> · system prompt <strong>none/vazio</strong> ("naked is better" — A/B testado; system prompts podem reintroduzir recusas) · enable_thinking <strong>OFF recomendado</strong> · top_p/top_k/min_p <strong>não necessários</strong>.</div>
     <p><strong>Arquivos publicados (tree HF verificada em 23/08):</strong> 5 GGUFs — IQ4_XS <strong>15,42 GB</strong> · Q4_K_M <strong>16,81 GB</strong> · Q5_K_M <strong>19,54 GB</strong> · Q6_K <strong>22,43 GB</strong> · Q8_0 <strong>29,05 GB</strong> — mais <strong>mmproj-model-bf16.gguf 0,93 GB</strong> (visão preservada). Há também safetensors BF16 (29 shards, ~54 GB) para Transformers; MLX está pendente do upstream <code>mlx_lm</code> dar suporte à arquitetura. O README documenta a receita de cirurgia com transparência: V2 = 60% LEACE + 40% SVD (LERP no espaço de pesos) com MTP e visão restaurados do stock; V3 = refinamento gentil (SVD 2-dir) + cirurgia direcionada (SVD 3-dir) com blend 50/50, restaurando MTP e visão do stock com o nome de tensores correto.</p>
-    <div class="callout-warn"><strong>O que este repo NÃO certifica (do próprio README):</strong> as 20/20 tarefas cyber/código e as 7/8 tarefas do mundo real são avaliações do autor com auditoria manual (1000+ prompts, cada resposta conferida por substância real), não benchmarks independentes; o MMLU de 82,3 é 0-shot no lm-eval-harness do autor, na mesma linha metodológica do GGUF do JonathanColetti — comparável entre as versões dele, não aos números few-shot da Qwen. O README é explícito sobre o público: pesquisa de alinhamento, red-teaming e avaliação de segurança — e igualmente explícito sobre o que o modelo agora atende: pedidos que o stock recusaria. A posição editorial deste portal segue a mesma da seção abaixo: reportamos a medição com suas limitações, sem endosso.</div>
+    <div class="callout warn"><strong>O que este repo NÃO certifica (do próprio README):</strong> as 20/20 tarefas cyber/código e as 7/8 tarefas do mundo real são avaliações do autor com auditoria manual (1000+ prompts, cada resposta conferida por substância real), não benchmarks independentes; o MMLU de 82,3 é 0-shot no lm-eval-harness do autor, na mesma linha metodológica do GGUF do JonathanColetti — comparável entre as versões dele, não aos números few-shot da Qwen. O README é explícito sobre o público: pesquisa de alinhamento, red-teaming e avaliação de segurança — e igualmente explícito sobre o que o modelo agora atende: pedidos que o stock recusaria. A posição editorial deste portal segue a mesma da seção abaixo: reportamos a medição com suas limitações, sem endosso.</div>
 
     <h2 id="limites">O que esses números NÃO dizem (limitações explícitas)</h2>
     <p>O README do GGUF é incomum na quantidade de caveats que publica — e é justo reportá-las, porque elas definem o alcance real de cada claim:</p>
@@ -411,7 +415,7 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
         <li><strong>Quants compõem tudo.</strong> As medições de recusa/KL/benchmarks são do merge bf16; os arquivos de download são quantizados. E IQ2_M compõe mais ainda.</li>
         <li><strong>Licença:</strong> Apache 2.0 herdada — mas o README lembra que a licença e a política de uso aceitável do modelo base seguem valendo para o derivado. "Uso pretendido: inferência local. Não pretendido para deploy para terceiros sem a sua própria camada de segurança."</li>
     </ul>
-    <div class="callout-warn"><strong>Posição editorial deste portal:</strong> nenhum desses números é endosso. Reportamos o que o README mede, do jeito que ele mede, porque dados de qualidade sobre esse segmento são raros e a conversa técnica fica melhor com eles na mesa. Quem opera modelos assim em produção carrega a responsabilidade do que o modelo agora atende — o README do próprio repo diz o mesmo.</div>
+    <div class="callout warn"><strong>Posição editorial deste portal:</strong> nenhum desses números é endosso. Reportamos o que o README mede, do jeito que ele mede, porque dados de qualidade sobre esse segmento são raros e a conversa técnica fica melhor com eles na mesa. Quem opera modelos assim em produção carrega a responsabilidade do que o modelo agora atende — o README do próprio repo diz o mesmo.</div>
 
     <h2 id="faq">Perguntas frequentes</h2>
     <div class="faq-item">
@@ -457,10 +461,95 @@ llama-server -m Qwen3.8-27B-Uncensored-Q4_K_M.gguf \
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Portal de modelos locais de 30B — Qwen3.8-27B-Uncensored e o ecossistema abliterated | Fontes: README integral de JonathanColetti/Qwen3.8-27B-Uncensored-GGUF (Hugging Face, lido integralmente e verificado em 20/08/2026 — recusas 98→12/100, KL 0,1191, Pareto de 23 pontos, MMLU/ARC/HellaSwag/Winogrande com erros-padrão, PPL por quant, verificação MTP 65/65, bench MTP na H200), README integral de OBLITERATUS/Qwen3.8-27B-OBLITERATED (verificado em 23/08/2026 — V3 "Deep Liberation": tabela V1→V2→V3, MMLU 82,3, 20/20 cyber/código, settings ótimos, receita de cirurgia SVD+LEACE), HF API (downloads/likes/datas/tree de arquivos de JonathanColetti GGUF, orcarouter MLX e FP8 e OBLITERATUS — metadados públicos apenas para o FP8 gated; nada do readme dele foi acessado), GitHub API p-e-w/heretic (27.920 stars, push 17/08/2026) e elder-plinius/OBLITERATUS, Arditi et al. 2024 (arXiv 2406.11717). Nota de transparência: este portal não rodou nenhuma das medições citadas — todas são dos autores dos repos ou do projeto Heretic; a posição editorial é reportar os dados com suas limitações, não endossar usos. Geração deste conteúdo assistida por IA e revisada.</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/como-rodar-vllm-qwen3-8-27b"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B no vLLM em produção: prefix caching, flags e bugs reais</div></a>
+          <a class="pn-card next" href="/guia/quantizacao-multilingue-portugues"><div class="dir">Próximo →</div><div class="t">Quantização rouba mais de quem fala português? 2–4× mais dano em não-inglês (ago/2026)</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</h3></div>
+</a>
+          <a class="post-card" href="/guia/minimax-music3-musica-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>MINIMA</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>MiniMax Music3 local: gerando música com 8GB de VRAM</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-uncensored-abliterated" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

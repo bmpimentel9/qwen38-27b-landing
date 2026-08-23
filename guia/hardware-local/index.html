@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
     <meta charset="UTF-8">
@@ -13,48 +13,7 @@
     <meta property="og:title" content="Guia de Hardware para Rodar o Qwen3.8-27B Localmente">
     <meta property="og:description" content="Requisitos de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B. Tabela por quantização e setups recomendados.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/hardware-local">
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
-            --accent-3: #f78166; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        nav a.active { background: var(--accent); color: var(--bg); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; }
-        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); }
-        td { padding: 12px 15px; border-top: 1px solid var(--border); }
-        tr:hover { background: var(--code-bg); }
-        .highlight { background: rgba(88,166,255,0.1); }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
@@ -76,25 +35,75 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 })();
 </script>
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local" class="active">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Guia de Hardware para Rodar o Qwen3.8-27B Localmente</h1>
-        <p class="lead">Requisitos mínimos e recomendados de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B em cada nível de quantização. Tabelas, setups recomendados e dicas de configuração.</p>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-15">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Guia de Hardware para Rodar o Qwen3.8-27B Localmente", "description": "Requisitos de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B localmente. Tabela por nível de quantização, setups recomendados e dicas de configuração.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/hardware-local", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-15", "dateModified": "2026-08-15"}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Hardware", "item": "https://qwen38-27b-landing.vercel.app/guia/#hardware"}, {"@type": "ListItem", "position": 3, "name": "Guia de Hardware para Rodar o Qwen3.8-27B Localmente", "item": "https://qwen38-27b-landing.vercel.app/guia/hardware-local"}]}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#hardware">Hardware</a><span class="sep">›</span><span aria-current="page">Guia de Hardware para Rodar o Qwen3.8-27B Localmente</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Guia de Hardware para Rodar o Qwen3.8-27B Localmente</h1>
+        <div class="article-meta">
+          <span class="badge-cat hw">Hardware</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-15">15 ago 2026</time>
+          <span class="sep">·</span><span>5 min de leitura</span>
+        </div>
+        <p class="article-lead">Requisitos mínimos e recomendados de VRAM, GPU, RAM e CPU para rodar o Qwen3.8-27B em cada nível de quantização. Tabelas, setups recomendados e dicas de configuração.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#resumo">Resumo Rápido de Requisitos</a></li>
             <li><a href="#vram">Tabela de VRAM por Quantização</a></li>
             <li><a href="#setups">Setups Recomendados por Tier</a></li>
@@ -102,17 +111,22 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><a href="#mac">Rodando no Mac (Apple Silicon)</a></li>
             <li><a href="#cpu">Rodando em CPU (não recomendado)</a></li>
             <li><a href="#dicas">Dicas de Configuração</a></li>
-        </ul>
-    </div>
+            <li><a href="#hardware-recomendado">Hardware recomendado</a></li>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="resumo">Resumo Rápido de Requisitos</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Guia de Hardware para Rodar o Qwen3.8-27B Localmente" width="1200" height="630" loading="eager">
+
+<h2 id="resumo">Resumo Rápido de Requisitos</h2>
     <div class="callout">
         <strong>Recomendado:</strong> RTX 4090/5090 (24GB) ou Mac com 32GB+ de memória unificada — roda GGUF 4 bits a ~17GB de VRAM. É o melhor custo-benefício para rodar o Qwen3.8-27B localmente.
     </div>
     <p>O Qwen3.8-27B é um modelo <strong>denso de 27B</strong>. Ao contrário de modelos MoE, todos os 27 bilhões de parâmetros são carregados na memória. Com quantização de 4 bits (Q4_K_M), o modelo cabe em uma GPU de consumidor com 24GB de VRAM.</p>
 
     <h2 id="vram">Tabela de VRAM por Quantização</h2>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Precisão</th><th>VRAM (pesos)</th><th>KV Cache (262K ctx)</th><th>Hardware mínimo</th><th>Qualidade</th></tr>
         <tr class="highlight"><td><strong>GGUF 4 bits (Q4_K_M)</strong></td><td>~14–17 GB</td><td>+2–4 GB</td><td>RTX 4090 (24GB), Strix Halo</td><td><span style="color:var(--accent-2)">Boa — recomendada</span></td></tr>
         <tr><td>GGUF 5 bits (Q5_K_M)</td><td>~18–19 GB</td><td>+2–4 GB</td><td>RTX 4090 (24GB), Mac 32GB+</td><td><span style="color:var(--accent-2)">Muito boa</span></td></tr>
@@ -121,7 +135,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>FP8</td><td>~27 GB</td><td>+3–5 GB</td><td>RTX 5090 (32GB), 2× 3090</td><td>Excelente</td></tr>
         <tr><td>BF16 (sem perdas)</td><td>~54 GB</td><td>+5–8 GB</td><td>A100/H100 80GB, 2× RTX 6000 Pro</td><td>Máxima (referência)</td></tr>
         <tr><td>NVFP4 (Blackwell)</td><td>24,6 GiB</td><td>6,6M tokens de KV</td><td>Blackwell + vLLM 0.27.1+</td><td>Otimizada para 1M de contexto</td></tr>
-    </table>
+    </table></div>
 
     <div class="callout">
         <strong>Atenção ao KV cache:</strong> Os valores acima são apenas dos pesos. A 262K de contexto, o KV cache pode consumir tantos GB quanto o modelo. Planeje 4–8GB extras de VRAM para o cache.
@@ -166,7 +180,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </ul>
 
     <h2 id="gpu">GPUs Recomendadas</h2>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>GPU</th><th>VRAM</th><th>Quantização viável</th><th>Contexto prático</th><th>Custo (aprox.)</th></tr>
         <tr class="highlight"><td>RTX 4090</td><td>24 GB</td><td>Q4_K_M, Q5_K_M, Q6_K</td><td>32K–64K</td><td>R$ 12.000–15.000</td></tr>
         <tr><td>RTX 5090</td><td>32 GB</td><td>Q8_0, FP8</td><td>128K–262K</td><td>R$ 20.000–28.000</td></tr>
@@ -174,7 +188,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <tr><td>2× RTX 3090</td><td>48 GB</td><td>FP8, Q8_0</td><td>128K–262K</td><td>R$ 7.000–9.000</td></tr>
         <tr><td>RTX 6000 Pro</td><td>48 GB</td><td>FP8, BF16 parcial</td><td>262K</td><td>R$ 30.000+</td></tr>
         <tr><td>A100 80GB</td><td>80 GB</td><td>BF16 completo</td><td>262K + folga</td><td>R$ 80.000+</td></tr>
-    </table>
+    </table></div>
 
     <div class="callout">
         <strong>Dica de ouro:</strong> A RTX 3090 usada é o melhor custo-benefício para LLMs locais em 2026. 24GB de VRAM por ~R$ 3.500–4.500, suficiente para Q4_K_M. A comunidade no Hacker News e r/LocalLLaMA consistentemente recomenda este setup.
@@ -183,13 +197,13 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <h2 id="mac">Rodando no Mac (Apple Silicon)</h2>
     <p>O Qwen3.8-27B roda bem em Macs com Apple Silicon, graças à memória unificada e ao suporte MLX. A Ollama oferece <code>qwen3.8:27b-mlx</code> otimizado para Apple Silicon.</p>
 
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Mac</th><th>Memória</th><th>Quantização viável</th><th>Contexto prático</th><th>Custo (aprox.)</th></tr>
         <tr><td>MacBook Pro M4 Pro</td><td>24 GB</td><td>Q4_K_M (apertado)</td><td>16K–32K</td><td>R$ 18.000–25.000</td></tr>
         <tr class="highlight"><td>MacBook Pro M4 Max</td><td>36/48 GB</td><td>Q4_K_M, Q5_K_M</td><td>64K–128K</td><td>R$ 30.000–45.000</td></tr>
         <tr><td>Mac Studio M2 Max</td><td>64 GB</td><td>Q8_0, FP8</td><td>128K–262K</td><td>R$ 15.000–20.000</td></tr>
         <tr><td>Mac Studio M2 Ultra</td><td>128 GB</td><td>BF16 parcial</td><td>262K completo</td><td>R$ 30.000–40.000</td></tr>
-    </table>
+    </table></div>
 
     <div class="callout">
         <strong>Vantagem do Mac:</strong> Zero configuração de driver, MLX otimizado, silêncio absoluto. Desvantagem: custo por GB de memória mais alto que GPU usada.
@@ -221,14 +235,14 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 <div class="affiliate">
   <h3>🖥️ Hardware recomendado para rodar este modelo</h3>
   <div class="affiliate-table-wrap">
-    <table>
+    <div class="table-wrap"><table>
       <thead><tr><th>Produto</th><th>Onde comprar</th></tr></thead>
       <tbody>
         <!-- Adicione ?tag=SEUTAG aos links para habilitar a comissão de afiliado -->
         <tr><td>GPU 24 GB (ex.: RTX 4090)</td><td><a href="https://www.amazon.com.br/s?k=rtx+4090" rel="sponsored noopener" target="_blank">Amazon BR →</a></td></tr>
         <tr><td>RAM 64 GB DDR5</td><td><a href="https://www.mercadolivre.com.br/baratos/memoria-64gb-ddr5" rel="sponsored noopener" target="_blank">Mercado Livre →</a></td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <p class="disclosure">Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</p>
 </div>
@@ -243,10 +257,95 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Guia Qwen3.8-27B — Hardware | Dados baseados em especificações oficiais (Hugging Face, Qwen Blog, Ollama) e medições próprias.</p>
-        <p>Última atualização: agosto 2026 | <a href="/guia">Guia</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/comunidade-casos-uso">Comunidade</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/benchmarks-comparativos"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B vs Outros Modelos ~30B: Benchmarks Comparativos</div></a>
+          <a class="pn-card next" href="/guia/muse-glimmer-30b-agente-local"><div class="dir">Próximo →</div><div class="t">Meta Muse Glimmer 30B: o modelo de 30B feito para rodar agentes 24/7 no seu PC</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80;font-size:1rem"><span>QUANTI</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat hw">Hardware</span></div><h3>Quantização GGUF: quanto cabe na sua GPU? Tabela real de 30B</h3></div>
+</a>
+          <a class="post-card" href="/guia/lemonade-sdk-v11-6-llm-local-gpu-npu-amd">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80;font-size:1rem"><span>LEMONA</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat hw">Hardware</span></div><h3>Lemonade v11.6: serving de LLM local com GPU+NPU — a alternativa AMD ao Ollama</h3></div>
+</a>
+          <a class="post-card" href="/guia/qwen38-27b-16gb-vram-llama-cpp">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80;font-size:1rem"><span>QWEN38</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat hw">Hardware</span></div><h3>Qwen3.8-27B em 16GB de VRAM: a config llama.cpp que funciona</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/hardware-local">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/hardware-local">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/hardware-local">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/hardware-local" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

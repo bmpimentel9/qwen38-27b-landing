@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -154,75 +154,89 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
-            --accent-4: #d2a8ff; --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
-        .faq-item h3 { margin: 0 0 8px; }
-        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
-        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
-        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
-        .stat-card .value.ok { color: var(--accent-2); }
-        .stat-card .value.warn { color: var(--accent-3); }
-        .src { font-size: 0.85rem; color: var(--text-muted); }
-        .leader { margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
-        blockquote { background: var(--surface); border-left: 3px solid var(--accent-4); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então</h1>
-        <p class="lead">O par open-weights da OpenAI completou um ano em 4 de agosto sem alarde — e segue com 12,27 milhões de downloads por mês. Quinze dias depois do aniversário, chegou o Qwen3.8-27B. Um engenheiro que rodou o gpt-oss-120b em produção por meses diz que o novato é "duas vezes mais inteligente no mesmo hardware". O que os dados de adoção, a medição independente e a engenharia de 12 meses dizem — separados por categoria.</p>
-    </header>
 
-    <div class="stat-row">
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-20">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então", "description": "gpt-oss faz 1 ano com 12,27M downloads/mês ainda hoje (HF API). Qwen3.8-27B chegou 15 dias depois. O claim de '2× mais inteligente', examinado.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-20", "dateModified": "2026-08-20"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#releases">Releases</a><span class="sep">›</span><span aria-current="page">1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então</h1>
+        <div class="article-meta">
+          <span class="badge-cat releases">Releases</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-20">20 ago 2026</time>
+          <span class="sep">·</span><span>13 min de leitura</span>
+        </div>
+        <p class="article-lead">O par open-weights da OpenAI completou um ano em 4 de agosto sem alarde — e segue com 12,27 milhões de downloads por mês. Quinze dias depois do aniversário, chegou o Qwen3.8-27B. Um engenheiro que rodou o gpt-oss-120b em produção por meses diz que o novato é "duas vezes mais inteligente no mesmo hardware". O que os dados de adoção, a medição independente e a engenharia de 12 meses dizem — separados por categoria.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
+            <li><a href="#adocao">Os dados: 12,27 milhões de downloads/mês um ano depois</a></li>
+            <li><a href="#o-post">O post do aniversário: "duas vezes mais inteligente"</a></li>
+            <li><a href="#medido-vs-percepcao">Percepção vs medição: o 52 do Artificial Analysis</a></li>
+            <li><a href="#12-meses">O que 12 meses fizeram com a engenharia local</a></li>
+            <li><a href="#leitura-honesta">Downloads e likes não provam nada sobre qualidade</a></li>
+            <li><a href="#vale-a-pena">Vale a pena rodar gpt-oss em 2026? Veredito por hardware</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
+
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="1 ano de gpt-oss: 12 milhões de downloads/mês — e o que mudou no hardware local desde então" width="1200" height="630" loading="eager">
+
+<div class="stat-row">
         <div class="stat-card">
             <div class="value">12,27M</div>
             <div class="label">downloads/mês somados — gpt-oss um ano depois (HF API 20/08)</div>
@@ -241,27 +255,16 @@
         </div>
     </div>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
-            <li><a href="#adocao">Os dados: 12,27 milhões de downloads/mês um ano depois</a></li>
-            <li><a href="#o-post">O post do aniversário: "duas vezes mais inteligente"</a></li>
-            <li><a href="#medido-vs-percepcao">Percepção vs medição: o 52 do Artificial Analysis</a></li>
-            <li><a href="#12-meses">O que 12 meses fizeram com a engenharia local</a></li>
-            <li><a href="#leitura-honesta">Downloads e likes não provam nada sobre qualidade</a></li>
-            <li><a href="#vale-a-pena">Vale a pena rodar gpt-oss em 2026? Veredito por hardware</a></li>
-            <li><a href="#faq">Perguntas frequentes</a></li>
-        </ul>
-    </div>
+    
 
     <h2 id="adocao">Os dados: 12,27 milhões de downloads/mês um ano depois</h2>
     <p>Em 4 de agosto de 2025, a OpenAI publicou <strong>openai/gpt-oss-20b</strong> e <strong>openai/gpt-oss-120b</strong> no Hugging Face — MoEs de MXFP4 nativo licenciados em Apache 2.0. Doze meses depois, em 20 de agosto de 2026, a API do Hugging Face mostra um fenômeno raro em software: <strong>adoção que não decaiu</strong>.</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Modelo</th><th>Lançado</th><th>Downloads/mês (20/08/2026)</th><th>Likes (20/08/2026)</th></tr>
         <tr><td>openai/gpt-oss-20b</td><td>2025-08-04</td><td>7.590.370</td><td>4.934</td></tr>
         <tr><td>openai/gpt-oss-120b</td><td>2025-08-04</td><td>4.680.489</td><td>5.114</td></tr>
         <tr class="highlight"><td><strong>Qwen/Qwen3.8-27B</strong></td><td>2026-08-05</td><td>1.373.584</td><td>11.733</td></tr>
-    </table>
+    </table></div>
     <p class="src">Fonte: Hugging Face API (endpoint /api/models), consultada em 20/08/2026. Downloads = janela de 30 dias por repositório, incluindo pulls de ferramentas (Ollama, LM Studio etc.). Likes = total acumulado do repositório.</p>
     <p>Algumas leituras imediatas:</p>
     <ul>
@@ -281,12 +284,12 @@
     </blockquote>
     <p>Ele é preciso sobre o que está comparando: os "modelos do ano passado" são o gpt-oss e a classe de 2025 — e o critério é <strong>uso diário real como substituto de fronteira</strong>. É o primeiro modelo open que ele usa no dia-a-dia no lugar dos drivers primários (Claude Fable/Opus, ChatGPT Sol), rodando harness de agente (Claude Code, Codex) num fleet próprio. Sobre o Kimi K3: "bastante bom, mas ainda um monstro de 2,8T parâmetros — não vou self-hostar tão cedo".</p>
     <p>E o post traz <strong>fleet metrics reais</strong> do Qwen3.8-27B em três hardwares (1 sessão por vez, 256K de contexto, 65K tokens/mensagem):</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Hardware</th><th>Velocidade observada</th></tr>
         <tr><td>AMD Strix Halo (128 GB)</td><td>~29 tok/s</td></tr>
         <tr><td>NVIDIA RTX 5090 (32 GB)</td><td>~106 tok/s</td></tr>
         <tr><td>Mac Studio (M1 Ultra, 128 GB)</td><td>~15 tok/s</td></tr>
-    </table>
+    </table></div>
     <p class="src">Fonte: williamcallahan.com (19/08/2026), "Qwen 3.8 27B Is a Great Open Model" — métricas do fleet próprio do autor, sessão única, janela de 256K, 65K max tokens/mensagem. São números de uso em produção de agente, não benchmark controlado.</p>
     <div class="callout">
         <strong>Leitura correta do claim:</strong> "2× mais inteligente" é a <em>percepção de um engenheiro</em> com meses de gpt-oss-120b em produção — testemunho qualificado, não benchmark. A definição de inteligência aqui é "consegue dirigir meu harness de agente no dia-a-dia", não um score. O contraponto medido vem na seção seguinte.
@@ -304,7 +307,7 @@
 
     <h2 id="12-meses">O que 12 meses fizeram com a engenharia local</h2>
     <p>A distância percebida entre o gpt-oss e a classe de 2026 não é mágica — é engenharia empilhada. A anatomia dos dois pontos no tempo:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th></th><th>gpt-oss (ago/2025)</th><th>Qwen3.8-27B (ago/2026)</th></tr>
         <tr><td>Arquitetura</td><td>MoE (20b: 32 especialistas/4 ativos; 120b: 128/4)</td><td>Denso 27,8B, atenção híbrida 48 Gated DeltaNet + 16 full-attention</td></tr>
         <tr><td>Parâmetros ativos por token</td><td>~3,6B (20b) / ~5,1B (120b)</td><td>27,8B — todos ativos</td></tr>
@@ -313,7 +316,7 @@
         <tr><td>Multimodal</td><td>Não (texto)</td><td>VLM nativa (texto, imagem, vídeo, OCR)</td></tr>
         <tr><td>Aceleração</td><td>—</td><td>MTP embutido (speculative decoding nativo; 2,81× no guia de 256K)</td></tr>
         <tr><td>Licença</td><td>Apache 2.0</td><td>Apache 2.0</td></tr>
-    </table>
+    </table></div>
     <p class="src">Fontes: config.json oficiais (openai/gpt-oss-20b, openai/gpt-oss-120b, Qwen/Qwen3.8-27B no Hugging Face, verificados em 20/08/2026) + base verificada do portal: guias <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K em 24 GB</a>, <a href="/guia/qwen3-8-27b-visao-videos-local">visão local</a> e <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a>.</p>
     <p>Quatro mudanças estruturais explicam o salto percebido:</p>
     <ul>
@@ -336,14 +339,14 @@
 
     <h2 id="vale-a-pena">Vale a pena rodar gpt-oss em 2026? Veredito por hardware</h2>
     <p>A resposta curta: <strong>sim — na faixa de memória certa</strong>. O gpt-oss não virou legado; virou o padrão da classe 12–16 GB. A longa, em tabela:</p>
-    <table>
+    <div class="table-wrap"><table>
         <tr><th>Seu hardware</th><th>Pick 2026</th><th>Por quê</th></tr>
         <tr class="highlight"><td><strong>12–16 GB de VRAM</strong></td><td><strong>gpt-oss-20b</strong></td><td>GGUF MXFP4 de 11,27 GiB medido — o modelo de nível que cabe. O Qwen3.8-27B em 16 GB exige quant agressivo (IQ4_XS 15,71 GB) e contexto curto; em 12 GB, nem isso. Recomendação do portal em <a href="/guia/melhores-modelos-locais-30b">Melhores ≤30B</a>.</td></tr>
         <tr><td>24 GB (3090/4090/PRO 4000)</td><td>Qwen3.8-27B</td><td>A classe mudou: denso 27,8B, 256K nativo, visão, MTP. 50,44 tok/s de média no perfil 256K medido por terceiros — <a href="/guia/qwen3-8-27b-contexto-256k-24gb">guia</a>. O gpt-oss-120b (checkpoint ~60–65 GB) não é nativo dessa faixa: exige offload.</td></tr>
         <tr><td>RAM unificada 64 GB+</td><td>gpt-oss-120b ou Qwen3.8-27B</td><td>O 120b MoE (~5,1B ativos) roda fluido em Strix Halo/Mac; o 27B denso ~29 tok/s no Strix Halo (fleet 19/08). Escolha por multimodalidade (só o 27B tem), contexto (256K vs 128K) e velocidade (MoE mais rápido em memória unificada).</td></tr>
         <tr><td>32 GB+ (RTX 5090)</td><td>Qwen3.8-27B</td><td>~106 tok/s com 256K observados no fleet de agente (19/08) — a nova fronteira local de velocidade × capacidade.</td></tr>
-    </table>
-    <div class="callout-warn">
+    </table></div>
+    <div class="callout warn">
         <strong>Transparência sobre as fontes:</strong> downloads e likes são HF API 20/08/2026 (janela 30d e acumulado, respectivamente). O "2×" é percepção atribuída (williamcallahan, 19/08). O 52 é Artificial Analysis Intelligence Index v4.1.1 (17/08). Os ~106 tok/s são observação de fleet de agente em produção, não benchmark controlado. Nenhum benchmark controlado geração-2025 × geração-2026 foi publicado — as lacunas estão assinaladas no texto.
     </div>
     <p>Para quem chegou agora no local-first: a entrada em 2026 continua sendo o <a href="/guia-rapido">guia rápido de 5 minutos</a> com Ollama; a tabela de quantização por GPU está no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia GGUF</a>; o panorama da classe 30B está em <a href="/guia/melhores-modelos-locais-30b">Melhores modelos locais de 30B</a>.</p>
@@ -396,10 +399,95 @@
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Portal de modelos locais de 30B — 1 ano de gpt-oss | Fontes: Hugging Face API (downloads janela 30d e likes por repositório, consultada 20/08/2026: openai/gpt-oss-20b 7.590.370 dl/mês + 4.934 likes; openai/gpt-oss-120b 4.680.489 dl/mês + 5.114 likes; Qwen/Qwen3.8-27B 1.373.584 dl/mês + 11.733 likes, criado 2026-08-05), config.json oficiais dos três repositórios (MoE 32/128 especialistas, 4 ativos, MXFP4, 128K — vs denso híbrido 48+16, 256K), post "Qwen 3.8 27B Is a Great Open Model" de William Callahan (williamcallahan.com, 19/08/2026 — lido integralmente; citação traduzida), Artificial Analysis Intelligence Index v4.1.1 via Simon Willison (17/08/2026) e verificação do portal (18/08/2026). "2× mais inteligente" é percepção de uso do autor citado, não benchmark. Downloads ≠ qualidade; likes ≠ qualidade. Geração deste conteúdo assistida por IA e revisada.</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/melhores-modelos-locais-30b">Melhores 30B</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/qwen3-8-27b-lento-causas-fixes"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B está lento? 6 causas reais e o fix de cada uma</div></a>
+          <a class="pn-card next" href="/guia/como-rodar-vllm-qwen3-8-27b"><div class="dir">Próximo →</div><div class="t">Qwen3.8-27B no vLLM em produção: prefix caching, flags e bugs reais</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/muse-glimmer-30b-agente-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#F5B84133,#F5B84111);color:#F5B841;font-size:1rem"><span>MUSEGL</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat releases">Releases</span></div><h3>Meta Muse Glimmer 30B: o modelo de 30B feito para rodar agentes 24/7 no seu PC</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>QWEN38</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/1-ano-gpt-oss-modelos-locais-2026" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<!-- ============================================================
+     templates/artigo.html — TEMPLATE ÚNICO DE ARTIGO (t_0a2d3a4f)
+     Fonte: docs/design/mockup-artigo.html (aprovado) + PRD §5.
+
+     REFERÊNCIA do esqueleto. Os artigos em guia/*/index.html são
+     gerados por scripts/migrar_artigos.py a partir DESTA estrutura
+     (preservando o conteúdo original por fatiamento de string).
+
+     Blocos obrigatórios (PRD §5.3), de cima a baixo:
+       header global (marcador @@HEADER@@, fragmento templates/header.html)
+         → breadcrumb → article-head (h1+meta+lead) → TOC sticky →
+         corpo preservado (tabelas em .table-wrap) → prev/next →
+         relacionados → compartilhar → footer global (@@FOOTER@@).
+
+     Header/footer são geridos por scripts/sync_layout.py da task
+     t_c3a93c3e — NÃO duplicar fora dos marcadores.
+     ============================================================ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <!-- TITLE: padronizar "Título | Blog Modelos Locais" -->
+  <title>[TÍTULO DO ARTIGO] | Blog Modelos Locais</title>
+  <!-- DESCRIPTION: ≤155 chars com dado citável -->
+  <meta name="description" content="[DESCRIÇÃO ≤155 chars]">
+  <!-- CANONICAL: NUNCA mudar a URL atual /guia/<slug> -->
+  <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/[SLUG]">
+  <!-- OG/Twitter: og:type=article, og:locale=pt_BR, og:title/description/url, og:image=/og-image.png -->
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="[TÍTULO]">
+  <meta property="og:description" content="[DESCRIÇÃO]">
+  <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/[SLUG]">
+  <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+  <meta property="article:published_time" content="[DATA ISO]">
+  <meta property="article:modified_time" content="[DATA ISO]">
+  <meta property="article:section" content="[CATEGORIA]">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Design system compartilhado (ADR-001: zero build, zero fonte externa) -->
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <!-- JSON-LD: preservar BlogPosting/TechArticle + FAQPage + HowTo + BreadcrumbList + AIModel por página -->
+  <script type="application/ld+json">
+  { /* ... schema por artigo ... */ }
+  </script>
+  <!-- GA4 G-016TVX8LEE (preservar) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+</head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- fragmento templates/header.html (canônico t_c3a93c3e) injetado por sync_layout.py -->
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <!-- Breadcrumb: Home › Categoria › Título -->
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#[ANCHOR_CATEGORIA]">[CATEGORIA]</a><span class="sep">›</span><span aria-current="page">[TÍTULO CURTO]</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>[TÍTULO DO ARTIGO]</h1>
+        <div class="article-meta">
+          <span class="badge-cat [BADGE_CLASS]">[CATEGORIA]</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="[DATA ISO]">[DATA VISÍVEL]</time>
+          <span class="sep">·</span><span>[READTIME] min de leitura</span>
+        </div>
+        <p class="article-lead">[LEAD]</p>
+      </header>
+
+      <div class="article-layout">
+        <!-- TOC sticky: ≥1024px lateral; <1024px oculto pelo blog.css -->
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
+            <li><a href="#[H2-ID-1]">[H2 TÍTULO 1]</a></li>
+            <li><a href="#[H2-ID-2]">[H2 TÍTULO 2]</a></li>
+          </ul>
+        </nav>
+
+        <div class="article-body">
+          <!-- Thumbnail: og-image.png por padrão (1200×630) -->
+          <img class="article-thumb" src="/og-image.png" alt="[ALT DESCRITIVO DO ARTIGO]" width="1200" height="630" loading="eager">
+
+          <!-- ============ CONTEÚDO ORIGINAL (preservado na migração) ============
+               Tabelas cruas viram <div class="table-wrap">…</div> (scroll horizontal
+               em mobile, PRD §5.4). Callouts/leader/stat-card preservados. -->
+
+          <!-- Prev/next: navegação por data (índice JSON) -->
+          <h2 id="prevnext">Continue por aqui</h2>
+          <div class="prevnext">
+            <a class="pn-card" href="/guia/[SLUG_ANTERIOR]"><div class="dir">← Anterior</div><div class="t">[TÍTULO ANTERIOR]</div></a>
+            <a class="pn-card next" href="/guia/[SLUG_PRÓXIMO]"><div class="dir">Próximo →</div><div class="t">[TÍTULO PRÓXIMO]</div></a>
+          </div>
+
+          <!-- Relacionados: 3 cards (mesma categoria primeiro) -->
+          <section aria-labelledby="rel-title">
+            <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+            <div class="related-grid">
+              <a class="post-card" href="/guia/[REL-1]">
+                <div class="post-thumb-fallback" style="background:linear-gradient(135deg,[COR]33,[COR]11);color:[COR];font-size:1rem"><span>[MONO]</span></div>
+                <div class="post-body"><div class="post-meta"><span class="badge-cat [BADGE]">[CAT]</span></div><h3>[TÍTULO]</h3></div>
+              </a>
+            </div>
+          </section>
+
+          <!-- Compartilhar (copiar link funcional sem depender de blog.js) -->
+          <div class="share">
+            <span>Compartilhar:</span>
+            <a href="https://twitter.com/intent/tweet?url=[URL]">X</a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=[URL]">LinkedIn</a>
+            <a href="https://wa.me/?text=[URL]">WhatsApp</a>
+            <a href="[URL]" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+          </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- fragmento templates/footer.html (canônico t_c3a93c3e) injetado por sync_layout.py -->
+<!-- @@/FOOTER@@ -->
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
@@ -140,92 +140,92 @@
       ]
     }
     </script>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
-            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950; --accent-3: #f78166;
-            --code-bg: #1c2128;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        nav a:hover { background: var(--surface); }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
-        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
-        p { margin-bottom: 15px; color: var(--text); }
-        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
-        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 0.9rem; color: var(--text); margin: 15px 0; }
-        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
-        pre code { background: none; padding: 0; color: var(--text); }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.95rem; }
-        th { padding: 12px 15px; text-align: left; color: var(--accent); background: var(--code-bg); }
-        td { padding: 10px 15px; border-top: 1px solid var(--border); }
-        tr.highlight td { background: rgba(88,166,255,0.07); }
-        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout strong { color: var(--accent); }
-        .callout-warn { background: var(--surface); border-left: 3px solid var(--accent-3); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .callout-warn strong { color: var(--accent-3); }
-        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: var(--accent); }
-        .toc ul { list-style: none; }
-        .toc li { padding: 4px 0; }
-        .toc a { color: var(--accent); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        ul { margin-left: 25px; margin-bottom: 15px; }
-        ul li { margin-bottom: 6px; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        a { color: var(--accent); }
-        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 14px 0; }
-        .faq-item h3 { margin: 0 0 8px; }
-        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
-        .stat-card { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
-        .stat-card .value { font-size: 1.5rem; font-weight: 700; color: var(--accent-3); }
-        .stat-card .label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
-        .stat-card .value.ok { color: var(--accent-2); }
-    @media (max-width: 640px) {
-  table { display: block; overflow-x: auto; }
-  code { overflow-wrap: anywhere; }
-  pre code { overflow-wrap: normal; }
-}
-    </style>
+    
   <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/guia">Guia</a>
-            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
-            <a href="/guia/hardware-local">Hardware</a>
-            <a href="/guia/como-rodar">Como Rodar</a>
-            <a href="/guia/comunidade-casos-uso">Comunidade</a>
-            <a href="/guia/faq">FAQ</a>
-        </nav>
-        <h1>Configuração de reasoning do Qwen3.8-27B: como desativar o overthinking (e acelerar tudo)</h1>
-        <p class="lead">O modelo sai de fábrica pensando no máximo — e gastando 22.276 tokens de raciocínio para escrever 3.223 de resposta. Este guia mostra como desligar, dosar e acelerar o reasoning no llama.cpp, Ollama e LM Studio, com números reais em hardware de consumidor.</p>
-    </header>
 
-    <div class="toc">
-        <h3>Índice</h3>
-        <ul>
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-18">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Configuração de reasoning do Qwen3.8-27B: como desativar o overthinking (e acelerar tudo)", "description": "Guia prático: desative o overthinking do Qwen3.8-27B com --reasoning-budget, reasoning_effort e MTP no llama.cpp/Ollama. 21 min viram 2 com as flags certas.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-reasoning-configuracao-ideal", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">Configuração de reasoning do Qwen3.8-27B: como desativar o overthinking (e acelerar tudo)</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Configuração de reasoning do Qwen3.8-27B: como desativar o overthinking (e acelerar tudo)</h1>
+        <div class="article-meta">
+          <span class="badge-cat guides">Guias</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-18">18 ago 2026</time>
+          <span class="sep">·</span><span>12 min de leitura</span>
+        </div>
+        <p class="article-lead">O modelo sai de fábrica pensando no máximo — e gastando 22.276 tokens de raciocínio para escrever 3.223 de resposta. Este guia mostra como desligar, dosar e acelerar o reasoning no llama.cpp, Ollama e LM Studio, com números reais em hardware de consumidor.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
             <li><a href="#resposta-rapida">A resposta rápida (featured snippet)</a></li>
             <li><a href="#o-problema">O problema: excelente, mas "wildly overthinking" por padrão</a></li>
             <li><a href="#controles">Os 4 controles de reasoning no llama.cpp</a></li>
-            <li><a href="#desativar-por-ferramenta">Como desativar em cada ferramenta</a></li>
+            <li><a href="#desativar-por-ferramenta">Como desativar o thinking em cada ferramenta</a></li>
             <li><a href="#effort">reasoning_effort: xhigh, medium, low ou off?</a></li>
             <li><a href="#hardware">Overthinking × seu hardware: a conta em tok/s</a></li>
             <li><a href="#mtp">MTP: o speedup que já saiu do forno do llama.cpp</a></li>
             <li><a href="#presets">Presets prontos por perfil de hardware</a></li>
             <li><a href="#erros">Erros comuns e como resolver</a></li>
             <li><a href="#faq">Perguntas frequentes</a></li>
-        </ul>
-    </div>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
 
-    <h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Configuração de reasoning do Qwen3.8-27B: como desativar o overthinking (e acelerar tudo)" width="1200" height="630" loading="eager">
+
+<h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
     <p><strong>Para desativar o overthinking do Qwen3.8-27B:</strong> no llama.cpp, use <code>--reasoning off</code> (desliga por completo) ou <code>--reasoning-budget 0</code> (encerra o raciocínio imediatamente). Para dosar em vez de desligar, use <code>--reasoning-effort low</code> ou <code>medium</code>. No Ollama, envie <code>"think": false</code> na chamada de API. E para acelerar o que sobrar, ative o MTP com <code>--spec-type draft-mtp</code>.</p>
     <pre><code># llama.cpp — desligar o thinking de vez
 llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning off
@@ -278,7 +278,7 @@ llama-server \
 
     <h2 id="controles">Os 4 controles de reasoning no llama.cpp</h2>
     <p>O llama.cpp atual expõe quatro flags para governar o thinking (todas documentadas no README oficial do <code>llama-server</code>, verificado em 18/08/2026):</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Flag</th><th>Valores</th><th>O que faz</th></tr>
         </thead>
@@ -304,7 +304,7 @@ llama-server \
                 <td>Mantém o trace de raciocínio no histórico completo da conversa (não só na última mensagem). Simon manteve ativado no comando com MTP.</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
     <p>Há ainda o <code>--reasoning-format</code> (<code>none</code> / <code>deepseek</code> / <code>deepseek-legacy</code>), que só controla <em>onde</em> o trace aparece na resposta da API (em <code>message.content</code> ou <code>message.reasoning_content</code>) — não economiza token nenhum.</p>
 
     <h2 id="desativar-por-ferramenta">Como desativar o thinking em cada ferramenta</h2>
@@ -331,7 +331,7 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
 
     <h2 id="effort">reasoning_effort: xhigh, medium, low ou off?</h2>
     <p>Não existe resposta única — existe a resposta por tarefa. O modelo foi construído para <em>long-horizon agentic tasks</em> (o model card mostra os maiores saltos justamente aí: DeepSWE +28,9, QwenSWEBench +29,7), então o thinking é ferramenta, não defeito. O defeito é o default:</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Caso de uso</th><th>Configuração recomendada</th><th>Por quê</th></tr>
         </thead>
@@ -341,12 +341,12 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
             <tr><td>Matemática pesada, debugging difícil, planejamento longo</td><td><code>--reasoning-effort high</code> + <code>--reasoning-budget 4096</code></td><td>Aqui o thinking paga o preço — mas com teto, para não repetir o episódio dos 21 minutos.</td></tr>
             <tr><td>Batch/automação onde custo importa</td><td><code>--reasoning-effort low</code></td><td>"Eficiência otimizando por velocidade e custo" (docs Qwen).</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p>Regra prática para hardware de consumidor: <strong>comece no medium e só suba quando a resposta vier errada por falta de raciocínio</strong> — não o contrário. Descer é barato; subir custa minutos por chamada.</p>
 
     <h2 id="hardware">Overthinking × seu hardware: a conta em tok/s</h2>
     <p>O teste do Simon foi num DGX Spark — máquina cara. A conta abaixo usa throughput medido pelo portal (Strix Halo, Ollama/Vulkan) e relatos da comunidade para mostrar quanto custa o xhigh-trap em hardware que a gente usa no Brasil:</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Hardware</th><th>Quantização</th><th>Decode (t/s)</th><th>22.276 tokens de thinking =</th></tr>
         </thead>
@@ -357,7 +357,7 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
             <tr><td>RTX 3060 12GB (offload parcial, estimado)</td><td>Q4_K_M</td><td>15–25</td><td>15–25 min</td></tr>
             <tr><td>RTX 4090 24GB (estimado)</td><td>Q4_K_M</td><td>70–90</td><td>4–5 min</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p>A leitura fria: <strong>no Strix Halo e em qualquer GPU de faixa média, o default xhigh transforma uma resposta de 2 minutos em meia hora de silêncio</strong> — e pode estourar o contexto antes de responder nada. Nas medições do portal, o mesmo 27B no Q4_K_M entrega 17,3 t/s contra 12,4 t/s do Qwen3.6-27B (<a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo completo aqui</a>); com Q5_K_M cai para 10,6 t/s. Cada token de raciocínio custa o mesmo que um token de resposta — só que você não vê os primeiros.</p>
     <p>Quanto à memória: a tabela completa de GB por quantização está no nosso <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a> (IQ4_XS = 15,71 GB; Q4_K_M = 17,11 GB). Overthinking também consome KV cache: raciocinar 22 mil tokens em contexto curto é o caminho mais rápido para OOM — quem roda em 16GB deve ler o <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia do 27B em 16GB de VRAM</a> junto com este.</p>
 
@@ -371,7 +371,7 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
   --reasoning-preserve</code></pre>
     <p>O detalhe que quase todo mundo erra: o <code>-hfd</code> aponta para o <strong>Q4_0 do repositório oficial ggml-org</strong>, que preserva as camadas MTP — quant da unsloth sem essas camadas não serve de drafter. O <code>--spec-type</code> aceita <code>draft-mtp</code>, <code>draft-simple</code>, <code>draft-eagle3</code>, <code>ngram-simple</code> e outros; para o Qwen3.8, o draft-mtp é o caminho.</p>
     <p>Os números de ganho circulam soltos e parecem contraditórios — não são. Cada um tem seu contexto:</p>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr><th>Fonte</th><th>Hardware / setup</th><th>Ganho</th></tr>
         </thead>
@@ -381,8 +381,8 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
             <tr><td>ik_llama.cpp, GGUF RDson IQ4_KS</td><td>RTX 3090, draft depth 1</td><td><strong>+16%</strong> (28,99 t/s)</td></tr>
             <tr><td>tproger.ru</td><td>Qwen3.6-27B Q8_0 (geração anterior)</td><td>16–22 t/s vs 7 baseline (<strong>2,2–2,4×</strong>)</td></tr>
         </tbody>
-    </table>
-    <div class="callout-warn">
+    </table></div>
+    <div class="callout warn">
         <strong>Dois avisos honestos:</strong> (1) no thread do PR #22673, o <strong>prefill ficou mais lento</strong> com MTP (~665 vs 1.315 tok/s, ~0,51×) — em prompts longos, parte do ganho do decode se paga no processamento inicial; (2) a taxa de aceitação dos drafts varia com a tarefa (código aceita melhor que texto criativo). MTP não é mágica universal: meça no seu caso de uso.
     </div>
     <p>Combine as duas alavancas e o resultado é grande: reasoning <code>medium</code> corta a maior parte dos tokens desperdiçados e o MTP acelera o que sobra — é a diferença entre "modelo que eu desisti de usar" e "modelo do dia a dia".</p>
@@ -469,10 +469,95 @@ llama-server -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL --reasoning-budget 1024</co
   <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
 </section>
 
-    <footer>
-        <p>Portal de modelos locais de 30B — Configuração de reasoning do Qwen3.8-27B | Fontes: review Simon Willison (16/08/2026), README oficial do llama.cpp (flags verificadas em 18/08/2026), PR #22673 (merged 16/05/2026), discussion unsloth/Qwen3.5-27B-GGUF #7, docs Ollama capabilities/thinking, Hugging Face API (downloads 18/08) e medições próprias do portal (Strix Halo).</p>
-        <p>Última atualização: agosto 2026 | <a href="/">Home</a> | <a href="/guia">Guia</a> | <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">27B em 16GB</a> | <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">Quantização GGUF</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a></p>
-    </footer>
+    
   <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/qwen3-8-27b-benchmark-artificial-analysis"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B no Artificial Analysis: 52 pontos — o que o dado diz (e o que não diz)</div></a>
+          <a class="pn-card next" href="/guia/qwen3-8-27b-visao-videos-local"><div class="dir">Próximo →</div><div class="t">Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/como-rodar">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h3></div>
+</a>
+          <a class="post-card" href="/guia/como-rodar-sglang-qwen3-8-27b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>COMORO</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo</h3></div>
+</a>
+          <a class="post-card" href="/guia/minimax-music3-musica-local">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;font-size:1rem"><span>MINIMA</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>MiniMax Music3 local: gerando música com 8GB de VRAM</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-reasoning-configuracao-ideal">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-reasoning-configuracao-ideal">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-reasoning-configuracao-ideal">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-reasoning-configuracao-ideal" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>
