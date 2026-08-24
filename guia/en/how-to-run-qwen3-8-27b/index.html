@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <title>How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang (2026)</title>
+    <meta name="description" content="Step-by-step guide to run Qwen3.8-27B locally: Ollama, llama.cpp, vLLM, SGLang and MLX. Copy-paste commands, measured VRAM per quantization, real tok/s and troubleshooting.">
+    <meta name="keywords" content="how to run qwen3.8 27b locally, run qwen3.8 27b, ollama qwen3.8, llama.cpp qwen3.8, vllm qwen3.8, sglang qwen3.8, qwen3.8 27b vram, qwen3.8 27b 16gb, local llm 27b">
+    <meta name="author" content="Bruno Pimentel">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b">
+    <link rel="alternate" hreflang="en" href="https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b">
+    <link rel="alternate" hreflang="pt-BR" href="https://qwen38-27b-landing.vercel.app/guia/como-rodar">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Qwen3.8-27B — local 30B models portal">
+    <meta property="og:title" content="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang (2026)">
+    <meta property="og:description" content="One guide, four engines: Ollama (1 command), llama.cpp (GGUF), vLLM and SGLang for production, MLX on Apple Silicon. Measured VRAM per quantization, real tok/s and troubleshooting.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="article:published_time" content="2026-08-24T08:00:00-03:00">
+    <meta property="article:section" content="Artificial Intelligence">
+    <meta property="article:tag" content="local models">
+    <meta property="article:tag" content="tutorial">
+    <meta property="article:tag" content="LLM">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang (2026)">
+    <meta name="twitter:description" content="Copy-paste commands for Ollama, llama.cpp, vLLM and SGLang, measured VRAM per quant (IQ4_XS 15.71 GB fits 16 GB) and real tok/s. MTP is off by default — here is the flag.">
+    <meta name="twitter:site" content="@bmpimentel9">
+    <!-- Google Analytics 4 — QWEN38-27B-LANDING (propriedade 549987691) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+    <script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+      gtag('js',new Date());
+      gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+      (function(){
+        var fired={};
+        window.addEventListener('scroll',function(){
+          var h=document.documentElement;
+          var pct=(h.scrollTop+document.documentElement.clientHeight)/h.scrollHeight*100;
+          [25,50,75,100].forEach(function(t){
+            if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+          });
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang (2026)",
+          "description": "Step-by-step guide to run Qwen3.8-27B locally: Ollama, llama.cpp, vLLM, SGLang and MLX. Copy-paste commands, measured VRAM per quantization, real tok/s and troubleshooting.",
+          "inLanguage": "en",
+          "datePublished": "2026-08-24",
+          "dateModified": "2026-08-24",
+          "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+          "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b",
+          "proficiencyLevel": "Beginner"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Guide", "item": "https://qwen38-27b-landing.vercel.app/guia" },
+            { "@type": "ListItem", "position": 3, "name": "How to Run Qwen3.8-27B (EN)", "item": "https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How much VRAM do I need to run Qwen3.8-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "16–24 GB for the 4-bit model: IQ4_XS (15.71 GB) fits 16 GB with quantized KV cache and short context; Q4_K_M (17.11 GB) needs 24 GB with headroom; Q8_0 (29.05 GB) and FP8 (30.89 GB) ask for 32 GB+; add 2–6 GB of context/KV cache overhead. Source: Qwen3.8-27B model card, Hugging Face API measurements (15–18/08/2026), portal guides (PT-BR), verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can Qwen3.8-27B run on 16 GB?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes — IQ4_XS (15.71 GB measured on Hugging Face) plus quantized KV cache (q8_0) and n-gram speculative decoding: ~20 t/s on an RTX 4070 Ti Super; UD-Q3_K_XL (13.44 GB) if you need 64K+ context. Source: Hugging Face API measurements (18/08/2026), portal 16 GB guide (PT-BR), verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Which quantization should I choose?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sweet spot: Q4_K_XL/Q4_K_M (~16–18 GB) on 24 GB; IQ4_XS (15.71 GB) for 16 GB; Q5_K_M (19.83 GB) with 27 GB+; Q6/Q8 (23–30 GB) with 40 GB+; official FP8 (30.89 GB) for SGLang/vLLM. Source: portal quantization guide (PT-BR), Hugging Face API measurements (15–18/08/2026), verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I make Qwen3.8-27B faster?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Order of payoff: thinking off or medium (2.06×), MTP on (--spec-type draft-mtp, off by default), KV cache q8_0, RDNA4 Q4/Q8 only, Vulkan shader rebuild, --mem-fraction-static 0.50 on SGLang with unified memory. Source: portal slow guide (EN), llama.cpp PR #22673, official SGLang cookbook, verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does MTP speculative decoding work in Ollama?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no flag: MTP ships as separate Ollama tags (qwen3.8:27b-mtp-q4_K_M); Ollama swaps the chat template (reasoning_effort cannot be lowered via Ollama; use llama-server --jinja); in llama.cpp the drafter is a separate GGUF (\"model has unused tensor blk.64.nextn\" = off). Source: Ollama library, Hugging Face discussion #113, portal Ollama guide (PT-BR), verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many tokens per second does Qwen3.8-27B run at?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "206.1 tok/s on an RTX 5090 (SGLang, NVFP4 + DSpark); 59.2 tok/s on a Radeon AI PRO R9700 (Vulkan Q8_0 + MTP, 64K context); 50.44 tok/s at 262,144 context on 24 GB; 41.5 tok/s on an RTX 3090 (UD-Q4_K_XL); 17.3 tok/s on Strix Halo (Ollama/Vulkan Q4_K_M); ~9.7 tok/s on an RTX 3060 12 GB. Source: portal throughput table (PT-BR), piszczek.pl measurement, verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Qwen3.8-27B slower than Qwen3.6-27B?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No — raw decode is faster: 17.3 vs 12.4 tok/s on the same machine and quant (a gap attributed to Unsloth's GGUF compilation). What feels slow is behavior: thinking defaults to xhigh and generates thousands of reasoning tokens before the answer. Source: portal measurements (Strix Halo, Q4_K_M, Ollama/Vulkan), Qwen model cards, verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it run 256K context on a 24 GB GPU?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes — the Q4 KV cache (48+16 hybrid layers) is ≈ 4.25 GiB: a third-party measurement (RTX PRO 4000 Blackwell, piszczek.pl) sustains 50.44 tok/s average with all 262,144 tokens; 12.61 tok/s with the cache full (261.5K). Source: piszczek.pl measurement (17–18/08/2026), portal 256K on 24 GB guide (PT-BR), verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why is it slower than a 35B MoE model?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A dense model activates all 27B parameters per token; a MoE activates ~3B. On the same Strix Halo: 27B dense at 10.6 tok/s (Q5_K_M) vs 35B MoE at 56.6 tok/s — 5.3×. The dense trades throughput for quality-per-parameter and agentic strength. Source: portal measurements on identical hardware, verified 2026-08-24."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is a good tok/s for a local LLM?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Human reading speed is ~5–7 tok/s, so 10 tok/s already feels like reading pace and 100+ moves the bottleneck to tool calls. At 10 tok/s, a 20K-token thinking pass becomes half an hour — the reasoning_effort dial matters more than raw tok/s. Source: community throughput reports compiled by the portal, verified 2026-08-24."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3;
+            --text-muted: #8b949e; --accent: #58a6ff; --accent-2: #3fb950;
+            --accent-3: #f78166; --accent-4: #d2a8ff; --code-bg: #1c2128;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        nav { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        nav a:hover { background: var(--surface); }
+        nav a.active { background: var(--accent); color: var(--bg); }
+        .lang-link { margin-bottom: 12px; font-size: 0.85rem; }
+        .lang-link a { color: var(--accent); text-decoration: none; }
+        .lang-link a:hover { text-decoration: underline; }
+        h1 { font-size: 2rem; margin-bottom: 10px; }
+        h2 { font-size: 1.5rem; margin: 30px 0 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin: 25px 0 10px; color: var(--accent-2); }
+        p { margin-bottom: 15px; }
+        .lead { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        .hero { background: linear-gradient(135deg, var(--surface), var(--bg)); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin-bottom: 30px; }
+        .hero h2 { margin-bottom: 15px; font-size: 1.7rem; }
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin: 25px 0 0 0; }
+        .stat-card { flex: 1; min-width: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .value { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: var(--surface); border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+        th { background: var(--code-bg); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--accent); }
+        td { padding: 10px 15px; border-top: 1px solid var(--border); vertical-align: top; }
+        tr:hover { background: var(--code-bg); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: var(--accent-3); }
+        .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .callout strong { color: var(--accent); }
+        .callout.warn { border-left-color: var(--accent-3); }
+        .callout.warn strong { color: var(--accent-3); }
+        .toc { background: var(--surface); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .toc h3 { margin-top: 0; }
+        .toc ul { list-style: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin: 15px 0; }
+        .verdict-card h3 { margin-top: 0; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+        .badge-best { background: rgba(63,185,80,0.2); color: var(--accent-2); }
+        .badge-alt { background: rgba(247,129,102,0.2); color: var(--accent-3); }
+        .footnote { font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
+        .footnote a { color: var(--accent); text-decoration: none; }
+        .faq-item { margin-bottom: 18px; }
+        .faq-item h3 { margin-bottom: 8px; }
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        .table-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 15px 0 5px 0; }
+        .filter-btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px; padding: 5px 14px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+        .table-note { font-size: 0.8rem; color: var(--text-muted); margin: 6px 0 0 0; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-wrap table { min-width: 860px; margin-top: 10px; }
+        th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+        th.sortable:hover { color: var(--accent-2); }
+        th.sortable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        th .sort-ind { font-size: 0.72rem; color: var(--text-muted); margin-left: 4px; }
+        th[aria-sort] .sort-ind { color: var(--accent-2); }
+        tr.filter-hidden { display: none; }
+        tr.row-dim td { opacity: 0.55; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 15px 0; font-size: 0.85rem; line-height: 1.6; }
+        pre code { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace; color: var(--text); background: none; padding: 0; font-size: 0.85rem; }
+        .step { margin: 20px 0; }
+        .step h3 { margin-top: 0; }
+        .step-number { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--bg); font-size: 0.85rem; font-weight: 700; margin-right: 8px; padding: 0 4px; }
+        @media (max-width: 640px) { body { padding: 12px; } th, td { padding: 8px 10px; } .filter-btn { padding: 5px 10px; font-size: 0.8rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/guia" class="active">Guide</a>
+            <a href="/guia/benchmarks-comparativos">Benchmarks</a>
+            <a href="/guia/hardware-local">Hardware</a>
+            <a href="/guia/como-rodar">Como Rodar</a>
+            <a href="/guia/comunidade-casos-uso">Comunidade</a>
+            <a href="/guia/faq">FAQ</a>
+        </nav>
+        <p class="lang-link"><a href="/guia/como-rodar">Original in Portuguese →</a></p>
+        <h1>How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang, MLX</h1>
+        <p class="lead">One guide, four runtimes, real measured numbers. Copy-paste commands from Ollama to SGLang, the GGUF that fits your VRAM, and the fixes that actually move tok/s.</p>
+    </header>
+
+    <div class="toc">
+        <h3>Contents</h3>
+        <ul>
+            <li><a href="#resposta-rapida">The quick answer</a></li>
+            <li><a href="#pre-requisitos">What you need: hardware and VRAM</a></li>
+            <li><a href="#tabela-vram">VRAM and quantization: which GGUF fits your GPU</a></li>
+            <li><a href="#ollama">Method 1: Ollama (recommended)</a></li>
+            <li><a href="#llama-cpp">Method 2: llama.cpp (GGUF)</a></li>
+            <li><a href="#vllm">Method 3: vLLM (OpenAI-compatible server)</a></li>
+            <li><a href="#sglang">Method 4: SGLang (FP8, max throughput)</a></li>
+            <li><a href="#huggingface">Method 5: HuggingFace Transformers + MLX (development / Apple Silicon)</a></li>
+            <li><a href="#config">Sampling configuration: thinking vs instruct</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+            <li><a href="#perguntas-frequentes">Frequently asked questions</a></li>
+        </ul>
+    </div>
+
+    <h2 id="resposta-rapida">The quick answer</h2>
+    <p><strong>The fastest path is a single command:</strong> <code>ollama run qwen3.8:27b</code> — an 18 GB download that brings 256K of native context and native vision. You need <strong>at least 16–24 GB of free VRAM</strong> for the 4-bit model: 16 GB works with IQ4_XS (15.71 GB measured) plus quantized KV cache (~20 t/s on an RTX 4070 Ti Super); 24 GB runs Q4_K_M (17.11 GB) with headroom. For production serving with an OpenAI-compatible API, use vLLM or SGLang — both below with copy-paste commands.</p>
+    <div class="callout">
+        <strong>Three commands to start:</strong>
+        <pre><code># 1. Ollama — easiest, 18 GB, text + image
+ollama run qwen3.8:27b
+
+# 2. llama.cpp — GGUF, more control (pulls from Hugging Face)
+llama-server -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL --ctx-size 32768 --n-gpu-layers 99
+
+# 3. vLLM — production, OpenAI-compatible API on :8000
+vllm serve Qwen/Qwen3.8-27B --max-model-len 262144 --reasoning-parser qwen3</code></pre>
+    </div>
+    <p>Below: measured VRAM per quantization, the four methods step by step, the sampling settings Qwen recommends (never <code>temperature=0</code> in thinking mode) and the troubleshooting that covers the real failure modes. Full measured numbers: <a href="/guia/en/why-is-qwen3-8-27b-slow">why it is slow and how to fix it</a>.</p>
+
+    <h2 id="pre-requisitos">What you need: hardware and VRAM</h2>
+    <p>Qwen3.8-27B is a dense 27B model — every parameter is loaded into memory. Check your hardware before starting.</p>
+    <ul>
+        <li><strong>GPU:</strong> 16–24 GB VRAM minimum (Q4_K_M), 27–32 GB for Q8/FP8, 54 GB+ for BF16</li>
+        <li><strong>RAM:</strong> 32 GB system (64 GB recommended)</li>
+        <li><strong>Storage:</strong> 20 GB free</li>
+        <li><strong>Software:</strong> Docker (optional), Python 3.10+ (for HF/vLLM), CUDA 12+ (NVIDIA GPUs)</li>
+    </ul>
+
+    <h2 id="tabela-vram">VRAM and quantization: which GGUF fits your GPU</h2>
+    <p>The table below shows measured file sizes on disk (Hugging Face API, 15–18/08/2026), not VRAM estimates at load. The <strong>IQ4_XS</strong> row is the 16 GB answer — the portal runs it and measures it.</p>
+    <div class="table-wrap">
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Quantization</th>
+            <th scope="col">Qwen3.8-27B GGUF (measured)</th>
+            <th scope="col">Fits in</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr><td>UD-IQ2_M</td><td>10.32 GB</td><td>12–16 GB</td></tr>
+        <tr><td>UD-Q3_K_XL</td><td>13.44 GB</td><td>16 GB</td></tr>
+        <tr><td><strong>IQ4_XS</strong></td><td><strong>15.71 GB</strong></td><td><strong>16 GB (tight — KV quantized, short context)</strong></td></tr>
+        <tr><td>Q4_K_M</td><td>17.11 GB</td><td>24 GB</td></tr>
+        <tr><td>UD-Q4_K_XL</td><td>17.92 GB</td><td>24 GB</td></tr>
+        <tr><td>Q5_K_M</td><td>19.83 GB</td><td>24 GB (tight) / 27 GB+</td></tr>
+        <tr><td>Q6_K</td><td>22.88 GB</td><td>40 GB+</td></tr>
+        <tr><td>Q8_0</td><td>29.05 GB</td><td>40 GB+</td></tr>
+        <tr><td>FP8 (official checkpoint)</td><td>30.89 GB</td><td>32 GB+</td></tr>
+        <tr><td>BF16</td><td>~55.6 GB</td><td>54 GB+</td></tr>
+        <tr><td>mmproj (vision encoder, optional)</td><td>0.93 GB</td><td>only if you pass images</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="callout">
+        <strong>16 GB is viable — the portal proves it.</strong> The IQ4_XS (15.71 GB measured on Hugging Face) fits entirely on a 16 GB GPU with quantized KV cache (q8_0) and short context (8–16K): ~20 t/s on an RTX 4070 Ti Super, more with n-gram speculative decoding. The full 16 GB recipe is in the dedicated guide (PT-BR). Source: Hugging Face API measurements (18/08/2026) and community benchmarks.
+    </div>
+    <p class="footnote">Sources of the table: Hugging Face API — <code>unsloth/Qwen3.8-27B-GGUF</code>, collected 15/08/2026 (IQ4_XS added 17/08/2026); FP8 = official checkpoint <code>Qwen/Qwen3.8-27B-FP8</code> (30.89 GB); UD- = Unsloth Dynamic Unsupervised Quantization. Deep dive: <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">GGUF quantization and what fits your GPU (PT-BR)</a>.</p>
+
+    <h2 id="ollama">Method 1: Ollama (recommended)</h2>
+    <p>Ollama is the shortest path. A single command pulls the quantized model and starts the chat.</p>
+    <div class="step">
+        <h3><span class="step-number">1</span>Install Ollama</h3>
+        <pre><code># Linux/macOS
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows: download from https://ollama.com/download</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">2</span>Run Qwen3.8-27B</h3>
+        <pre><code># Pulls the quantized model (18 GB) and starts the chat
+ollama run qwen3.8:27b</code></pre>
+        <p>The model downloads automatically (18 GB, 256K context, text + image). The first download takes a few minutes.</p>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">3</span>MLX version (Apple Silicon)</h3>
+        <pre><code># Optimized for Apple Silicon Macs
+ollama run qwen3.8:27b-mlx</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">4</span>Local API (OpenAI-compatible server)</h3>
+        <pre><code># Ollama exposes an API on localhost:11434
+curl http://localhost:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3.8:27b",
+    "messages": [{"role": "user", "content": "Explain hybrid attention in 3 sentences."}]
+  }'</code></pre>
+    </div>
+    <div class="callout">
+        <strong>Integrations:</strong> Qwen3.8 in Ollama already works with Claude Code (<code>ollama launch claude --model qwen3.8</code>), OpenCode, Hermes Agent and OpenClaw.
+    </div>
+    <div class="callout">
+        <strong>Deep dive:</strong> <a href="/guia/ollama">the full Ollama guide (PT-BR)</a> — all tags (18–56 GB), custom Modelfile, MTP tag <code>qwen3.8:27b-mtp-q4_K_M</code>.
+    </div>
+
+    <h2 id="llama-cpp">Method 2: llama.cpp (GGUF)</h2>
+    <p>llama.cpp gives you full control over the configuration — ideal for tuning context, quantization and layer offload.</p>
+    <div class="step">
+        <h3><span class="step-number">1</span>Install llama.cpp</h3>
+        <pre><code># Clone and build (NVIDIA GPU)
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+make GGML_CUDA=1
+
+# Or via Homebrew (macOS)
+brew install llama.cpp</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">2</span>Download the GGUF (Unsloth)</h3>
+        <pre><code># Unsloth Q4_K_XL quantization (released on August 14, 2026)
+# Available at https://huggingface.co/unsloth/Qwen3.8-27B-GGUF</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">3</span>Start the server</h3>
+        <pre><code># Shortest path (pulls from Hugging Face directly)
+llama-cli -hf unsloth/Qwen3.8-27B-GGUF:Q4_K_XL \
+  --ctx-size 262144 \
+  --temp 1.0 --top-p 0.95 --top-k 20
+
+# Or with a local file
+llama-server -m Qwen3.8-27B-Q4_K_M.gguf \
+  --ctx-size 32768 \
+  --n-gpu-layers 99 \
+  --port 8080</code></pre>
+        <p>The server exposes an OpenAI-compatible API at <code>http://localhost:8080</code>.</p>
+    </div>
+    <div class="callout">
+        <strong>Key parameters:</strong> <code>--ctx-size</code> sets the maximum context (start with 32768, raise it as VRAM allows). <code>--n-gpu-layers 99</code> loads everything on the GPU; reduce it if you run out of VRAM.
+    </div>
+    <div class="callout">
+        <strong>MTP speculative decoding is off by default</strong> — add <code>--spec-type draft-mtp</code> to enable it. A documented RTX 3090 goes from ~31.6 to 74 t/s (+134.5%).
+    </div>
+    <div class="callout">
+        <strong>Deep dives:</strong> <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">the IQ4_XS recipe for 16 GB (PT-BR)</a> (~20 t/s on the RTX 4070 Ti Super) and <a href="/guia/qwen3-8-27b-contexto-256k-24gb">256K context on 24 GB (PT-BR)</a> (50.44 tok/s measured).
+    </div>
+
+    <h2 id="vllm">Method 3: vLLM (OpenAI-compatible server)</h2>
+    <p>vLLM is the best option for production: high throughput, NVFP4 support on Blackwell and a native OpenAI-compatible API.</p>
+    <div class="step">
+        <h3><span class="step-number">1</span>Install vLLM (requires ≥ 0.27.1)</h3>
+        <pre><code>pip install vllm>=0.27.1</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">2</span>Start the server</h3>
+        <pre><code># OpenAI-compatible server
+vllm serve Qwen/Qwen3.8-27B \
+  --max-model-len 262144 \
+  --reasoning-parser qwen3</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">3</span>Call the API</h3>
+        <pre><code>curl -X POST "http://localhost:8000/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen/Qwen3.8-27B",
+    "messages": [
+      {"role": "user", "content": "Write a Python bubble sort function."}
+    ]
+  }'</code></pre>
+    </div>
+    <div class="callout">
+        <strong>NVFP4 on Blackwell:</strong> on Blackwell GPUs vLLM supports NVFP4 with 24.6 GiB and 6.6M KV tokens — enough to run 1M of context on a single GPU. Requires vLLM 0.27.1+.
+    </div>
+    <div class="callout">
+        <strong>Deep dive:</strong> <a href="/guia/como-rodar-vllm-qwen3-8-27b">the full vLLM guide (PT-BR)</a> — production flags, prefix caching, MTP acceptance 0.77–0.90 and 6 real open bugs with workarounds.
+    </div>
+
+    <h2 id="sglang">Method 4: SGLang (FP8, max throughput)</h2>
+    <p>SGLang is the top-throughput path on a single GPU: it serves the official FP8 checkpoint (30.89 GB) with an OpenAI-compatible API on port 30000. The SGLang team measures <strong>206.1 tok/s on a single RTX 5090</strong> with NVFP4 + DSpark speculative decoding. Installation follows the official SGLang cookbook.</p>
+    <div class="step">
+        <h3><span class="step-number">1</span>Install SGLang (uv)</h3>
+        <pre><code>pip install --upgrade pip
+pip install uv
+uv pip install sglang</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">2</span>Serve the official FP8 checkpoint</h3>
+        <pre><code>python -m sglang.launch_server \
+  --model-path Qwen/Qwen3.8-27B-FP8 \
+  --reasoning-parser qwen3 \
+  --tool-call-parser qwen3_coder \
+  --context-length 131072</code></pre>
+        <p>On unified memory (Mac, Strix Halo) keep <code>--mem-fraction-static 0.50</code> — 0.95 silently skips CUDA graph capture and falls back to eager mode.</p>
+    </div>
+    <div class="callout">
+        <strong>Deep dive:</strong> <a href="/guia/como-rodar-sglang-qwen3-8-27b">the full SGLang + FP8 guide (PT-BR)</a> — install via uv or Docker, MTP/EAGLE in the checkpoint, bench_serving validation and SGLang × llama.cpp/Ollama comparison. Reference: <a href="https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B">official SGLang cookbook</a>.
+    </div>
+
+    <h2 id="huggingface">Method 5: HuggingFace Transformers + MLX (development / Apple Silicon)</h2>
+    <p>For development and fine-tuning, HuggingFace Transformers gives you full control. For Apple Silicon, MLX is the most efficient path.</p>
+    <div class="step">
+        <h3><span class="step-number">1</span>Install dependencies</h3>
+        <pre><code>pip install transformers torch accelerate</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">2</span>Load the model</h3>
+        <pre><code>from transformers import AutoProcessor, AutoModelForMultimodalLM
+
+processor = AutoProcessor.from_pretrained("Qwen/Qwen3.8-27B")
+model = AutoModelForMultimodalLM.from_pretrained(
+    "Qwen/Qwen3.8-27B",
+    device_map="auto",
+    torch_dtype="auto"
+)</code></pre>
+    </div>
+    <div class="step">
+        <h3><span class="step-number">3</span>Inference (text + image)</h3>
+        <pre><code>messages = [
+    {
+        "role": "user",
+        "content": [
+            {"type": "image", "url": "https://example.com/image.jpg"},
+            {"type": "text", "text": "Describe this image."}
+        ]
+    }
+]
+
+inputs = processor.apply_chat_template(
+    messages, add_generation_prompt=True,
+    tokenize=True, return_dict=True, return_tensors="pt"
+).to(model.device)
+
+outputs = model.generate(**inputs, max_new_tokens=512)
+print(processor.decode(outputs[0][inputs["input_ids"].shape[-1]:]))</code></pre>
+    </div>
+    <div class="callout warn">
+        <strong>Important:</strong> Qwen3.8-27B is multimodal (image-text-to-text). Use <code>AutoModelForMultimodalLM</code> and <code>AutoProcessor</code>, not <code>AutoModelForCausalLM</code>.
+    </div>
+    <div class="step">
+        <h3><span class="step-number">4</span>MLX (Apple Silicon)</h3>
+        <pre><code># Via Ollama (recommended)
+ollama run qwen3.8:27b-mlx
+
+# Or via mlx-lm directly
+pip install mlx-lm
+mlx_lm.generate \
+  --model Qwen/Qwen3.8-27B-mlx-4bit \
+  --prompt "Explain hybrid attention."</code></pre>
+    </div>
+
+    <h2 id="config">Sampling configuration: thinking vs instruct</h2>
+    <p>Qwen3.8-27B has two modes with optimized sampling:</p>
+    <div class="table-wrap">
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Parameter</th>
+            <th scope="col">Thinking (default)</th>
+            <th scope="col">Instruct</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr><td>Temperature</td><td>1.0</td><td>0.7</td></tr>
+        <tr><td>top_p</td><td>0.95</td><td>0.80</td></tr>
+        <tr><td>top_k</td><td>20</td><td>—</td></tr>
+        <tr><td>repetition_penalty</td><td>—</td><td>1.5</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="callout warn">
+        <strong>Never use temperature=0 in thinking mode</strong> — the model loops. Always use temp ≥ 0.6.
+    </div>
+    <h3>reasoning_effort</h3>
+    <p>Control reasoning depth: <code>xhigh</code> (maximum), <code>high</code>, <code>medium</code>, <code>low</code>. <code>preserve_thinking</code> keeps the reasoning context between messages — on by default. For the full recipe, see the <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal">reasoning configuration guide (PT-BR)</a>.</p>
+
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <div class="table-wrap">
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Symptom</th>
+            <th scope="col">Fix</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr><td>"CUDA out of memory"</td><td><code>--ctx-size 16384</code>; reduce <code>--n-gpu-layers</code> (partial offload); use Q4_K_M instead of Q8+</td></tr>
+        <tr><td>"model not found" in Ollama</td><td><code>ollama list</code>, <code>ollama show qwen3.8:27b</code></td></tr>
+        <tr><td>Repetitive/degraded answers</td><td>thinking mode <strong>never</strong> greedy (temp=0): use temp=1.0, top_p=0.95, top_k=20</td></tr>
+        <tr><td>Extreme slowness (1–5 tok/s)</td><td>CPU offload: <code>nvidia-smi</code>; raise <code>-ngl</code></td></tr>
+        <tr><td>KeyError on HuggingFace</td><td><code>pip install --upgrade transformers</code> (architecture <code>qwen3_5</code>)</td></tr>
+        <tr><td>Truncated context</td><td><code>--ctx-size 262144</code> (llama.cpp) or <code>OLLAMA_CONTEXT_LENGTH=262144</code> (Ollama)</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2 id="perguntas-frequentes">Frequently asked questions</h2>
+    <div class="faq-item">
+        <h3>How much VRAM do I need to run Qwen3.8-27B?</h3>
+        <p>16–24 GB for the 4-bit model: IQ4_XS (15.71 GB) fits 16 GB with quantized KV cache and short context; Q4_K_M (17.11 GB) needs 24 GB with headroom; Q8_0 (29.05 GB) and FP8 (30.89 GB) ask for 32 GB+; add 2–6 GB of context/KV cache overhead.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Can Qwen3.8-27B run on 16 GB?</h3>
+        <p>Yes — IQ4_XS (15.71 GB measured on Hugging Face) plus quantized KV cache (q8_0) and n-gram speculative decoding: ~20 t/s on an RTX 4070 Ti Super; UD-Q3_K_XL (13.44 GB) if you need 64K+ context.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Which quantization should I choose?</h3>
+        <p>Sweet spot: Q4_K_XL/Q4_K_M (~16–18 GB) on 24 GB; IQ4_XS (15.71 GB) for 16 GB; Q5_K_M (19.83 GB) with 27 GB+; Q6/Q8 (23–30 GB) with 40 GB+; official FP8 (30.89 GB) for SGLang/vLLM.</p>
+    </div>
+    <div class="faq-item">
+        <h3>How do I make Qwen3.8-27B faster?</h3>
+        <p>Order of payoff: thinking off or medium (2.06×), MTP on (<code>--spec-type draft-mtp</code>, off by default), KV cache q8_0, RDNA4 Q4/Q8 only, Vulkan shader rebuild, <code>--mem-fraction-static 0.50</code> on SGLang with unified memory.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Does MTP speculative decoding work in Ollama?</h3>
+        <p>There is no flag: MTP ships as separate Ollama tags (<code>qwen3.8:27b-mtp-q4_K_M</code>); Ollama swaps the chat template (reasoning_effort cannot be lowered via Ollama; use <code>llama-server --jinja</code>); in llama.cpp the drafter is a separate GGUF ("model has unused tensor blk.64.nextn" = off).</p>
+    </div>
+    <div class="faq-item">
+        <h3>How many tokens per second does Qwen3.8-27B run at?</h3>
+        <p>206.1 tok/s on an RTX 5090 (SGLang, NVFP4 + DSpark); 59.2 tok/s on a Radeon AI PRO R9700 (Vulkan Q8_0 + MTP, 64K context); 50.44 tok/s at 262,144 context on 24 GB; 41.5 tok/s on an RTX 3090 (UD-Q4_K_XL); 17.3 tok/s on Strix Halo (Ollama/Vulkan Q4_K_M); ~9.7 tok/s on an RTX 3060 12 GB.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Is Qwen3.8-27B slower than Qwen3.6-27B?</h3>
+        <p>No — raw decode is faster: 17.3 vs 12.4 tok/s on the same machine and quant (a gap attributed to Unsloth's GGUF compilation). What feels slow is behavior: thinking defaults to xhigh and generates thousands of reasoning tokens before the answer.</p>
+    </div>
+    <div class="faq-item">
+        <h3>Can it run 256K context on a 24 GB GPU?</h3>
+        <p>Yes — the Q4 KV cache (48+16 hybrid layers) is ≈ 4.25 GiB: a third-party measurement (RTX PRO 4000 Blackwell, piszczek.pl) sustains 50.44 tok/s average with all 262,144 tokens; 12.61 tok/s with the cache full (261.5K).</p>
+    </div>
+    <div class="faq-item">
+        <h3>Why is it slower than a 35B MoE model?</h3>
+        <p>A dense model activates all 27B parameters per token; a MoE activates ~3B. On the same Strix Halo: 27B dense at 10.6 tok/s (Q5_K_M) vs 35B MoE at 56.6 tok/s — 5.3×. The dense trades throughput for quality-per-parameter and agentic strength.</p>
+    </div>
+    <div class="faq-item">
+        <h3>What is a good tok/s for a local LLM?</h3>
+        <p>Human reading speed is ~5–7 tok/s, so 10 tok/s already feels like reading pace and 100+ moves the bottleneck to tool calls. At 10 tok/s, a 20K-token thinking pass becomes half an hour — the reasoning_effort dial matters more than raw tok/s.</p>
+    </div>
+
+    <footer>
+        <p>Local 30B models portal — How to Run Qwen3.8-27B Locally | Sources: Qwen model card (huggingface.co/Qwen/Qwen3.8-27B), official SGLang cookbook, portal guides (PT-BR) with own and third-party measurements, Hugging Face API measurements (15–18/08/2026). Benchmarks from different vendors use their own harnesses.</p>
+        <p>Last updated: August 2026 | <a href="/">Home</a> | <a href="/guia">Guide</a> | <a href="/guia/benchmarks-comparativos">Benchmarks</a> | <a href="/guia/como-rodar">Como Rodar</a> | <a href="/guia/faq">FAQ</a> | <a href="/guia/en/why-is-qwen3-8-27b-slow">Why is it slow (EN)</a> | <a href="/guia/en/best-local-30b-models">Best local 30B models (EN)</a> | <a href="/guia/como-rodar">Original in Portuguese →</a></p>
+    </footer>
+</body>
+</html>
