@@ -199,6 +199,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://qwen38-27b-landing.vercel.app/guia/quantizacao-multilingue-portugues</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>weekly</changefreq>

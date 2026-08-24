@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B? Veredito por caso de uso (ago/2026)</title>
+    <meta name="description" content="O MoE agêntico da NVIDIA (30B totais / 3B ativos, até 1M de contexto) que a SERP EN já compara com o Qwen3.8-27B: os benchmarks oficiais do próprio NVIDIA (SWE-bench Verified 51,56, Terminal-Bench 2.1 24,58), a promessa de até 4× de velocidade, GGUF UD-Q4_K_XL 25,5 GB, 25 GB no Ollama e o veredito honesto por perfil — com fontes.">
+    <meta name="keywords" content="nemotron 3.5 lightning 30b, nemotron 3.5 lightning vs qwen3.8, melhor modelo local para agentes 2026, moe local 30b, nemotron gguf, modelo local para agentes, qwen3.8 vs nemotron, nemotron 3.5 lightning ollama">
+    <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B? Veredito por caso de uso (ago/2026)">
+    <meta property="og:description" content="O MoE agêntico da NVIDIA (30B totais / 3B ativos, até 1M de contexto) que a SERP EN já compara com o Qwen3.8-27B: os benchmarks oficiais do próprio NVIDIA (SWE-bench Verified 51,56, Terminal-Bench 2.1 24,58), a promessa de até 4× de velocidade, GGUF UD-Q4_K_XL 25,5 GB, 25 GB no Ollama e o veredito honesto por perfil — com fontes.">
+    <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b">
+    <meta name="twitter:card" content="summary_large_image">
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+(function(){
+  var fired={};
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    if(max<=0)return;
+    var pct=Math.round((h.scrollTop||document.body.scrollTop)/max*100);
+    [25,50,75,100].forEach(function(t){
+      if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
+</script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
+
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+  <meta property="article:modified_time" content="2026-08-24">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B: qual escolher para agentes locais?", "description": "O MoE agêntico da NVIDIA (30B totais / 3B ativos, até 1M de contexto) que a SERP EN já compara com o Qwen3.8-27B: os benchmarks oficiais do próprio NVIDIA (SWE-bench Verified 51,56, Terminal-Bench 2.1 24,58), a promessa de até 4× de velocidade, GGUF UD-Q4_K_XL 25,5 GB, 25 GB no Ollama e o veredito honesto por perfil — com fontes.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-24", "dateModified": "2026-08-24"}
+  </script>
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Benchmarks", "item": "https://qwen38-27b-landing.vercel.app/guia/#benchmarks"}, {"@type": "ListItem", "position": 3, "name": "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B: qual escolher para agentes locais?", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b"}]}
+  </script></head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#guias">Guias</a>
+      <a href="/guia/#benchmarks">Benchmarks</a>
+      <a href="/guia/#hardware">Hardware</a>
+      <a href="/guia/#releases">Releases</a>
+      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#benchmarks">Benchmarks</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B: qual escolher para agentes locais?</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B: qual escolher para agentes locais?</h1>
+        <div class="article-meta">
+          <span class="badge-cat bench">Benchmarks</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-24">24 ago 2026</time>
+          <span class="sep">·</span><span>13 min de leitura</span>
+        </div>
+        <p class="article-lead">O MoE agêntico da NVIDIA (30B totais / 3B ativos, até 1M de contexto, OpenMDW-1.1) contra o 27B denso mais novo da Qwen: os números que o próprio NVIDIA publica (e que mostram o Lightning perdendo para o Qwen3.6-35B-A3B em quase tudo), a promessa de até 4× de velocidade para agentes always-on, os GGUF em GB, a tag no Ollama — e um veredito por caso de uso que a SERP EN não te dá.</p>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Nesta página">
+          <h4>Nesta página</h4>
+          <ul>
+            <li><a href="#o-confronto">O confronto: o MoE agêntico da NVIDIA contra o 27B denso</a></li>
+            <li><a href="#tabela">A tabela do par</a></li>
+            <li><a href="#arquitetura">Mamba-2 + MoE + atenção: a arquitetura híbrida do Lightning</a></li>
+            <li><a href="#velocidade">Velocidade: a promessa de até 4× e o que os números oficiais mostram</a></li>
+            <li><a href="#vram">Disco e VRAM: GGUF, Ollama e a tabela de quants</a></li>
+            <li><a href="#veredito">Veredito por perfil de uso</a></li>
+            <li><a href="#honestidade">O aviso de honestidade: os números são da NVIDIA e mostram derrota</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#fontes">Fontes</a></li>
+            <li><a href="#nl-art">Receba o resumo semanal</a></li>
+          </ul>
+        </nav>
+
+        <div class="article-body">
+          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B: qual escolher para agentes locais?" width="1200" height="630" loading="eager">
+
+<div class="callout callout-best" id="resposta-rapida">
+        <strong>Resposta curta:</strong> Depende do perfil — e a resposta honesta é "a comparação não é 1:1". Para código difícil, raciocínio, visão, ecossistema verificado e <strong>português</strong>, o <strong>Qwen3.8-27B</strong> segue o pick (LCB v6 90,3, SWE-bench Pro 61,7 no model card; AAII 52 com verificação independente; Q4_K_M 17,11 GB). O <strong>Nemotron-3.5-Lightning-30B-A3B</strong> é o que o próprio NVIDIA desenhou para ser: um modelo de <strong>execução de agentes</strong> — tool-calling, validação, formatação, subagentes — onde a tese é velocidade (até 4× de output) e não pico de inteligência. E aqui o detalhe que muda o jogo: <strong>os benchmarks oficiais do próprio NVIDIA mostram o Lightning perdendo para o Qwen3.6-35B-A3B em quase todas as métricas</strong> (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38; GPQA 75,44 vs 83,40). O Qwen3.8-27B nem aparece na tabela oficial da NVIDIA — e a comunidade (resultados "incredibly variable") reforça a cautela.
+    </div>
+
+    <h2 id="o-confronto">O confronto: o MoE agêntico da NVIDIA contra o 27B denso</h2>
+
+    <div class="verdict-grid">
+        <div class="verdict-card">
+            <h3>Nemotron-3.5-Lightning-30B-A3B</h3>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Lançado 11/08/2026 · NVFP4 com 629 mil downloads (24/08)</p>
+            <ul>
+                <li>MoE 30B totais / <strong>3B ativos</strong> por token (6 experts por token, híbrido Mamba-2 + MoE + atenção)</li>
+                <li>Contexto até <strong>1M</strong> (256K validado em GPU única)</li>
+                <li>Reasoning <strong>configurável on/off</strong> via chat template</li>
+                <li>MTP (Multi-Token Prediction) + decodificação especulativa (DSpark/DFlash)</li>
+                <li>OpenMDW-1.1 · destilado do Nemotron 3 Ultra (550B) · pré-treinado em 20T+ tokens</li>
+            </ul>
+        </div>
+        <div class="verdict-card">
+            <h3>Qwen3.8-27B</h3>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Pesos abertos 14/08/2026</p>
+            <ul>
+                <li>Denso ~27B híbrido: 16× Gated DeltaNet + full attention</li>
+                <li>Contexto nativo 262.144</li>
+                <li>Thinking <strong>configurável</strong> (on/off/effort, inclusive por chamada)</li>
+                <li>Visão nativa (mmproj 0,93 GB)</li>
+                <li>Apache 2.0 · AAII 52 (verificação independente real) · português nativo</li>
+            </ul>
+        </div>
+    </div>
+
+    <p>A SERP em inglês <strong>já pergunta essa pergunta</strong> — há thread no r/LocalLLM comparando o Qwen3.8-27B, o Nemotron-3.5-Lightning-30B-A3B, o Ornith-1.5-35B-A3B e o Muse-Glimmer-30B na mesma máquina (com resultados "incredibly variable"), vídeos testando o Lightning em 16 GB no YouTube e o Unsloth publicou guia day-zero de execução local. O que falta é a resposta em português com a honestidade que a SERP não tem: o rival aqui é <strong>da NVIDIA</strong>, lançado para a mesma janela de frescor, e <strong>os números oficiais do próprio laboratório mostram o Lightning atrás do Qwen3.6-35B-A3B em quase tudo</strong> — o modelo não é vendido como mais inteligente, e sim como mais rápido para agentes que rodam o dia inteiro.</p>
+
+    <p>O enquadramento honesto: o Lightning não foi desenhado para competir com o Qwen3.8 no pico de raciocínio. A própria NVIDIA diz que ele é a "execution layer" de um sistema de agentes — o modelo barato e rápido que roda embaixo de um modelo de planejamento maior, fazendo tool-calls, validação, formatação e trabalho repetitivo em volume. É o mesmo nicho que este portal já mapeou para o Ornith e o Qwen3-Coder, com uma diferença de arquitetura: em vez de experts puros, o Lightning intercala <strong>Mamba-2 + MoE + camadas de atenção</strong>.</p>
+
+    <h2 id="tabela">A tabela do par</h2>
+    <p>Valores canônicos do portal (cânone GGUF do 3.8) e das fontes nomeadas. Downloads re-verificados na HF API em 24/08/2026.</p>
+
+    <div id="big-table"><div class="table-wrap"><table class="spec-table">
+        <tr><th></th><th>Qwen3.8-27B</th><th>Nemotron-3.5-Lightning-30B-A3B</th></tr>
+        <tr><td>Lançamento</td><td>ago/2026 (pesos abertos 14/08)</td><td><strong>11/08/2026</strong> (NVIDIA)</td></tr>
+        <tr><td>Arquitetura</td><td>Denso ~27B híbrido (16× Gated DeltaNet + full-attention)</td><td>MoE 30B totais / <strong>3B ativos</strong> (híbrido Mamba-2 + MoE + atenção, 6 experts/token)</td></tr>
+        <tr><td>Thinking</td><td>Híbrido configurável (on/off/effort)</td><td>Reasoning on/off via chat template (<code>enable_thinking</code>)</td></tr>
+        <tr><td>Contexto</td><td>262.144</td><td>Até 1M (256K validado em GPU única)</td></tr>
+        <tr><td>Visão</td><td>Nativa (mmproj 0,93 GB)</td><td><strong>Sem visão</strong> (texto e código)</td></tr>
+        <tr><td>GGUF Q4_K_M (medido)</td><td><strong>17,11 GB</strong></td><td>UD-Q4_K_XL <strong>25,5 GB</strong> (Unsloth) / Q4_K_M 25,48 GB (bartowski) / Q4_0 18,9 GB (ggml-org oficial)</td></tr>
+        <tr><td>MTP / spec-decode</td><td>Suportado (--spec-type draft-mtp)</td><td>MTP nativo + DSpark/DFlash (drafts separados)</td></tr>
+        <tr><td>Código (oficiais NVIDIA)</td><td>LCB v6 <strong>90,3</strong> · SWE-bench Pro 61,7 · DeepSWE 42,2 (model card Qwen)</td><td>SWE-bench Verified <strong>51,56</strong> · SWE-bench Multilingual 39,33 · Terminal-Bench 2.1 <strong>24,58</strong> (model card NVIDIA, BF16)</td></tr>
+        <tr><td>Agêntico (oficiais NVIDIA)</td><td>MCP Atlas não publicado</td><td>PinchBench 85,37 · BrowseComp 36,97 · τ³-bench Banking 9,28 (model card NVIDIA)</td></tr>
+        <tr><td>GPQA Diamond</td><td><strong>89,2</strong></td><td>75,44 (oficial NVIDIA)</td></tr>
+        <tr><td>Velocidade</td><td>17,3 tok/s (Q4_K_M, Strix Halo — medição própria)</td><td>Até 4× output (claim NVIDIA) · ~670 tok/s em teste independente · 200–400 tok/s relato comunidade NVFP4+DSpark</td></tr>
+        <tr><td>Adoção (24/08)</td><td>1,73M dl/mês (repo HF)</td><td>NVFP4 629.598 dl / BF16 141.338 dl / GGUF Unsloth 114.304 dl · Ollama 130,7K dl</td></tr>
+        <tr><td>Licença</td><td>Apache 2.0</td><td>OpenMDW-1.1</td></tr>
+        <tr><td>Status</td><td>Corrente, verificação independente (AAII 52)</td><td>Novo (13 dias), números <strong>autodeclarados NVIDIA</strong> e mostrando derrota vs Qwen3.6-35B-A3B na tabela oficial</td></tr>
+    </table></div></div>
+
+    <div class="footnote">
+        <p><strong>Nota obrigatória da tabela:</strong> os benchmarks do Nemotron-3.5-Lightning vêm do <strong>model card oficial da NVIDIA</strong> (BF16, harness NeMo Gym/NeMo Evaluator) e <strong>mostram o Lightning perdendo para o Qwen3.6-35B-A3B na tabela do próprio NVIDIA</strong> — MMLU Pro 81,94 vs 85,63; GPQA Diamond 75,44 vs 83,40; HLE 11,72 vs 19,56; SWE-bench Verified 51,56 vs 70,12; SWE-bench Multilingual 39,33 vs 63,40; Terminal-Bench 2.1 24,58 vs 44,38; PinchBench 85,37 vs 88,07; BrowseComp 36,97 vs 48,74; AA-LCR 52,00 vs 61,06. O Lightning vence o Qwen3.6 apenas em IFBench (loose) 71,88 vs 63,71. O <strong>Qwen3.8-27B não aparece na tabela oficial da NVIDIA</strong> (a comparação deles é contra o Qwen3.6-35B-A3B, o modelo anterior da família). LCB v6 e SWE-bench Pro do Qwen3.8 vêm do model card Qwen. As métricas do Lightning não têm verificação independente de larga escala — a comunidade reporta resultados "incredibly variable" na mesma máquina.
+    </div>
+
+    <h2 id="arquitetura">Mamba-2 + MoE + atenção: a arquitetura híbrida do Lightning</h2>
+
+    <p>O Nemotron-3.5-Lightning-30B-A3B intercala três tipos de camada: <strong>Mamba-2</strong> (estado recorrente barato para sequências longas), <strong>MoE</strong> (6 experts por token) e camadas seletivas de <strong>atenção</strong> (para recall preciso onde importa). É uma arquitetura híbrida de estado-da-arte — a mesma família de ideias do "denso híbrido" do Qwen3.8 (Gated DeltaNet + full attention), mas com MoE no meio.</p>
+
+    <p>A consequência por token: só <strong>3B dos 30B</strong> ativam por token, então o custo de computo é de um modelo de ~3B — com o conhecimento agregado de um 30B. É daí que vem a velocidade: menos matrizes ativadas por token, menos bytes lidos da VRAM por token. O "A3B" no nome é exatamente isso — 3B ativados por token. O Mamba-2, por sua vez, barateia o contexto longo: é por isso que a NVIDIA promete até <strong>1M de contexto</strong> sem explodir o KV cache do jeito que atenção densa explodiria.</p>
+
+    <p><strong>Multi-Token Prediction também existe aqui:</strong> o Lightning tem camadas MTP (prevê vários tokens futuros) e dois drafts externos de decodificação especulativa — <strong>DSpark</strong> (bloco semi-autorregressivo, recomendado para DGX Spark e baixa concorrência) e <strong>DFlash</strong> (block-diffusion). A mecânica é a mesma que este portal já cobre para o 3.8 (speculative decoding com <code>--spec-type draft-mtp</code>). Quem roda os dois na mesma máquina vai reconhecer o padrão — a diferença é que no Lightning os drafts são arquivos separados que você baixa à parte.</p>
+
+    <p><strong>O rótulo que resume a classe:</strong> "velocidade segue os 3B ativos, memória segue os 30B totais — todo expert tem de estar residente". Diferente de um denso de 27B, o MoE de 30B não diminui de tamanho em disco só porque ativa pouco: os pesos completos estão lá. O GGUF UD-Q4_K_XL do Lightning (25,5 GB) é <strong>maior</strong> que o Q4_K_M do Qwen3.8 (17,11 GB), mesmo ativando 24B a menos por token.</p>
+
+    <p>O Lightning também é <strong>reasoning on por padrão</strong> (desligável via <code>enable_thinking=False</code>) — e a <a href="/guia/qwen3-8-27b-reasoning-configuracao-ideal" style="color:var(--accent)">configuração ideal de reasoning do Qwen3.8-27B</a> explica como medir o custo de pensar antes de responder. Todos os números de throughput do portal, com fonte e contexto, estão no <a href="/guia/tokens-por-segundo-30b-hardware-real" style="color:var(--accent)">compilado de tokens por segundo no hardware real</a>.</p>
+
+    <h2 id="velocidade">Velocidade: a promessa de até 4× e o que os números oficiais mostram</h2>
+
+    <p>A tese da NVIDIA é explícita: "a eficiência de um agente é quão rápido o modelo completa trabalho útil, não só quão rápido gera tokens". No <a href="https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/" style="color:var(--accent)">anúncio oficial</a>, o Lightning entrega <strong>até 4× a velocidade de output</strong> de modelos similares e completa <strong>10.000 tarefas do PinchBench ~30% mais rápido</strong> que o Qwen3.6-35B-A3B com acurácia similar. O Unsloth repete o número (35% mais rápido; 86% no PinchBench).</p>
+
+    <div class="callout">
+        <strong>Números de velocidade (rótulo obrigatório):</strong> os "até 4×" são <strong>claim da NVIDIA</strong>; um teste independente (Awesome Agents) mediu ~670 tok/s; um relato da comunidade no r/LocalLLaMA mediu 200–400 tok/s com NVFP4 + DSpark. Não é medição deste portal — não há medição própria no Strix Halo ainda. O padrão deste site é publicar o que mediu ou o que a fonte nomeada mediu, e aqui a fonte é a NVIDIA e a comunidade.
+    </div>
+
+    <p>A âncora própria do portal para o 3.8 é 17,3 tok/s no Strix Halo (Q4_K_M, Ollama/Vulkan, medição própria). Os números do Lightning são de <strong>outras classes de hardware</strong> (RTX 5090, H100, DGX Spark, M5 Pro via MLX) — não existe head-to-head sério entre eles. A leitura útil é a da classe: um MoE de ~3B ativos lê muito menos peso por token do que um denso de 27B, e a promessa de velocidade para agentes always-on aponta na direção esperada para essa arquitetura. Medição própria do Lightning no Strix Halo é trabalho futuro — e quando existir, este artigo ganha a coluna certa.</p>
+
+    <h2 id="vram">Disco e VRAM: GGUF, Ollama e a tabela de quants</h2>
+
+    <p>Tree oficial do <code>ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF</code> (HF API, 24/08/2026) — o checkpoint GGUF que a própria NVIDIA aponta no model card:</p>
+
+    <div class="table-wrap"><table>
+        <tr><th>Quantização</th><th>Tamanho (oficial)</th></tr>
+        <tr><td>BF16</td><td class="num">63,18 GB</td></tr>
+        <tr><td>Q8_0</td><td class="num">33,59 GB</td></tr>
+        <tr><td><strong>Q4_0</strong></td><td class="num"><strong>18,90 GB</strong></td></tr>
+        <tr><td>MTP draft Q4_0</td><td class="num">1,16 GB</td></tr>
+    </table></div>
+
+    <p>Os <strong>GGUF dinâmicos da Unsloth</strong> (114.304 downloads, 24/08/2026 — o guia oficial day-zero usa <code>UD-Q4-K-XL</code> como equilíbrio tamanho/precisão):</p>
+
+    <div class="table-wrap"><table>
+        <tr><th>Quant (Unsloth)</th><th>Tamanho</th></tr>
+        <tr><td>MXFP4_MOE</td><td class="num">23,2 GB</td></tr>
+        <tr><td>UD-IQ3_XXS</td><td class="num">19,76 GB</td></tr>
+        <tr><td>UD-Q3_K_XL</td><td class="num">21,2 GB</td></tr>
+        <tr><td>UD-IQ4_NL</td><td class="num">21,2 GB</td></tr>
+        <tr><td>UD-Q4_K_S</td><td class="num">24,47 GB</td></tr>
+        <tr><td><strong>UD-Q4_K_M</strong></td><td class="num"><strong>25,27 GB</strong></td></tr>
+        <tr><td><strong>UD-Q4_K_XL</strong></td><td class="num"><strong>25,5 GB</strong></td></tr>
+        <tr><td>UD-Q5_K_M</td><td class="num">30,2 GB</td></tr>
+        <tr><td>UD-Q6_K_XL</td><td class="num">35,0 GB</td></tr>
+        <tr><td>UD-Q8_K_XL</td><td class="num">38,6 GB</td></tr>
+    </table></div>
+
+    <p><strong>Confronto por faixa de GPU:</strong></p>
+    <ul style="margin-left:18px;">
+        <li><strong>16 GB</strong> → UD-IQ3_XXS de 19,76 GB <strong>não cabe inteiro</strong> — a rota é Q4_0 de 18,9 GB com offload parcial, ou o MXFP4_MOE de 23,2 GB só com experts offloadados (os vídeos de "16 GB" do YouTube usam offload + contexto curto).</li>
+        <li><strong>24 GB</strong> → UD-Q4_K_XL de 25,5 GB com contexto curto, ou Q4_K_S de 24,47 GB com folga.</li>
+        <li><strong>32 GB</strong> → UD-Q5_K_M de 30,2 GB.</li>
+        <li><strong>48 GB+</strong> → UD-Q6_K_XL de 35 GB ou Q8_0 de 33,59 GB.</li>
+    </ul>
+
+    <p>No Ollama: <code>ollama run nemotron-3.5-lightning</code> (tag de 25 GB, 130,7K downloads, 1M de contexto declarado — o Ollama ajusta o contexto pela VRAM: &lt;24 GB → 4K, 24–48 GB → 32K, 48 GB+ → 256K). O checkpoint <strong>NVFP4</strong> (~15 GB de pesos a 4 bits) é o recomendado pela NVIDIA para deploy, com W4A16 para hardware mais amplo e recipe DSpark para DGX Spark. <strong>Nota de hardware:</strong> a lista oficial de suporte da NVIDIA cobre Blackwell/Hopper/Ampere (W4A16) e a RTX 5090 — a série RTX 40 não está na lista oficial, espere testes da comunidade antes de assumir. O contexto de quantização completo do portal está no <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu" style="color:var(--accent)">guia de quantização GGUF ≤30B</a>.</p>
+
+    <h2 id="veredito">Veredito por perfil de uso</h2>
+
+    <div class="verdict-grid">
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Qwen3.8-27B — código, raciocínio, visão, português e ecossistema verificado</h3>
+            <ul>
+                <li>Código difícil e raciocínio longo (LCB v6 90,3, SWE-bench Pro 61,7 — model card)</li>
+                <li>Visão + 256K nativos</li>
+                <li>AAII 52 — verificação independente real</li>
+                <li>17,11 GB em Q4_K_M cabe em 24 GB com folga</li>
+                <li>Português nativo — o Lightning não lista pt-BR no suporte oficial</li>
+            </ul>
+        </div>
+        <div class="verdict-card" style="border-left: 3px solid var(--accent-2);">
+            <h3>🟢 Nemotron-3.5-Lightning-30B-A3B — execução de agentes em volume, contexto 1M</h3>
+            <ul>
+                <li>Velocidade de MoE (3B ativos) + MTP/DSpark — até 4× output (claim NVIDIA)</li>
+                <li>Até 1M de contexto (Mamba-2 barateia o cache)</li>
+                <li>Pitch explícito: execution layer de agente (tool-call, validação, formatação, subagentes)</li>
+                <li>OpenMDW-1.1 — pesos, dados e receitas abertos; pronto para uso comercial</li>
+                <li>Fine-tuning barato: relato de um post-training completo por menos de US$ 100</li>
+            </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 GPU de 16 GB — nenhum dos dois é confortável; o 3.8 sofre menos</h3>
+            <ul>
+                <li>Lightning: menor GGUF inteiro é Q4_0 de 18,9 GB — não cabe em 16 GB sem offload pesado</li>
+                <li>Qwen3.8: IQ4_XS de 15,71 GB cabe em 16 GB (modo texto) — caminho mais batido</li>
+                <li>Os vídeos de "16 GB" do Lightning usam offload + contexto curto, não rodam o modelo inteiro</li>
+            </ul>
+        </div>
+        <div class="verdict-card revisit" style="border-left: 3px solid var(--accent);">
+            <h3>🟡 Agente always-on com contexto gigante — Lightning (com ressalva)</h3>
+            <ul>
+                <li>Se o trabalho é tool-calling/validação em volume e contexto de 1M importa, a tese dele é exatamente essa</li>
+                <li>Mas os números oficiais da NVIDIA mostram derrota vs Qwen3.6-35B-A3B em quase tudo — incluindo os próprios benchmarks de agente da NVIDIA</li>
+                <li>Sem verificação independente de larga escala; comunidade reporta resultados "incredibly variable"</li>
+                <li>Os outros vereditos do dossiê: <a href="/guia/melhores-modelos-locais-30b" style="color:var(--accent)">Melhores modelos locais de 30B</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="honestidade">O aviso de honestidade: os números são da NVIDIA e mostram derrota</h2>
+
+    <p>Este é o caso mais raro do dossiê: <strong>os números oficiais do laboratório não favorecem o modelo que o laboratório lançou</strong>. A tabela do model card do Nemotron-3.5-Lightning (BF16, NeMo Gym) mostra o Lightning perdendo para o Qwen3.6-35B-A3B em quase todas as métricas — e o Qwen3.8-27B nem aparece na tabela. A NVIDIA vende o modelo pela velocidade e pela eficiência (PinchBench, GPU-hours), não pela acurácia.</p>
+
+    <div class="callout callout-warn">
+        <strong>O que a comunidade diz (24/08/2026):</strong> a thread do r/LocalLLM comparando Qwen3.8-27B vs Nemotron-3.5-Lightning vs Ornith vs Muse-Glimmer na mesma máquina reporta resultados <strong>"incredibly variable"</strong> — com ressalvas sobre não confiar em comparação Q4 e sobre o benchmark depender muito de settings (MTP on/off, budgets de thinking). No r/LocalLLaMA há ceticismo aberto ("Nemotron models have been poor... will be wiped off the map as soon as Qwen3.8 27B comes out"), relatos de que o modelo é "super fast" (200–400 tok/s) mas com ressalva na qualidade do output, e a pergunta "por que todo mundo está lançando modelo 30B agora?" com resposta direta: "eles estão com medo do Qwen3.8".
+    </div>
+
+    <p>O contraponto também existe: o <strong>Awesome Agents</strong> validou de forma independente a velocidade (~670 tok/s, quase o dobro do Gemini 3.5 Flash-Lite), confirmou que o fine-tuning é barato (o CodeRabbit fez um post-training completo de code-review router por menos de US$ 100) e resumiu a posição do modelo: "não tenta super-raciocinar o Qwen3.6-35B-A3B; tenta terminar as mesmas 10.000 tarefas com menos GPU-time". A MindStudio reforça: "não é desenhado para ser um modelo de raciocínio de fronteira" e aponta fraquezas com prompt injection e cadeias longas de raciocínio.</p>
+
+    <p><strong>Enquadramento final:</strong> "O Lightning é um modelo de execução que a NVIDIA posiciona como execution layer de agentes — e os números oficiais do próprio NVIDIA mostram que ele não ganha em acurácia do Qwen3.6-35B-A3B (quanto mais do Qwen3.8-27B). Ele pode ganhar em velocidade por GPU-hour em volume. O que este artigo entrega é o cruzamento honesto: os números que cada um publicou, a ressalva de que os do Lightning são autodeclarados e mostram derrota na tabela oficial, e o veredito por caso de uso — sem prometer que um teste no SEU hardware vai mudar isso."</p>
+
+    <h2 id="faq">Perguntas frequentes</h2>
+
+    <h3>Qual o melhor modelo local para agentes em 2026?</h3>
+    <p>Depende do perfil: execução de agentes em volume (tool-calling, validação, formatação, subagentes) com contexto até 1M → <strong>Nemotron-3.5-Lightning-30B-A3B</strong> (MoE 30B/3B ativos, até 4× output — claim NVIDIA; fine-tuning barato). Código difícil, raciocínio, visão, português e ecossistema verificado → <strong>Qwen3.8-27B</strong> (LCB v6 90,3, SWE-bench Pro 61,7 — model card; AAII 52). A ressalva central: <strong>os benchmarks oficiais do próprio NVIDIA mostram o Lightning perdendo para o Qwen3.6-35B-A3B em quase todas as métricas</strong> (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38) — o modelo é vendido por velocidade, não por pico de inteligência. Fonte: model cards oficiais (NVIDIA, Qwen), blog NVIDIA, Awesome Agents e dossiê do portal (24/08/2026).</p>
+
+    <h3>O Nemotron-3.5-Lightning-30B-A3B é melhor que o Qwen3.8-27B?</h3>
+    <p>Em acurácia, os números oficiais da NVIDIA não sustentam: na tabela do próprio model card, o Lightning perde para o Qwen3.6-35B-A3B (o modelo anterior da família, que o Qwen3.8 supera) em quase tudo — MMLU Pro 81,94 vs 85,63; GPQA 75,44 vs 83,40; SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38. O Qwen3.8-27B nem aparece na tabela oficial da NVIDIA. A tese do Lightning é outra: velocidade de execução para agentes (até 4× output, claim NVIDIA; ~670 tok/s em teste independente) e contexto até 1M. Se a pergunta é "mais inteligente", a resposta honesta é não; se é "mais rápido para rodar agente em volume", é o nicho exato dele — com a ressalva de que a comunidade reporta resultados "incredibly variable" na mesma máquina.</p>
+
+    <h3>Qual dos dois roda em GPU de 24 GB?</h3>
+    <p>Os dois, com folgas diferentes: o Qwen3.8-27B cabe em Q4_K_M (17,11 GB) com folga para contexto; o Nemotron-3.5-Lightning-30B-A3B cabe com UD-Q4_K_XL (25,5 GB) em contexto curto ou Q4_K_S (24,47 GB) com mais folga. Em 16 GB, o Lightning não tem GGUF inteiro que caiba (menor é Q4_0 de 18,9 GB — offload obrigatório), enquanto o Qwen3.8 tem IQ4_XS de 15,71 GB (modo texto). Subindo: 32 GB → UD-Q5_K_M de 30,2 GB no Lightning; 48 GB+ → UD-Q6_K_XL de 35 GB ou Q8_0 de 33,59 GB.</p>
+
+    <h3>O Nemotron-3.5-Lightning-30B-A3B roda em GPU de 16 GB?</h3>
+    <p>Roda com sacrifício pesado: o menor GGUF inteiro (Q4_0) tem 18,9 GB, então em 16 GB a rota é offload parcial de camadas para RAM + contexto curto — é o que os vídeos de teste em 16 GB do YouTube mostram, não um rodar confortável. O MXFP4_MOE (23,2 GB) também exige offload. Na prática, para 16 GB o Qwen3.8-27B (IQ4_XS 15,71 GB) é o caminho mais viável. A NVIDIA não lista a série RTX 40 na lista oficial de hardware — espere testes da comunidade antes de assumir compatibilidade.</p>
+
+    <h3>O Nemotron-3.5-Lightning-30B-A3B fala português?</h3>
+    <p>Não é garantido: a lista oficial de idiomas do model card é inglês + espanhol, francês, alemão, italiano e japonês — <strong>português não está listado</strong>. Como o modelo pode generalizar para outros idiomas (pré-treinado em 20T+ tokens), é possível que funcione razoavelmente em pt-BR na prática, mas não há garantia oficial nem benchmark de qualidade em português. O Qwen3.8-27B, por sua vez, tem português nativo no treinamento — este portal documenta inclusive o dano de quantização em não-inglês no <a href="/guia/quantizacao-multilingue-portugues" style="color:var(--accent)">artigo de quantização e português</a>.</p>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;">
+
+    <h2 id="fontes">Fontes</h2>
+    <div class="footnote">
+        <ul style="margin-left:18px;">
+            <li>Hugging Face: <a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16" style="color:var(--accent)">nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16</a> (model card: 30B/3B ativos, 52 camadas, 6 experts/token, 262K base → 1M, OpenMDW-1.1, lançado 11/08/2026; tabela oficial BF16 vs Qwen3.6-35B-A3B vs Gemma 4 26B A4B vs Nemotron 3 Nano/Super vs GPT-OSS 20B; 141.338 downloads 24/08) · <a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4" style="color:var(--accent)">NVFP4</a> (629.598 downloads, 355 likes; recipes DGX Spark/H100/GB200; Ollama 0.32.9; llama.cpp; LM Studio; ~15 GB de pesos a 4 bits) · <a href="https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF" style="color:var(--accent)">ggml-org GGUF oficial</a> (BF16 63,18 / Q8_0 33,59 / Q4_0 18,90 GB + MTP drafts) · <a href="https://huggingface.co/unsloth/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF" style="color:var(--accent)">Unsloth GGUF</a> (UD-quants 19,76–38,6 GB; 114.304 downloads) · <a href="https://huggingface.co/bartowski/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF" style="color:var(--accent)">bartowski</a> (Q4_K_M 25,48 GB)</li>
+            <li>Blog: <a href="https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/" style="color:var(--accent)">blogs.nvidia.com — Nemotron 3.5 Lightning e NeMo Switchyard</a> (até 4× output; 10.000 tarefas PinchBench ~30% mais rápido que Qwen3.6-35B) · <a href="https://developer.nvidia.com/blog/nvidia-nemotron-3-5-lightning-delivers-fast-accurate-specialized-task-execution-for-long-running-agents/" style="color:var(--accent)">developer.nvidia.com</a> (anúncio técnico)</li>
+            <li>Guia local: <a href="https://unsloth.ai/docs/models/nemotron-3.5" style="color:var(--accent)">unsloth.ai/docs/models/nemotron-3.5</a> (day-zero; UD-Q4-K-XL como equilíbrio; 4-bit ~20 GB RAM, 8-bit ~33 GB; thinking temp 0,6/top_p 0,95, instruct temp 0,2) · <a href="https://ollama.com/library/nemotron-3.5-lightning" style="color:var(--accent)">Ollama library nemotron-3.5-lightning</a> (25 GB, 130,7K downloads, 1M contexto, tool-calling + thinking)</li>
+            <li>Verificação independente: <a href="https://awesomeagents.ai/reviews/review-nvidia-nemotron-3-5-lightning/" style="color:var(--accent)">Awesome Agents review</a> (~670 tok/s independente; fine-tune &lt; US$ 100) · <a href="https://www.mindstudio.ai/blog/nvidia-nemotron-3-5-lightning" style="color:var(--accent)">MindStudio</a> (execution layer; fraqueza em prompt injection e cadeias longas)</li>
+            <li>Comunidade: r/LocalLLM 1vvrd9l (Qwen3.8 vs Nemotron vs Ornith vs Muse Glimmer, "incredibly variable") · r/LocalLLaMA 1vlh9fg (ceticismo) · r/LocalLLaMA 1vq7ga0 (200–400 tok/s NVFP4+DSpark, ressalva de qualidade) · r/LocalLLaMA 1vlkxw8 ("por que todo mundo lança 30B agora?") · YouTube: TOu3oV_rT2E e 2xvW8eFy5n4 (testes em 16 GB)</li>
+            <li>Portal: cânone 17,11/15,71 GB do 3.8, medição Strix Halo, dossiê do portal</li>
+        </ul>
+    </div>
+
+    <div class="footnote">
+        <p><strong>Metodologia:</strong> downloads e sizes re-verificados ao vivo na HF API no dia do PR (24/08/2026 — números voláteis); benchmarks do Lightning = model card oficial NVIDIA (BF16, NeMo Gym/Evaluator), que mostram derrota vs Qwen3.6-35B-A3B na tabela do próprio NVIDIA; "até 4×" = claim da NVIDIA, não medição do portal; throughput do Lightning = teste independente (Awesome Agents) e relatos da comunidade rotulados como tais; comparação nunca linha a linha entre harnesses distintos.</p>
+    </div>
+
+    <!-- ===================== MONETIZAÇÃO ===================== -->
+<!-- ad slot: ativar quando tráfego >20k/mês (EthicalAds/Carbon) -->
+<div class="ad-slot" aria-hidden="true"></div>
+
+<section class="newsletter" aria-labelledby="nl-art">
+  <h2 id="nl-art">Receba o resumo semanal</h2>
+  <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+  <form class="newsletter-form" action="#" method="post" novalidate>
+    <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+    <button type="submit">Assinar</button>
+  </form>
+  <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+</section>
+
+    
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B? Veredito por caso de uso (ago/2026)",
+  "description": "O MoE agêntico da NVIDIA (30B totais / 3B ativos, até 1M de contexto) que a SERP EN já compara com o Qwen3.8-27B: os benchmarks oficiais do próprio NVIDIA (SWE-bench Verified 51,56, Terminal-Bench 2.1 24,58), a promessa de até 4× de velocidade, GGUF UD-Q4_K_XL 25,5 GB, 25 GB no Ollama e o veredito honesto por perfil — com fontes.",
+  "inLanguage": "pt-BR",
+  "datePublished": "2026-08-24",
+  "dateModified": "2026-08-24",
+  "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+  "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b",
+  "proficiencyLevel": "Beginner"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Qual o melhor modelo local para agentes em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende do perfil: execução de agentes em volume (tool-calling, validação, formatação, subagentes) com contexto até 1M → Nemotron-3.5-Lightning-30B-A3B (MoE 30B/3B ativos, até 4x output — claim NVIDIA; fine-tuning barato). Código difícil, raciocínio, visão, português e ecossistema verificado → Qwen3.8-27B (LCB v6 90,3, SWE-bench Pro 61,7 — model card; AAII 52). A ressalva central: os benchmarks oficiais do próprio NVIDIA mostram o Lightning perdendo para o Qwen3.6-35B-A3B em quase todas as métricas (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38) — o modelo é vendido por velocidade, não por pico de inteligência. Fonte: model cards oficiais (NVIDIA, Qwen), blog NVIDIA, Awesome Agents e dossiê do portal (24/08/2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Nemotron-3.5-Lightning-30B-A3B é melhor que o Qwen3.8-27B?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Em acurácia, os números oficiais da NVIDIA não sustentam: na tabela do próprio model card, o Lightning perde para o Qwen3.6-35B-A3B (o modelo anterior da família, que o Qwen3.8 supera) em quase tudo — MMLU Pro 81,94 vs 85,63; GPQA 75,44 vs 83,40; SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38. O Qwen3.8-27B nem aparece na tabela oficial da NVIDIA. A tese do Lightning é outra: velocidade de execução para agentes (até 4x output, claim NVIDIA; ~670 tok/s em teste independente) e contexto até 1M. Se a pergunta é mais inteligente, a resposta honesta é não; se é mais rápido para rodar agente em volume, é o nicho exato dele — com a ressalva de que a comunidade reporta resultados incredibly variable na mesma máquina. Fonte: model card NVIDIA, blog NVIDIA, Awesome Agents e dossiê do portal (24/08/2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual dos dois roda em GPU de 24 GB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Os dois, com folgas diferentes: o Qwen3.8-27B cabe em Q4_K_M (17,11 GB) com folga para contexto; o Nemotron-3.5-Lightning-30B-A3B cabe com UD-Q4_K_XL (25,5 GB) em contexto curto ou Q4_K_S (24,47 GB) com mais folga. Em 16 GB, o Lightning não tem GGUF inteiro que caiba (menor é Q4_0 de 18,9 GB — offload obrigatório), enquanto o Qwen3.8 tem IQ4_XS de 15,71 GB (modo texto). Subindo: 32 GB → UD-Q5_K_M de 30,2 GB no Lightning; 48 GB+ → UD-Q6_K_XL de 35 GB ou Q8_0 de 33,59 GB. Fonte: trees GGUF via HF API (24/08/2026) e cânone do portal (17,11 GB)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Nemotron-3.5-Lightning-30B-A3B roda em GPU de 16 GB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Roda com sacrifício pesado: o menor GGUF inteiro (Q4_0) tem 18,9 GB, então em 16 GB a rota é offload parcial de camadas para RAM + contexto curto — é o que os vídeos de teste em 16 GB do YouTube mostram, não um rodar confortável. O MXFP4_MOE (23,2 GB) também exige offload. Na prática, para 16 GB o Qwen3.8-27B (IQ4_XS 15,71 GB) é o caminho mais viável. A NVIDIA não lista a série RTX 40 na lista oficial de hardware — espere testes da comunidade antes de assumir compatibilidade. Fonte: tree GGUF oficial ggml-org via HF API (24/08/2026) e model card NVIDIA."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O Nemotron-3.5-Lightning-30B-A3B fala português?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não é garantido: a lista oficial de idiomas do model card é inglês + espanhol, francês, alemão, italiano e japonês — português não está listado. Como o modelo pode generalizar para outros idiomas (pré-treinado em 20T+ tokens), é possível que funcione razoavelmente em pt-BR na prática, mas não há garantia oficial nem benchmark de qualidade em português. O Qwen3.8-27B, por sua vez, tem português nativo no treinamento. Fonte: model card NVIDIA (24/08/2026) e dossiê do portal."
+      }
+    }
+  ]
+}
+</script>
+  <script defer src="/assets/js/newsletter.js"></script>
+
+                  <h2 id="prevnext">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b"><div class="dir">← Anterior</div><div class="t">Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?</div></a>
+          <a class="pn-card next" href="/guia/melhores-modelos-locais-30b"><div class="dir">Próximo →</div><div class="t">Melhores modelos locais de 30B (ago/2026)</div></a>
+        </div>
+
+                  <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>ORNI</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?</h3></div>
+</a>
+          <a class="post-card" href="/guia/melhores-modelos-locais-30b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>30BM</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Melhores modelos locais de 30B (ago/2026): um vencedor por caso de uso</h3></div>
+</a>
+          <a class="post-card" href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">
+  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF;font-size:1rem"><span>CODE</span></div>
+  <div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Qwen3.8-27B ou Qwen3-Coder 30B-A3B: qual escolher para codar local?</h3></div>
+</a>
+          </div>
+        </section>
+
+                  <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b" data-copy-link onclick="if(navigator.clipboard){event.preventDefault();var b=this;navigator.clipboard.writeText(this.href).then(function(){b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar link';},2000);});}">Copiar link</a>
+        </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#guias">Guias</a></li>
+        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/#hardware">Hardware</a></li>
+        <li><a href="/guia/#releases">Releases</a></li>
+        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade.html">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade.html">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
+</body>
+</html>
