@@ -288,6 +288,96 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
   </section>
 
+<!-- ============================================================
+       BLOCO: Especificações e benchmarks essenciais (t_8cd411be)
+       Re-injeção de densidade de conteúdo na home pós-remodel.
+       Dados: model card oficial Qwen3.8-27B (via /guia e llms.txt).
+       Links internos apontam para as seções do /guia (fonte completa).
+       Não editar à mão sem coordenar com o seo/seo-tech.
+       ============================================================ -->
+  <section id="specs" aria-labelledby="specs-title" style="margin-bottom:var(--space-7)">
+    <h2 class="section-title" id="specs-title">Qwen3.8-27B em resumo: especificações e benchmarks</h2>
+    <p>O <strong>Qwen3.8-27B</strong> é o membro local da família Qwen3.8: um modelo denso de <strong>27 bilhões de parâmetros</strong> com atenção híbrida (Gated DeltaNet + Gated Attention), multimodalidade nativa e <strong>262.144 tokens de contexto nativo</strong> (extensível a 1M com RoPE scaling). Foi liberado pela Alibaba/Qwen em <strong>14 de agosto de 2026</strong> sob licença <strong>Apache 2.0</strong> — pesos abertos e uso comercial permitido.</p>
+    <p>Nos benchmarks do <a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">model card oficial</a>, o 27B encosta em modelos de fronteira em <strong>programação agêntica e uso de computador</strong>, superando as referências do próprio card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) na maioria das tarefas de agente. E cabe em uma <strong>GPU de consumidor com quantização de 4 bits</strong>. A análise completa de cada número está no <a href="/guia/">guia completo</a>.</p>
+
+    <h3 style="margin-top:var(--space-6)">Top 5 números que importam</h3>
+    <div class="stat-row">
+      <div class="stat-card"><div class="value">27B</div><div class="label">Parâmetros densos · 64 camadas</div></div>
+      <div class="stat-card"><div class="value">262K</div><div class="label">Contexto nativo → 1M c/ RoPE</div></div>
+      <div class="stat-card"><div class="value">~17 GB</div><div class="label">VRAM em GGUF de 4 bits</div></div>
+      <div class="stat-card"><div class="value">90,3</div><div class="label">LiveCodeBench v6</div></div>
+      <div class="stat-card"><div class="value">84,3</div><div class="label">OSWorld-Verified</div></div>
+    </div>
+
+    <h3>Especificações essenciais</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Parâmetro</th><th>Valor</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Arquitetura</td><td class="num">Denso · atenção híbrida 16 × (3 × DeltaNet → 1 × Gated Attn)</td></tr>
+          <tr><td>Parâmetros / camadas</td><td class="num">27B densos · 64 camadas</td></tr>
+          <tr><td>Contexto nativo</td><td class="num">262.144 tokens (extensível a 1.000.000 com RoPE scaling)</td></tr>
+          <tr><td>Modalidades</td><td class="num">Texto, imagem, vídeo, documentos (torre de visão nativa)</td></tr>
+          <tr><td>Modos</td><td class="num">Thinking (padrão) + Instruct · reasoning_effort xhigh/medium/low</td></tr>
+          <tr><td>Licença</td><td class="num">Apache 2.0</td></tr>
+          <tr><td>Lançamento</td><td class="num">14 de agosto de 2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Todos os valores vêm do <a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">model card oficial</a>. A tabela completa com heads de atenção, sampling e detalhes da família Qwen3.8 está em <a href="/guia/#especificacoes">Especificações Técnicas</a> no guia.</p>
+
+    <h3>Benchmarks em destaque (vs Qwen3.6-27B)</h3>
+    <p>Os 26 resultados do model card. Os maiores saltos não estão em conhecimento bruto — estão em <strong>tarefas agênticas de horizonte longo</strong>, com avanços de até <strong>+29,7 pontos</strong>. Escala 0–100; referências do próprio card (Qwen3.7-Plus, Opus 4.6 Max, Muse Glimmer-30B).</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Benchmark</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>LiveCodeBench v6 (código)</td><td class="num">90,3</td><td class="num">83,9</td><td class="num">+6,4</td></tr>
+          <tr><td>SWE-bench Pro (código)</td><td class="num">61,7</td><td class="num">53,5</td><td class="num">+8,2</td></tr>
+          <tr><td>DeepSWE 1.1 (código)</td><td class="num">42,2</td><td class="num">13,3</td><td class="num">+28,9</td></tr>
+          <tr><td>QwenSWEBench (código)</td><td class="num">79,0</td><td class="num">49,3</td><td class="num">+29,7</td></tr>
+          <tr><td>OSWorld-Verified (agente)</td><td class="num">84,3</td><td class="num">63,9</td><td class="num">+20,4</td></tr>
+          <tr><td>WebArena-Verified (agente)</td><td class="num">64,8</td><td class="num">48,8</td><td class="num">+16,0</td></tr>
+          <tr><td>GPQA Diamond (conhecimento)</td><td class="num">89,2</td><td class="num">87,8</td><td class="num">+1,4</td></tr>
+          <tr><td>MathVision c/ CI (multimodal)</td><td class="num">94,6</td><td class="num">85,1</td><td class="num">+9,5</td></tr>
+          <tr><td>OmniDocBench 1.5 (multimodal)</td><td class="num">91,1</td><td class="num">89,4</td><td class="num">+1,7</td></tr>
+          <tr><td>CharXiv c/ CI (multimodal)</td><td class="num">90,2</td><td class="num">78,4</td><td class="num">+11,8</td></tr>
+          <tr><td>BabyVision c/ CI (multimodal)</td><td class="num">85,6</td><td class="num">28,9</td><td class="num">+56,7</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>No Artificial Analysis Intelligence Index, o 27B marca <strong>52 pontos</strong> — mesmo score do GPT-5.6 Luna e <strong>#1 entre modelos open weights de até 40B</strong>. A tabela completa com os 26 benchmarks, gráficos e as referências do model card está em <a href="/guia/#benchmarks-resumo">Benchmarks em Resumo</a> e no <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo Qwen3.8 vs Qwen3.6</a>.</p>
+
+    <h3>Quanta VRAM é preciso?</h3>
+    <p>Modelo denso quantiza bem: em 4 bits cabe em uma GPU de consumidor única. Valores de pesos, antes do cache KV — que a 262K de contexto pesa tanto quanto o modelo.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Precisão</th><th>VRAM (pesos)</th><th>Hardware típico</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>GGUF 4 bits</td><td class="num">~14–17 GB</td><td class="num">RTX 4090/5090, Strix Halo, Mac 32 GB+</td></tr>
+          <tr><td>FP8</td><td class="num">~27 GB</td><td class="num">RTX 5090 32 GB, 2× RTX 3090, Strix Halo</td></tr>
+          <tr><td>BF16</td><td class="num">~54 GB</td><td class="num">A100/H100 80 GB, 2× RTX 6000 Pro</td></tr>
+          <tr><td>NVFP4 (Blackwell)</td><td class="num">24,6 GiB</td><td class="num">Blackwell + vLLM ≥ 0.27.1 · 1M de contexto</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>O caminho mais curto para rodar é <code>ollama run qwen3.8:27b</code>. O passo a passo completo (Ollama, llama.cpp e vLLM) está em <a href="/guia/#como-rodar-resumo">Como Rodar</a>, com a análise de hardware em <a href="/guia/#memoria">Memória por Precisão</a> e <a href="/guia/hardware-local">guia de hardware</a>.</p>
+
+    <h3>Throughput medido em máquina real</h3>
+    <p>Número de tokens por segundo que o portal mediu (ASUS ROG Flow Z13, Strix Halo, Ollama sobre Vulkan): o 27B denso entrega <strong>10,6 tok/s em Q5_K_M</strong> — contra 56,6 tok/s de um MoE de ativação esparsa no mesmo hardware. Denso custa caro em velocidade: é o preço da qualidade por parâmetro, e o motivo de o 27B brilhar como especialista chamado sob demanda. Em Q4_K_M no mesmo setup, o 3.8 faz <strong>17,3 tok/s</strong> contra 12,4 tok/s do Qwen3.6-27B. Já em GPU dedicada o quadro muda: <strong>206,1 tok/s</strong> de decode numa RTX 5090 com SGLang + NVFP4, e ~41,5 tok/s numa RTX 3090 com llama.cpp. Todos os números, com fonte e metodologia, estão no guia <a href="/guia/tokens-por-segundo-30b-hardware-real">Tokens por segundo no hardware real</a>.</p>
+
+    <h3>Onde o 27B se encaixa no mercado ≤30B</h3>
+    <p>No veredito do portal para <a href="/guia/melhores-modelos-locais-30b">melhores modelos locais de 30B</a> (ago/2026), o Qwen3.8-27B é o pick para <strong>código e raciocínio profundo</strong> (LiveCodeBench 90,3; SWE-bench Pro 61,7; AAII 52) e para <strong>contexto longo + visão nativa</strong> — enquanto o Muse Glimmer 30B lidera em agentes de ferramentas/MCP e o Qwen3-Coder-30B-A3B vence em throughput bruto de código. Contra os concorrentes diretos, os comparativos detalhados estão em <a href="/guia/qwen3.8-vs-qwen3-coder-30b-a3b">Qwen3.8 vs Qwen3-Coder</a> e <a href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">Qwen3.8 vs Ornith-1.5-35B-A3B</a>.</p>
+
+    <p>Esse é o resumo essencial — o <a href="/guia/">guia completo</a> traz os 26 benchmarks, o <a href="/guia/qwen3.8-vs-qwen3.6-27b">comparativo geracional</a>, guias de <a href="/guia/como-rodar">instalação</a> e o <a href="/guia/faq">FAQ</a> com perguntas frequentes.</p>
+  </section>
+
   <section aria-labelledby="feat-title">
     <h2 class="section-title" id="feat-title">Em destaque</h2>
 <a class="featured-card" href="/guia/qwen3-8-27b-uncensored-abliterated">
