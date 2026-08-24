@@ -18,7 +18,7 @@
     <meta property="og:title" content="Why is Qwen3.8-27B slow? The real fixes, with measured numbers">
     <meta property="og:description" content="Dense 27B is bandwidth-bound — but most 'slow' setups are fixable: xhigh thinking default, MTP speculative decoding off by default, wrong quant for your GPU, stale Vulkan shaders. Every fix with its tok/s.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/en/why-is-qwen3-8-27b-slow">
-    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/why-is-qwen3-8-27b-slow.webp">
     <meta property="article:published_time" content="2026-08-19T08:00:00-03:00">
     <meta property="article:section" content="Performance">
     <meta property="article:tag" content="Throughput">
@@ -174,6 +174,19 @@
         footer { border-top: 1px solid var(--border); margin-top: 40px; padding-top: 20px; font-size: 0.88rem; color: var(--text-muted); }
         footer a { color: var(--accent); }
     </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "contentUrl": "https://qwen38-27b-landing.vercel.app/images/why-is-qwen3-8-27b-slow.webp",
+  "url": "https://qwen38-27b-landing.vercel.app/images/why-is-qwen3-8-27b-slow.webp",
+  "width": 1200,
+  "height": 675,
+  "caption": "Why is Qwen3.8-27B slow? The real fixes, with measured numbers",
+  "representativeOfPage": true
+}
+</script>
 </head>
 <body>
     <nav>
@@ -195,7 +208,12 @@
             <span class="badge"><strong>+134%</strong> decode on a 3090 — MTP on (31.6 → 74 tok/s)</span>
             <span class="badge"><strong>59.2</strong> tok/s — single R9700, fixed config</span>
         </div>
-    </header>
+    
+<picture class="article-thumb">
+  <source type="image/avif" srcset="/images/why-is-qwen3-8-27b-slow.avif" width="1200" height="675">
+  <img src="/images/why-is-qwen3-8-27b-slow.webp" alt="Why is Qwen3.8-27B slow? The real fixes, with measured numbers" title="Why is Qwen3.8-27B slow? The real fixes, with measured numbers" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+</picture>
+</header>
 
     <div class="toc">
         <h3>Contents</h3>

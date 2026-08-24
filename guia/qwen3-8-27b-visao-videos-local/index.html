@@ -16,7 +16,7 @@
     <meta property="og:title" content="Qwen3.8-27B enxerga: imagem, vídeo e OCR local (llama.cpp e Ollama)">
     <meta property="og:description" content="3,5 milhões de downloads do GGUF e quase ninguém usa a visão: ative o mmproj (0,93 GB) no llama.cpp ou mande imagens no Ollama. OCR, bounding boxes e vídeo de até 1 hora.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local">
-    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/qwen3-8-27b-visao-videos-local.webp">
     <meta property="article:published_time" content="2026-08-18T00:00:00-03:00">
     <meta property="article:section" content="Inteligência Artificial">
     <meta property="article:tag" content="multimodal">
@@ -141,8 +141,21 @@
   <script src="/assets/js/blog.js" defer></script>
   <meta property="article:modified_time" content="2026-08-18">
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama", "description": "Guia de visão do Qwen3.8-27B local: mmproj GGUF, --mmproj no llama.cpp, imagens no Ollama, OCR de documentos, bounding boxes e vídeo de hora — com benchmarks multimodais.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
-  </script></head>
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama", "description": "Guia de visão do Qwen3.8-27B local: mmproj GGUF, --mmproj no llama.cpp, imagens no Ollama, OCR de documentos, bounding boxes e vídeo de hora — com benchmarks multimodais.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-27b-visao-videos-local", "image": "https://qwen38-27b-landing.vercel.app/images/qwen3-8-27b-visao-videos-local.webp", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "contentUrl": "https://qwen38-27b-landing.vercel.app/images/qwen3-8-27b-visao-videos-local.webp",
+  "url": "https://qwen38-27b-landing.vercel.app/images/qwen3-8-27b-visao-videos-local.webp",
+  "width": 1200,
+  "height": 675,
+  "caption": "Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama",
+  "representativeOfPage": true
+}
+</script>
+</head>
 <body>
 <!-- @@HEADER@@ -->
 <!-- ============================================================
@@ -220,7 +233,10 @@
         </nav>
 
         <div class="article-body">
-          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama" width="1200" height="630" loading="eager">
+          <picture class="article-thumb">
+  <source type="image/avif" srcset="/images/qwen3-8-27b-visao-videos-local.avif" width="1200" height="675">
+  <img src="/images/qwen3-8-27b-visao-videos-local.webp" alt="Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama" title="Qwen3.8-27B enxerga: guia de imagem, vídeo e OCR no llama.cpp e Ollama" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+</picture>
 
 <h2 id="resposta-rapida">A resposta rápida (featured snippet)</h2>
     <p><strong>Para o Qwen3.8-27B enxergar imagens localmente:</strong> no llama.cpp, baixe o mmproj junto com o GGUF e suba o servidor com <code>-hf</code> (detecção automática) ou <code>--mmproj arquivo.gguf</code> (manual). No Ollama, a tag <code>qwen3.8:27b</code> já aceita imagens: passe o caminho do arquivo no terminal ou um array <code>images</code> em base64 na API. A visão custa +0,93 GB (BF16) ou +0,63 GB (Q8_0) de VRAM.</p>

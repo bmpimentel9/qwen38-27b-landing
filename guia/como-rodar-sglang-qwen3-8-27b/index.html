@@ -16,7 +16,7 @@
     <meta property="og:title" content="Como Rodar o Qwen3.8-27B no SGLang (FP8 oficial): guia passo a passo">
     <meta property="og:description" content="Servidor OpenAI-compatible com o checkpoint FP8 oficial: 30,9 GB, 262K de contexto nativo e 206 tok/s na RTX 5090. Instalação, flags de contexto, MTP e benchmark de validação.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b">
-    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/como-rodar-sglang.webp">
     <meta property="article:published_time" content="2026-08-18T08:00:00-03:00">
     <meta property="article:section" content="Inteligência Artificial">
     <meta property="article:tag" content="SGLang">
@@ -127,8 +127,21 @@
   <script src="/assets/js/blog.js" defer></script>
   <meta property="article:modified_time" content="2026-08-18">
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)", "description": "Tutorial completo: instale o SGLang, baixe o FP8 oficial do Qwen3.8-27B, suba o servidor com 262K de contexto e valide com benchmark. 206 tok/s na RTX 5090.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
-  </script></head>
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)", "description": "Tutorial completo: instale o SGLang, baixe o FP8 oficial do Qwen3.8-27B, suba o servidor com 262K de contexto e valide com benchmark. 206 tok/s na RTX 5090.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/como-rodar-sglang-qwen3-8-27b", "image": "https://qwen38-27b-landing.vercel.app/images/como-rodar-sglang.webp", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "contentUrl": "https://qwen38-27b-landing.vercel.app/images/como-rodar-sglang.webp",
+  "url": "https://qwen38-27b-landing.vercel.app/images/como-rodar-sglang.webp",
+  "width": 1200,
+  "height": 675,
+  "caption": "Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)",
+  "representativeOfPage": true
+}
+</script>
+</head>
 <body>
 <!-- @@HEADER@@ -->
 <!-- ============================================================
@@ -206,7 +219,10 @@
         </nav>
 
         <div class="article-body">
-          <img class="article-thumb" src="/og-image.png" alt="Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)" width="1200" height="630" loading="eager">
+          <picture class="article-thumb">
+  <source type="image/avif" srcset="/images/como-rodar-sglang.avif" width="1200" height="675">
+  <img src="/images/como-rodar-sglang.webp" alt="Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)" title="Como rodar o Qwen3.8-27B no SGLang (FP8 oficial)" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+</picture>
 
 <h2 id="por-que">Por que SGLang + FP8 para o Qwen3.8-27B</h2>
     <p>O <a href="https://huggingface.co/Qwen/Qwen3.8-27B-FP8">checkpoint FP8 oficial</a> é a resposta da Qwen para quem quer servir o modelo em produção sem pagar o preço do BF16: quantização fine-grained com blocos de 128, <strong>com métricas "quase idênticas às do modelo original"</strong> — a frase é do próprio model card. Ele pesa <strong>30,89 GB</strong> (soma dos arquivos safetensors, medida via HF API), contra ~54 GB do BF16.</p>

@@ -22,10 +22,10 @@
 <meta property="og:title" content="Qwen3.8-27B — pesos abertos, desempenho de fronteira, hardware local">
 <meta property="og:description" content="27B denso, Apache 2.0, 262K de contexto. Os 26 benchmarks oficiais, hardware necessário e throughput medido em máquina real.">
 <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/">
-<meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
-<meta property="og:image:alt" content="Qwen3.8-27B: 27B denso de pesos abertos com 262K de contexto e multimodalidade nativa — benchmarks, hardware e reações da comunidade">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/hero-home.webp">
+<meta property="og:image:alt" content="Qwen3.8-27B: modelo local de 27B, Dark AI Lab — hero do portal">
+<meta property="og:image:width" content="1920">
+<meta property="og:image:height" content="1080">
 <meta property="article:published_time" content="2026-08-14T00:00:00-03:00">
 <meta property="article:modified_time" content="2026-08-15T00:00:00-03:00">
 <meta property="article:author" content="Bruno Pimentel">
@@ -43,8 +43,8 @@
 <meta name="twitter:creator" content="@bmpimentel9">
 <meta name="twitter:title" content="Qwen3.8-27B — pesos abertos, desempenho de fronteira, hardware local">
 <meta name="twitter:description" content="27B denso, Apache 2.0, 262K de contexto. Os 26 benchmarks oficiais, hardware necessário e throughput medido em máquina real.">
-<meta name="twitter:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
-<meta name="twitter:image:alt" content="Qwen3.8-27B: 27B denso, Apache 2.0, 262K de contexto — portal de modelos locais de 30B">
+<meta name="twitter:image" content="https://qwen38-27b-landing.vercel.app/images/hero-home.webp">
+<meta name="twitter:image:alt" content="Qwen3.8-27B: modelo local de 27B, Dark AI Lab — hero do portal">
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0a'/><text x='50' y='72' font-size='58' font-family='monospace' font-weight='700' fill='%239085e9' text-anchor='middle'>Q</text></svg>">
@@ -85,6 +85,16 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "ImageObject",
+      "@id": "https://qwen38-27b-landing.vercel.app/#hero-image",
+      "contentUrl": "https://qwen38-27b-landing.vercel.app/images/hero-home.webp",
+      "url": "https://qwen38-27b-landing.vercel.app/images/hero-home.webp",
+      "width": 1920,
+      "height": 1080,
+      "caption": "Qwen3.8-27B — modelo local de 27B em laboratório escuro com acento violeta e ciano",
+      "representativeOfPage": true
+    },
     {
       "@type": "WebSite",
       "@id": "https://qwen38-27b-landing.vercel.app/#website",
@@ -286,7 +296,12 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
       <a href="/modelos" style="font-weight:700">Especificações →</a>
       <a href="/benchmarks" style="font-weight:700">Benchmarks →</a>
     </div>
-  </section>
+  
+<picture class="hero-image" style="width:100%;aspect-ratio:1920/1080;height:auto;display:block;border-radius:var(--radius-lg);overflow:hidden;margin-top:var(--space-6)">
+  <source type="image/avif" srcset="/images/hero-home.avif" width="1920" height="1080">
+  <img src="/images/hero-home.webp" alt="Qwen3.8-27B: modelo local de 27B em laboratório escuro com acento violeta e ciano" title="Qwen3.8-27B — Dark AI Lab" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async">
+</picture>
+</section>
 
   <section aria-labelledby="feat-title">
     <h2 class="section-title" id="feat-title">Em destaque</h2>
