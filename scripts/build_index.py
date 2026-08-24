@@ -259,8 +259,8 @@ def main() -> int:
         items = [a for a in articles if a["category"] == cat]
         color = CAT_COLOR[cat]
         anchor = {
-            "Guias": "guias", "Benchmarks": "benchmarks", "Hardware": "hardware",
-            "Releases": "releases", "Comunidade": "comunidade",
+            "Guias": "topicos", "Benchmarks": "benchmarks-resumo", "Hardware": "memoria",
+            "Releases": "topicos", "Comunidade": "topicos",
         }[cat]
         links = "".join(f'<li><a href="{a["url"]}">{a["title"]}</a></li>' for a in items[:3])
         parts.append(

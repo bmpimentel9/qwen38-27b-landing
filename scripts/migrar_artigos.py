@@ -44,8 +44,8 @@ FOOTER = (ROOT / "templates" / "footer.html").read_text(encoding="utf-8")
 INDEX = json.loads((ROOT / "assets" / "js" / "blog-index.json").read_text(encoding="utf-8"))
 
 CAT_ANCHOR = {
-    "Guias": "guias", "Benchmarks": "benchmarks", "Hardware": "hardware",
-    "Releases": "releases", "Comunidade": "comunidade",
+    "Guias": "topicos", "Benchmarks": "benchmarks-resumo", "Hardware": "memoria",
+    "Releases": "topicos", "Comunidade": "topicos",
 }
 CAT_BADGE = {
     "Guias": "guides", "Benchmarks": "bench", "Hardware": "hw",
@@ -101,10 +101,12 @@ def build_toc(body: str) -> str:
         return ""
     lis = "\n            ".join(items)
     return (
-        '<nav class="toc" aria-label="Nesta página">\n'
-        "          <h4>Nesta página</h4>\n"
+        '<details class="toc-details">\n'
+        '          <summary>Nesta página</summary>\n'
+        '          <nav class="toc" aria-label="Nesta página">\n'
         f"          <ul>\n            {lis}\n          </ul>\n"
-        "        </nav>"
+        "          </nav>\n"
+        "        </details>"
     )
 
 

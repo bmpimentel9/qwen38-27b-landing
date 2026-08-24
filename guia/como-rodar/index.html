@@ -8,6 +8,8 @@
     <meta name="description" content="Guia passo a passo para rodar o Qwen3.8-27B localmente via Ollama, llama.cpp, vLLM e HuggingFace. Comandos, configurações, dicas de performance e troubleshooting.">
     <meta name="keywords" content="como rodar qwen3.8 27b local, ollama qwen3.8, llama.cpp qwen3.8, vllm qwen3.8, huggingface qwen3.8, instalar qwen3.8 localmente">
     <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/como-rodar">
+    <link rel="alternate" hreflang="pt-BR" href="https://qwen38-27b-landing.vercel.app/guia/como-rodar">
+    <link rel="alternate" hreflang="en" href="https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:title" content="Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace">
@@ -47,7 +49,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace", "description": "Guia passo a passo para rodar o Qwen3.8-27B localmente via Ollama, llama.cpp, vLLM e HuggingFace. Comandos, configurações, dicas de performance e troubleshooting.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/como-rodar", "image": "https://qwen38-27b-landing.vercel.app/images/como-rodar.webp", "inLanguage": "pt-BR", "datePublished": "2026-08-14", "dateModified": "2026-08-14"}
   </script>
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Guias", "item": "https://qwen38-27b-landing.vercel.app/guia/#guias"}, {"@type": "ListItem", "position": 3, "name": "Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace", "item": "https://qwen38-27b-landing.vercel.app/guia/como-rodar"}]}
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Guias", "item": "https://qwen38-27b-landing.vercel.app/guia/#topicos"}, {"@type": "ListItem", "position": 3, "name": "Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace", "item": "https://qwen38-27b-landing.vercel.app/guia/como-rodar"}]}
   </script>
 <script type="application/ld+json">
 {
@@ -74,11 +76,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <div class="header-inner">
     <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
     <nav class="nav-links" aria-label="Navegação principal">
-      <a href="/guia/#guias">Guias</a>
-      <a href="/guia/#benchmarks">Benchmarks</a>
-      <a href="/guia/#hardware">Hardware</a>
-      <a href="/guia/#releases">Releases</a>
-      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/guia/#topicos">Guias</a>
+      <a href="/guia/#benchmarks-resumo">Benchmarks</a>
+      <a href="/guia/#memoria">Hardware</a>
+      <a href="/guia/#topicos">Releases</a>
+      <a href="/guia/#topicos">Comunidade</a>
       <a href="/modelos">Modelos</a>
       <a href="/guia/faq">FAQ</a>
     </nav>
@@ -102,12 +104,13 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
   <main id="topo" class="container">
     <nav class="breadcrumb" aria-label="breadcrumb">
-      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#guias">Guias</a><span class="sep">›</span><span aria-current="page">Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</span>
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#topicos">Guias</a><span class="sep">›</span><span aria-current="page">Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</span>
     </nav>
 
     <article>
       <header class="article-head">
         <h1>Como Rodar o Qwen3.8-27B Localmente: Ollama, llama.cpp, vLLM, HuggingFace</h1>
+        <p class="lang-link" style="margin:8px 0 0 0;font-size:0.85rem"><a href="/guia/en/how-to-run-qwen3-8-27b" hreflang="en" lang="en" style="color:var(--accent);text-decoration:none">View in English →</a></p>
         <div class="article-meta">
           <span class="badge-cat guides">Guias</span>
           <span class="sep">·</span><span class="author">Bruno Pimentel</span>
@@ -118,8 +121,9 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
       </header>
 
       <div class="article-layout">
-        <nav class="toc" aria-label="Nesta página">
-          <h4>Nesta página</h4>
+        <details class="toc-details">
+          <summary>Nesta página</summary>
+          <nav class="toc" aria-label="Nesta página">
           <ul>
             <li><a href="#pre-requisitos">Pré-requisitos</a></li>
             <li><a href="#ollama">Método 1: Ollama (recomendado)</a></li>
@@ -131,7 +135,8 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><a href="#troubleshooting">Troubleshooting</a></li>
             <li><a href="#nl-art">Receba o resumo semanal</a></li>
           </ul>
-        </nav>
+          </nav>
+        </details>
 
         <div class="article-body">
           <picture class="article-thumb">
@@ -423,11 +428,11 @@ mlx_lm.generate \
     <div>
       <h4>Navegação</h4>
       <ul>
-        <li><a href="/guia/#guias">Guias</a></li>
-        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
-        <li><a href="/guia/#hardware">Hardware</a></li>
-        <li><a href="/guia/#releases">Releases</a></li>
-        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia/#topicos">Guias</a></li>
+        <li><a href="/guia/#benchmarks-resumo">Benchmarks</a></li>
+        <li><a href="/guia/#memoria">Hardware</a></li>
+        <li><a href="/guia/#topicos">Releases</a></li>
+        <li><a href="/guia/#topicos">Comunidade</a></li>
         <li><a href="/guia-rapido">Guia Rápido</a></li>
         <li><a href="/guia/faq">FAQ</a></li>
       </ul>

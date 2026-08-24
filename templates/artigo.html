@@ -73,14 +73,18 @@
       </header>
 
       <div class="article-layout">
-        <!-- TOC sticky: ≥1024px lateral; <1024px oculto pelo blog.css -->
-        <nav class="toc" aria-label="Nesta página">
-          <h4>Nesta página</h4>
+        <!-- TOC: <details> nativo. ≥1025px o blog.js força open (sticky lateral
+             sempre visível); <1024px vira toggle colapsável "Nesta página"
+             (zero-JS, acessível) — PRD §5.3. -->
+        <details class="toc-details">
+          <summary>Nesta página</summary>
+          <nav class="toc" aria-label="Nesta página">
           <ul>
             <li><a href="#[H2-ID-1]">[H2 TÍTULO 1]</a></li>
             <li><a href="#[H2-ID-2]">[H2 TÍTULO 2]</a></li>
           </ul>
-        </nav>
+          </nav>
+        </details>
 
         <div class="article-body">
           <!-- Thumbnail: WebP 1200×675 padrão / AVIF para browsers modernos (Dark AI Lab). Alt descritivo obrigatório. -->

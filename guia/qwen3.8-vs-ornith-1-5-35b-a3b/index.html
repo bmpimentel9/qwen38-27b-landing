@@ -48,7 +48,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?", "description": "O novo MoE local (35B totais / ~3B ativos, MIT) que a SERP EN já compara com o Qwen3.8-27B: benchmarks autodeclarados (Terminal-Bench 2.1 68,5, SWE-bench Verified 79), GGUF Q4_K_M 21,71 GB, 303 tok/s numa 5090 (relato) e o veredito honesto por perfil — com fontes.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-ornith-1-5-35b-a3b", "image": "https://qwen38-27b-landing.vercel.app/images/qwen3.8-vs-ornith-1-5-35b-a3b.webp", "inLanguage": "pt-BR", "datePublished": "2026-08-14", "dateModified": "2026-08-14"}
   </script>
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Benchmarks", "item": "https://qwen38-27b-landing.vercel.app/guia/#benchmarks"}, {"@type": "ListItem", "position": 3, "name": "Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-ornith-1-5-35b-a3b"}]}
+  {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Benchmarks", "item": "https://qwen38-27b-landing.vercel.app/guia/#benchmarks-resumo"}, {"@type": "ListItem", "position": 3, "name": "Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3.8-vs-ornith-1-5-35b-a3b"}]}
   </script>
 <script type="application/ld+json">
 {
@@ -75,11 +75,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <div class="header-inner">
     <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
     <nav class="nav-links" aria-label="Navegação principal">
-      <a href="/guia/#guias">Guias</a>
-      <a href="/guia/#benchmarks">Benchmarks</a>
-      <a href="/guia/#hardware">Hardware</a>
-      <a href="/guia/#releases">Releases</a>
-      <a href="/guia/#comunidade">Comunidade</a>
+      <a href="/guia/#topicos">Guias</a>
+      <a href="/guia/#benchmarks-resumo">Benchmarks</a>
+      <a href="/guia/#memoria">Hardware</a>
+      <a href="/guia/#topicos">Releases</a>
+      <a href="/guia/#topicos">Comunidade</a>
       <a href="/modelos">Modelos</a>
       <a href="/guia/faq">FAQ</a>
     </nav>
@@ -103,7 +103,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 
   <main id="topo" class="container">
     <nav class="breadcrumb" aria-label="breadcrumb">
-      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#benchmarks">Benchmarks</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?</span>
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#benchmarks-resumo">Benchmarks</a><span class="sep">›</span><span aria-current="page">Qwen3.8-27B ou Ornith-1.5-35B-A3B: qual escolher para código e agentes locais?</span>
     </nav>
 
     <article>
@@ -119,8 +119,9 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
       </header>
 
       <div class="article-layout">
-        <nav class="toc" aria-label="Nesta página">
-          <h4>Nesta página</h4>
+        <details class="toc-details">
+          <summary>Nesta página</summary>
+          <nav class="toc" aria-label="Nesta página">
           <ul>
             <li><a href="#o-confronto">O confronto: o trending do HF contra o 27B denso</a></li>
             <li><a href="#tabela">A tabela do par</a></li>
@@ -133,7 +134,8 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
             <li><a href="#fontes">Fontes</a></li>
             <li><a href="#nl-art">Receba o resumo semanal</a></li>
           </ul>
-        </nav>
+          </nav>
+        </details>
 
         <div class="article-body">
           <picture class="article-thumb">
@@ -477,11 +479,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div>
       <h4>Navegação</h4>
       <ul>
-        <li><a href="/guia/#guias">Guias</a></li>
-        <li><a href="/guia/#benchmarks">Benchmarks</a></li>
-        <li><a href="/guia/#hardware">Hardware</a></li>
-        <li><a href="/guia/#releases">Releases</a></li>
-        <li><a href="/guia/#comunidade">Comunidade</a></li>
+        <li><a href="/guia/#topicos">Guias</a></li>
+        <li><a href="/guia/#benchmarks-resumo">Benchmarks</a></li>
+        <li><a href="/guia/#memoria">Hardware</a></li>
+        <li><a href="/guia/#topicos">Releases</a></li>
+        <li><a href="/guia/#topicos">Comunidade</a></li>
         <li><a href="/guia-rapido">Guia Rápido</a></li>
         <li><a href="/guia/faq">FAQ</a></li>
       </ul>

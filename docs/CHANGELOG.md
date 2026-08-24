@@ -8,6 +8,31 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-24] — Correção QA: tamanho NVFP4 e downloads do Qwen no artigo-veredicto vs Nemotron (t_06352eae)
+
+### Changed
+- **Artigo** `guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b/index.html`: tamanho real do checkpoint NVFP4 corrigido de "~15 GB" (teórico 30B×4bit/8) para **21,56 GB** (total_size 21.559.589.596 bytes, 52 shards safetensors, HF API 24/08) no corpo e na footnote de fontes; refresh do "dl/mês" do Qwen3.8-27B de 1,73M para **2,65M** (downloads acumulados 2.645.226, HF API 24/08).
+
+## [2026-08-24] — Artigo-veredicto "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B?" (t_eea4801f)
+
+### Added
+- **Artigo-veredicto** `guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b/index.html`: o MoE agêntico da NVIDIA (30B/3B ativos, até 1M de contexto, OpenMDW-1.1) contra o 27B denso — tabela do par com os números oficiais do próprio NVIDIA mostrando derrota vs Qwen3.6-35B-A3B (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38; GPQA 75,44 vs 83,40), tabela GGUF (ggml-org oficial + Unsloth UD-quants + Ollama 25 GB), veredito por perfil, aviso de honestidade (claim "até 4×" rotulado, comunidade "incredibly variable"), 5 FAQs e JSON-LD TechArticle + FAQPage.
+- **llms.txt**: 3 inserções aditivas — bullet novo no dossiê de vereditos (Agentes/execução ≤30B), entrada nova na lista de páginas e FAQ nova (Qual o melhor modelo local para agentes em 2026?).
+- **FAQ** (`guia/faq/index.html`): 38ª pergunta "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B para agentes?" na seção Comparações (h3 + Question JSON-LD com paridade).
+- **Sitemap.xml**: 37 → 38 URLs (nova página com priority 0.8, lastmod 2026-08-24).
+- **Guia** (`guia/index.html`): card novo no topo do card-grid (Comparativo, Novo 24/08).
+
+## [2026-08-24] — Hub EN de execução "How to Run Qwen3.8-27B Locally" (t_60a99ce1)
+
+### Added
+- **Hub EN de execução `guia/en/how-to-run-qwen3-8-27b/index.html`** (novo): espelho-enriquecido do guia-mãe PT `como-rodar` — quick answer com 3 comandos para featured snippet, 5 métodos (Ollama, llama.cpp, vLLM, SGLang FP8 — novo como método 4, HuggingFace + MLX), tabela VRAM/quant com a contra-narrativa "16 GB é viável" (IQ4_XS 15.71 GB), sampling thinking vs instruct, troubleshooting com 6 fixes e FAQ com 10 Q&As EN. Head completo no padrão EN da hub `best-local-30b-models`, JSON-LD `@graph` com TechArticle + BreadcrumbList + FAQPage (10), `inLanguage: en`, hreflang bidirecional, datas 2026-08-24.
+- **hreflang bidirecional** no par `como-rodar` (pt-BR) ↔ hub EN (`guia/en/how-to-run-qwen3-8-27b`); `como-rodar` PT ganhou também o link "View in English →" no header do artigo.
+- **llms.txt**: subseção `### How to run Qwen3.8-27B locally (2026)` na seção `## English (GEO mirrors)` (diff aditivo).
+- **sitemap.xml**: URL do hub EN (37 → 38), lastmod 2026-08-24, priority 0.9.
+- **guia/index.html**: card novo "How to Run Qwen3.8-27B (EN)" (tag Inglês, MOFU · Novo 24/08).
+
+---
+
 ## [2026-08-23] — Monetização: newsletter + affiliate de hardware + slots de ads (t_8dd9a051)
 
 ### Added
