@@ -8,6 +8,11 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-24] — Correção QA: tamanho NVFP4 e downloads do Qwen no artigo-veredicto vs Nemotron (t_06352eae)
+
+### Changed
+- **Artigo** `guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b/index.html`: tamanho real do checkpoint NVFP4 corrigido de "~15 GB" (teórico 30B×4bit/8) para **21,56 GB** (total_size 21.559.589.596 bytes, 52 shards safetensors, HF API 24/08) no corpo e na footnote de fontes; refresh do "dl/mês" do Qwen3.8-27B de 1,73M para **2,65M** (downloads acumulados 2.645.226, HF API 24/08).
+
 ## [2026-08-24] — Artigo-veredicto "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B?" (t_eea4801f)
 
 ### Added
