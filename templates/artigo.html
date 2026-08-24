@@ -87,8 +87,11 @@
         </details>
 
         <div class="article-body">
-          <!-- Thumbnail: og-image.png por padrão (1200×630) -->
-          <img class="article-thumb" src="/og-image.png" alt="[ALT DESCRITIVO DO ARTIGO]" width="1200" height="630" loading="eager">
+          <!-- Thumbnail: WebP 1200×675 padrão / AVIF para browsers modernos (Dark AI Lab). Alt descritivo obrigatório. -->
+          <picture class="article-thumb">
+            <source type="image/avif" srcset="/images/[SLUG].avif" width="1200" height="675">
+            <img src="/images/[SLUG].webp" alt="[ALT DESCRITIVO DO ARTIGO]" title="[TÍTULO DO ARTIGO]" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+          </picture>
 
           <!-- ============ CONTEÚDO ORIGINAL (preservado na migração) ============
                Tabelas cruas viram <div class="table-wrap">…</div> (scroll horizontal

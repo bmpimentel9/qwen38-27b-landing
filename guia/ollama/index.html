@@ -16,7 +16,7 @@
     <meta property="og:title" content="Como Rodar o Qwen3.8-27B no Ollama: do ollama run ao MTP em produção">
     <meta property="og:description" content="Guia completo em português: todas as tags do qwen3.8 no Ollama (18–56 GB), Modelfile customizado com num_ctx, draft_num_predict, reasoning effort, visão nativa e a diferença de desempenho Ollama × llama.cpp.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/ollama">
-    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/ollama.webp">
     <meta property="article:published_time" content="2026-08-22T08:00:00-03:00">
     <meta property="article:section" content="Inteligência Artificial">
     <meta property="article:tag" content="Ollama">
@@ -134,8 +134,21 @@
   <script src="/assets/js/blog.js" defer></script>
   <meta property="article:modified_time" content="2026-08-22">
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção", "description": "Guia definitivo: instale o Ollama, puxe o qwen3.8:27b, configure Modelfile customizado com MTP, reasoning effort e flash-attn. Do 'ollama run' à produção com visão e 256K de contexto.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/ollama", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-22", "dateModified": "2026-08-22"}
-  </script></head>
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção", "description": "Guia definitivo: instale o Ollama, puxe o qwen3.8:27b, configure Modelfile customizado com MTP, reasoning effort e flash-attn. Do 'ollama run' à produção com visão e 256K de contexto.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/ollama", "image": "https://qwen38-27b-landing.vercel.app/images/ollama.webp", "inLanguage": "pt-BR", "datePublished": "2026-08-22", "dateModified": "2026-08-22"}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "contentUrl": "https://qwen38-27b-landing.vercel.app/images/ollama.webp",
+  "url": "https://qwen38-27b-landing.vercel.app/images/ollama.webp",
+  "width": 1200,
+  "height": 675,
+  "caption": "Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção",
+  "representativeOfPage": true
+}
+</script>
+</head>
 <body>
 <!-- @@HEADER@@ -->
 <!-- ============================================================
@@ -215,7 +228,10 @@
         </details>
 
         <div class="article-body">
-          <img class="article-thumb" src="/og-image.png" alt="Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção" width="1200" height="630" loading="eager">
+          <picture class="article-thumb">
+  <source type="image/avif" srcset="/images/ollama.avif" width="1200" height="675">
+  <img src="/images/ollama.webp" alt="Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção" title="Como rodar o Qwen3.8-27B no Ollama — do ollama run ao MTP em produção" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+</picture>
 
 <h2 id="por-que">Por que Ollama para o Qwen3.8-27B?</h2>
     <p>O Ollama é a ferramenta que a maioria dos usuários de LLM local conhece primeiro. A página da <a href="https://ollama.com/library/qwen3.8">biblioteca oficial do qwen3.8</a> já acumula <strong>566.2 mil downloads</strong> (ago/2026) — é <strong>8,4× mais</strong> que as 67.1K registradas no llms.txt do portal há menos de uma semana, sinal de adoção acelerada.</p>

@@ -16,7 +16,7 @@
     <meta property="og:title" content="Qwen3.8-27B em 16GB de VRAM: a config llama.cpp que funciona">
     <meta property="og:description" content="27B denso em placa de 16GB sem offload parcial: quant certa, contexto que cabe, speculative decoding e KV cache quantizado — com números medidos.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp">
-    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/qwen38-27b-16gb-vram-llama-cpp.webp">
     <meta property="article:published_time" content="2026-08-18T00:00:00-03:00">
     <meta property="article:section" content="Inteligência Artificial">
     <meta property="article:tag" content="llama.cpp">
@@ -173,8 +173,21 @@
   <script src="/assets/js/blog.js" defer></script>
   <meta property="article:modified_time" content="2026-08-18">
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona", "description": "Como rodar o Qwen3.8-27B em 16GB de VRAM com llama.cpp: quant IQ4_XS/Q4_K_M, contexto que cabe, speculative decoding n-gram, KV cache q8_0 e t/s reais.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp", "image": "https://qwen38-27b-landing.vercel.app/og-image.png", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
-  </script></head>
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona", "description": "Como rodar o Qwen3.8-27B em 16GB de VRAM com llama.cpp: quant IQ4_XS/Q4_K_M, contexto que cabe, speculative decoding n-gram, KV cache q8_0 e t/s reais.", "author": {"@type": "Person", "name": "Bruno Pimentel"}, "publisher": {"@type": "Organization", "name": "Bruno Pimentel"}, "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen38-27b-16gb-vram-llama-cpp", "image": "https://qwen38-27b-landing.vercel.app/images/qwen38-27b-16gb-vram-llama-cpp.webp", "inLanguage": "pt-BR", "datePublished": "2026-08-18", "dateModified": "2026-08-18"}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "contentUrl": "https://qwen38-27b-landing.vercel.app/images/qwen38-27b-16gb-vram-llama-cpp.webp",
+  "url": "https://qwen38-27b-landing.vercel.app/images/qwen38-27b-16gb-vram-llama-cpp.webp",
+  "width": 1200,
+  "height": 675,
+  "caption": "Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona",
+  "representativeOfPage": true
+}
+</script>
+</head>
 <body>
 <!-- @@HEADER@@ -->
 <!-- ============================================================
@@ -251,7 +264,10 @@
         </details>
 
         <div class="article-body">
-          <img class="article-thumb" src="/og-image.png" alt="Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona" width="1200" height="630" loading="eager">
+          <picture class="article-thumb">
+  <source type="image/avif" srcset="/images/qwen38-27b-16gb-vram-llama-cpp.avif" width="1200" height="675">
+  <img src="/images/qwen38-27b-16gb-vram-llama-cpp.webp" alt="Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona" title="Qwen3.8-27B em 16GB de VRAM: a configuração llama.cpp que funciona" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+</picture>
 
 <h2 id="resposta-rapida">A resposta rápida</h2>
     <p><strong>Sim, o Qwen3.8-27B roda em 16GB de VRAM.</strong> A combinação que a comunidade convergiu após o lançamento (14/08/2026): quantização <strong>IQ4_XS</strong> (15,71 GB medidos no Hugging Face) para qualidade máxima que cabe inteira, ou <strong>UD-Q3_K_XL</strong> (13,44 GB) quando o contexto importa mais. Comando mínimo:</p>

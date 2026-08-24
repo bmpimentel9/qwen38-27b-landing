@@ -18,13 +18,17 @@
     <meta property="og:title" content="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang (2026)">
     <meta property="og:description" content="One guide, four engines: Ollama (1 command), llama.cpp (GGUF), vLLM and SGLang for production, MLX on Apple Silicon. Measured VRAM per quantization, real tok/s and troubleshooting.">
     <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/en/how-to-run-qwen3-8-27b">
-    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/og-image.png">
+    <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/how-to-run-qwen3-8-27b.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang">
     <meta property="article:published_time" content="2026-08-24T08:00:00-03:00">
     <meta property="article:section" content="Artificial Intelligence">
     <meta property="article:tag" content="local models">
     <meta property="article:tag" content="tutorial">
     <meta property="article:tag" content="LLM">
     <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://qwen38-27b-landing.vercel.app/images/how-to-run-qwen3-8-27b.webp">
     <meta name="twitter:title" content="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang (2026)">
     <meta name="twitter:description" content="Copy-paste commands for Ollama, llama.cpp, vLLM and SGLang, measured VRAM per quant (IQ4_XS 15.71 GB fits 16 GB) and real tok/s. MTP is off by default — here is the flag.">
     <meta name="twitter:site" content="@bmpimentel9">
@@ -232,6 +236,18 @@
         .step-number { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--bg); font-size: 0.85rem; font-weight: 700; margin-right: 8px; padding: 0 4px; }
         @media (max-width: 640px) { body { padding: 12px; } th, td { padding: 8px 10px; } .filter-btn { padding: 5px 10px; font-size: 0.8rem; } }
     </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "contentUrl": "https://qwen38-27b-landing.vercel.app/images/how-to-run-qwen3-8-27b.webp",
+  "url": "https://qwen38-27b-landing.vercel.app/images/how-to-run-qwen3-8-27b.webp",
+  "width": 1200,
+  "height": 675,
+  "caption": "How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang",
+  "representativeOfPage": true
+}
+</script>
 </head>
 <body>
     <header>
@@ -247,7 +263,12 @@
         <p class="lang-link"><a href="/guia/como-rodar">Original in Portuguese →</a></p>
         <h1>How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang, MLX</h1>
         <p class="lead">One guide, four runtimes, real measured numbers. Copy-paste commands from Ollama to SGLang, the GGUF that fits your VRAM, and the fixes that actually move tok/s.</p>
-    </header>
+        </header>
+
+        <picture class="article-thumb">
+  <source type="image/avif" srcset="/images/how-to-run-qwen3-8-27b.avif" width="1200" height="675">
+  <img src="/images/how-to-run-qwen3-8-27b.webp" alt="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang" title="How to Run Qwen3.8-27B Locally: Ollama, llama.cpp, vLLM, SGLang" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+</picture>
 
     <div class="toc">
         <h3>Contents</h3>
