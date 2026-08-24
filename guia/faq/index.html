@@ -255,6 +255,14 @@
         },
         {
           "@type": "Question",
+          "name": "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B para agentes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depende do perfil: o Qwen3.8-27B ganha em profundidade, visão, português e ecossistema verificado — LiveCodeBench v6 90,3 e SWE-bench Pro 61,7 (model card), AAII 52 com verificação independente, 17,11 GB em Q4_K_M. O Nemotron-3.5-Lightning-30B-A3B é a execution layer de agente da NVIDIA (tool-calling, validação, formatação, subagentes em volume): MoE 30B/3B ativos, até 1M de contexto, até 4x output (claim NVIDIA), fine-tuning barato. A ressalva central: os benchmarks oficiais do próprio NVIDIA mostram o Lightning perdendo para o Qwen3.6-35B-A3B em quase tudo (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38) — o modelo é vendido por velocidade, não por pico de inteligência, e não tem verificação independente de larga escala. Fonte: model cards oficiais (NVIDIA, Qwen), blog NVIDIA, Awesome Agents e dossiê do portal (24/08/2026)."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Vale a pena rodar gpt-oss em 2026?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -635,6 +643,11 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <div class="faq-item">
         <h3>Qwen3.8-27B ou Ornith-1.5-35B-A3B para código e agentes?</h3>
         <p>Depende do perfil: o <strong>Qwen3.8-27B</strong> ganha em profundidade densa, visão e ecossistema verificado — LiveCodeBench v6 90,3 e SWE-bench Pro 61,7 (model card), AAII 52 com verificação independente, 17,11 GB em Q4_K_M. O <strong>Ornith-1.5-35B-A3B</strong> ganha em throughput agêntico e números de agente no papel: Terminal-Bench 2.1 (Claude Code) 68,5 e SWE-bench Verified 79 (autodeclarados, média 5 runs), ~3B ativos por token = velocidade de MoE (303 tok/s numa 5090, relato da comunidade). Sem head-to-head oficial: os harnesses são diferentes (Terminal-Bench ≠ LiveCodeBench; Verified ≠ Pro) e o Ornith não tem verificação independente (BenchLM: 49,3/100, rank #136, coverage insuficiente). Análise completa: <a href="/guia/qwen3.8-vs-ornith-1-5-35b-a3b">Qwen3.8-27B ou Ornith-1.5-35B-A3B</a>.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B para agentes?</h3>
+        <p>Depende do perfil: o <strong>Qwen3.8-27B</strong> ganha em profundidade, visão, português e ecossistema verificado — LiveCodeBench v6 90,3 e SWE-bench Pro 61,7 (model card), AAII 52 com verificação independente, 17,11 GB em Q4_K_M. O <strong>Nemotron-3.5-Lightning-30B-A3B</strong> é a "execution layer" de agente da NVIDIA (tool-calling, validação, formatação, subagentes em volume): MoE 30B/3B ativos, até 1M de contexto, até 4× output (claim NVIDIA), fine-tuning barato. A ressalva central: <strong>os benchmarks oficiais do próprio NVIDIA mostram o Lightning perdendo para o Qwen3.6-35B-A3B em quase tudo</strong> (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38) — o modelo é vendido por velocidade, não por pico de inteligência, e não tem verificação independente de larga escala. Análise completa: <a href="/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b">Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B</a>.</p>
     </div>
 
     <div class="faq-item">

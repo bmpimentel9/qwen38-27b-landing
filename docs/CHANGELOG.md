@@ -8,6 +8,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-24] — Artigo-veredicto "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B?" (t_eea4801f)
+
+### Added
+- **Artigo-veredicto** `guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b/index.html`: o MoE agêntico da NVIDIA (30B/3B ativos, até 1M de contexto, OpenMDW-1.1) contra o 27B denso — tabela do par com os números oficiais do próprio NVIDIA mostrando derrota vs Qwen3.6-35B-A3B (SWE-bench Verified 51,56 vs 70,12; Terminal-Bench 2.1 24,58 vs 44,38; GPQA 75,44 vs 83,40), tabela GGUF (ggml-org oficial + Unsloth UD-quants + Ollama 25 GB), veredito por perfil, aviso de honestidade (claim "até 4×" rotulado, comunidade "incredibly variable"), 5 FAQs e JSON-LD TechArticle + FAQPage.
+- **llms.txt**: 3 inserções aditivas — bullet novo no dossiê de vereditos (Agentes/execução ≤30B), entrada nova na lista de páginas e FAQ nova (Qual o melhor modelo local para agentes em 2026?).
+- **FAQ** (`guia/faq/index.html`): 38ª pergunta "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B para agentes?" na seção Comparações (h3 + Question JSON-LD com paridade).
+- **Sitemap.xml**: 37 → 38 URLs (nova página com priority 0.8, lastmod 2026-08-24).
+- **Guia** (`guia/index.html`): card novo no topo do card-grid (Comparativo, Novo 24/08).
+
 ## [2026-08-24] — Hub EN de execução "How to Run Qwen3.8-27B Locally" (t_60a99ce1)
 
 ### Added
