@@ -8,7 +8,6 @@
 <meta name="description" content="Benchmarks do Qwen3.8-27B: 26 resultados do model card oficial (LiveCodeBench, GPQA, SWE-bench, OSWorld) comparados com Gemma 3 27B e GPT-OSS-20B. Fontes citadas.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/benchmarks">
-<link rel="stylesheet" href="/assets/css/portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -58,23 +57,51 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   window.addEventListener('scroll',onScroll,{passive:true});
 })();
 </script>
+<link rel="stylesheet" href="/assets/css/blog.css">
+<script src="/assets/js/blog.js" defer></script>
 </head>
 <body>
-<nav class="nav">
-  <a class="logo" href="/">Qwen3.8<span>-27B</span> · Portal</a>
-  <div class="links">
-    <a href="/modelos">Modelos</a>
-    <a href="/hardware">Hardware</a>
-    <a href="/benchmarks" class="active">Benchmarks</a>
-    <a href="/guia-rapido">Guia Rápido</a>
-    <a href="/guia">Guia Completo</a>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="/guia/#topicos">Guias</a>
+      <a href="/guia/#benchmarks-resumo">Benchmarks</a>
+      <a href="/guia/#memoria">Hardware</a>
+      <a href="/guia/#topicos">Releases</a>
+      <a href="/guia/#topicos">Comunidade</a>
+      <a href="/modelos">Modelos</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
   </div>
-  <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" onclick="var l=document.querySelector('.links');l.classList.toggle('open');this.setAttribute('aria-expanded',l.classList.contains('open'))">☰</button>
-</nav>
-
-<main>
-  <h1>Benchmarks do Qwen3.8-27B</h1>
-  <p class="subtitle">26 resultados do model card oficial + comparação com concorrentes ≤30B + medições reais em hardware local. Cada número cita a fonte.</p>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+<main id="topo" class="container">
+  <div class="page-head">
+    <h1>Benchmarks do Qwen3.8-27B</h1>
+    <p class="lead">26 resultados do model card oficial + comparação com concorrentes ≤30B + medições reais em hardware local. Cada número cita a fonte.</p>
+  </div>
 
   <div class="callout">
     <strong>Regra do projeto:</strong> nenhum benchmark é inventado. Todos os números do Qwen3.8-27B vêm do
@@ -88,44 +115,44 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <h2 id="oficiais">Benchmarks oficiais (26) — Qwen3.8-27B</h2>
   <p>Todos os 26 benchmarks publicados no model card oficial, organizados por categoria. A coluna "vs Qwen3.6-27B" mostra o delta em relação à geração anterior. A coluna "Referências do model card" traz as comparações publicadas no próprio card: Qwen3.7-Plus, Muse Glimmer-30B e Claude Opus 4.6 Max ("Opus4.6 Max", nome como no card).</p>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>Benchmark</th><th>Categoria</th><th>Qwen3.8-27B</th><th>Qwen3.6-27B</th><th>Δ</th><th>Referências do model card</th></tr>
     </thead>
     <tbody>
       <!-- Código e engenharia de software -->
-      <tr class="highlight"><td>LiveCodeBench v6</td><td>código</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--green)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus4.6 Max 88,8</td></tr>
-      <tr><td>Terminal-Bench 2.1 (Terminus)</td><td>código</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--green)">+9,6</td><td>Opus4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
-      <tr><td>SWE-bench Pro</td><td>código</td><td><strong>61,7</strong></td><td>53,5</td><td style="color:var(--green)">+8,2</td><td>Qwen3.7-Plus 57,6 · Muse 51,2 · Opus4.6 Max 53,4</td></tr>
-      <tr><td>DeepSWE 1.1</td><td>código</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--green)">+28,9</td><td>Qwen3.7-Plus 14,2 (única referência do card)</td></tr>
-      <tr><td>QwenSWEBench</td><td>código</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--green)">+29,7</td><td>Opus4.6 Max 63,8 · Qwen3.7-Plus 59,2</td></tr>
-      <tr><td>NL2Repo-Bench</td><td>código</td><td><strong>42,3</strong></td><td>36,2</td><td style="color:var(--green)">+6,1</td><td>Opus4.6 Max 47,6 · Qwen3.7-Plus 41,1</td></tr>
+      <tr class="highlight"><td>LiveCodeBench v6</td><td>código</td><td><strong>90,3</strong></td><td>83,9</td><td style="color:var(--accent-2)">+6,4</td><td>Qwen3.7-Plus 89,6 · Opus4.6 Max 88,8</td></tr>
+      <tr><td>Terminal-Bench 2.1 (Terminus)</td><td>código</td><td><strong>73,0</strong></td><td>63,4</td><td style="color:var(--accent-2)">+9,6</td><td>Opus4.6 Max 78,2 · Qwen3.7-Plus 64,0 · Muse 51,7</td></tr>
+      <tr><td>SWE-bench Pro</td><td>código</td><td><strong>61,7</strong></td><td>53,5</td><td style="color:var(--accent-2)">+8,2</td><td>Qwen3.7-Plus 57,6 · Muse 51,2 · Opus4.6 Max 53,4</td></tr>
+      <tr><td>DeepSWE 1.1</td><td>código</td><td><strong>42,2</strong></td><td>13,3</td><td style="color:var(--accent-2)">+28,9</td><td>Qwen3.7-Plus 14,2 (única referência do card)</td></tr>
+      <tr><td>QwenSWEBench</td><td>código</td><td><strong>79,0</strong></td><td>49,3</td><td style="color:var(--accent-2)">+29,7</td><td>Opus4.6 Max 63,8 · Qwen3.7-Plus 59,2</td></tr>
+      <tr><td>NL2Repo-Bench</td><td>código</td><td><strong>42,3</strong></td><td>36,2</td><td style="color:var(--accent-2)">+6,1</td><td>Opus4.6 Max 47,6 · Qwen3.7-Plus 41,1</td></tr>
       <!-- Agentes e uso de computador -->
-      <tr class="highlight"><td>OSWorld-Verified</td><td>agente</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--green)">+20,4</td><td>Qwen3.7-Plus 73,3 · Opus4.6 Max 72,7 · Muse 65,9</td></tr>
-      <tr><td>AndroidWorld</td><td>agente</td><td><strong>81,9</strong></td><td>70,3</td><td style="color:var(--green)">+11,6</td><td>Qwen3.7-Plus 81,0 · Opus4.6 Max 62,0</td></tr>
-      <tr><td>WebArena-Verified</td><td>agente</td><td><strong>64,8</strong></td><td>48,8</td><td style="color:var(--green)">+16,0</td><td>Qwen3.7-Plus 55,3 (única referência do card)</td></tr>
-      <tr><td>CoWorkBench</td><td>agente</td><td><strong>70,7</strong></td><td>61,0</td><td style="color:var(--green)">+9,7</td><td>Opus4.6 Max 68,2 · Qwen3.7-Plus 65,1</td></tr>
-      <tr><td>JobBench</td><td>agente</td><td><strong>33,4</strong></td><td>21,8</td><td style="color:var(--green)">+11,6</td><td>Qwen3.7-Plus 27,6 (única referência do card)</td></tr>
-      <tr><td>Agents' Last Exam — Pass@1</td><td>agente</td><td><strong>20,4</strong></td><td>10,6</td><td style="color:var(--green)">+9,8</td><td>Qwen3.7-Plus 13,2 (única referência do card)</td></tr>
-      <tr><td>Agents' Last Exam — Score</td><td>agente</td><td><strong>42,9</strong></td><td>27,3</td><td style="color:var(--green)">+15,6</td><td>Qwen3.7-Plus 33,6 (única referência do card)</td></tr>
-      <tr><td>RecreationBench</td><td>agente</td><td><strong>47,1</strong></td><td>29,8</td><td style="color:var(--green)">+17,3</td><td>Qwen3.7-Plus 30,2 (única referência do card)</td></tr>
+      <tr class="highlight"><td>OSWorld-Verified</td><td>agente</td><td><strong>84,3</strong></td><td>63,9</td><td style="color:var(--accent-2)">+20,4</td><td>Qwen3.7-Plus 73,3 · Opus4.6 Max 72,7 · Muse 65,9</td></tr>
+      <tr><td>AndroidWorld</td><td>agente</td><td><strong>81,9</strong></td><td>70,3</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 81,0 · Opus4.6 Max 62,0</td></tr>
+      <tr><td>WebArena-Verified</td><td>agente</td><td><strong>64,8</strong></td><td>48,8</td><td style="color:var(--accent-2)">+16,0</td><td>Qwen3.7-Plus 55,3 (única referência do card)</td></tr>
+      <tr><td>CoWorkBench</td><td>agente</td><td><strong>70,7</strong></td><td>61,0</td><td style="color:var(--accent-2)">+9,7</td><td>Opus4.6 Max 68,2 · Qwen3.7-Plus 65,1</td></tr>
+      <tr><td>JobBench</td><td>agente</td><td><strong>33,4</strong></td><td>21,8</td><td style="color:var(--accent-2)">+11,6</td><td>Qwen3.7-Plus 27,6 (única referência do card)</td></tr>
+      <tr><td>Agents' Last Exam — Pass@1</td><td>agente</td><td><strong>20,4</strong></td><td>10,6</td><td style="color:var(--accent-2)">+9,8</td><td>Qwen3.7-Plus 13,2 (única referência do card)</td></tr>
+      <tr><td>Agents' Last Exam — Score</td><td>agente</td><td><strong>42,9</strong></td><td>27,3</td><td style="color:var(--accent-2)">+15,6</td><td>Qwen3.7-Plus 33,6 (única referência do card)</td></tr>
+      <tr><td>RecreationBench</td><td>agente</td><td><strong>47,1</strong></td><td>29,8</td><td style="color:var(--accent-2)">+17,3</td><td>Qwen3.7-Plus 30,2 (única referência do card)</td></tr>
       <!-- Conhecimento e raciocínio -->
-      <tr class="highlight"><td>GPQA Diamond</td><td>conhec.</td><td><strong>89,2</strong></td><td>87,8</td><td style="color:var(--green)">+1,4</td><td>Opus4.6 Max 91,3 · Qwen3.7-Plus 90,3 · Muse 83,5</td></tr>
-      <tr><td>Humanity's Last Exam (HLE)</td><td>conhec.</td><td><strong>30,8</strong></td><td>24,0</td><td style="color:var(--green)">+6,8</td><td>Opus4.6 Max 40,0 · Qwen3.7-Plus 34,7 · Muse 22,0</td></tr>
-      <tr><td>IFBench (seguir instruções)</td><td>conhec.</td><td><strong>79,5</strong></td><td>69,1</td><td style="color:var(--green)">+10,4</td><td>Qwen3.7-Plus 79,1 · Muse 77,0 · Opus4.6 Max 62,5</td></tr>
+      <tr class="highlight"><td>GPQA Diamond</td><td>conhec.</td><td><strong>89,2</strong></td><td>87,8</td><td style="color:var(--accent-2)">+1,4</td><td>Opus4.6 Max 91,3 · Qwen3.7-Plus 90,3 · Muse 83,5</td></tr>
+      <tr><td>Humanity's Last Exam (HLE)</td><td>conhec.</td><td><strong>30,8</strong></td><td>24,0</td><td style="color:var(--accent-2)">+6,8</td><td>Opus4.6 Max 40,0 · Qwen3.7-Plus 34,7 · Muse 22,0</td></tr>
+      <tr><td>IFBench (seguir instruções)</td><td>conhec.</td><td><strong>79,5</strong></td><td>69,1</td><td style="color:var(--accent-2)">+10,4</td><td>Qwen3.7-Plus 79,1 · Muse 77,0 · Opus4.6 Max 62,5</td></tr>
       <!-- Multimodal -->
-      <tr class="highlight"><td>MathVision (com CI)</td><td>visão</td><td><strong>94,6</strong></td><td>85,1</td><td style="color:var(--green)">+9,5</td><td>Qwen3.7-Plus 90,3 (s/ CI) · Opus4.6 Max 65,5 (s/ CI)</td></tr>
-      <tr><td>OmniDocBench 1.5</td><td>visão</td><td><strong>91,1</strong></td><td>89,4</td><td style="color:var(--green)">+1,7</td><td>Qwen3.7-Plus 91,4 · Opus4.6 Max 86,6 · Muse 75,8</td></tr>
-      <tr><td>CharXiv (com CI)</td><td>visão</td><td><strong>90,2</strong></td><td>78,4</td><td style="color:var(--green)">+11,8</td><td>Qwen3.7-Plus 85,9 (com CI) · Muse 78,8 · Opus4.6 Max 66,0 (s/ CI)</td></tr>
-      <tr><td>RealWorldQA</td><td>visão</td><td><strong>85,9</strong></td><td>84,1</td><td style="color:var(--green)">+1,8</td><td>Qwen3.7-Plus 86,9 · Opus4.6 Max 73,9</td></tr>
-      <tr><td>BabyVision (com CI)</td><td>visão</td><td><strong>85,6</strong></td><td>28,9</td><td style="color:var(--green)">+56,7</td><td>Qwen3.7-Plus 70,4 (com CI) · Opus4.6 Max 12,6 (s/ CI)</td></tr>
-      <tr><td>ERQA</td><td>visão</td><td><strong>65,5</strong></td><td>62,5</td><td style="color:var(--green)">+3,0</td><td>Qwen3.7-Plus 69,8 · Opus4.6 Max 40,8</td></tr>
-      <tr><td>Vision2Web</td><td>visão</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--green)">+17,9</td><td>Qwen3.7-Plus 42,1 (única referência do card)</td></tr>
-      <tr><td>ClawEval-MM (Pass@3)</td><td>visão</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--green)">+14,8</td><td>Qwen3.7-Plus 57,4 · Opus4.6 Max 52,5</td></tr>
-      <tr><td>SWE-MM (bugs multimodais)</td><td>visão</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--green)">+12,9</td><td>Qwen3.7-Plus 30,0 · Opus4.6 Max 27,1</td></tr>
+      <tr class="highlight"><td>MathVision (com CI)</td><td>visão</td><td><strong>94,6</strong></td><td>85,1</td><td style="color:var(--accent-2)">+9,5</td><td>Qwen3.7-Plus 90,3 (s/ CI) · Opus4.6 Max 65,5 (s/ CI)</td></tr>
+      <tr><td>OmniDocBench 1.5</td><td>visão</td><td><strong>91,1</strong></td><td>89,4</td><td style="color:var(--accent-2)">+1,7</td><td>Qwen3.7-Plus 91,4 · Opus4.6 Max 86,6 · Muse 75,8</td></tr>
+      <tr><td>CharXiv (com CI)</td><td>visão</td><td><strong>90,2</strong></td><td>78,4</td><td style="color:var(--accent-2)">+11,8</td><td>Qwen3.7-Plus 85,9 (com CI) · Muse 78,8 · Opus4.6 Max 66,0 (s/ CI)</td></tr>
+      <tr><td>RealWorldQA</td><td>visão</td><td><strong>85,9</strong></td><td>84,1</td><td style="color:var(--accent-2)">+1,8</td><td>Qwen3.7-Plus 86,9 · Opus4.6 Max 73,9</td></tr>
+      <tr><td>BabyVision (com CI)</td><td>visão</td><td><strong>85,6</strong></td><td>28,9</td><td style="color:var(--accent-2)">+56,7</td><td>Qwen3.7-Plus 70,4 (com CI) · Opus4.6 Max 12,6 (s/ CI)</td></tr>
+      <tr><td>ERQA</td><td>visão</td><td><strong>65,5</strong></td><td>62,5</td><td style="color:var(--accent-2)">+3,0</td><td>Qwen3.7-Plus 69,8 · Opus4.6 Max 40,8</td></tr>
+      <tr><td>Vision2Web</td><td>visão</td><td><strong>62,9</strong></td><td>45,0</td><td style="color:var(--accent-2)">+17,9</td><td>Qwen3.7-Plus 42,1 (única referência do card)</td></tr>
+      <tr><td>ClawEval-MM (Pass@3)</td><td>visão</td><td><strong>57,4</strong></td><td>42,6</td><td style="color:var(--accent-2)">+14,8</td><td>Qwen3.7-Plus 57,4 · Opus4.6 Max 52,5</td></tr>
+      <tr><td>SWE-MM (bugs multimodais)</td><td>visão</td><td><strong>38,6</strong></td><td>25,7</td><td style="color:var(--accent-2)">+12,9</td><td>Qwen3.7-Plus 30,0 · Opus4.6 Max 27,1</td></tr>
     </tbody>
-  </table>
-  <p style="color:var(--muted);font-size:.85rem;">
+  </table></div>
+  <p class="article-lead" style="color:var(--muted);font-size:.85rem;">
     Fonte única das colunas "Referências do model card": o próprio
     <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen/Qwen3.8-27B — Hugging Face model card</a>.
     Benchmarks reportados pelo fabricante (Qwen/Alibaba); as referências servem como ordem de grandeza, não comparação controlada.
@@ -138,7 +165,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <h2 id="comparacao">Comparação com concorrentes ≤30B</h2>
   <p>Benchmarks comparáveis entre Qwen3.8-27B, Gemma 3 27B (instruct) e GPT-OSS-20B. Só benchmarks onde há sobreposição de métrica e fonte primária oficial. Os modelos usam harnesses diferentes, então a comparação é ordem de grandeza — não controlada. "n/r" = não reportado na fonte oficial do modelo.</p>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr>
         <th>Benchmark</th>
@@ -248,9 +275,9 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <td>só o model card do Qwen3.8-27B reporta</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
-  <div class="callout">
+  <div class="callout warn">
     <strong>Atenção:</strong> os três modelos usam harnesses de avaliação diferentes.
     O Qwen3.8-27B publica 26 benchmarks do próprio model card; o Gemma 3 27B publica um conjunto clássico
     (MMLU, MMLU-Pro, GSM8K, HumanEval, MATH, IFEval…) no Technical Report; o GPT-OSS-20B publica AIME, GPQA,
@@ -271,7 +298,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     o modelo pré-treinado faz 24,3). Em código, LiveCodeBench: 90,3 (v6) vs 29,7 (a versão avaliada no TR não é especificada; não é comparável à v6).
     O Gemma 3 27B não publica SWE-bench, OSWorld ou benchmarks de agentes.
   </p>
-  <p style="color:var(--muted);font-size:.85rem;">
+  <p class="article-lead" style="color:var(--muted);font-size:.85rem;">
     Fonte Gemma 3 27B: <a href="https://arxiv.org/abs/2503.19786">Gemma 3 Technical Report (arXiv 2503.19786)</a>,
     Tables 6 e 18 — modelo instruct (<a href="https://huggingface.co/google/gemma-3-27b-it">google/gemma-3-27b-it</a>; o README do HF não traz tabela de evals).
   </p>
@@ -287,7 +314,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     O GPT-OSS-20B reporta benchmarks que o card do Qwen3.8-27B não traz: MMLU 84,0 (medium) e AIME 2025 72,1 (sem tools, medium).
     Model card do GPT-OSS não publica MMLU-Pro nem IFEval.
   </p>
-  <p style="color:var(--muted);font-size:.85rem;">
+  <p class="article-lead" style="color:var(--muted);font-size:.85rem;">
     Fonte GPT-OSS-20B: <a href="https://arxiv.org/abs/2508.10925">model card / system card GPT-OSS (arXiv 2508.10925)</a>, Table 3
     (<a href="https://huggingface.co/openai/gpt-oss-20b">openai/gpt-oss-20b</a> — o README do HF linka para o arXiv; valores em reasoning low/medium/high).
   </p>
@@ -296,7 +323,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
   <h2 id="inferencia">Velocidade de inferência — medição real em hardware local</h2>
   <p>Medição própria em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com Ollama sobre Vulkan. Esta é a única tabela com dado próprio (não do model card) — o diferencial do portal.</p>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>Hardware</th><th>Modelo</th><th>Quantização</th><th>Velocidade</th><th>Contexto</th><th>Fonte</th></tr>
     </thead>
@@ -334,38 +361,44 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
         <td>Estimativa da comunidade</td>
       </tr>
     </tbody>
-  </table>
-  <p style="color:var(--muted);font-size:.85rem;">
+  </table></div>
+  <p class="article-lead" style="color:var(--muted);font-size:.85rem;">
     A medição do Strix Halo é reproduzível: Ollama sobre Vulkan, Q5_K_M, prompt de 512 tokens, contexto 131K.
-    Para detalhes de hardware, veja <a href="/hardware.html">nosso guia de hardware</a>.
+    Para detalhes de hardware, veja <a href="/hardware">nosso guia de hardware</a>.
     <br>Nota: o Qwen3.6-35B (MoE) ativa apenas ~3B por token — por isso é 5,3× mais rápido no mesmo hardware.
   </p>
 
   <!-- ===================== RESULTADOS DA COMUNIDADE ===================== -->
   <h2 id="comunidade">Resultados e reações da comunidade</h2>
-  <div class="cards">
-    <div class="card">
-      <span class="tag">HF Trending</span>
-      <h3>Qwen3.8-27B no HuggingFace</h3>
-      <p>⭐ 9.7k likes — um dos modelos abertos mais populares da categoria 30B. GGUF pronto via unsloth.</p>
-      <div class="meta"><span>Atualizado: diário</span><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Ver model card ↗</a></div>
+  <div class="post-grid">
+    <div class="post-card">
+      <div class="post-body">
+        <div class="post-meta"><span class="badge-cat releases">HF Trending</span></div>
+        <h3>Qwen3.8-27B no HuggingFace</h3>
+        <p>⭐ 9.7k likes — um dos modelos abertos mais populares da categoria 30B. GGUF pronto via unsloth.</p>
+        <div class="post-meta"><span>Atualizado: diário</span><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Ver model card ↗</a></div>
+      </div>
     </div>
-    <div class="card">
-      <span class="tag">GGUF</span>
-      <h3>unsloth/Qwen3.8-27B-GGUF</h3>
-      <p>Quantizações prontas (Q2-Q8) para Ollama, llama.cpp e LM Studio.</p>
-      <div class="meta"><span>⭐ 1.1k likes</span><a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">Ver GGUF ↗</a></div>
+    <div class="post-card">
+      <div class="post-body">
+        <div class="post-meta"><span class="badge-cat hw">GGUF</span></div>
+        <h3>unsloth/Qwen3.8-27B-GGUF</h3>
+        <p>Quantizações prontas (Q2-Q8) para Ollama, llama.cpp e LM Studio.</p>
+        <div class="post-meta"><span>⭐ 1.1k likes</span><a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF">Ver GGUF ↗</a></div>
+      </div>
     </div>
-    <div class="card">
-      <span class="tag">Benchmark</span>
-      <h3>Benchmarks comparativos completos</h3>
-      <p>Análise técnica dos 26 benchmarks vs Qwen3.6-27B e modelos de fronteira. Tabelas detalhadas por categoria.</p>
-      <div class="meta"><span>Guia</span><a href="/guia/benchmarks-comparativos">Ver análise completa ↗</a></div>
+    <div class="post-card">
+      <div class="post-body">
+        <div class="post-meta"><span class="badge-cat bench">Benchmark</span></div>
+        <h3>Benchmarks comparativos completos</h3>
+        <p>Análise técnica dos 26 benchmarks vs Qwen3.6-27B e modelos de fronteira. Tabelas detalhadas por categoria.</p>
+        <div class="post-meta"><span>Guia</span><a href="/guia/benchmarks-comparativos">Ver análise completa ↗</a></div>
+      </div>
     </div>
   </div>
 
   <h2 id="takeaways">Principais conclusões</h2>
-  <ul style="line-height:2;">
+  <ul>
     <li><strong>O salto está nos agentes:</strong> OSWorld-Verified +20,4, DeepSWE 1.1 +28,9, QwenSWEBench +29,7. Conhecimento bruto (GPQA +1,4) teve ganhos menores.</li>
     <li><strong>Supera fronteira em CoWorkBench:</strong> 70,7 vs Opus 4.6 Max 68,2 — um modelo de 27B denso superando um modelo proprietário de fronteira, na tabela do próprio card.</li>
     <li><strong>Lidera SWE-bench Pro no card:</strong> 61,7 à frente de todas as referências publicadas — Qwen3.7-Plus 57,6 · Muse Glimmer-30B 51,2 · Opus 4.6 Max 53,4.</li>
@@ -375,19 +408,63 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     <li><strong>Ainda não verificado independentemente:</strong> Todos os 26 benchmarks são reportados pela própria Qwen. Verificação independente pendente.</li>
   </ul>
 
-  <p style="margin-top:2rem;">
-    Para requisitos de hardware, veja <a href="/hardware.html">nosso guia de hardware</a>.
-    Para comandos de instalação, confira <a href="/guia-rapido.html">o guia rápido</a>.
+  <p class="article-lead" style="margin-top:2rem;">
+    Para requisitos de hardware, veja <a href="/hardware">nosso guia de hardware</a>.
+    Para comandos de instalação, confira <a href="/guia-rapido">o guia rápido</a>.
     Para a análise técnica completa dos 26 benchmarks, visite
     <a href="/guia/benchmarks-comparativos">benchmarks comparativos</a>.
   </p>
 </main>
-
-<footer>Portal 30B · Mantido pelo Time Hermes · <a href="/">Voltar ao início</a></footer>
-<script>
-document.querySelectorAll('.nav .links a').forEach(function(a){
-  a.addEventListener('click',function(){document.querySelector('.nav .links').classList.remove('open');});
-});
-</script>
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
+      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
+      <span class="footer-badge">feito sem build · HTML estático</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/guia/#topicos">Guias</a></li>
+        <li><a href="/guia/#benchmarks-resumo">Benchmarks</a></li>
+        <li><a href="/guia/#memoria">Hardware</a></li>
+        <li><a href="/guia/#topicos">Releases</a></li>
+        <li><a href="/guia/#topicos">Comunidade</a></li>
+        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
 </body>
 </html>
