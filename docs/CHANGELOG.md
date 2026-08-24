@@ -17,6 +17,15 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 - **Sitemap.xml**: 37 → 38 URLs (nova página com priority 0.8, lastmod 2026-08-24).
 - **Guia** (`guia/index.html`): card novo no topo do card-grid (Comparativo, Novo 24/08).
 
+## [2026-08-24] — Hub EN de execução "How to Run Qwen3.8-27B Locally" (t_60a99ce1)
+
+### Added
+- **Hub EN de execução `guia/en/how-to-run-qwen3-8-27b/index.html`** (novo): espelho-enriquecido do guia-mãe PT `como-rodar` — quick answer com 3 comandos para featured snippet, 5 métodos (Ollama, llama.cpp, vLLM, SGLang FP8 — novo como método 4, HuggingFace + MLX), tabela VRAM/quant com a contra-narrativa "16 GB é viável" (IQ4_XS 15.71 GB), sampling thinking vs instruct, troubleshooting com 6 fixes e FAQ com 10 Q&As EN. Head completo no padrão EN da hub `best-local-30b-models`, JSON-LD `@graph` com TechArticle + BreadcrumbList + FAQPage (10), `inLanguage: en`, hreflang bidirecional, datas 2026-08-24.
+- **hreflang bidirecional** no par `como-rodar` (pt-BR) ↔ hub EN (`guia/en/how-to-run-qwen3-8-27b`); `como-rodar` PT ganhou também o link "View in English →" no header do artigo.
+- **llms.txt**: subseção `### How to run Qwen3.8-27B locally (2026)` na seção `## English (GEO mirrors)` (diff aditivo).
+- **sitemap.xml**: URL do hub EN (37 → 38), lastmod 2026-08-24, priority 0.9.
+- **guia/index.html**: card novo "How to Run Qwen3.8-27B (EN)" (tag Inglês, MOFU · Novo 24/08).
+
 ---
 
 ## [2026-08-23] — Monetização: newsletter + affiliate de hardware + slots de ads (t_8dd9a051)
