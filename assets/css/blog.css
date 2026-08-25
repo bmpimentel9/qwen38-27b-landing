@@ -564,3 +564,41 @@ pre code { color: var(--text); }
   .featured-card .fc-media-wrap { aspect-ratio: 16/9; position: relative; }
   .featured-card .fc-media-wrap .fc-media { position: absolute; }
 }
+
+/* ============================================================
+   t_d95f13d3: feed horizontal no mobile — mata o "quadradinho
+   de notícias". Cards de post viram linha imagem|texto: a imagem
+   (128px à esquerda, object-fit cover) vira âncora vertical e o
+   texto ocupa o resto. Featured vira horizontal equilibrado com
+   excerto clampado. Desktop/mid continua no grid 16:9 intacto.
+   ============================================================ */
+@media (max-width: 640px) {
+  /* post-card horizontal: imagem 128px à esquerda, texto à direita */
+  .post-card {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    align-items: stretch;
+  }
+  .post-card .post-thumb-wrap {
+    aspect-ratio: auto;   /* solta a 16:9 fixa; coluna preenche a altura */
+    height: 100%;
+    border-radius: 0;     /* cantos vêm do card (overflow hidden) */
+  }
+  .post-card .post-thumb-fallback { font-size: 1rem; }
+  .post-card .post-body { padding: var(--space-3); }
+  .post-card h3 { font-size: 1rem; margin-bottom: var(--space-1); }
+  .post-card .post-meta { margin-bottom: var(--space-1); }
+
+  /* featured horizontal equilibrado: imagem 45%, texto 55% */
+  .featured-card {
+    grid-template-columns: 45% 55%;
+    align-items: stretch;
+  }
+  .featured-card .fc-media-wrap { aspect-ratio: auto; }
+  .featured-card .fc-body { padding: var(--space-4); }
+  .featured-card h2 { font-size: 1.2rem; margin: var(--space-2) 0; }
+  .featured-card p {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
