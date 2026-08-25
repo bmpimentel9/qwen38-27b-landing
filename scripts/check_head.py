@@ -8,6 +8,7 @@ Varre HTMLs publicáveis e verifica:
   C3 G-016TVX8LEE (GA4) presente (exceto 404.html)
   C4 rel=canonical presente
   C5 sitemap ↔ arquivos: todo <loc> resolve em arquivo, todo HTML (exceto 404) está no sitemap
+  C6 artigos guia/* e guia/en/* têm /assets/css/blog.css e /assets/css/blog-monetizacao.css
 
 Exit 1 se qualquer check falhar.
 --json para saída parseável (CI futuro).
@@ -203,6 +204,28 @@ def run_checks(htmls: list[Path], json_output: bool) -> dict:
         'failures': c5_fails,
     }
     if c5_fails:
+        results['passed'] = False
+
+    # C6 — artigos guia/* e guia/en/* têm blog.css e blog-monetizacao.css
+    c6_fails = []
+    article_htmls = sorted(set(REPO.glob('guia/*/index.html')) | set(REPO.glob('guia/en/*/index.html')))
+    for html in article_htmls:
+        rel = html.relative_to(REPO).as_posix()
+        text = html.read_text(encoding='utf-8')
+        missing = []
+        if '/assets/css/blog.css' not in text:
+            missing.append('/assets/css/blog.css')
+        if '/assets/css/blog-monetizacao.css' not in text:
+            missing.append('/assets/css/blog-monetizacao.css')
+        if missing:
+            c6_fails.append(f'{rel}: falta {", ".join(missing)}')
+
+    results['checks']['C6_css_present'] = {
+        'desc': 'artigos guia/* e guia/en/* têm /assets/css/blog.css e /assets/css/blog-monetizacao.css',
+        'status': 'PASS' if not c6_fails else 'FAIL',
+        'failures': c6_fails,
+    }
+    if c6_fails:
         results['passed'] = False
 
     return results
