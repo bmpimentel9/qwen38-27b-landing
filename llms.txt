@@ -380,3 +380,7 @@ Medições em ASUS ROG Flow Z13 (Strix Halo, Radeon 8060S, 128GB unificados) com
 - [Guia completo](https://qwen38-27b-landing.vercel.app/guia/)
 - [Código-fonte](https://github.com/bmpimentel9/qwen38-27b-landing)
 - [Licença Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+## Conteúdo completo (llms-full)
+
+Para citação por LLMs e RAG, este portal mantém um espelho estruturado com resumo por página + árvore de decisão "qual o melhor modelo local para X": [llms-full.txt](https://qwen38-27b-landing.vercel.app/llms-full.txt)
