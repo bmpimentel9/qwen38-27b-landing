@@ -1,5 +1,22 @@
 [
   {
+    "slug": "qwen3-8-27b-veredito-comunidade-semana",
+    "title": "Qwen3.8-27B: o veredito da comunidade após 1 semana (r/LocalLLaMA + r/LocalLLM)",
+    "category": "Comunidade",
+    "tags": [
+      "Comunidade",
+      "Qwen3.8-27B",
+      "r/LocalLLaMA",
+      "Veredito",
+      "Reasoning"
+    ],
+    "date": "2026-08-25",
+    "lead": "Megathread 'One Week Later' do r/LocalLLaMA: o Qwen3.8-27B vira referência de coding agêntico local — mas o xhigh default custa caro. O veredito.",
+    "readTime": 8,
+    "featured": false,
+    "url": "/guia/qwen3-8-27b-veredito-comunidade-semana"
+  },
+  {
     "slug": "ollama",
     "title": "Como Rodar o Qwen3.8-27B no Ollama: do ollama run ao MTP em produção",
     "category": "Guias",
