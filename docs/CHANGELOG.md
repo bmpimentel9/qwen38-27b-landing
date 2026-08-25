@@ -8,6 +8,17 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-25] — Artigo "Qwen3.8-27B: o veredito da comunidade após 1 semana (r/LocalLLaMA + r/LocalLLM)" (t_851c80cc)
+
+### Added
+- **Artigo-síntese** `guia/qwen3-8-27b-veredito-comunidade-semana/index.html` (novo): captura a intenção long-tail de avaliação ("vale a pena?", "review", "one week later") que o portal não cobria — a megathread do r/LocalLLaMA "One Week Later" (thread 1vvu15m, ~2.000 posts / 45 threads de maior sinal, 15–22/08) resumida em PT-BR com TL;DR, tabela dos 3 presets de reasoning (low/medium/xhigh = 4,4k→39,4k tokens · 112s→718s · 21,8→24,0), o run controlado de 40 braços de @superalesha (xhigh 7–11× mais tokens por 0–4,7 pts; Q4_K_M low = 89,3% igual ao xhigh com 86k vs 651k tokens), a regressão de trivia vs 3.6 e o tradeoff agente-first, o debate de quant "há 5 Q4s", e o veredito por perfil (tabela). Categoria **Comunidade** (badge tag-community), 9 min de leitura.
+- **Imagens otimizadas**: `images/qwen3-8-27b-veredito-comunidade-semana.webp` (1200×675) + `.avif` geradas para o artigo e usadas no og:image/thumbnail.
+- **Head/JSON-LD canônico**: meta description ≤155, keywords long-tail, og/twitter, GA4 scroll_depth, TechArticle + FAQPage (5 perguntas de decisão) + BreadcrumbList + BlogPosting + ImageObject.
+- **llms.txt**: 2 inserções aditivas — bullet de veredito na seção "Citações prontas" e link na lista "Páginas do portal".
+- **Sitemap.xml**: URL nova (39 → 40 URLs) com lastmod 2026-08-25, priority 0.8.
+- **Guia** (`guia/index.html`): card novo `Qwen3.8-27B: o veredito da comunidade após 1 semana` (tag Comunidade, MOFU · Novo 25/08).
+- **build_index.py**: slug registrado em `CATEGORIA` (Comunidade) e `MONOGRAMAS` (VCD); `assets/js/blog-index.json` e `templates/feed-home.html` regenerados (29 artigos, Comunidade=2).
+
 ## [2026-08-25] — Pack de imagens harmônicas IA por artigo + redesenho estético (t_c197a42b)
 
 ### Added

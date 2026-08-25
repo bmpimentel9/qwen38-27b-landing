@@ -60,8 +60,9 @@ CATEGORIA = {
     # Releases (2)
     "muse-glimmer-30b-agente-local": "Releases",
     "1-ano-gpt-oss-modelos-locais-2026": "Releases",
-    # Comunidade (1)
+    # Comunidade (2)
     "comunidade-casos-uso": "Comunidade",
+    "qwen3-8-27b-veredito-comunidade-semana": "Comunidade",
 }
 
 # slug -> data manual para hubs sem article:published_time (datas de criação reais)
@@ -100,6 +101,7 @@ MONOGRAMAS = {
     "qwen38-27b-16gb-vram-llama-cpp": "16G",
     "agent-memory-leaderboard-resultados": "AML",
     "comunidade-casos-uso": "CC",
+    "qwen3-8-27b-veredito-comunidade-semana": "VCD",
     "como-rodar": "CR",
     "benchmarks-comparativos": "BC",
     "hardware-local": "HW",
