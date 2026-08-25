@@ -476,3 +476,91 @@ pre code { color: var(--text); }
    reescreve o arquivo (protocolo de coordenação das 3 tasks Dev).
    ============================================================ */
 .article-body :not(pre) > code { overflow-wrap: anywhere; word-break: break-word; }
+
+/* ============================================================
+   t_c197a42b: Pack de imagens harmônicas IA — integração visual.
+   Cards do feed + featured + hero passam a exibir a arte real
+   (1200×675 webp/avif) com overlay de legibilidade e hover zoom.
+   Anexo ao blog.css — mantém todos os tokens do design system.
+   ============================================================ */
+
+/* ---- Cards do feed: imagem real + fallback sobreposto ---- */
+.post-thumb-wrap {
+  position: relative; overflow: hidden;
+  aspect-ratio: 16/9; width: 100%;
+  background: var(--surface-2);
+}
+.post-thumb-wrap .post-thumb {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block;
+}
+.post-thumb-wrap .post-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .45s cubic-bezier(.2,.6,.2,1);
+}
+.post-thumb-wrap .post-thumb-fallback {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-mono); font-weight: 800; font-size: 1.6rem;
+  opacity: 0; z-index: 1; pointer-events: none;
+}
+/* fallback só aparece se a imagem real não carregar (JS põe data-fallback no wrapper) */
+.post-thumb-wrap[data-fallback="on"] .post-thumb { display: none; }
+.post-thumb-wrap[data-fallback="on"] .post-thumb-fallback { opacity: 1; }
+/* overlay gradiente inferior p/ legibilidade do título no hover */
+.post-thumb-wrap::after {
+  content: ""; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(180deg, transparent 55%, rgba(11,14,20,.55));
+  opacity: 0; transition: opacity .25s ease; pointer-events: none;
+}
+.post-card:hover .post-thumb-wrap::after { opacity: 1; }
+.post-card:hover .post-thumb-wrap img { transform: scale(1.06); }
+.post-card .post-thumb-wrap { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+
+/* ---- Featured card: imagem real no lugar do monograma ---- */
+.fc-media-wrap {
+  position: relative; overflow: hidden; min-height: 100%;
+  background: var(--surface-2);
+}
+.fc-media-wrap .fc-media {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+}
+.fc-media-wrap .fc-media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .45s cubic-bezier(.2,.6,.2,1);
+}
+.fc-media-wrap .post-thumb-fallback {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  opacity: 0; z-index: 1; pointer-events: none;
+}
+.fc-media-wrap[data-fallback="on"] .fc-media { display: none; }
+.fc-media-wrap[data-fallback="on"] .post-thumb-fallback { opacity: 1; }
+.fc-media-wrap::after {
+  content: ""; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(90deg, rgba(11,14,20,.25), transparent 60%);
+  pointer-events: none;
+}
+.featured-card:hover .fc-media-wrap img { transform: scale(1.04); }
+
+/* ---- Hero: arte integrada com overlay de leitura ---- */
+.hero-image {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  margin-top: var(--space-6);
+}
+.hero-image img {
+  width: 100%; height: auto; display: block;
+}
+.hero-image::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(11,14,20,.45));
+  pointer-events: none;
+}
+
+/* ---- Fallback JS: marca img quebrada para exibir o monograma ---- */
+/* (blog.js injeta data-fallback="on" quando onerror dispara) */
+
+@media (max-width: 1024px) {
+  .featured-card .fc-media-wrap { aspect-ratio: 16/9; position: relative; }
+  .featured-card .fc-media-wrap .fc-media { position: absolute; }
+}

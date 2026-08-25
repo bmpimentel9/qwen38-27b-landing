@@ -105,6 +105,14 @@ MONOGRAMAS = {
     "hardware-local": "HW",
 }
 
+# slug-artigo -> slug-imagem (o nome do arquivo webp/avif em /images/).
+# A maioria coincide com o slug do artigo; os dois casos abaixo têm sufixo
+# -qwen3-8-27b no slug do artigo mas a imagem usa o prefixo (t_0a2d3a4f).
+IMAGE_SLUG = {
+    "como-rodar-sglang-qwen3-8-27b": "como-rodar-sglang",
+    "como-rodar-vllm-qwen3-8-27b": "como-rodar-vllm",
+}
+
 CAT_CSS = {
     "Guias": "guides",
     "Benchmarks": "bench",
@@ -176,13 +184,21 @@ def rel_date(iso: str) -> str:
 
 
 def card_html(a: dict) -> str:
-    """Card de artigo (.post-card) com fallback de categoria (sem imagem dedicada)."""
+    """Card de artigo (.post-card) com imagem real do pack (fallback de categoria se ausente)."""
     cat_css = CAT_CSS[a["category"]]
     color = CAT_COLOR[a["category"]]
     mono = MONOGRAMAS.get(a["slug"], a["slug"][:2].upper())
+    img_slug = IMAGE_SLUG.get(a["slug"], a["slug"])
     thumb = (
-        f'<div class="post-thumb-fallback" style="background:linear-gradient(135deg,{color}33,{color}11);'
-        f'color:{color}"><span>{mono}</span></div>'
+        f'<div class="post-thumb-wrap">'
+        f'<picture class="post-thumb">'
+        f'<source type="image/avif" srcset="/images/{img_slug}.avif" width="1200" height="675">'
+        f'<img src="/images/{img_slug}.webp" alt="{a["title"]}" width="1200" height="675" '
+        f'loading="lazy" decoding="async">'
+        f'</picture>'
+        f'<span class="post-thumb-fallback" style="background:linear-gradient(135deg,{color}33,{color}11);'
+        f'color:{color}"><span>{mono}</span></span>'
+        f'</div>'
     )
     return (
         f'<a class="post-card" href="{a["url"]}">\n'
@@ -202,10 +218,18 @@ def card_html(a: dict) -> str:
 def featured_html(a: dict) -> str:
     color = CAT_COLOR[a["category"]]
     cat_css = CAT_CSS[a["category"]]
+    img_slug = IMAGE_SLUG.get(a["slug"], a["slug"])
     return (
         f'<a class="featured-card" href="{a["url"]}">\n'
-        f'  <div class="post-thumb-fallback" style="background:linear-gradient(135deg,{color}33,{color}11);'
-        f'color:{color};min-height:100%;border-radius:0"><span>{MONOGRAMAS.get(a["slug"], "QW")}</span></div>\n'
+        f'  <div class="fc-media-wrap">'
+        f'<picture class="fc-media">'
+        f'<source type="image/avif" srcset="/images/{img_slug}.avif" width="1200" height="675">'
+        f'<img src="/images/{img_slug}.webp" alt="{a["title"]}" width="1200" height="675" '
+        f'loading="eager" fetchpriority="high" decoding="async">'
+        f'</picture>'
+        f'<div class="post-thumb-fallback" style="background:linear-gradient(135deg,{color}33,{color}11);'
+        f'color:{color};min-height:100%;border-radius:0"><span>{MONOGRAMAS.get(a["slug"], "QW")}</span></div>'
+        f'</div>\n'
         f"  <div class=\"fc-body\">\n"
         f'    <div class="post-meta"><span class="badge-cat {cat_css}">{a["category"]}</span>'
         f'<span class="dot">·</span><time>{rel_date(a["date"])}</time><span class="dot">·</span>'

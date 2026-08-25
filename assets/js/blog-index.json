@@ -373,6 +373,17 @@
     "url": "/guia/como-rodar"
   },
   {
+    "slug": "qwen3.8-vs-nemotron-3-5-lightning-30b-a3b",
+    "title": "Qwen3.8-27B ou Nemotron-3.5-Lightning-30B-A3B? Veredito por caso de uso (ago/2026)",
+    "category": "Guias",
+    "tags": [],
+    "date": "2026-08-14",
+    "lead": "O MoE agêntico da NVIDIA (30B totais / 3B ativos, até 1M de contexto) que a SERP EN já compara com o Qwen3.8-27B: os benchmarks oficiais do próprio NVIDIA (SWE-bench Verified 51,56, Terminal-Bench 2.1 24,58), a promessa de até 4× de velocidade, GGUF UD-Q4_K_XL 25,5 GB, 25 GB no Ollama e o veredito honesto por perfil — com fontes.",
+    "readTime": 17,
+    "featured": false,
+    "url": "/guia/qwen3.8-vs-nemotron-3-5-lightning-30b-a3b"
+  },
+  {
     "slug": "qwen3.8-vs-ornith-1-5-35b-a3b",
     "title": "Qwen3.8-27B ou Ornith-1.5-35B-A3B? Veredito por caso de uso (ago/2026)",
     "category": "Benchmarks",

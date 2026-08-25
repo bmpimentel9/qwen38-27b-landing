@@ -8,6 +8,19 @@ ordem reversa (mais recente primeiro). Datas em ISO `YYYY-MM-DD`.
 
 ---
 
+## [2026-08-25] — Pack de imagens harmônicas IA por artigo + redesenho estético (t_c197a42b)
+
+### Added
+- **Pack de 33 imagens geradas por IA** (SDXL local via ComfyUI, pipeline ROCm) substituindo as antigas em `images/*.webp` + `images/*.avif` — cada artigo agora tem arte própria refletindo o tema do slug, com identidade visual coesa (paleta dark-ai: navy #0B0E14 + acentos teal/ciano/violeta, concept-art tech, composição 16:9). Hero 1920×1080, demais 1200×675.
+- **Redesign do layout** (`assets/css/blog.css` + `assets/js/blog.js`): cards do feed e featured card passam a exibir a imagem real do artigo (antes eram monogramas em gradiente), com overlay de legibilidade no hover, zoom sutil e fallback automático para o monograma de categoria se a imagem falhar (`data-fallback`).
+- **`scripts/build_index.py`**: cards passam a referenciar `/images/[slug].webp`/`.avif` com `alt` descritivo; mapeamento `IMAGE_SLUG` para os 2 artigos cujo slug difere do nome da imagem.
+
+### Changed
+- `index.html`: blocos de destaque, últimos artigos e categorias regenerados com as novas imagens (via `templates/feed-home.html`).
+- `assets/js/blog-index.json`: reindexado (inclui artigo Nemotron que faltava).
+
+---
+
 ## [2026-08-24] — Correção QA: tamanho NVFP4 e downloads do Qwen no artigo-veredicto vs Nemotron (t_06352eae)
 
 ### Changed
