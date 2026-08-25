@@ -589,12 +589,12 @@ pre code { color: var(--text); }
   .post-card h3 { font-size: 1rem; margin-bottom: var(--space-1); }
   .post-card .post-meta { margin-bottom: var(--space-1); }
 
-  /* featured horizontal equilibrado: imagem 45%, texto 55% */
-  .featured-card {
-    grid-template-columns: 45% 55%;
-    align-items: stretch;
-  }
-  .featured-card .fc-media-wrap { aspect-ratio: auto; }
+  /* featured vertical equilibrado no mobile: imagem 16:9 em largura
+     total no topo, corpo compacto embaixo. Coluna de texto estreita
+     (horizontal 45/55) forçava título em 7 linhas — vertical com h2
+     menor + excerto clampado fica limpo e é o hero do feed. */
+  .featured-card { grid-template-columns: 1fr; }
+  .featured-card .fc-media-wrap { aspect-ratio: 16/9; position: relative; }
   .featured-card .fc-body { padding: var(--space-4); }
   .featured-card h2 { font-size: 1.2rem; margin: var(--space-2) 0; }
   .featured-card p {
