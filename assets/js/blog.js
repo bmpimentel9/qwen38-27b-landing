@@ -197,4 +197,31 @@
   /* ---------- 5. Rodapé: ano corrente ---------- */
   var year = document.querySelector("[data-year]");
   if (year) year.textContent = String(new Date().getFullYear());
+
+  /* ---------- 6. Fallback de imagem do pack (t_c197a42b) ----------
+     Se a arte webp/avif não carregar, marca o wrapper (.post-thumb-wrap
+     ou .fc-media-wrap) com data-fallback="on" para o CSS exibir o
+     monograma de categoria em seu lugar. Progressive enhancement. */
+  function bindImgFallback() {
+    var imgs = document.querySelectorAll(
+      ".post-thumb-wrap .post-thumb img, .fc-media-wrap .fc-media img"
+    );
+    Array.prototype.forEach.call(imgs, function (img) {
+      var wrap = img.closest(".post-thumb-wrap, .fc-media-wrap");
+      if (!wrap) return;
+      img.addEventListener("error", function () {
+        wrap.setAttribute("data-fallback", "on");
+      });
+      // se já veio quebrada (cache), garante o fallback
+      if (img.complete && img.naturalWidth === 0) {
+        wrap.setAttribute("data-fallback", "on");
+      }
+    });
+  }
+  bindImgFallback();
+  // cards injetados depois (busca/mobile) re-binding
+  if (document.body) {
+    var mo = new MutationObserver(function () { bindImgFallback(); });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
 })();
