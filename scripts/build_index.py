@@ -194,7 +194,7 @@ def card_html(a: dict) -> str:
     thumb = (
         f'<div class="post-thumb-wrap">'
         f'<picture class="post-thumb">'
-        f'<source type="image/avif" srcset="/images/{img_slug}.avif" width="1200" height="675">'
+        f'<source type="image/avif" srcset="/images/{img_slug}.avif">'
         f'<img src="/images/{img_slug}.webp" alt="{a["title"]}" width="1200" height="675" '
         f'loading="lazy" decoding="async">'
         f'</picture>'
@@ -225,7 +225,7 @@ def featured_html(a: dict) -> str:
         f'<a class="featured-card" href="{a["url"]}">\n'
         f'  <div class="fc-media-wrap">'
         f'<picture class="fc-media">'
-        f'<source type="image/avif" srcset="/images/{img_slug}.avif" width="1200" height="675">'
+        f'<source type="image/avif" srcset="/images/{img_slug}.avif">'
         f'<img src="/images/{img_slug}.webp" alt="{a["title"]}" width="1200" height="675" '
         f'loading="eager" fetchpriority="high" decoding="async">'
         f'</picture>'
