@@ -460,6 +460,8 @@ pre code { color: var(--text); }
   .nav-links.open a:hover { background: var(--surface-2); }
 }
 @media (max-width: 640px) {
+  .header-inner { padding-inline: var(--space-4); gap: var(--space-2); }
+  .brand small { display: none; }
   .container { padding: var(--space-4) var(--space-4) var(--space-6); }
   .post-grid { grid-template-columns: 1fr; }
   .cat-blocks { grid-template-columns: 1fr 1fr; }
@@ -471,6 +473,10 @@ pre code { color: var(--text); }
   .page-head h1, .article-head h1 { font-size: 1.6rem; }
   .hero-compact h1 { font-size: 1.35rem; }
   .stat-row { gap: var(--space-3); }
+}
+@media (max-width: 480px) {
+  /* Preserva busca + menu em telas estreitas sem comprimir a marca. */
+  .nav-actions [data-theme-toggle] { display: none; }
 }
 
 /* ============================================================
