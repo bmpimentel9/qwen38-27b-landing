@@ -74,28 +74,27 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 <a class="skip-link" href="#topo">Pular para o conteúdo</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
-    <nav class="nav-links" aria-label="Navegação principal">
-      <a href="/guia/#topicos">Guias</a>
-      <a href="/guia/#benchmarks-resumo">Benchmarks</a>
-      <a href="/guia/#memoria">Hardware</a>
-      <a href="/guia/#topicos">Releases</a>
-      <a href="/guia/#topicos">Comunidade</a>
+    <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais <small>Brasil</small></a>
+    <nav class="nav-links" id="main-navigation" aria-label="Navegação principal">
       <a href="/modelos">Modelos</a>
+      <a href="/hardware">Hardware</a>
+      <a href="/benchmarks">Benchmarks</a>
+      <a href="/guia/">Guias</a>
+      <a href="/guia/como-rodar">Como rodar</a>
       <a href="/guia/faq">FAQ</a>
     </nav>
     <div class="nav-actions">
-      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" aria-controls="search" data-search-open>⌕</button>
       <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
-      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+      <a class="cta-btn" href="/#descobrir">Encontrar meu modelo</a>
     </div>
-    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false" data-nav-toggle>☰</button>
   </div>
 </header>
 <div class="search-overlay" id="search" data-search hidden>
   <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
     <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
-    <div class="search-results" data-search-results>
+    <div class="search-results" aria-live="polite" data-search-results>
       <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
     </div>
   </div>
@@ -421,19 +420,18 @@ mlx_lm.generate \
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
-      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
-      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
-      <span class="footer-badge">feito sem build · HTML estático</span>
+      <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais</a>
+      <p class="footer-desc">Descubra qual IA local roda no computador que você já tem, com benchmarks, hardware real e guias em português.</p>
+      <span class="footer-badge">independente · prático · pt-BR</span>
     </div>
     <div>
       <h4>Navegação</h4>
       <ul>
-        <li><a href="/guia/#topicos">Guias</a></li>
-        <li><a href="/guia/#benchmarks-resumo">Benchmarks</a></li>
-        <li><a href="/guia/#memoria">Hardware</a></li>
-        <li><a href="/guia/#topicos">Releases</a></li>
-        <li><a href="/guia/#topicos">Comunidade</a></li>
-        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+        <li><a href="/hardware">Hardware</a></li>
+        <li><a href="/benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/">Guias</a></li>
+        <li><a href="/guia/como-rodar">Como rodar</a></li>
         <li><a href="/guia/faq">FAQ</a></li>
       </ul>
     </div>
@@ -448,7 +446,7 @@ mlx_lm.generate \
     </div>
     <div>
       <h4>Newsletter</h4>
-      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <p class="footer-desc">Novos modelos, medições e configurações locais em 5 minutos.</p>
       <form class="newsletter-form" action="#" method="post" data-newsletter>
         <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
         <button type="submit">Assinar</button>
@@ -457,7 +455,7 @@ mlx_lm.generate \
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>© <span data-year>2026</span> · Modelos Locais Brasil</span>
     <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
     <a href="/privacidade">Política de privacidade</a>
   </div>
