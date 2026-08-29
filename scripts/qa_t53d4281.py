@@ -26,28 +26,34 @@ with sync_playwright() as p:
         return page, errors
 
     # ============ ACHADO 1: âncoras de categoria ============
-    # mapeamento esperado (categoria -> âncora real no /guia/)
-    EXPECT = {
+    # navegação principal orientada à decisão (redesign hardware-first)
+    NAV_EXPECT = {
+        "Modelos": "/modelos", "Hardware": "/hardware",
+        "Benchmarks": "/benchmarks", "Guias": "/guia/",
+        "Como rodar": "/guia/como-rodar", "FAQ": "/guia/faq",
+    }
+    # mapeamento editorial esperado (categoria -> âncora real no /guia/)
+    CATEGORY_EXPECT = {
         "Guias": "topicos", "Benchmarks": "benchmarks-resumo",
         "Hardware": "memoria", "Releases": "topicos", "Comunidade": "topicos",
     }
     # 1a. header nav da home
     page, errors = new_page(1440)
     page.goto(BASE + "/", wait_until="networkidle")
-    for label, anchor in EXPECT.items():
+    for label, expected_href in NAV_EXPECT.items():
         lnk = page.locator(f'nav.nav-links a:has-text("{label}")').first
         if lnk.count() == 0:
             check(f"home/header: link {label} existe", False)
             continue
         href = lnk.get_attribute("href")
-        ok = href == f"/guia/#{anchor}"
-        check(f"home/header: {label} -> #{anchor}", ok, href)
+        ok = href == expected_href
+        check(f"home/header: {label} -> {expected_href}", ok, href)
     page.close()
 
     # 1b. cat-blocks "Ver todos"
     page, errors = new_page(1440)
     page.goto(BASE + "/", wait_until="networkidle")
-    for label, anchor in EXPECT.items():
+    for label, anchor in CATEGORY_EXPECT.items():
         block = page.locator(f".cat-block:has(h3:text-is(\"{label}\"))")
         lnk = block.locator("a:has-text('Ver todos')")
         href = lnk.get_attribute("href")
@@ -58,16 +64,16 @@ with sync_playwright() as p:
     # 1c. footer
     page, errors = new_page(1440)
     page.goto(BASE + "/", wait_until="networkidle")
-    for label, anchor in EXPECT.items():
+    for label, expected_href in NAV_EXPECT.items():
         lnk = page.locator(f"footer a:has-text(\"{label}\")").first
         href = lnk.get_attribute("href")
-        ok = href == f"/guia/#{anchor}"
-        check(f"home/footer: {label} -> #{anchor}", ok, href)
+        ok = href == expected_href
+        check(f"home/footer: {label} -> {expected_href}", ok, href)
     page.close()
 
     # 1d. os ids alvo EXISTEM no /guia/ e o clique navega até a seção
     page, errors = new_page(1440)
-    for anchor in set(EXPECT.values()):
+    for anchor in set(CATEGORY_EXPECT.values()):
         page.goto(BASE + "/guia/", wait_until="networkidle")
         target = page.locator(f"#{anchor}")
         check(f"/guia/: id #{anchor} existe", target.count() == 1)

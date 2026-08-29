@@ -238,6 +238,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 </script>
 <link rel="stylesheet" href="/assets/css/blog.css">
 <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
+<link rel="stylesheet" href="/assets/css/home.css">
 <script src="/assets/js/blog.js" defer></script>
 </head>
 
@@ -251,28 +252,27 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 <a class="skip-link" href="#topo">Pular para o conteúdo</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais <small>≤30B</small></a>
-    <nav class="nav-links" aria-label="Navegação principal">
-      <a href="/guia/#topicos">Guias</a>
-      <a href="/guia/#benchmarks-resumo">Benchmarks</a>
-      <a href="/guia/#memoria">Hardware</a>
-      <a href="/guia/#topicos">Releases</a>
-      <a href="/guia/#topicos">Comunidade</a>
+    <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais <small>Brasil</small></a>
+    <nav class="nav-links" id="main-navigation" aria-label="Navegação principal">
       <a href="/modelos">Modelos</a>
+      <a href="/hardware">Hardware</a>
+      <a href="/benchmarks">Benchmarks</a>
+      <a href="/guia/">Guias</a>
+      <a href="/guia/como-rodar">Como rodar</a>
       <a href="/guia/faq">FAQ</a>
     </nav>
     <div class="nav-actions">
-      <button class="icon-btn" type="button" aria-label="Buscar artigos" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" aria-controls="search" data-search-open>⌕</button>
       <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
-      <a class="cta-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face</a>
+      <a class="cta-btn" href="/#descobrir">Encontrar meu modelo</a>
     </div>
-    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" data-nav-toggle>☰</button>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false" data-nav-toggle>☰</button>
   </div>
 </header>
 <div class="search-overlay" id="search" data-search hidden>
   <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
     <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
-    <div class="search-results" data-search-results>
+    <div class="search-results" aria-live="polite" data-search-results>
       <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
     </div>
   </div>
@@ -280,33 +280,123 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 <!-- @@/HEADER@@ -->
 <main id="topo" class="container">
 
-  <section class="hero-compact">
-    <div>
-      <h1>Qwen3.8-27B <span>· modelo local de 27B</span> para rodar no seu PC</h1>
-      <p>O blog de referência da comunidade de modelos locais ≤30B: guias práticos, benchmarks medidos e hardware real. Comece pelo Qwen3.8-27B ou explore o acervo.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="v">27B</div><div class="l">Parâmetros</div></div>
-        <div class="hero-stat"><div class="v">262K</div><div class="l">Contexto</div></div>
-        <div class="hero-stat"><div class="v">Apache 2.0</div><div class="l">Licença</div></div>
-        <div class="hero-stat"><div class="v">52</div><div class="l">AAI Index</div></div>
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="home-hero-copy">
+      <p class="home-eyebrow"><span aria-hidden="true"></span> Portal brasileiro de IA local</p>
+      <h1 id="home-title">Descubra qual IA local — do <strong>Qwen3.8-27B</strong> aos melhores modelos — roda no seu computador.</h1>
+      <p class="home-lead">Cruze hardware, memória, quantização e tarefa. Encontre uma configuração prática para rodar modelos no seu PC, com dados verificáveis e guias em português.</p>
+      <div class="home-actions">
+        <a class="home-btn home-btn-primary" href="#descobrir">Começar pelo meu hardware <span aria-hidden="true">→</span></a>
+        <a class="home-btn home-btn-secondary" href="/modelos">Explorar modelos</a>
+      </div>
+      <ul class="home-assurances" aria-label="Características do portal">
+        <li><span aria-hidden="true">✓</span> Sem cadastro</li>
+        <li><span aria-hidden="true">✓</span> Hardware real</li>
+        <li><span aria-hidden="true">✓</span> Fontes identificadas</li>
+      </ul>
+    </div>
+
+    <aside class="fit-preview" aria-label="Exemplo de diagnóstico de compatibilidade">
+      <div class="fit-preview-head">
+        <span class="fit-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>diagnóstico ilustrativo</span>
+        <span class="fit-live"><i aria-hidden="true"></i> pronto</span>
+      </div>
+      <div class="fit-machine">
+        <div class="fit-machine-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
+        </div>
+        <div><span>Seu computador</span><strong>12 GB VRAM · 32 GB RAM</strong></div>
+        <span class="fit-edit">perfil</span>
+      </div>
+      <div class="fit-result">
+        <div class="fit-result-top"><span>Melhor equilíbrio</span><span class="fit-status">Roda bem</span></div>
+        <strong>Modelo local 14B · GGUF Q4</strong>
+        <div class="fit-bars" aria-label="Perfil estimado: memória 74%, velocidade 86%, qualidade 82%">
+          <div><span>Memória</span><i><b style="width:74%"></b></i><em>74%</em></div>
+          <div><span>Velocidade</span><i><b style="width:86%"></b></i><em>86%</em></div>
+          <div><span>Qualidade</span><i><b style="width:82%"></b></i><em>82%</em></div>
+        </div>
+        <p>O portal mostra por que cabe, como instalar e quais limites esperar.</p>
+      </div>
+      <div class="fit-command"><span>$</span><code>ollama run modelo:14b</code><span aria-hidden="true">⌘</span></div>
+    </aside>
+  </section>
+
+  <section class="home-proof" aria-label="Cobertura editorial do portal">
+    <div><strong>27</strong><span>artigos técnicos</span></div>
+    <div><strong>11</strong><span>modelos comparados</span></div>
+    <div><strong>15+</strong><span>configurações reais</span></div>
+    <div><strong>PT-BR</strong><span>contexto brasileiro</span></div>
+  </section>
+
+  <section class="discovery-section" id="descobrir" aria-labelledby="discover-title">
+    <div class="home-section-head">
+      <p class="home-kicker">Comece pela sua realidade</p>
+      <h2 id="discover-title">Uma decisão local começa pelo hardware — não pelo hype.</h2>
+      <p>Escolha o caminho que mais se parece com a sua dúvida. Você chega aos dados e guias que já existem no portal.</p>
+    </div>
+    <div class="discovery-grid">
+      <a class="discovery-card discovery-card-featured" href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">
+        <span class="discovery-number">01</span>
+        <span class="discovery-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M7 9h4M7 13h2M16 9v6M13 12h6"></path></svg>
+        </span>
+        <h3>Já tenho um computador</h3>
+        <p>Veja o que cabe na sua RAM ou VRAM e qual quantização faz sentido.</p>
+        <span class="discovery-link">Analisar compatibilidade <b aria-hidden="true">→</b></span>
+      </a>
+      <a class="discovery-card" href="/hardware">
+        <span class="discovery-number">02</span>
+        <span class="discovery-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"></path><path d="M8 17v3M16 17v3M7 4v3M12 4v3M17 4v3"></path></svg>
+        </span>
+        <h3>Quero escolher hardware</h3>
+        <p>Compare GPU, memória unificada e configurações de custo-benefício.</p>
+        <span class="discovery-link">Explorar hardware <b aria-hidden="true">→</b></span>
+      </a>
+      <a class="discovery-card" href="/modelos">
+        <span class="discovery-number">03</span>
+        <span class="discovery-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M4 7.5l8 4.5 8-4.5M12 12v9"></path></svg>
+        </span>
+        <h3>Quero comparar modelos</h3>
+        <p>Encontre opções para chat, código, agentes, visão e uso comercial.</p>
+        <span class="discovery-link">Ver modelos <b aria-hidden="true">→</b></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="qwen-spotlight" aria-labelledby="qwen-title">
+    <div class="qwen-media">
+      <picture>
+        <source type="image/avif" srcset="/images/hero-home.avif">
+        <img src="/images/hero-home.webp" alt="Qwen3.8-27B: modelo local de 27B em laboratório escuro com acento violeta e ciano" title="Qwen3.8-27B — Dark AI Lab" width="1920" height="1080" loading="lazy" decoding="async">
+      </picture>
+      <span>Modelo em destaque</span>
+    </div>
+    <div class="qwen-copy">
+      <p class="home-kicker">Dossiê técnico completo</p>
+      <h2 id="qwen-title">Qwen3.8-27B: o ponto de partida do portal</h2>
+      <p>Um modelo denso de 27B, Apache 2.0 e contexto nativo de 262K. Reunimos benchmarks, requisitos, medições próprias e comandos para transformar especificações em uma decisão prática.</p>
+      <dl class="qwen-stats">
+        <div><dt>Parâmetros</dt><dd>27B densos</dd></div>
+        <div><dt>Contexto</dt><dd>262K</dd></div>
+        <div><dt>Licença</dt><dd>Apache 2.0</dd></div>
+        <div><dt>AAI Index</dt><dd>52</dd></div>
+      </dl>
+      <div class="qwen-actions">
+        <a class="home-btn home-btn-primary" href="/guia/como-rodar">Como rodar</a>
+        <a href="/benchmarks">Ver benchmarks <span aria-hidden="true">→</span></a>
+        <a href="/guia/hardware-local">Hardware necessário <span aria-hidden="true">→</span></a>
       </div>
     </div>
-    <div class="hero-ctas">
-      <a class="cta-btn" href="/guia/como-rodar">Como rodar</a>
-      <a href="/modelos" style="font-weight:700">Especificações →</a>
-      <a href="/benchmarks" style="font-weight:700">Benchmarks →</a>
-    </div>
-  
-<picture class="hero-image" style="width:100%;aspect-ratio:1920/1080;height:auto;display:block;border-radius:var(--radius-lg);overflow:hidden;margin-top:var(--space-6)">
-  <source type="image/avif" srcset="/images/hero-home.avif">
-  <img src="/images/hero-home.webp" alt="Qwen3.8-27B: modelo local de 27B em laboratório escuro com acento violeta e ciano" title="Qwen3.8-27B — Dark AI Lab" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async">
-</picture>
-</section>
+  </section>
 
   <section aria-labelledby="feat-title">
     <h2 class="section-title" id="feat-title">Em destaque</h2>
 <a class="featured-card" href="/guia/qwen3-8-27b-uncensored-abliterated">
-  <div class="fc-media-wrap"><picture class="fc-media"><source type="image/avif" srcset="/images/qwen3-8-27b-uncensored-abliterated.avif"><img src="/images/qwen3-8-27b-uncensored-abliterated.webp" alt="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async"></picture><div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;min-height:100%;border-radius:0"><span>UNCENSORED</span></div></div>
+  <div class="fc-media-wrap"><picture class="fc-media"><source type="image/avif" srcset="/images/qwen3-8-27b-uncensored-abliterated.avif"><img src="/images/qwen3-8-27b-uncensored-abliterated.webp" alt="Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência" width="1200" height="675" loading="lazy" decoding="async"></picture><div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA;min-height:100%;border-radius:0"><span>UNCENSORED</span></div></div>
   <div class="fc-body">
     <div class="post-meta"><span class="badge-cat guides">Guias</span><span class="dot">·</span><time>há 5 dias</time><span class="dot">·</span><span>19 min de leitura</span></div>
     <h2>Qwen3.8-27B-Uncensored: 980 mil downloads em 6 dias e quase nenhuma perda de inteligência</h2>
@@ -444,19 +534,18 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
-      <a class="brand" href="/"><span class="mark">Q</span> Blog Modelos Locais</a>
-      <p class="footer-desc">Guias, benchmarks e hardware para rodar modelos de linguagem de até 30B no seu PC. Comunidade em pt-BR.</p>
-      <span class="footer-badge">feito sem build · HTML estático</span>
+      <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais</a>
+      <p class="footer-desc">Descubra qual IA local roda no computador que você já tem, com benchmarks, hardware real e guias em português.</p>
+      <span class="footer-badge">independente · prático · pt-BR</span>
     </div>
     <div>
       <h4>Navegação</h4>
       <ul>
-        <li><a href="/guia/#topicos">Guias</a></li>
-        <li><a href="/guia/#benchmarks-resumo">Benchmarks</a></li>
-        <li><a href="/guia/#memoria">Hardware</a></li>
-        <li><a href="/guia/#topicos">Releases</a></li>
-        <li><a href="/guia/#topicos">Comunidade</a></li>
-        <li><a href="/guia-rapido">Guia Rápido</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+        <li><a href="/hardware">Hardware</a></li>
+        <li><a href="/benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/">Guias</a></li>
+        <li><a href="/guia/como-rodar">Como rodar</a></li>
         <li><a href="/guia/faq">FAQ</a></li>
       </ul>
     </div>
@@ -471,7 +560,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
     <div>
       <h4>Newsletter</h4>
-      <p class="footer-desc">Resumo semanal dos modelos locais ≤30B.</p>
+      <p class="footer-desc">Novos modelos, medições e configurações locais em 5 minutos.</p>
       <form class="newsletter-form" action="#" method="post" data-newsletter>
         <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
         <button type="submit">Assinar</button>
@@ -480,7 +569,7 @@ gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© <span data-year>2026</span> · Portal de modelos locais de 30B</span>
+    <span>© <span data-year>2026</span> · Modelos Locais Brasil</span>
     <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
     <a href="/privacidade">Política de privacidade</a>
   </div>
