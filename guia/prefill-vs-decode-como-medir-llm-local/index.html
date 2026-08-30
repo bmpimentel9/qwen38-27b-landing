@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prefill vs. decode: como medir uma LLM local | Modelos Locais</title>
+  <meta name="description" content="Aprenda a medir prefill, TTFT, decode, TPOT e ITL de uma LLM local com protocolo reproduzível para llama.cpp e vLLM.">
+  <meta name="keywords" content="prefill vs decode, benchmark llm local, ttft llm, tpot, itl, llama-bench, vllm bench, tokens por segundo">
+  <meta name="author" content="Bruno Pimentel">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Modelos Locais Brasil">
+  <meta property="og:title" content="Prefill vs. decode: como medir uma LLM local">
+  <meta property="og:description" content="Um protocolo prático para comparar velocidade local sem misturar prompt processing, geração e latência fim a fim.">
+  <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local">
+  <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/prefill-vs-decode-como-medir-llm-local.webp">
+  <meta property="article:published_time" content="2026-08-30T08:00:00-03:00">
+  <meta property="article:modified_time" content="2026-08-30T08:00:00-03:00">
+  <meta property="article:section" content="Benchmark">
+  <meta property="article:tag" content="Prefill">
+  <meta property="article:tag" content="Decode">
+  <meta property="article:tag" content="TTFT">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Prefill vs. decode: como medir uma LLM local">
+  <meta name="twitter:description" content="Pare de comparar um único tok/s: meça TTFT, TPOT, ITL e throughput com o mesmo protocolo.">
+  <meta name="twitter:site" content="@bmpimentel9">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+  <script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+  (function(){var fired={};window.addEventListener('scroll',function(){var h=document.documentElement;var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;[25,50,75,100].forEach(function(t){if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}});},{passive:true});})();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": "Prefill vs. decode: como medir uma LLM local sem se enganar",
+        "description": "Guia de benchmark reproduzível para separar prompt processing, TTFT, decode, TPOT, ITL e latência fim a fim em llama.cpp e vLLM.",
+        "inLanguage": "pt-BR",
+        "datePublished": "2026-08-30",
+        "dateModified": "2026-08-30",
+        "author": {"@type": "Person", "name": "Bruno Pimentel"},
+        "publisher": {"@type": "Organization", "name": "Modelos Locais Brasil"},
+        "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local",
+        "image": "https://qwen38-27b-landing.vercel.app/images/prefill-vs-decode-como-medir-llm-local.webp",
+        "proficiencyLevel": "Intermediate"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"},
+          {"@type": "ListItem", "position": 2, "name": "Guias", "item": "https://qwen38-27b-landing.vercel.app/guia"},
+          {"@type": "ListItem", "position": 3, "name": "Prefill vs. decode", "item": "https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Qual é a diferença entre prefill e decode em uma LLM?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Prefill processa todos os tokens do prompt e constrói o KV cache antes da resposta. Decode gera a saída de forma autorregressiva, normalmente um passo por vez. São cargas diferentes e devem ser medidas separadamente."}
+          },
+          {
+            "@type": "Question",
+            "name": "Tokens por segundo e TPOT são a mesma coisa?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Eles descrevem a mesma cadência em unidades inversas quando a geração é padrão e há um usuário: tok/s é aproximadamente 1000 dividido pelo TPOT em milissegundos. Em serving concorrente ou speculative decoding, é preciso informar também a fórmula e o ponto de medição."}
+          },
+          {
+            "@type": "Question",
+            "name": "Quantas repetições devo fazer em um benchmark local?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Faça aquecimento e pelo menos cinco repetições por cenário. Publique mediana e dispersão, além de versão do runtime, arquivo do modelo, hardware, backend, contexto e flags relevantes."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+</head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais <small>Brasil</small></a>
+    <nav class="nav-links" id="main-navigation" aria-label="Navegação principal">
+      <a href="/modelos">Modelos</a>
+      <a href="/hardware">Hardware</a>
+      <a href="/benchmarks">Benchmarks</a>
+      <a href="/guia/">Guias</a>
+      <a href="/guia/como-rodar">Como rodar</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" aria-controls="search" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="/#descobrir">Encontrar meu modelo</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" aria-live="polite" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+  <main id="topo" class="container">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Home</a><span class="sep">›</span><a href="/guia/#benchmarks">Benchmark</a><span class="sep">›</span><span aria-current="page">Prefill vs. decode</span>
+    </nav>
+
+    <article>
+      <header class="article-head">
+        <h1>Prefill vs. decode: como medir uma LLM local sem se enganar</h1>
+        <div class="article-meta">
+          <span class="badge-cat bench">Benchmark</span>
+          <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+          <span class="sep">·</span><time datetime="2026-08-30">30 ago 2026</time>
+          <span class="sep">·</span><span>12 min de leitura</span>
+        </div>
+        <p class="article-lead">“Meu modelo faz 40 tokens por segundo” parece um resultado completo. Não é. Esse número pode descrever a leitura do prompt, a geração da resposta, a soma de vários usuários ou apenas uma parte do caminho. Este guia separa as métricas e entrega um protocolo que outra pessoa consegue repetir.</p>
+      </header>
+
+      <div class="article-layout">
+        <details class="toc-details">
+          <summary>Nesta página</summary>
+          <nav class="toc" aria-label="Nesta página">
+            <ul>
+              <li><a href="#duas-fases">As duas fases da inferência</a></li>
+              <li><a href="#metricas">As seis métricas úteis</a></li>
+              <li><a href="#escolha">Qual métrica escolher</a></li>
+              <li><a href="#protocolo">Protocolo reproduzível</a></li>
+              <li><a href="#llama-bench">Como medir com llama-bench</a></li>
+              <li><a href="#vllm">Como medir um servidor vLLM</a></li>
+              <li><a href="#erros">Sete erros comuns</a></li>
+              <li><a href="#publicar">Template para publicar resultados</a></li>
+              <li><a href="#faq">Perguntas frequentes</a></li>
+              <li><a href="#fontes">Fontes primárias</a></li>
+            </ul>
+          </nav>
+        </details>
+
+        <div class="article-body">
+          <picture class="article-thumb">
+            <source type="image/avif" srcset="/images/prefill-vs-decode-como-medir-llm-local.avif">
+            <img src="/images/prefill-vs-decode-como-medir-llm-local.webp" alt="Diagrama abstrato mostrando o prompt em paralelo no prefill e a geração sequencial no decode" title="Prefill vs. decode: como medir uma LLM local" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+          </picture>
+
+          <div class="callout">
+            <strong>Resposta curta:</strong> para chat local, publique pelo menos <strong>TTFT</strong> (quanto demora para começar) e <strong>TPOT ou decode tok/s</strong> (o ritmo depois que começa). Para documentos longos, acrescente prefill tok/s. Para servidor com múltiplos usuários, acrescente throughput agregado e percentis sob carga.
+          </div>
+
+          <h2 id="duas-fases">As duas fases da inferência</h2>
+          <p>Uma LLM decoder-only executa dois trabalhos diferentes antes de completar uma resposta. No <strong>prefill</strong>, também chamado de prompt processing, o runtime processa o prompt em blocos e constrói o KV cache. Como muitos tokens podem ser calculados em paralelo, essa fase tende a aproveitar computação e batches maiores.</p>
+          <p>No <strong>decode</strong>, o modelo usa o KV cache e gera novos tokens de maneira autorregressiva. Cada passo depende do anterior. Em uma execução de usuário único, essa fase frequentemente pressiona mais a largura de banda de memória porque os pesos precisam ser lidos repetidamente para produzir poucos tokens por passo.</p>
+          <p>É por isso que trocar GPU, batch size, número de threads ou backend pode melhorar muito uma fase e quase não alterar a outra. A documentação do llama.cpp trata explicitamente prompt processing (<code>pp</code>) e text generation (<code>tg</code>) como testes separados. O vLLM também expõe tempos distintos de prefill e decode em suas métricas de produção.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Fase</th><th>Entrada</th><th>Saída</th><th>Gargalo típico</th><th>O que o usuário sente</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Prefill</strong></td><td>Prompt inteiro</td><td>KV cache + primeiro passo</td><td>Computação e batching</td><td>Espera antes da resposta</td></tr>
+              <tr><td><strong>Decode</strong></td><td>KV cache + último token</td><td>Próximo token</td><td>Banda de memória em single-user</td><td>Ritmo em que o texto aparece</td></tr>
+            </tbody>
+          </table></div>
+
+          <h2 id="metricas">As seis métricas que realmente ajudam</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Métrica</th><th>Como ler</th><th>Melhor valor</th><th>Armadilha</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Prefill tok/s</strong></td><td>Tokens de entrada processados por segundo</td><td>Maior</td><td>Não inclui necessariamente tokenização, fila ou rede</td></tr>
+              <tr><td><strong>TTFT</strong></td><td>Tempo do envio da requisição ao primeiro token recebido</td><td>Menor</td><td>O ponto inicial varia entre ferramentas</td></tr>
+              <tr><td><strong>Decode tok/s</strong></td><td>Tokens de saída gerados por segundo durante o decode</td><td>Maior</td><td>Pode ser por usuário ou agregado</td></tr>
+              <tr><td><strong>TPOT</strong></td><td>Tempo médio por token de saída, sem o primeiro</td><td>Menor</td><td>Não é simplesmente latência total ÷ tokens</td></tr>
+              <tr><td><strong>ITL</strong></td><td>Intervalo observado entre entregas consecutivas no stream</td><td>Menor</td><td>Um chunk pode conter vários tokens</td></tr>
+              <tr><td><strong>Latência E2E</strong></td><td>Tempo total da requisição completa</td><td>Menor</td><td>Mistura fila, prefill e comprimento da saída</td></tr>
+            </tbody>
+          </table></div>
+
+          <p>O vLLM define o <strong>TPOT</strong> por requisição como:</p>
+          <p><code>TPOT = (latência fim a fim − TTFT) / (tokens de saída − 1)</code></p>
+          <p>Em geração padrão, sem batching especulativo, a conversão aproximada é <code>tok/s = 1000 / TPOT em ms</code>. Portanto, 50 ms/token equivale a cerca de 20 tok/s. Com speculative decoding, uma entrega do stream pode carregar vários tokens aceitos. Nesse caso, ITL e TPOT deixam de ser intercambiáveis: o próprio vLLM recomenda olhar para as fórmulas e pontos de medição, não apenas para o nome da métrica.</p>
+
+          <h2 id="escolha">Qual métrica escolher para cada uso</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Caso de uso</th><th>Métricas prioritárias</th><th>Cenário de teste</th></tr></thead>
+            <tbody>
+              <tr><td>Chat curto</td><td>TTFT + TPOT/decode tok/s</td><td>512 tokens de entrada → 128 de saída</td></tr>
+              <tr><td>RAG</td><td>TTFT + prefill tok/s + TPOT</td><td>2.048 → 256</td></tr>
+              <tr><td>Documento/código longo</td><td>Prefill tok/s + TTFT + E2E</td><td>8.192 → 512</td></tr>
+              <tr><td>Agente com raciocínio</td><td>TPOT + E2E + tokens gerados</td><td>Prompt real + saída longa</td></tr>
+              <tr><td>API para equipe</td><td>p50/p90/p99 TTFT e TPOT + req/s</td><td>Carga concorrente realista</td></tr>
+            </tbody>
+          </table></div>
+          <p>Os comprimentos acima não são um padrão universal. Eles formam uma matriz pequena e útil para comparação. O importante é publicar o par entrada/saída: um resultado “32 tok/s” sem comprimento, contexto e concorrência não permite decisão.</p>
+
+          <h2 id="protocolo">Protocolo reproduzível em sete passos</h2>
+          <ol>
+            <li><strong>Congele a configuração.</strong> Registre arquivo e hash do modelo, quantização, runtime e commit/versão, sistema operacional, driver, backend, CPU, RAM, GPU e VRAM.</li>
+            <li><strong>Separe carga e inferência.</strong> Meça o tempo de carregar o modelo à parte. Não misture cold start com TTFT de uma sessão já pronta.</li>
+            <li><strong>Defina a matriz.</strong> Use pelo menos três pares de entrada/saída relevantes, como 512→128, 2.048→256 e 8.192→512.</li>
+            <li><strong>Declare flags que mudam o resultado.</strong> Contexto, batch e microbatch, threads, camadas na GPU, Flash Attention, tipo do KV cache, prefix cache e speculative decoding.</li>
+            <li><strong>Aqueça antes.</strong> Faça uma execução de warm-up para compilar kernels e estabilizar caches. Meça cold start separadamente se ele importar para seu produto.</li>
+            <li><strong>Repita.</strong> Rode pelo menos cinco vezes. Em máquina local, reporte mediana e dispersão. Em servidor, reporte p50, p90 e p99 sob uma taxa de chegada declarada.</li>
+            <li><strong>Valide fim a fim.</strong> Um microbenchmark isola o motor. Um teste via API mede a experiência, incluindo tokenização, fila, serialização, rede local e streaming.</li>
+          </ol>
+          <div class="callout">
+            <strong>Controle térmico:</strong> em notebooks e mini-PCs, registre modo de energia, temperatura ou clocks e se o aparelho estava conectado à tomada. Cinco execuções em sequência podem transformar o benchmark em um teste de throttling.
+          </div>
+
+          <h2 id="llama-bench">Como medir com llama-bench</h2>
+          <p>O <code>llama-bench</code> possui três modalidades oficiais: <code>-p</code> mede prompt processing, <code>-n</code> mede text generation e <code>-pg</code> executa os dois em sequência. O comando abaixo separa prefill e decode, repete cinco vezes e devolve JSON:</p>
+          <pre><code>./llama-bench \
+  -m /modelos/modelo.Q4_K_M.gguf \
+  -p 512,2048,8192 \
+  -n 128,512 \
+  -r 5 \
+  -o json</code></pre>
+          <p>Para executar pares fim a fim, sem criar todas as combinações:</p>
+          <pre><code>./llama-bench \
+  -m /modelos/modelo.Q4_K_M.gguf \
+  -pg 512,128 \
+  -pg 2048,256 \
+  -pg 8192,512 \
+  -r 5 \
+  -o json</code></pre>
+          <p>Acrescente explicitamente as opções relevantes do seu ambiente — por exemplo <code>-ngl</code>, <code>-b</code>, <code>-ub</code>, <code>-t</code>, <code>-fa</code>, <code>-ctk</code> e <code>-ctv</code>. A documentação oficial alerta que as medições do <code>llama-bench</code> <strong>não incluem tokenização nem sampling</strong>. Por isso, seu número de <code>pp</code> não deve ser chamado automaticamente de TTFT real da aplicação.</p>
+
+          <h2 id="vllm">Como medir um servidor vLLM</h2>
+          <p>Para uma API, o cliente do benchmark precisa enxergar o stream. O <code>vllm bench serve</code> mede TTFT a partir do envio da requisição até o primeiro output recebido e reporta TTFT, TPOT e ITL, além de throughput de requisições e tokens.</p>
+          <pre><code>vllm bench serve \
+  --backend vllm \
+  --model SEU_MODELO \
+  --endpoint /v1/completions \
+  --dataset-name random \
+  --random-input-len 2048 \
+  --random-output-len 256 \
+  --num-prompts 100</code></pre>
+          <p>Rode também com concorrência ou request rate compatível com o uso esperado. Uma GPU pode produzir ótimo throughput agregado enquanto cada usuário recebe tokens lentamente. Para produção, o endpoint <code>/metrics</code> do vLLM expõe histogramas de TTFT, ITL, tempo de prefill, tempo de decode, fila e uso do KV cache.</p>
+          <p>Há um cuidado essencial: repetir o mesmo dataset pode reaproveitar prefixos e inflar o resultado. A documentação do vLLM recomenda variar a seed, reiniciar/resetar o servidor ou usar uma varredura que limpe caches quando o objetivo não for medir prefix caching.</p>
+
+          <h2 id="erros">Sete erros que invalidam comparações</h2>
+          <ol>
+            <li><strong>Chamar qualquer tok/s de “velocidade”.</strong> Diga se é entrada, saída, usuário único ou soma de usuários.</li>
+            <li><strong>Comparar quantizações diferentes sem declarar.</strong> Q4, Q6, Q8, FP8 e BF16 mudam memória, compute e qualidade.</li>
+            <li><strong>Ocultar offload.</strong> Um modelo parcialmente na RAM atravessa o barramento e não é comparável a outro totalmente residente na GPU.</li>
+            <li><strong>Usar contexto vazio para prever RAG.</strong> Decode a contexto curto não mostra o custo de prompts longos nem do KV cache.</li>
+            <li><strong>Medir só média.</strong> A média apaga travadas. Para serving, percentis importam; para local, publique dispersão e pior repetição.</li>
+            <li><strong>Reusar cache sem dizer.</strong> Prefix cache é uma otimização válida, mas precisa ser um cenário separado.</li>
+            <li><strong>Comparar runtimes por defaults.</strong> Batch, Flash Attention, KV quantizado e speculative decoding podem estar ligados em um e desligados no outro.</li>
+          </ol>
+
+          <h2 id="publicar">Template mínimo para publicar um resultado</h2>
+          <pre><code>Modelo/arquivo:
+Hash e quantização:
+Runtime + versão/commit:
+SO, driver e backend:
+CPU / RAM / GPU / VRAM:
+Flags: ctx, batch, ubatch, threads, offload, FA, KV, speculative
+Entrada → saída:
+Warm-up e repetições:
+Prefill: mediana tok/s ± dispersão
+TTFT: p50 / p90 / p99
+Decode: mediana tok/s ou TPOT
+ITL: p50 / p90 / p99
+E2E: p50 / p90 / p99
+Concorrência ou request rate:
+Cache: frio, quente ou ambos
+Data do teste:</code></pre>
+          <p>Esse bloco vale mais do que uma captura solta do terminal. Ele permite que outra pessoa encontre a causa de uma diferença e transforma um relato comunitário em evidência reutilizável pelo portal.</p>
+
+          <h2 id="faq">Perguntas frequentes</h2>
+          <h3>Qual é a diferença entre prefill e decode?</h3>
+          <p>Prefill processa o prompt e constrói o KV cache; decode produz a resposta token a token. Prefill responde “quanto demora para entender a entrada”, enquanto decode responde “em qual ritmo a saída aparece”.</p>
+          <h3>Tokens por segundo e TPOT são a mesma coisa?</h3>
+          <p>São unidades inversas em um cenário simples: <code>tok/s ≈ 1000 / TPOT_ms</code>. Em speculative decoding, batching e serving concorrente, publique a fórmula e diferencie throughput agregado de velocidade por usuário.</p>
+          <h3>Quantas repetições devo fazer?</h3>
+          <p>Cinco é um mínimo prático para uma máquina local estável. Se houver ruído térmico, carga concorrente ou decisão de compra importante, use mais execuções e reporte percentis ou intervalos, não apenas a média.</p>
+
+          <h2 id="fontes">Fontes primárias e limites</h2>
+          <ul>
+            <li><a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md">llama.cpp — documentação oficial do llama-bench</a></li>
+            <li><a href="https://docs.vllm.ai/en/latest/benchmarking/cli/">vLLM — Benchmark CLI e definição de TTFT, TPOT e ITL</a></li>
+            <li><a href="https://docs.vllm.ai/en/stable/usage/metrics/">vLLM — métricas de produção</a></li>
+            <li><a href="https://docs.vllm.ai/en/stable/configuration/optimization/">vLLM — chunked prefill e trade-offs de tuning</a></li>
+            <li><a href="https://mlcommons.org/2026/03/mlperf-inference-gpt-oss/">MLCommons — workloads e limites de latência do MLPerf Inference 6.0</a></li>
+          </ul>
+          <p>Os tamanhos de entrada/saída deste protocolo são uma recomendação editorial do portal, não um padrão oficial. Os limites publicados pelo MLPerf variam por modelo e cenário; eles servem como referência de rigor, não como meta universal para uma única máquina doméstica.</p>
+
+          <h2 id="continue">Continue por aqui</h2>
+          <div class="prevnext">
+            <a class="pn-card" href="/guia/tokens-por-segundo-30b-hardware-real"><div class="dir">← Comparar resultados</div><div class="t">Tokens por segundo no hardware real</div></a>
+            <a class="pn-card next" href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu"><div class="dir">Próximo →</div><div class="t">Quantização GGUF: quanto cabe na GPU</div></a>
+          </div>
+
+          <section aria-labelledby="rel-title">
+            <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+            <div class="related-grid">
+              <a class="post-card" href="/guia/tokens-por-segundo-30b-hardware-real"><div class="post-body"><div class="post-meta"><span class="badge-cat hw">Hardware</span></div><h3>Tokens por segundo no hardware real</h3></div></a>
+              <a class="post-card" href="/guia/qwen3-8-27b-lento-causas-fixes"><div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guia</span></div><h3>Qwen3.8-27B lento: causas e correções</h3></div></a>
+              <a class="post-card" href="/guia/como-rodar-vllm-qwen3-8-27b"><div class="post-body"><div class="post-meta"><span class="badge-cat guides">Tutorial</span></div><h3>Como rodar Qwen3.8-27B com vLLM</h3></div></a>
+            </div>
+          </section>
+
+          <div class="share">
+            <span>Compartilhar:</span>
+            <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local">X</a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local">LinkedIn</a>
+            <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local">WhatsApp</a>
+            <a href="https://qwen38-27b-landing.vercel.app/guia/prefill-vs-decode-como-medir-llm-local" data-copy-link>Copiar link</a>
+          </div>
+        </div><!-- /.article-body -->
+      </div><!-- /.article-layout -->
+    </article>
+  </main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais</a>
+      <p class="footer-desc">Descubra qual IA local roda no computador que você já tem, com benchmarks, hardware real e guias em português.</p>
+      <span class="footer-badge">independente · prático · pt-BR</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/modelos">Modelos</a></li>
+        <li><a href="/hardware">Hardware</a></li>
+        <li><a href="/benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/">Guias</a></li>
+        <li><a href="/guia/como-rodar">Como rodar</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Novos modelos, medições e configurações locais em 5 minutos.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Modelos Locais Brasil</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
+</body>
+</html>
