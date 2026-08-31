@@ -1,5 +1,22 @@
 [
   {
+    "slug": "qwen3-8-flash-next-local",
+    "title": "Qwen3.8-Flash-Next local: cabe no seu PC?",
+    "category": "Releases",
+    "tags": [
+      "Qwen3.8-Flash-Next",
+      "Qwen4",
+      "MoE",
+      "Memória",
+      "Licença"
+    ],
+    "date": "2026-08-31",
+    "lead": "6B ativos não significam um modelo de 6B na memória: pesos oficiais de 172,76 a 335,28 GiB, runtimes day-zero, licença Qwen Community 1.0 e veredito por hardware.",
+    "readTime": 11,
+    "featured": false,
+    "url": "/guia/qwen3-8-flash-next-local"
+  },
+  {
     "slug": "qwen3-8-27b-veredito-comunidade-semana",
     "title": "Qwen3.8-27B: o veredito da comunidade após 1 semana (r/LocalLLaMA + r/LocalLLM)",
     "category": "Comunidade",

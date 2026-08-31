@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qwen3.8-Flash-Next local: cabe no seu PC?</title>
+  <meta name="description" content="Qwen3.8-Flash-Next local exige workstation ou datacenter. Veja memória, pesos oficiais, runtimes compatíveis, licença e quando vale tentar na prática.">
+  <meta name="keywords" content="Qwen3.8-Flash-Next local, Qwen4 preview, Qwen Flash Next memória, Qwen Community License, Qwen 6B ativos">
+  <meta name="author" content="Bruno Pimentel">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Modelos Locais Brasil">
+  <meta property="og:title" content="Qwen3.8-Flash-Next local: cabe no seu PC?">
+  <meta property="og:description" content="6B ativos não significam um modelo de 6B na memória. Veja os pesos oficiais, o hardware real e os limites do preview do Qwen4.">
+  <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local">
+  <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/qwen3-8-flash-next-local.webp">
+  <meta property="article:published_time" content="2026-08-31T08:00:00-03:00">
+  <meta property="article:modified_time" content="2026-08-31T08:00:00-03:00">
+  <meta property="article:section" content="Releases">
+  <meta property="article:tag" content="Qwen3.8-Flash-Next">
+  <meta property="article:tag" content="Qwen4">
+  <meta property="article:tag" content="MoE">
+  <meta property="article:tag" content="Hardware">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Qwen3.8-Flash-Next local: cabe no seu PC?">
+  <meta name="twitter:description" content="Pesos oficiais de 172,76 a 335,28 GiB: o que 6B ativos realmente significa para quem quer rodar o preview do Qwen4 localmente.">
+  <meta name="twitter:site" content="@bmpimentel9">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+  <script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+  (function(){var fired={};window.addEventListener('scroll',function(){var h=document.documentElement;var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;[25,50,75,100].forEach(function(t){if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}});},{passive:true});})();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": "Qwen3.8-Flash-Next local: cabe no seu PC?",
+        "description": "Análise dos pesos oficiais, memória, arquitetura, runtimes day-zero e licença do Qwen3.8-Flash-Next para uso local.",
+        "inLanguage": "pt-BR",
+        "datePublished": "2026-08-31",
+        "dateModified": "2026-08-31",
+        "author": {"@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/"},
+        "publisher": {"@type": "Organization", "name": "Modelos Locais Brasil"},
+        "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local",
+        "image": "https://qwen38-27b-landing.vercel.app/images/qwen3-8-flash-next-local.webp",
+        "about": "Qwen3.8-Flash-Next",
+        "proficiencyLevel": "Intermediate"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "O Qwen3.8-Flash-Next cabe em 96 GB?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Não com os checkpoints oficiais. O FP8 ocupa 172,76 GiB e o BF16, 335,28 GiB. A estimativa de 83,82 GiB em 4 bits é apenas um cálculo teórico sobre os componentes contabilizados, antes de overhead, e não corresponde a um checkpoint oficial."}
+          },
+          {
+            "@type": "Question",
+            "name": "O Qwen3.8-Flash-Next é um modelo de 180B?",
+            "acceptedAnswer": {"@type": "Answer", "text": "A soma de 125B do backbone, 51B de embeddings n-gram e 4B de MTP chega a 180B. Mas o backbone é de 125B, com 6B ativos por token. Por isso, chamar o modelo apenas de 180B omite a convenção arquitetural."}
+          },
+          {
+            "@type": "Question",
+            "name": "O contexto de 1 milhão de tokens é nativo?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Não. O contexto nativo é de 262.144 tokens. A extensão para 1 milhão exige YaRN e override de configuração, com alerta de possível degradação em contextos curtos."}
+          },
+          {
+            "@type": "Question",
+            "name": "A licença do Qwen3.8-Flash-Next permite uso comercial?",
+            "acceptedAnswer": {"@type": "Answer", "text": "A licença é Qwen Community 1.0, não Apache 2.0. Ela exige preservar aviso e licença, impõe atribuição visível em produtos acima dos limites definidos e exige licença separada para MaaS e AI Work Assistant comerciais. O texto também descreve uma exceção para uso interno."}
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/"},
+          {"@type": "ListItem", "position": 2, "name": "Guias", "item": "https://qwen38-27b-landing.vercel.app/guia"},
+          {"@type": "ListItem", "position": 3, "name": "Releases", "item": "https://qwen38-27b-landing.vercel.app/guia/#topicos"},
+          {"@type": "ListItem", "position": 4, "name": "Qwen3.8-Flash-Next local", "item": "https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local"}
+        ]
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://qwen38-27b-landing.vercel.app/images/qwen3-8-flash-next-local.webp",
+        "width": 1200,
+        "height": 675,
+        "caption": "Qwen3.8-Flash-Next: poucos caminhos ativos dentro de uma grande estrutura de memória",
+        "representativeOfPage": true
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+</head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais <small>Brasil</small></a>
+    <nav class="nav-links" id="main-navigation" aria-label="Navegação principal">
+      <a href="/modelos">Modelos</a>
+      <a href="/hardware">Hardware</a>
+      <a href="/benchmarks">Benchmarks</a>
+      <a href="/guia/">Guias</a>
+      <a href="/guia/como-rodar">Como rodar</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" aria-controls="search" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="/#descobrir">Encontrar meu modelo</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" aria-live="polite" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+
+<main id="topo" class="container">
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="/">Home</a><span class="sep">›</span><a href="/guia/#topicos">Releases</a><span class="sep">›</span><span aria-current="page">Qwen3.8-Flash-Next local</span>
+  </nav>
+
+  <article>
+    <header class="article-head">
+      <h1>Qwen3.8-Flash-Next local: cabe no seu PC?</h1>
+      <div class="article-meta">
+        <span class="badge-cat releases">Releases</span>
+        <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+        <span class="sep">·</span><time datetime="2026-08-31">31 ago 2026</time>
+        <span class="sep">·</span><span>11 min de leitura</span>
+      </div>
+      <p class="article-lead">Não em um PC comum, pelo menos não com os checkpoints oficiais do lançamento. “6B ativos” reduz o trabalho por token, mas o FP8 ainda ocupa 172,76 GiB e o BF16, 335,28 GiB.</p>
+    </header>
+
+    <div class="article-layout">
+      <details class="toc-details">
+        <summary>Nesta página</summary>
+        <nav class="toc" aria-label="Nesta página">
+          <ul>
+            <li><a href="#resposta">Resposta direta</a></li>
+            <li><a href="#lancamento">O que foi lançado</a></li>
+            <li><a href="#memoria">Quanto de memória ocupa</a></li>
+            <li><a href="#hardware">Em qual hardware faz sentido</a></li>
+            <li><a href="#contexto">Contexto nativo e YaRN</a></li>
+            <li><a href="#runtimes">Runtimes no lançamento</a></li>
+            <li><a href="#licenca">A licença não é Apache</a></li>
+            <li><a href="#limites">O que ainda não dá para concluir</a></li>
+            <li><a href="#veredito">Veredito por perfil</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+          </ul>
+        </nav>
+      </details>
+
+      <div class="article-body">
+        <picture class="article-thumb">
+          <source type="image/avif" srcset="/images/qwen3-8-flash-next-local.avif">
+          <img src="/images/qwen3-8-flash-next-local.webp" alt="Núcleo de processamento luminoso ativando poucos caminhos dentro de uma grande estrutura de memória em camadas" title="Qwen3.8-Flash-Next local: memória residente versus parâmetros ativos" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+        </picture>
+
+        <div class="callout" id="resposta">
+          <strong>Resposta curta:</strong> o Qwen3.8-Flash-Next é um preview experimental da arquitetura planejada para o Qwen4. Para uso sob controle próprio, o alvo atual é uma workstation ou um datacenter multi-GPU — não uma única GPU doméstica, nem mesmo de 96 GB.
+        </div>
+
+        <p>O ponto mais fácil de interpretar errado é o número de parâmetros ativos. O backbone é um MoE de 125 bilhões de parâmetros, mas aproximadamente 6 bilhões participam de cada token. Isso reduz computação; não faz desaparecer os pesos que precisam ser armazenados e acessados. Além do backbone, a Qwen lista 51 bilhões de parâmetros em embeddings n-gram e 4 bilhões no componente MTP.</p>
+
+        <h2 id="lancamento">O que foi lançado — e por que o nome exige cuidado</h2>
+        <p>O <a href="https://github.com/QwenLM/Qwen3.8-Flash-Next">repositório oficial</a> registra o anúncio em 26 de agosto de 2026; o repositório do modelo no Hugging Face havia sido criado dois dias antes. A própria Qwen apresenta o Flash-Next como uma prévia experimental das mudanças arquiteturais que devem sustentar a família Qwen4, não como o lançamento do Qwen4.</p>
+
+        <p>Também não é preciso chamar o modelo apenas de “176B” ou “180B”. A formulação auditável, baseada no <a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next">model card oficial</a>, mantém os componentes separados:</p>
+
+        <div class="table-wrap"><table>
+          <thead><tr><th>Bloco</th><th>Parâmetros</th><th>Impacto prático</th></tr></thead>
+          <tbody>
+            <tr><td>Backbone</td><td>125B totais; 6B ativos/token</td><td>Núcleo MoE: menos computação ativa que um denso de 125B</td></tr>
+            <tr><td>Embeddings n-gram</td><td>51B</td><td>Grande componente residente que pode ser descarregado para RAM</td></tr>
+            <tr><td>MTP</td><td>4B</td><td>Componente de predição multi-token</td></tr>
+            <tr><td>Soma contábil</td><td>180B</td><td>125B + 51B + 4B; não significa backbone de 180B</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>O modelo é um VLM causal, com encoder visual. O backbone tem 48 camadas e repete o padrão de três camadas Gated DeltaNet para uma Qwen Sparse Attention (QSA). O MoE traz 512 especialistas, dos quais 10 são roteados por token, mais um compartilhado. A configuração oficial também registra quatro branches de Gated Residual.</p>
+
+        <p>O efeito prático é uma arquitetura desenhada para reduzir custo de atenção e ativação sem reduzir na mesma proporção a memória dos arquivos. “Ativo por token” responde quanto trabalho parte do MoE faz; “tamanho do checkpoint” responde quanto precisa ser armazenado. Para decidir hardware, os dois números são necessários.</p>
+
+        <h2 id="memoria">Quanto de memória os pesos realmente ocupam</h2>
+        <p>O portal calculou os tamanhos a partir do campo <code>metadata.total_size</code> dos índices oficiais. O <a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/model.safetensors.index.json">checkpoint BF16</a> contém 359.999.963.128 bytes; o <a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next-FP8">FP8 oficial</a>, 185.502.232.570 bytes.</p>
+
+        <div class="table-wrap"><table>
+          <thead><tr><th>Formato</th><th>Bytes</th><th>Tamanho em GiB</th><th>Cabe em 96 GB?</th></tr></thead>
+          <tbody>
+            <tr><td>BF16 oficial</td><td>359.999.963.128</td><td><strong>335,28 GiB</strong></td><td>Não</td></tr>
+            <tr><td>FP8 oficial</td><td>185.502.232.570</td><td><strong>172,76 GiB</strong></td><td>Não</td></tr>
+            <tr><td>4-bit teórico sobre 180B</td><td>90.000.000.000</td><td><strong>83,82 GiB</strong></td><td>Não é arquivo oficial</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>A terceira linha é contribuição original deste artigo e precisa ser lida como limite matemático, não como recomendação: <code>180 bilhões × 4 bits ÷ 8</code> resulta em 90 bilhões de bytes, ou 83,82 GiB. Ela não inclui metadados, escalas, tensores mantidos em precisão maior, alinhamento, caches, buffers nem overhead do runtime. Também não corresponde a um checkpoint oficial distribuído pela Qwen.</p>
+
+        <div class="callout warn">
+          <strong>Não confunda piso teórico com requisito real:</strong> um arquivo “4-bit” pode ficar acima de quatro bits médios por parâmetro e a execução precisa de memória além dos pesos. Em 96 GB, 83,82 GiB já deixaria uma margem estreita antes mesmo de o modelo começar a trabalhar.
+        </div>
+
+        <p>Para entender como essa conta se comporta em modelos realmente publicados em GGUF, use a <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">tabela de quantização por GPU</a>. No Flash-Next, por enquanto, o resultado responsável é simples: nenhum checkpoint oficial cabe integralmente em uma GPU de 96 GB.</p>
+
+        <h2 id="hardware">Então, em qual hardware ele faz sentido?</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Ambiente</th><th>Decisão agora</th><th>Por quê</th></tr></thead>
+          <tbody>
+            <tr><td>GPU de 24 ou 32 GB</td><td>Não executar os pesos oficiais</td><td>Capacidade muito abaixo até do FP8</td></tr>
+            <tr><td>GPU de 48 GB</td><td>Não executar os pesos oficiais</td><td>FP8 exige 172,76 GiB antes do runtime</td></tr>
+            <tr><td>Sistema com 96 GB</td><td>Ainda não</td><td>Nenhum checkpoint oficial cabe integralmente</td></tr>
+            <tr><td>Workstation multi-GPU</td><td>Avaliar com cautela</td><td>Exige runtime e topologia day-zero compatíveis</td></tr>
+            <tr><td>Datacenter GB300</td><td>Alvo documentado</td><td>Receita vLLM valida FP8 em TP2; recomenda TP4</td></tr>
+            <tr><td>Dependência de 4-bit</td><td>Esperar artefato real</td><td>83,82 GiB é conta teórica, não checkpoint utilizável</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>A <a href="https://recipes.vllm.ai/Qwen/Qwen3.8-Flash-Next">receita oficial do vLLM</a> parte de FP8 em pelo menos duas GPUs GB300 e recomenda tensor parallel de quatro vias. Para BF16 em TP2, ela registra aproximadamente 190 GiB por GPU. A mesma receita orienta reservar ao menos 51 GB de RAM do host para descarregar os embeddings n-gram, além da folga necessária ao processo.</p>
+
+        <p>Offload não elimina memória: desloca parte da pressão para outro recurso e introduz um caminho de dados que também precisa ser dimensionado. Se sua máquina está nas faixas de 16 a 32 GB, faz mais sentido comparar alternativas na página de <a href="/guia/melhores-modelos-locais-30b">modelos locais de 30B</a> do que iniciar um download de centenas de gigabytes.</p>
+
+        <h2 id="contexto">Contexto: 262K nativos, 1M com ressalva</h2>
+        <p>O <a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/config.json">config oficial</a> define 262.144 tokens de contexto nativo. Um milhão de tokens depende de extensão explícita com YaRN e override de configuração. A própria Qwen alerta que o YaRN estático pode prejudicar a qualidade em contextos curtos e recomenda ativá-lo apenas quando entradas realmente longas exigirem.</p>
+
+        <ul>
+          <li><strong>262.144 tokens:</strong> contexto nativo;</li>
+          <li><strong>1 milhão:</strong> extensão configurada, não padrão nativo;</li>
+          <li><strong>textos curtos:</strong> podem perder qualidade com YaRN estático;</li>
+          <li><strong>planejamento de memória:</strong> ainda precisa somar caches e buffers aos pesos.</li>
+        </ul>
+
+        <p>Este artigo não estima um setup doméstico para 1M, porque os pesos oficiais já ultrapassam 172 GiB. Para visualizar como peso e KV cache são contas separadas, veja o <a href="/guia/qwen3-8-27b-contexto-256k-24gb">guia de contexto e KV cache do Qwen3.8-27B</a>.</p>
+
+        <h2 id="runtimes">Quais runtimes tinham suporte no lançamento</h2>
+        <p>O suporte day-zero era fragmentado. A existência de código compatível não significa release estável, e nenhum runtime transforma centenas de GiB de pesos em um modelo doméstico.</p>
+
+        <div class="table-wrap"><table>
+          <thead><tr><th>Runtime</th><th>Estado em 31/08/2026</th><th>Ação segura</th></tr></thead>
+          <tbody>
+            <tr><td>vLLM</td><td>Imagem dedicada; receita indica 0.29+</td><td>Seguir a receita específica, não <code>pip install</code> genérico</td></tr>
+            <tr><td>SGLang</td><td>PR/imagens day-zero</td><td>Pin de imagem ou revisão documentada</td></tr>
+            <tr><td>llama.cpp</td><td><a href="https://github.com/ggml-org/llama.cpp/pull/27742">suporte mergeado em master em 27/08</a></td><td>Build/nightly posterior ao merge</td></tr>
+            <tr><td>Ollama 0.33.1</td><td>Suporte anunciado pelo caminho MLX/Mac</td><td>Não generalizar para Windows/Linux</td></tr>
+            <tr><td>Transformers</td><td>Suporte mergeado no main em 26/08</td><td>Não presumir wheel estável sem pin e teste</td></tr>
+            <tr><td>MLX-LM</td><td>PR upstream ainda aberta</td><td>Acompanhar antes de tratar como suporte consolidado</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>Por isso, esta página não oferece um tutorial que apenas troca o nome do modelo num comando antigo. Os comandos abaixo inspecionam metadados e arquivos leves; eles foram selecionados da documentação do Hugging Face, mas <strong>não executam o modelo</strong>:</p>
+
+        <pre><code># Veja o volume que seria baixado sem transferir o checkpoint
+hf download Qwen/Qwen3.8-Flash-Next --dry-run
+
+# Baixe somente arquivos leves para inspecionar arquitetura e geração
+hf download Qwen/Qwen3.8-Flash-Next \
+  config.json generation_config.json tokenizer_config.json</code></pre>
+
+        <p>Se o objetivo é executar algo hoje, comece pelo <a href="/guia/como-rodar">guia geral de runtimes locais</a> e escolha um modelo compatível com sua memória. No caso específico do Flash-Next, aguarde artefatos e releases com condições reproduzíveis para o seu backend.</p>
+
+        <h2 id="licenca">A licença não é Apache 2.0</h2>
+        <p>O modelo usa a <a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE">Qwen Community License 1.0</a>. Ela permite uso, modificação, distribuição, hospedagem e criação de derivados, mas impõe condições que tornam incorreto descrevê-la como Apache 2.0 ou “uso comercial sem restrições”.</p>
+
+        <div class="table-wrap"><table>
+          <thead><tr><th>Uso pretendido</th><th>Leitura prática da licença</th></tr></thead>
+          <tbody>
+            <tr><td>Pesquisa e avaliação</td><td>Preservar aviso de copyright e permissão</td></tr>
+            <tr><td>Uso interno</td><td>Verificar a exceção definida no próprio texto</td></tr>
+            <tr><td>Produto acima de 100M MAU ou US$ 20M/mês</td><td>Exibir o nome do modelo de forma proeminente</td></tr>
+            <tr><td>Model-as-a-Service comercial</td><td>Obter licença separada</td></tr>
+            <tr><td>AI Work Assistant comercial</td><td>Obter licença separada</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>“AI Work Assistant” tem definição própria na licença, ligada a produtos independentes para código ou produtividade de escritório. A exceção de uso interno também tem limites: ela não cobre disponibilizar a terceiros o modelo, suas saídas ou capacidades subjacentes. Antes de integrar em produto, classifique o caso de uso e faça revisão jurídica.</p>
+
+        <h2 id="limites">O que a evidência ainda não permite concluir</h2>
+        <p>O model card publica resultados de coding, agentes e visão, mas eles não atendem ao protocolo de benchmark deste portal: faltam hardware, runtime e versão completos, número de execuções, mediana, variação e data para cada condição. Por isso, esta avaliação não reproduz esses números e não declara superioridade.</p>
+
+        <p>As fontes primárias também divergem sobre alguns ganhos de atenção em contexto extremo e sobre o comportamento de thinking entre runtimes. Sem uma versão fixada e uma execução registrada, transformar essas diferenças em recomendação seria criar uma falsa precisão.</p>
+
+        <ul>
+          <li>nenhuma inferência do modelo foi executada nesta avaliação;</li>
+          <li>nenhum benchmark foi aceito para comparação normalizada;</li>
+          <li>nenhum checkpoint oficial cabe em 96 GB;</li>
+          <li>83,82 GiB em 4 bits é apenas cálculo teórico;</li>
+          <li>parte do suporte chegou por PR ou branch principal, não por releases equivalentes;</li>
+          <li>1M exige extensão e traz ressalva para textos curtos;</li>
+          <li>a licença precisa ser avaliada antes de uso comercial.</li>
+        </ul>
+
+        <h2 id="veredito">Veredito: vale tentar localmente?</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Perfil</th><th>Veredito</th><th>Próxima ação</th></tr></thead>
+          <tbody>
+            <tr><td>PC com GPU de 24–48 GB</td><td><strong>Espere</strong></td><td>Escolha um 27–30B já validado para seu hardware</td></tr>
+            <tr><td>Máquina com 96 GB</td><td><strong>Espere um quant real</strong></td><td>Não use a conta teórica como requisito</td></tr>
+            <tr><td>Mac</td><td><strong>Suporte não resolve capacidade</strong></td><td>Confirme artefato, tamanho e upstream antes do download</td></tr>
+            <tr><td>Workstation multi-GPU</td><td><strong>Avalie</strong></td><td>Fixe runtime, topologia, formato e margem de host</td></tr>
+            <tr><td>Datacenter GB300</td><td><strong>Candidato técnico</strong></td><td>Comece pela receita FP8 oficial do vLLM</td></tr>
+            <tr><td>Produto comercial</td><td><strong>Revisão dupla</strong></td><td>Validar infraestrutura e licença Qwen Community 1.0</td></tr>
+          </tbody>
+        </table></div>
+
+        <p>O Qwen3.8-Flash-Next é “local” no sentido de poder rodar sob controle próprio. Em 31 de agosto de 2026, porém, esse controle começa em infraestrutura de workstation ou datacenter. Para o público doméstico, a decisão racional é acompanhar a arquitetura e esperar um artefato quantizado real, compatível e mensurável.</p>
+
+        <h2 id="faq">Perguntas frequentes</h2>
+        <div class="faq-item"><details><summary>O Qwen3.8-Flash-Next cabe em 96 GB?</summary><div class="faq-body"><p>Não com os checkpoints oficiais. O FP8 ocupa 172,76 GiB e o BF16, 335,28 GiB. A estimativa de 83,82 GiB em 4 bits é apenas um cálculo teórico sobre os componentes contabilizados, antes de overhead, e não corresponde a um checkpoint oficial.</p></div></details></div>
+        <div class="faq-item"><details><summary>O Qwen3.8-Flash-Next é um modelo de 180B?</summary><div class="faq-body"><p>A soma de 125B do backbone, 51B de embeddings n-gram e 4B de MTP chega a 180B. Mas o backbone é de 125B, com 6B ativos por token. Por isso, chamar o modelo apenas de 180B omite a convenção arquitetural.</p></div></details></div>
+        <div class="faq-item"><details><summary>O contexto de 1 milhão de tokens é nativo?</summary><div class="faq-body"><p>Não. O contexto nativo é de 262.144 tokens. A extensão para 1 milhão exige YaRN e override de configuração, com alerta de possível degradação em contextos curtos.</p></div></details></div>
+        <div class="faq-item"><details><summary>A licença do Qwen3.8-Flash-Next permite uso comercial?</summary><div class="faq-body"><p>A licença é Qwen Community 1.0, não Apache 2.0. Ela exige preservar aviso e licença, impõe atribuição visível em produtos acima dos limites definidos e exige licença separada para MaaS e AI Work Assistant comerciais. O texto também descreve uma exceção para uso interno.</p></div></details></div>
+
+        <h2 id="fontes">Fontes primárias</h2>
+        <ul>
+          <li><a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next">Qwen — model card e arquivos oficiais</a></li>
+          <li><a href="https://github.com/QwenLM/Qwen3.8-Flash-Next">Qwen — repositório e relatório técnico</a></li>
+          <li><a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE">Qwen Community License 1.0</a></li>
+          <li><a href="https://recipes.vllm.ai/Qwen/Qwen3.8-Flash-Next">vLLM — receita específica de deployment</a></li>
+          <li><a href="https://github.com/ggml-org/llama.cpp/pull/27742">llama.cpp — PR de suporte à arquitetura qwen4exp</a></li>
+        </ul>
+
+        <h2 id="continue">Continue por aqui</h2>
+        <div class="prevnext">
+          <a class="pn-card" href="/guia/qwen3-8-27b-visao-videos-local"><div class="dir">← Modelo doméstico</div><div class="t">Qwen3.8-27B: visão e vídeo local</div></a>
+          <a class="pn-card next" href="/guia/melhores-modelos-locais-30b"><div class="dir">Alternativas →</div><div class="t">Modelos locais de 30B por hardware</div></a>
+        </div>
+
+        <section aria-labelledby="rel-title">
+          <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+          <div class="related-grid">
+            <a class="post-card" href="/guia/hardware-local"><div class="post-body"><div class="post-meta"><span class="badge-cat hw">Hardware</span></div><h3>Hardware para modelos locais</h3></div></a>
+            <a class="post-card" href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu"><div class="post-body"><div class="post-meta"><span class="badge-cat bench">Tabela</span></div><h3>Quantização GGUF por GPU</h3></div></a>
+            <a class="post-card" href="/guia/como-rodar"><div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guia</span></div><h3>Como rodar uma LLM local</h3></div></a>
+          </div>
+        </section>
+
+        <div class="share">
+          <span>Compartilhar:</span>
+          <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local">X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local">LinkedIn</a>
+          <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local">WhatsApp</a>
+          <a href="https://qwen38-27b-landing.vercel.app/guia/qwen3-8-flash-next-local" data-copy-link>Copiar link</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</main>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais</a>
+      <p class="footer-desc">Descubra qual IA local roda no computador que você já tem, com benchmarks, hardware real e guias em português.</p>
+      <span class="footer-badge">independente · prático · pt-BR</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/modelos">Modelos</a></li>
+        <li><a href="/hardware">Hardware</a></li>
+        <li><a href="/benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/">Guias</a></li>
+        <li><a href="/guia/como-rodar">Como rodar</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Novos modelos, medições e configurações locais em 5 minutos.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Modelos Locais Brasil</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
+</body>
+</html>
