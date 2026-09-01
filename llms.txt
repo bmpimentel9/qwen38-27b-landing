@@ -4,6 +4,14 @@
 
 Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lançado pela Alibaba/Qwen em 14 de agosto de 2026. É um modelo denso de 27 bilhões de parâmetros com atenção híbrida (Gated DeltaNet + Gated Attention), 262.144 tokens de contexto nativo (1M com RoPE scaling) e multimodalidade nativa (texto, imagem, vídeo, documentos). Supera as colunas de referência do próprio model card (Qwen3.7-Plus, Muse Glimmer-30B, Opus 4.6 Max) na maioria dos benchmarks agênticos, e pode rodar em GPU de consumidor com quantização de 4 bits.
 
+## RX 9060 XT 16 GB para LLM local
+
+- Guia: https://qwen38-27b-landing.vercel.app/guia/rx-9060-xt-16gb-llm-local
+- Veredito em 01/09/2026: Linux com ROCm 7.2.1 é o caminho oficial mais completo; WSL aparece na matriz suportada; no Windows nativo, a lista AMD/ROCm do Ollama não inclui a RX 9060 XT e a AMD oferece apenas parte do stack ROCm.
+- Capacidade nominal para Qwen3.8-27B: UD-IQ2_M 10,32 GB (5,68 GB abaixo de 16); UD-Q3_K_XL 13,44 GB (2,56 GB); IQ4_XS 15,71 GB (apenas 0,29 GB); Q4_K_M 17,11 GB não cabe integralmente. As diferenças não incluem cache, buffers nem overhead do runtime.
+- Preço pontual na Pichau em 01/09/2026: ASUS RX 9060 XT Dual 16 GB por R$ 3.389,99 no Pix (R$ 211,87/GB), contra MSI RTX 5060 Ti Ventus 16 GB por R$ 4.599,99 (R$ 287,50/GB). Dois SKUs, não média de mercado.
+- Nenhum benchmark de inferência foi executado ou alegado nesse guia; comandos Vulkan são reproduzidos da documentação do llama.cpp.
+
 ## Citações prontas (stats verificáveis)
 
 - IQ4_XS = 15,71 GB: o maior quant 4-bit do Qwen3.8-27B que cabe em GPU de 16 GB, apenas em modo texto (medição própria via Hugging Face API, 17/08/2026).

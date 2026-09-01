@@ -57,6 +57,7 @@ CATEGORIA = {
     "tokens-por-segundo-30b-hardware-real": "Hardware",
     "lemonade-sdk-v11-6-llm-local-gpu-npu-amd": "Hardware",
     "qwen38-27b-16gb-vram-llama-cpp": "Hardware",
+    "rx-9060-xt-16gb-llm-local": "Hardware",
     # Releases (2)
     "muse-glimmer-30b-agente-local": "Releases",
     "1-ano-gpt-oss-modelos-locais-2026": "Releases",
@@ -99,6 +100,7 @@ MONOGRAMAS = {
     "quantizacao-gguf-30b-quanto-cabe-na-sua-gpu": "GGUF",
     "tokens-por-segundo-30b-hardware-real": "t/s",
     "qwen38-27b-16gb-vram-llama-cpp": "16G",
+    "rx-9060-xt-16gb-llm-local": "9060",
     "agent-memory-leaderboard-resultados": "AML",
     "comunidade-casos-uso": "CC",
     "qwen3-8-27b-veredito-comunidade-semana": "VCD",
