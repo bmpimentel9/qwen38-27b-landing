@@ -1,5 +1,20 @@
 [
   {
+    "slug": "rx-9060-xt-16gb-llm-local",
+    "title": "RX 9060 XT 16 GB para LLM: Linux ou Windows?",
+    "category": "Hardware",
+    "tags": [
+      "RX 9060 XT",
+      "ROCm",
+      "LLM local"
+    ],
+    "date": "2026-09-01",
+    "lead": "A RX 9060 XT de 16 GB vale para LLM local? Veja o que cabe, suporte no Linux e Windows, preço no Brasil, limitações do ROCm e o melhor caminho. Confira.",
+    "readTime": 11,
+    "featured": false,
+    "url": "/guia/rx-9060-xt-16gb-llm-local"
+  },
+  {
     "slug": "qwen3-8-27b-veredito-comunidade-semana",
     "title": "Qwen3.8-27B: o veredito da comunidade após 1 semana (r/LocalLLaMA + r/LocalLLM)",
     "category": "Comunidade",
