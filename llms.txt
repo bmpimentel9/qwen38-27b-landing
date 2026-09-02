@@ -80,6 +80,7 @@ Qwen3.8-27B é um modelo de linguagem de pesos abertos (licença Apache 2.0) lan
 
 ## Páginas do portal
 
+- [RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM?](https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local) — comparativo de compra entre duas GPUs NVIDIA a preços próximos no Brasil (fotografia de 02/09/2026): 16 GB versus 12 GB de VRAM, custo por GB, especificações oficiais e tabela dos GGUFs atuais do Qwen3.8-27B que cabem em cada placa. A análise não publica tok/s sem benchmark normalizado.
 - [Landing page principal](https://qwen38-27b-landing.vercel.app/) — especificações, gráficos de benchmark, throughput medido, timeline
 - [Catálogo de modelos](https://qwen38-27b-landing.vercel.app/modelos) — modelos locais de até 30B: parâmetros, contexto, quantização, hardware
 - [Hardware local](https://qwen38-27b-landing.vercel.app/hardware) — guia de hardware para rodar modelos 30B: GPU, RAM, setups
