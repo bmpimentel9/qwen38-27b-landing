@@ -1,5 +1,21 @@
 [
   {
+    "slug": "rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local",
+    "title": "RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM?",
+    "category": "Hardware",
+    "tags": [
+      "RTX 5060 Ti",
+      "RTX 5070",
+      "LLM local",
+      "VRAM"
+    ],
+    "date": "2026-09-02",
+    "lead": "RTX 5060 Ti de 16 GB ou RTX 5070 de 12 GB para LLM local? Compare VRAM, quantizações compatíveis, preço no Brasil e escolha a GPU certa para IA local.",
+    "readTime": 11,
+    "featured": false,
+    "url": "/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local"
+  },
+  {
     "slug": "qwen3-8-27b-veredito-comunidade-semana",
     "title": "Qwen3.8-27B: o veredito da comunidade após 1 semana (r/LocalLLaMA + r/LocalLLM)",
     "category": "Comunidade",

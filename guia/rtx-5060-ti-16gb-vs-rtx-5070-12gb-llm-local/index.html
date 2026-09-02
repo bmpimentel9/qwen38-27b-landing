@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta name="google-site-verification" content="tfpagcfTcW5Dv8rv3Rwa1rxtkKJ9qO1LCMu1zsGZdYQ" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM?</title>
+  <meta name="description" content="RTX 5060 Ti de 16 GB ou RTX 5070 de 12 GB para LLM local? Compare VRAM, quantizações compatíveis, preço no Brasil e escolha a GPU certa para IA local.">
+  <meta name="keywords" content="RTX 5060 Ti 16GB vs RTX 5070 12GB LLM local, RTX 5060 Ti IA local, RTX 5070 LLM, GPU NVIDIA para LLM, VRAM IA local">
+  <meta name="author" content="Bruno Pimentel">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Modelos Locais Brasil">
+  <meta property="og:title" content="RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM?">
+  <meta property="og:description" content="Mais VRAM ou uma GPU de classe superior? Compare capacidade, quantizações e preço brasileiro sem promessas de desempenho não medido.">
+  <meta property="og:url" content="https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local">
+  <meta property="og:image" content="https://qwen38-27b-landing.vercel.app/images/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  <meta property="article:published_time" content="2026-09-02T08:00:00-03:00">
+  <meta property="article:modified_time" content="2026-09-02T08:00:00-03:00">
+  <meta property="article:section" content="Hardware">
+  <meta property="article:tag" content="RTX 5060 Ti">
+  <meta property="article:tag" content="RTX 5070">
+  <meta property="article:tag" content="LLM local">
+  <meta property="article:tag" content="VRAM">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM?">
+  <meta name="twitter:description" content="Compare VRAM, quantizações e preço no Brasil para decidir entre as duas GPUs NVIDIA em IA local.">
+  <meta name="twitter:image" content="https://qwen38-27b-landing.vercel.app/images/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local.webp">
+  <meta name="twitter:site" content="@bmpimentel9">
+  <!-- Google Analytics 4 — QWEN38-27B-LANDING -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-016TVX8LEE"></script>
+  <script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-016TVX8LEE',{'anonymize_ip':true});
+  (function(){
+    var fired={};
+    window.addEventListener('scroll',function(){
+      var h=document.documentElement;
+      var pct=(h.scrollTop+window.innerHeight)/h.scrollHeight*100;
+      [25,50,75,100].forEach(function(t){
+        if(pct>=t&&!fired[t]){fired[t]=1;gtag('event','scroll_depth',{percent_scrolled:t});}
+      });
+    });
+  })();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": "RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM?",
+        "description": "Comparação decisória entre RTX 5060 Ti de 16 GB e RTX 5070 de 12 GB para LLM local, com especificações oficiais, quantizações do Qwen3.8-27B e preços brasileiros observados em 2 de setembro de 2026.",
+        "inLanguage": "pt-BR",
+        "datePublished": "2026-09-02",
+        "dateModified": "2026-09-02",
+        "author": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+        "publisher": { "@type": "Person", "name": "Bruno Pimentel", "url": "https://qwen38-27b-landing.vercel.app/" },
+        "mainEntityOfPage": "https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local",
+        "image": { "@id": "https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local#imagem" },
+        "about": ["RTX 5060 Ti", "RTX 5070", "LLM local"],
+        "keywords": "RTX 5060 Ti 16GB vs RTX 5070 12GB LLM local"
+      },
+      {
+        "@type": "ImageObject",
+        "@id": "https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local#imagem",
+        "contentUrl": "https://qwen38-27b-landing.vercel.app/images/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local.webp",
+        "width": 1200,
+        "height": 675,
+        "caption": "Comparação de capacidade de VRAM entre duas GPUs para LLM local",
+        "representativeOfPage": true
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qwen38-27b-landing.vercel.app/" },
+          { "@type": "ListItem", "position": 2, "name": "Guia", "item": "https://qwen38-27b-landing.vercel.app/guia/" },
+          { "@type": "ListItem", "position": 3, "name": "Hardware", "item": "https://qwen38-27b-landing.vercel.app/hardware" },
+          { "@type": "ListItem", "position": 4, "name": "RTX 5060 Ti vs RTX 5070", "item": "https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "RTX 5060 Ti 16 GB ou RTX 5070 12 GB: qual é melhor para LLM?", "acceptedAnswer": { "@type": "Answer", "text": "Para modelos locais maiores, a RTX 5060 Ti de 16 GB é a escolha mais defensável porque oferece 4 GB adicionais de VRAM e custava R$ 300 menos na fotografia consultada. A RTX 5070 tem especificações teóricas superiores, mas este artigo não mediu tokens por segundo." } },
+          { "@type": "Question", "name": "O Qwen3.8-27B cabe em uma RTX 5070 de 12 GB?", "acceptedAnswer": { "@type": "Answer", "text": "Apenas quantizações menores cabem como arquivo. O UD-IQ3_S tem 12,0 GB e não deixa margem nominal confortável; quantizações a partir de 13,1 GB não cabem integralmente. O consumo real ainda inclui cache, buffers e overhead do runtime." } },
+          { "@type": "Question", "name": "O Qwen3.8-27B cabe em uma RTX 5060 Ti de 16 GB?", "acceptedAnswer": { "@type": "Answer", "text": "Algumas quantizações cabem como arquivo. O UD-Q3_K_XL tem 13,1 GB; o UD-IQ4_XS, 14,3 GB, deixa folga apertada e pede contexto controlado. O UD-Q4_K_M tem 16,5 GB e não cabe integralmente. O arquivo de visão adiciona aproximadamente 0,93 GB." } },
+          { "@type": "Question", "name": "A RTX 5070 é mais rápida para IA local?", "acceptedAnswer": { "@type": "Answer", "text": "Ela tem mais CUDA cores, AI TOPS e largura de banda nas especificações oficiais, mas isso não comprova a velocidade de uma LLM específica. É necessário um benchmark com o mesmo modelo, quantização, runtime, backend e contexto." } },
+          { "@type": "Question", "name": "As duas placas funcionam com Ollama?", "acceptedAnswer": { "@type": "Answer", "text": "A documentação do Ollama inclui as duas GPUs sob Compute Capability 12.0 e indica driver NVIDIA 550 ou mais recente. A configuração do sistema e a memória exigida pelo modelo ainda precisam ser verificadas." } }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="/assets/css/blog-monetizacao.css">
+  <link rel="stylesheet" href="/assets/css/blog.css">
+  <script src="/assets/js/blog.js" defer></script>
+</head>
+<body>
+<!-- @@HEADER@@ -->
+<!-- ============================================================
+     templates/header.html — NAV GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<a class="skip-link" href="#topo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais <small>Brasil</small></a>
+    <nav class="nav-links" id="main-navigation" aria-label="Navegação principal">
+      <a href="/modelos">Modelos</a>
+      <a href="/hardware">Hardware</a>
+      <a href="/benchmarks">Benchmarks</a>
+      <a href="/guia/">Guias</a>
+      <a href="/guia/como-rodar">Como rodar</a>
+      <a href="/guia/faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" type="button" aria-label="Buscar artigos" aria-controls="search" data-search-open>⌕</button>
+      <button class="icon-btn" type="button" aria-label="Alternar tema claro/escuro" data-theme-toggle>☾</button>
+      <a class="cta-btn" href="/#descobrir">Encontrar meu modelo</a>
+    </div>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false" data-nav-toggle>☰</button>
+  </div>
+</header>
+<div class="search-overlay" id="search" data-search hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar artigos">
+    <input type="search" placeholder="Buscar artigos, categorias, tags..." aria-label="Termo de busca" data-search-input autocomplete="off">
+    <div class="search-results" aria-live="polite" data-search-results>
+      <a href="/guia/"><span class="sm">Sem JS? Ver todos os artigos →</span></a>
+    </div>
+  </div>
+</div>
+<!-- @@/HEADER@@ -->
+<main id="topo" class="container">
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="/">Home</a><span class="sep">›</span><a href="/hardware">Hardware</a><span class="sep">›</span><span aria-current="page">RTX 5060 Ti 16 GB ou RTX 5070 12 GB</span>
+  </nav>
+<article>
+  <header class="article-head">
+    <h1>RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM local?</h1>
+    <div class="article-meta">
+      <span class="badge-cat hw">Hardware</span>
+      <span class="sep">·</span><span class="author">Bruno Pimentel</span>
+      <span class="sep">·</span><time datetime="2026-09-02">2 set 2026</time>
+      <span class="sep">·</span><span>10 min de leitura</span>
+    </div>
+    <p class="article-lead">As duas placas custavam quase o mesmo na fotografia consultada, mas fazem uma troca decisiva para IA local: a RTX 5060 Ti oferece 16 GB de VRAM; a RTX 5070 reduz a capacidade para 12 GB e aumenta os recursos teóricos de computação e memória. Para rodar modelos locais maiores, a VRAM adicional é o argumento mais forte.</p>
+  </header>
+
+  <div class="article-layout">
+    <details class="toc-details">
+      <summary>Nesta página</summary>
+      <nav class="toc" aria-label="Nesta página">
+        <ul>
+          <li><a href="#resposta">Resposta direta</a></li>
+          <li><a href="#comparacao">Comparação das duas GPUs</a></li>
+          <li><a href="#preco">Preço no Brasil</a></li>
+          <li><a href="#qwen">O que cabe do Qwen3.8-27B</a></li>
+          <li><a href="#vram-ou-computacao">VRAM ou computação teórica</a></li>
+          <li><a href="#perfis">Veredito por perfil</a></li>
+          <li><a href="#limitacoes">Limitações da análise</a></li>
+          <li><a href="#proximo-passo">Próximo passo</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+          <li><a href="#fontes">Fontes</a></li>
+        </ul>
+      </nav>
+    </details>
+
+    <div class="article-body">
+      <picture class="article-thumb">
+        <source type="image/avif" srcset="/images/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local.avif">
+        <img src="/images/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local.webp" alt="Duas placas de vídeo lado a lado com blocos de memória em quantidades diferentes, representando capacidade de VRAM versus largura de banda para LLM local" title="RTX 5060 Ti 16 GB ou RTX 5070 12 GB para LLM local?" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
+      </picture>
+
+      <div class="callout" id="resposta">
+        <strong>Resposta curta:</strong> para LLM local, a <strong>RTX 5060 Ti de 16 GB é a compra mais defensável</strong> entre as duas. Ela oferece 4 GB adicionais de VRAM, custa R$ 300 menos na fotografia consultada e acomoda quantizações do Qwen3.8-27B que ficam apertadas ou não cabem integralmente em 12 GB. A RTX 5070 traz mais CUDA cores, AI TOPS e largura de banda nas especificações, mas esses números teóricos não autorizam uma promessa de tokens por segundo. Se o objetivo principal é manter modelos maiores na GPU, capacidade vence. Se o seu conjunto de modelos já cabe em 12 GB, a 5070 só deve ser escolhida por desempenho depois de um benchmark compatível com o seu runtime e sua carga.
+      </div>
+
+      <p>Essa restrição importa. Uma GPU não executa apenas o arquivo do modelo. O runtime ainda precisa de memória para cache, buffers e outras estruturas; se a placa também dirige o monitor, há consumo adicional fora do arquivo GGUF. Por isso, “o arquivo tem 12 GB” não significa “cabe confortavelmente em uma GPU de 12 GB”. O <a href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu">guia de quantização GGUF</a> explica por que a folga faz parte da configuração, não é luxo.</p>
+
+      <h2 id="comparacao">RTX 5060 Ti 16 GB vs RTX 5070 12 GB</h2>
+
+      <p>As especificações oficiais da NVIDIA colocam as duas GPUs na mesma geração e com a mesma Compute Capability 12.0. A documentação do Ollama lista ambas sob essa capacidade e exige driver NVIDIA 550 ou mais recente. Assim, a diferença editorialmente relevante não é “uma funciona e a outra não”: as duas têm um caminho documentado. A decisão está em quanto espaço cada uma oferece e no que se recebe em troca.</p>
+
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead>
+            <tr><th>Característica</th><th>RTX 5060 Ti 16 GB</th><th>RTX 5070 12 GB</th><th>Leitura para LLM local</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>VRAM</td><td><strong>16 GB GDDR7</strong></td><td>12 GB GDDR7</td><td>A 5060 Ti oferece 4 GB a mais para pesos e overhead.</td></tr>
+            <tr><td>CUDA cores</td><td>4.608</td><td><strong>6.144</strong></td><td>É uma vantagem teórica da 5070, não uma medição de geração.</td></tr>
+            <tr><td>AI TOPS</td><td>759</td><td><strong>988</strong></td><td>Não deve ser convertido diretamente em tokens por segundo.</td></tr>
+            <tr><td>Barramento</td><td>128-bit</td><td><strong>192-bit</strong></td><td>É uma diferença de projeto; isoladamente, não determina o resultado no runtime.</td></tr>
+            <tr><td>Largura de banda</td><td>448 GB/s</td><td><strong>672 GB/s</strong></td><td>A 5070 tem maior valor teórico, desde que o modelo caiba.</td></tr>
+            <tr><td>TGP</td><td><strong>180 W</strong></td><td>250 W</td><td>A 5060 Ti tem menor potência gráfica declarada.</td></tr>
+            <tr><td>Fonte recomendada</td><td><strong>600 W</strong></td><td>650 W</td><td>Verifique fonte, conectores e gabinete antes da compra.</td></tr>
+            <tr><td>Compute Capability</td><td>12.0</td><td>12.0</td><td>Ambas aparecem na documentação de GPUs do Ollama.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="preco">Preço no Brasil: R$ 300 separam as duas</h2>
+
+      <p>Em 2 de setembro de 2026, dois anúncios do mesmo varejista e da mesma linha MSI Shadow mostravam uma diferença pequena no valor absoluto: a <a href="https://www.pichau.com.br/placa-de-video-msi-geforce-rtx-5060-ti-shadow-2x-oc-plus-16gb-gddr7-128-bit-g506t-16s2cp">RTX 5060 Ti Shadow 2X OC Plus de 16 GB</a> custava R$ 4.499,99 à vista no PIX, enquanto a <a href="https://www.pichau.com.br/placa-de-video-msi-geforce-rtx-5070-shadow-2x-oc-12gb-gddr7-192-bit-g5070-12s2c-nac">RTX 5070 Shadow 2X OC de 12 GB</a> aparecia por R$ 4.799,99 à vista no PIX. Ambos os anúncios informavam 15% de desconto nessa forma de pagamento.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>SKU consultado</th><th>Preço</th><th>VRAM</th><th>Custo por GB</th></tr></thead>
+          <tbody>
+            <tr><td>MSI RTX 5060 Ti Shadow 2X OC Plus</td><td>R$ 4.499,99</td><td>16 GB</td><td><strong>R$ 281,25</strong></td></tr>
+            <tr><td>MSI RTX 5070 Shadow 2X OC</td><td>R$ 4.799,99</td><td>12 GB</td><td>R$ 400,00</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Nesse recorte, a RTX 5070 custava R$ 300 a mais, ou 6,67%, mesmo oferecendo 4 GB a menos. Em custo por GB de VRAM, seus R$ 400 representavam 42,22% a mais que os R$ 281,25 da 5060 Ti. Essa conta não é uma métrica universal de valor: CUDA cores, largura de banda, consumo e o restante do computador também participam da decisão. Para o problema específico de acomodar LLMs, porém, R$/GB revela com clareza por que a 5060 Ti merece atenção.</p>
+
+      <div class="callout warn">
+        <strong>Fotografia, não média de mercado:</strong> os preços acima correspondem a dois SKUs e a uma consulta em 2 de setembro de 2026. Estoque, promoção, forma de pagamento e fabricante podem mudar a conclusão. Refaça a comparação no dia da compra.
+      </div>
+
+      <h2 id="qwen">O que cabe do Qwen3.8-27B em cada placa</h2>
+
+      <p>Para transformar VRAM em uma decisão concreta, usamos a árvore GGUF do Qwen3.8-27B publicada pela Unsloth, consultada em 2 de setembro de 2026. Os tamanhos abaixo são dos artefatos. Eles não equivalem ao consumo total em execução e não prometem um comprimento de contexto. O model card oficial do <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen3.8-27B</a> informa licença Apache 2.0.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Quantização GGUF</th><th>Tamanho publicado</th><th>RTX 5070 12 GB</th><th>RTX 5060 Ti 16 GB</th></tr></thead>
+          <tbody>
+            <tr><td>UD-Q2_K_XL</td><td>9,83 GB</td><td>Cabe como arquivo, com margem nominal limitada</td><td>Cabe como arquivo, com margem maior</td></tr>
+            <tr><td>UD-IQ3_XXS</td><td>10,9 GB</td><td>Cabe como arquivo, com apenas 1,1 GB nominais</td><td>Cabe como arquivo</td></tr>
+            <tr><td>UD-IQ3_S</td><td>12,0 GB</td><td><strong>Não é confortável</strong>: não sobra margem nominal</td><td>Cabe como arquivo</td></tr>
+            <tr><td>UD-Q3_K_XL</td><td>13,1 GB</td><td>Não cabe integralmente</td><td><strong>Cabe como arquivo</strong>, restando 2,9 GB nominais</td></tr>
+            <tr><td>UD-IQ4_XS</td><td>14,3 GB</td><td>Não cabe integralmente</td><td>Cabe, mas com folga apertada de 1,7 GB e contexto controlado</td></tr>
+            <tr><td>UD-Q4_K_S</td><td>15,4 GB</td><td>Não cabe integralmente</td><td>Margem nominal de apenas 0,6 GB; não é uma rota confortável</td></tr>
+            <tr><td>UD-Q4_K_M</td><td>16,5 GB</td><td>Não cabe integralmente</td><td><strong>Não cabe integralmente</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>A tabela expõe a diferença prática. Na RTX 5070, a faixa realista começa nas quantizações menores. O arquivo de 12,0 GB já ocupa toda a capacidade nominal e não deixa espaço confortável para o restante da execução. Na RTX 5060 Ti, o UD-Q3_K_XL de 13,1 GB oferece uma margem nominal de 2,9 GB; o UD-IQ4_XS de 14,3 GB também entra como arquivo, mas os 1,7 GB restantes exigem contexto controlado e disciplina de memória. O <a href="/guia/qwen38-27b-16gb-vram-llama-cpp">guia do Qwen3.8-27B em 16 GB</a> detalha o cuidado necessário nessa faixa.</p>
+
+      <p>A visão torna o orçamento ainda mais apertado: o arquivo <code>mmproj</code> adiciona aproximadamente 0,93 GB aos artefatos necessários. Isso reforça dois limites. Primeiro, 16 GB não transformam a RTX 5060 Ti em uma placa “sem restrições” para um modelo de 27B. Segundo, 12 GB podem executar alternativas menores ou usar offload, mas não entregam a mesma liberdade de escolha de quantização. Quem pretende explorar janelas longas também deve ler o alerta sobre <a href="/guia/qwen3-8-27b-contexto-256k-24gb">contexto de 256K e consumo de memória</a> antes de projetar a configuração.</p>
+
+      <h2 id="vram-ou-computacao">Mais VRAM ou mais computação teórica?</h2>
+
+      <p>A RTX 5070 tem 6.144 CUDA cores, 988 AI TOPS e 672 GB/s de largura de banda, contra 4.608 CUDA cores, 759 AI TOPS e 448 GB/s da RTX 5060 Ti. A ficha favorece a 5070 quando a tarefa cabe em sua memória. O erro seria transformar essa vantagem em uma previsão de desempenho de LLM sem controlar modelo, quantização, runtime, versão, backend, contexto, prompt e método de medição.</p>
+
+      <p>Para uma decisão de compra, pense em dois gates. O primeiro é binário: <strong>o modelo e a configuração cabem?</strong> Se não cabem integralmente, será necessário reduzir quantização, limitar contexto ou descarregar camadas para a RAM, mudando a experiência e as condições da comparação. Só depois vem o segundo gate: <strong>qual GPU é mais rápida com a mesma carga compatível?</strong> Este artigo não responde ao segundo porque não executou benchmark.</p>
+
+      <h2 id="perfis">Veredito por perfil de usuário</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Perfil</th><th>Escolha mais defensável</th><th>Por quê</th></tr></thead>
+          <tbody>
+            <tr><td>Quer rodar Qwen3.8-27B e modelos locais maiores</td><td><strong>RTX 5060 Ti 16 GB</strong></td><td>Os 4 GB adicionais liberam quantizações que não cabem integralmente em 12 GB.</td></tr>
+            <tr><td>Prioriza variedade de modelos e configurações</td><td><strong>RTX 5060 Ti 16 GB</strong></td><td>Mais VRAM oferece maior margem de escolha, ainda que 16 GB continuem limitados.</td></tr>
+            <tr><td>Usa apenas modelos que cabem confortavelmente em 12 GB</td><td>Depende de benchmark</td><td>A 5070 tem especificações teóricas superiores, mas falta medição comparável neste artigo.</td></tr>
+            <tr><td>Compra orientada ao menor TGP e fonte recomendada</td><td><strong>RTX 5060 Ti 16 GB</strong></td><td>180 W e fonte de 600 W, contra 250 W e 650 W da 5070.</td></tr>
+            <tr><td>Encontrou preços muito diferentes dos consultados</td><td>Refazer a conta</td><td>O prêmio de preço pode mudar; compare o SKU real, não apenas o nome da GPU.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>O veredito não diz que a RTX 5060 Ti é uma GPU universalmente mais rápida nem que a RTX 5070 é uma compra ruim. Diz algo mais estreito e útil: <strong>entre esses dois SKUs e preços, a 5060 Ti de 16 GB reduz o risco de bater no limite de memória ao trabalhar com LLMs locais</strong>. Para leitores que querem comparar outras classes de hardware e modelos, o <a href="/guia/hardware-local">guia de hardware local</a> e a seleção de <a href="/guia/melhores-modelos-locais-30b">modelos locais de 30B</a> ajudam a ampliar a decisão.</p>
+
+      <h2 id="limitacoes">O que esta análise não conclui</h2>
+
+      <ul>
+        <li>Não mede prompt processing, geração, latência, energia ou temperatura.</li>
+        <li>Não converte CUDA cores, AI TOPS ou largura de banda em tokens por segundo.</li>
+        <li>Não promete que uma quantização terá o mesmo comportamento em todo runtime.</li>
+        <li>Não promete uma janela de contexto específica só porque o arquivo do modelo cabe.</li>
+        <li>Não trata dois anúncios de varejo como média de preço brasileira.</li>
+        <li>Não avalia ruído, refrigeração, dimensões ou qualidade construtiva dos dois SKUs.</li>
+      </ul>
+
+      <p>Um benchmark futuro só será comparável se usar o mesmo modelo, quantização, runtime e versão, driver, backend, contexto, prompt e número de execuções, separando processamento de prompt e geração. Até lá, a decisão deste artigo se apoia em capacidade, compatibilidade documentada, requisitos elétricos e preço observado — não em uma velocidade inventada.</p>
+
+      <h2 id="proximo-passo">Próximo passo: escolha o modelo antes da placa</h2>
+
+      <p>Depois de instalar a placa e o driver, use a interface oficial <code>nvidia-smi</code> para registrar modelo, versão do driver e VRAM detectada antes de comparar qualquer resultado:</p>
+
+      <pre><code>nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv</code></pre>
+
+      <p class="footnote">A opção de consulta seletiva e a saída CSV são documentadas no <a href="https://docs.nvidia.com/deploy/nvidia-smi/index.html">manual oficial do NVIDIA System Management Interface</a>. Este comando não foi executado no ambiente editorial, que não possui as duas GPUs; ele é o próximo passo reproduzível no computador do leitor.</p>
+
+      <ol>
+        <li>Liste os modelos e quantizações que pretende usar, incluindo visão quando necessária.</li>
+        <li>Some aos arquivos uma margem para runtime, cache e uso do sistema; não compre pela igualdade exata entre GB do arquivo e GB da placa.</li>
+        <li>Confirme o driver NVIDIA 550 ou mais recente para a rota documentada pelo Ollama.</li>
+        <li>Atualize os preços dos SKUs no dia da compra.</li>
+        <li>Se tudo que você usa cabe confortavelmente em 12 GB, procure um benchmark reproduzível do seu workload antes de pagar o prêmio pela RTX 5070.</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Decisão em uma frase:</strong> compre a RTX 5060 Ti de 16 GB para maximizar a margem de modelos locais; escolha a RTX 5070 de 12 GB somente quando você já souber que 12 GB bastam e tiver evidência de que suas especificações adicionais geram valor no seu uso.
+      </div>
+
+      <h2 id="faq">Perguntas frequentes</h2>
+
+      <div class="faq-item">
+        <h3>RTX 5060 Ti 16 GB ou RTX 5070 12 GB: qual é melhor para LLM?</h3>
+        <p>Para modelos locais maiores, a RTX 5060 Ti de 16 GB é a escolha mais defensável porque oferece 4 GB adicionais de VRAM e custava R$ 300 menos na fotografia consultada. A RTX 5070 tem especificações teóricas superiores, mas este artigo não mediu tokens por segundo.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>O Qwen3.8-27B cabe em uma RTX 5070 de 12 GB?</h3>
+        <p>Apenas quantizações menores cabem como arquivo. O UD-IQ3_S tem 12,0 GB e não deixa margem nominal confortável; quantizações a partir de 13,1 GB não cabem integralmente. O consumo real ainda inclui cache, buffers e overhead do runtime.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>O Qwen3.8-27B cabe em uma RTX 5060 Ti de 16 GB?</h3>
+        <p>Algumas quantizações cabem como arquivo. O UD-Q3_K_XL tem 13,1 GB; o UD-IQ4_XS, 14,3 GB, deixa folga apertada e pede contexto controlado. O UD-Q4_K_M tem 16,5 GB e não cabe integralmente. O arquivo de visão adiciona aproximadamente 0,93 GB.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>A RTX 5070 é mais rápida para IA local?</h3>
+        <p>Ela tem mais CUDA cores, AI TOPS e largura de banda nas especificações oficiais, mas isso não comprova a velocidade de uma LLM específica. É necessário um benchmark com o mesmo modelo, quantização, runtime, backend e contexto.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>As duas placas funcionam com Ollama?</h3>
+        <p>A documentação do Ollama inclui as duas GPUs sob Compute Capability 12.0 e indica driver NVIDIA 550 ou mais recente. A configuração do sistema e a memória exigida pelo modelo ainda precisam ser verificadas.</p>
+      </div>
+
+      <h2 id="fontes">Fontes</h2>
+      <div class="footnote">
+        <ul>
+          <li><a href="https://www.nvidia.com/pt-br/geforce/graphics-cards/50-series/rtx-5060-family/">NVIDIA — família GeForce RTX 5060</a>: VRAM, CUDA cores, AI TOPS, barramento, largura de banda, TGP e fonte.</li>
+          <li><a href="https://www.nvidia.com/pt-br/geforce/graphics-cards/50-series/rtx-5070-family/">NVIDIA — família GeForce RTX 5070</a>: VRAM, CUDA cores, AI TOPS, barramento, largura de banda, TGP e fonte.</li>
+          <li><a href="https://docs.ollama.com/gpu">Ollama — suporte a GPUs</a>: Compute Capability 12.0 e requisito de driver.</li>
+          <li><a href="https://docs.nvidia.com/deploy/nvidia-smi/index.html">NVIDIA — manual do <code>nvidia-smi</code></a>: consulta seletiva de propriedades e formato CSV.</li>
+          <li><a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen — model card oficial do Qwen3.8-27B</a>: identidade e licença do modelo.</li>
+          <li><a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/tree/main">Unsloth — árvore GGUF do Qwen3.8-27B</a>: tamanhos consultados em 2 de setembro de 2026.</li>
+          <li>Pichau: anúncios dos dois SKUs MSI Shadow, consultados em 2 de setembro de 2026, usados somente para a fotografia de preços.</li>
+        </ul>
+      </div>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <section class="newsletter" aria-labelledby="nl-art">
+        <h2 id="nl-art">Receba o resumo semanal</h2>
+        <p>Releases, benchmarks e hardware de modelos locais ≤30B — no seu email, 1x por semana.</p>
+        <form class="newsletter-form" action="#" method="post" novalidate>
+          <input type="email" name="email" required placeholder="seu@email.com" aria-label="Seu email" autocomplete="email">
+          <button type="submit">Assinar</button>
+        </form>
+        <p class="microcopy">1 email/semana · cancele quando quiser · Ao assinar você aceita nossa <a href="/privacidade">política de privacidade</a></p>
+      </section>
+
+      <h2 id="prevnext">Continue por aqui</h2>
+      <div class="prevnext">
+        <a class="pn-card" href="/guia/hardware-local"><div class="dir">← Visão geral</div><div class="t">Hardware para LLM local: escolha por VRAM e orçamento</div></a>
+        <a class="pn-card next" href="/guia/qwen38-27b-16gb-vram-llama-cpp"><div class="dir">Próximo →</div><div class="t">Qwen3.8-27B em 16 GB de VRAM: configuração prática</div></a>
+      </div>
+
+      <section aria-labelledby="rel-title">
+        <h2 class="section-title" id="rel-title" style="margin-top:var(--space-7)">Artigos relacionados</h2>
+        <div class="related-grid">
+          <a class="post-card" href="/guia/quantizacao-gguf-30b-quanto-cabe-na-sua-gpu"><div class="post-thumb-fallback" style="background:linear-gradient(135deg,#4ADE8033,#4ADE8011);color:#4ADE80"><span>GGUF</span></div><div class="post-body"><div class="post-meta"><span class="badge-cat hw">Hardware</span></div><h3>Quantização GGUF ≤30B: quanto cabe na sua GPU?</h3></div></a>
+          <a class="post-card" href="/guia/qwen3-8-27b-contexto-256k-24gb"><div class="post-thumb-fallback" style="background:linear-gradient(135deg,#A78BFA33,#A78BFA11);color:#A78BFA"><span>CTX</span></div><div class="post-body"><div class="post-meta"><span class="badge-cat guides">Guias</span></div><h3>Qwen3.8-27B com 256K de contexto em 24 GB</h3></div></a>
+          <a class="post-card" href="/guia/melhores-modelos-locais-30b"><div class="post-thumb-fallback" style="background:linear-gradient(135deg,#2DD4BF33,#2DD4BF11);color:#2DD4BF"><span>TOP</span></div><div class="post-body"><div class="post-meta"><span class="badge-cat bench">Benchmarks</span></div><h3>Melhores modelos locais de 30B</h3></div></a>
+        </div>
+      </section>
+
+      <div class="share">
+        <span>Compartilhar:</span>
+        <a href="https://twitter.com/intent/tweet?url=https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local">X</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local">LinkedIn</a>
+        <a href="https://wa.me/?text=https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local">WhatsApp</a>
+        <a href="https://qwen38-27b-landing.vercel.app/guia/rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local" data-copy-link>Copiar link</a>
+      </div>
+    </div>
+  </div>
+</article>
+</main>
+<script defer src="/assets/js/newsletter.js"></script>
+
+<!-- @@FOOTER@@ -->
+<!-- ============================================================
+     templates/footer.html — FOOTER GLOBAL (fragmento canônico)
+     Design system: assets/css/blog.css · script: assets/js/blog.js
+     Gerido por scripts/sync_layout.py. NÃO duplicar em páginas.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand" href="/" aria-label="Modelos Locais — página inicial"><span class="mark mark-wide">ML</span> Modelos Locais</a>
+      <p class="footer-desc">Descubra qual IA local roda no computador que você já tem, com benchmarks, hardware real e guias em português.</p>
+      <span class="footer-badge">independente · prático · pt-BR</span>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="/modelos">Modelos</a></li>
+        <li><a href="/hardware">Hardware</a></li>
+        <li><a href="/benchmarks">Benchmarks</a></li>
+        <li><a href="/guia/">Guias</a></li>
+        <li><a href="/guia/como-rodar">Como rodar</a></li>
+        <li><a href="/guia/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="/robots.txt">robots.txt</a></li>
+        <li><a href="/modelos">Modelos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="footer-desc">Novos modelos, medições e configurações locais em 5 minutos.</p>
+      <form class="newsletter-form" action="#" method="post" data-newsletter>
+        <input type="email" required placeholder="seu@email.com" aria-label="Seu email">
+        <button type="submit">Assinar</button>
+      </form>
+      <p class="microcopy">1 email/semana · cancele quando quiser · <a href="/privacidade">política de privacidade</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year>2026</span> · Modelos Locais Brasil</span>
+    <span>Ao clicar e comprar por links de afiliado, o preço não muda para você e recebemos uma pequena comissão que mantém o blog gratuito.</span>
+    <a href="/privacidade">Política de privacidade</a>
+  </div>
+</footer>
+<!-- @@/FOOTER@@ -->
+</body>
+</html>

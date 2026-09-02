@@ -57,6 +57,7 @@ CATEGORIA = {
     "tokens-por-segundo-30b-hardware-real": "Hardware",
     "lemonade-sdk-v11-6-llm-local-gpu-npu-amd": "Hardware",
     "qwen38-27b-16gb-vram-llama-cpp": "Hardware",
+    "rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local": "Hardware",
     # Releases (2)
     "muse-glimmer-30b-agente-local": "Releases",
     "1-ano-gpt-oss-modelos-locais-2026": "Releases",
@@ -99,6 +100,7 @@ MONOGRAMAS = {
     "quantizacao-gguf-30b-quanto-cabe-na-sua-gpu": "GGUF",
     "tokens-por-segundo-30b-hardware-real": "t/s",
     "qwen38-27b-16gb-vram-llama-cpp": "16G",
+    "rtx-5060-ti-16gb-vs-rtx-5070-12gb-llm-local": "VRAM",
     "agent-memory-leaderboard-resultados": "AML",
     "comunidade-casos-uso": "CC",
     "qwen3-8-27b-veredito-comunidade-semana": "VCD",
